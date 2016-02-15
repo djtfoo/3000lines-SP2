@@ -368,9 +368,9 @@ void Camera3::Update(double dt, const std::vector<WallCollision>& collisionWall,
 
 }
 
-void Camera3::Update(double dt, const std::vector<WallCollision>& collisionWall, const std::vector<ItemCollision>& collisionItem, const StairsCollision& stairs)
+void Camera3::Update(double dt, Player& player, const std::vector<WallCollision>& collisionWall, const std::vector<ItemCollision>& collisionItem, const StairsCollision& stairs)
 {
-    MoveCamera(dt);
+    MoveCamera(dt, player);
 
     if (Application::IsKeyPressed('W')) {   //move forward
         Vector3 view = (target - position);
@@ -704,7 +704,7 @@ void Camera3::LimitedMoveCamera(double dt)
     }
 }
 
-void Camera3::FlightModeMoveCamera(double dt, Player& player, Enemy& enemy)
+void Camera3::MoveCamera(double dt, Player& player)
 {
     if (Application::cursor_newxpos != Application::cursor_xpos) {
         double diff_xpos = Application::cursor_xpos - Application::cursor_newxpos;
@@ -736,8 +736,12 @@ void Camera3::FlightModeMoveCamera(double dt, Player& player, Enemy& enemy)
         Mtx44 rotation;
         rotation.SetToIdentity();
         rotation.SetToRotation((float)(diff_ypos * ROTSPEED * dt), right.x, right.y, right.z);
+
         view = rotation * view;
-        target = position + view;
+
+        if (view.y < 0.8f && view.y > -0.9f) {
+            target = position + view;
+        }
     }
 
     //change player's pitch and yaw
@@ -755,16 +759,6 @@ void Camera3::FlightModeMoveCamera(double dt, Player& player, Enemy& enemy)
     player.yaw = Math::RadianToDegree(acos(scalar2));
     if (view.x <= 0) {
         player.yaw = 360.f - player.yaw;
-    }
-
-    //change enemy's yaw
-    Vector3 enemyView = target - enemy.pos;
-    enemyView.y = 0;
-    enemyView = enemyView.Normalized();
-    float scalar3 = enemyView.Dot(Vector3(0, 0, 1));
-    enemy.yaw = Math::RadianToDegree(acos(scalar3));
-    if (enemyView.x <= 0) {
-        enemy.yaw = 360.f - enemy.yaw;
     }
 }
 

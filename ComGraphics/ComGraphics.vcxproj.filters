@@ -34,7 +34,7 @@
     <ClCompile Include="Source\MeshBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Assignment3.cpp">
+    <ClCompile Include="Source\SP2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -84,13 +84,10 @@
     <ClInclude Include="Source\Collision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Celfon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Assignment3.h">
+    <ClInclude Include="Source\SP2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

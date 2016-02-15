@@ -27,12 +27,12 @@ public:
     void Reset();       //reset, unlocking camera target on model
     void Update(double dt);
     void Update(double dt, const std::vector<WallCollision>& collisionWall, const std::vector<ItemCollision>& collisionItem);
-    void Update(double dt, const std::vector<WallCollision>& collisionWall, const std::vector<ItemCollision>& collisionItem, const StairsCollision& stairs);
+    void Update(double dt, Player& player, const std::vector<WallCollision>& collisionWall, const std::vector<ItemCollision>& collisionItem, const StairsCollision& stairs);
     void MoveCamera(double dt);
 
     void LimitedMoveCamera(double dt);
 
-    void FlightModeMoveCamera(double dt, Player& player, Enemy& enemy);
+    void MoveCamera(double dt, Player& player);
     void FlightModeUpdate(double dt, const std::vector<WallCollision>& collisionWall, const std::vector<FlightCollision>& flightCollision, const Hitbox& enemyHitbox);
 };
 
