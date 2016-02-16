@@ -124,6 +124,8 @@ class SP2 : public Scene
         //text
         GEO_TEXT,
         GEO_DIALOGUEBOX,
+		//dev texture
+		GEO_DEVTEXTURE,
         NUM_GEOMETRY,
     };
 
@@ -347,6 +349,8 @@ public:
     void RenderEscapeDoor();
 	void RenderControlRoom();
     void RenderLab();
+
+	void RenderLayout();
 
     void RenderEnemy();
     void RenderHologram();

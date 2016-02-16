@@ -13,7 +13,7 @@ Camera3::Camera3()
 {
     phi = 15;
     theta = 20;
-    distance = 2;
+    distance = 25;
 }
 
 /******************************************************************************/
@@ -791,8 +791,8 @@ void Camera3::MoveCamera(double dt, Player& player)
         if (phi > 60) {
             phi = 60;
         }
-        else if (phi < -10) {
-            phi = -10;
+        else if (phi < -30) {
+            phi = -30;
         }
     }
 
@@ -807,7 +807,7 @@ void Camera3::MoveCamera(double dt, Player& player)
     }
 
     target = player.pos;
-    target.y += 1.5f;
+    target.y += 20.0f;
 
     position.x = distance * cos(Math::DegreeToRadian(phi)) * cos(Math::DegreeToRadian(theta)) + target.x;
     position.y = distance * sin(Math::DegreeToRadian(phi)) + target.y;
