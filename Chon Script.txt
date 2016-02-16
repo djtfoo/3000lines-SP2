@@ -145,7 +145,7 @@ Chon: "SORRY ABOUT YESTERDAY!" Chon apologieses to you with from  his heart.
 
 player: 1. ...
         2. It's ok.
-        3. You crepe.
+        3. You creep.
 
 Chon: "I know you are going to judge me so I'm sorry for everything."
 
@@ -248,7 +248,7 @@ player: 1. What happened?
         2. Wai sho sad?
         3. "..."
 
-//All Romes lead to Road.
+//All Roads lead to Rome.
 Chon: "-sigh-..." Chon let out a heavy sigh, unlike his usual self.
 
 Chon: "It's the gift I gave you, the materials of it, it's not the best after all."
@@ -292,3 +292,5 @@ player walks up and approached Chon.
 Chon: "Bwaah!", Chon let out an awkward voice of shock, anyone who heard it would give a giggle.
 
 Chon: "You scared me <player>!"
+
+-changes-
