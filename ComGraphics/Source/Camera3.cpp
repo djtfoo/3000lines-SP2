@@ -13,7 +13,7 @@ Camera3::Camera3()
 {
     phi = 15;
     theta = 20;
-    distance = 10;
+    distance = 2;
 }
 
 /******************************************************************************/
@@ -70,7 +70,7 @@ To be called every frame. Camera will get user inputs and update its position an
 /******************************************************************************/
 static float CAMSPEED = 800.f;
 static float FLYSPEED = 800.f;
-static float ROTSPEED = 20.f;
+static float ROTSPEED = 5.f;
 
 void Camera3::Update(double dt)
 {
@@ -375,7 +375,7 @@ void Camera3::Update(double dt, Player& player, const std::vector<WallCollision>
 {
     MoveCamera(dt, player);
 
-    if (Application::IsKeyPressed('W')) {   //move forward
+    /*if (Application::IsKeyPressed('W')) {   //move forward
         Vector3 view = (target - position);
         view.y = 0;
         view = view.Normalized();
@@ -624,7 +624,7 @@ void Camera3::Update(double dt, Player& player, const std::vector<WallCollision>
     }
     else if (stairs.dir == STAIR_Z) {
         //left empty (for now) as not needed for assignment 3
-    }
+    }*/
 }
 
 void Camera3::MoveCamera(double dt)
@@ -788,8 +788,8 @@ void Camera3::MoveCamera(double dt, Player& player)
         Application::cursor_ypos = Application::cursor_newypos;
 
         phi -= diff_ypos * ROTSPEED * dt;
-        if (phi > 70) {
-            phi = 70;
+        if (phi > 60) {
+            phi = 60;
         }
         else if (phi < -10) {
             phi = -10;
@@ -807,6 +807,7 @@ void Camera3::MoveCamera(double dt, Player& player)
     }
 
     target = player.pos;
+    target.y += 1.5f;
 
     position.x = distance * cos(Math::DegreeToRadian(phi)) * cos(Math::DegreeToRadian(theta)) + target.x;
     position.y = distance * sin(Math::DegreeToRadian(phi)) + target.y;

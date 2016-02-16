@@ -35,7 +35,7 @@ SP2::SP2()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //Initialize camera settings
-    camera.Init(Vector3(0, -100, 100), Vector3(0, -100, 110), Vector3(0, 1, 0));
+    camera.Init(Vector3(0, 10, 100), Vector3(0, 10, 110), Vector3(0, 1, 0));
 
     Mtx44 projection;
     projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -318,6 +318,21 @@ void SP2::Update(double dt)
 {
     FramePerSecond = 1 / dt;
 
+    if (Application::IsKeyPressed('W')) {   //player moves forward
+        Player.pos.x -= (float)(5 * sin(Math::DegreeToRadian(Player.yaw)) * dt);
+        Player.pos.z -= (float)(5 * cos(Math::DegreeToRadian(Player.yaw)) * dt);
+    }
+    if (Application::IsKeyPressed('S')) {   //player moves backward
+        Player.pos.x += (float)(5 * sin(Math::DegreeToRadian(Player.yaw)) * dt);
+        Player.pos.z += (float)(5 * cos(Math::DegreeToRadian(Player.yaw)) * dt);
+    }
+    if (Application::IsKeyPressed('A')) {   //turn left
+        Player.yaw += (float)(50 * dt);
+    }
+    if (Application::IsKeyPressed('D')) {   //turn right
+        Player.yaw -= (float)(50 * dt);
+    }
+
     camera.Update(dt, Player, flightWall, collisionItemCell, stairs);
     //options
     if (Application::IsKeyPressed('1')) //enable back face culling
@@ -339,7 +354,6 @@ void SP2::Update(double dt)
     if (Application::IsKeyPressed('E') && haveInteraction) {
         Interact();
     }
-
 }
 
 void SP2::Render()
@@ -373,29 +387,29 @@ void SP2::Render()
     RenderPlayer();
 
     //checking for item interaction
-    if (haveInteraction) {
-        RenderTextOnScreen(meshList[GEO_TEXT], "PRESS E", Color(1, 0, 0), 3, 4, 9);
-    }
+    //if (haveInteraction) {
+    //    RenderTextOnScreen(meshList[GEO_TEXT], "PRESS E", Color(1, 0, 0), 3, 4, 9);
+    //}
 
-    if (interactDialogue) {
-        Dialogue();
-    }
+    //if (interactDialogue) {
+    //    Dialogue();
+    //}
 
-    //====NEUTRAL RENDERS/ALL SCENES====
-    if (blackScreen) {
-        RenderBlackScreen();
-    }
+    ////====NEUTRAL RENDERS/ALL SCENES====
+    //if (blackScreen) {
+    //    RenderBlackScreen();
+    //}
 
-    if (splashScreen) {
-        RenderBlackScreen();
-        if (gameLose) {
-            RenderTextOnScreen(meshList[GEO_TEXT], "YOU WERE CAPTURED...", Color(1, 1, 1), 3, 3, 10);
-        }
-        else {
-            RenderTextOnScreen(meshList[GEO_TEXT], "YOU MANAGED TO ESCAPE...", Color(1, 1, 1), 3, 2, 10);
-        }
-        RenderTextOnScreen(meshList[GEO_TEXT], "OR IS IT?", Color(1, 1, 1), 3, 10, 6);
-    }
+    //if (splashScreen) {
+    //    RenderBlackScreen();
+    //    if (gameLose) {
+    //        RenderTextOnScreen(meshList[GEO_TEXT], "YOU WERE CAPTURED...", Color(1, 1, 1), 3, 3, 10);
+    //    }
+    //    else {
+    //        RenderTextOnScreen(meshList[GEO_TEXT], "YOU MANAGED TO ESCAPE...", Color(1, 1, 1), 3, 2, 10);
+    //    }
+    //    RenderTextOnScreen(meshList[GEO_TEXT], "OR IS IT?", Color(1, 1, 1), 3, 10, 6);
+    //}
     
     //render UI
     RenderUI();
@@ -561,38 +575,38 @@ void SP2::RenderSkybox()
     modelStack.PushMatrix();
 
     //follow player
-    //modelStack.Translate(0, 0, camera.target.z / 10);
+    modelStack.Translate(0, -100, Player.pos.z);
 
     //left
     modelStack.PushMatrix();
-    modelStack.Translate(-499, 0, 0);
+    modelStack.Translate(-495, 495, 0);
     modelStack.Rotate(90, 0, 1, 0);
     RenderMesh(meshList[GEO_SKYBOX_LEFT], false);
     modelStack.PopMatrix();
 
     //right
     modelStack.PushMatrix();
-    modelStack.Translate(499, 0, 0);
+    modelStack.Translate(495, 495, 0);
     modelStack.Rotate(-90, 0, 1, 0);
     RenderMesh(meshList[GEO_SKYBOX_RIGHT], false);
     modelStack.PopMatrix();
 
     //back
     modelStack.PushMatrix();
-    modelStack.Translate(0, 0, 499);
+    modelStack.Translate(0, 495, 495);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_SKYBOX_BACK], false);
     modelStack.PopMatrix();
 
     //front
     modelStack.PushMatrix();
-    modelStack.Translate(0, 0, -499);
+    modelStack.Translate(0, 495, -495);
     RenderMesh(meshList[GEO_SKYBOX_FRONT], false);
     modelStack.PopMatrix();
 
     //top
     modelStack.PushMatrix();
-    modelStack.Translate(0, 499, 0);
+    modelStack.Translate(0, 990, 0);
     modelStack.Rotate(-90, 0, 1, 0);
     modelStack.Rotate(90, 1, 0, 0);
     RenderMesh(meshList[GEO_SKYBOX_TOP], false);
@@ -600,7 +614,6 @@ void SP2::RenderSkybox()
 
     //bottom
     modelStack.PushMatrix();
-    modelStack.Translate(0, -499, 0);
     modelStack.Rotate(-90, 0, 1, 0);
     modelStack.Rotate(-90, 1, 0, 0);
     RenderMesh(meshList[GEO_SKYBOX_BOTTOM], false);
@@ -612,7 +625,6 @@ void SP2::RenderSkybox()
 void SP2::RenderGround()
 {
     modelStack.PushMatrix();
-    modelStack.Translate(0, -150, 0);
     modelStack.Rotate(-90, 1, 0, 0);
     RenderMesh(meshList[GEO_GROUND], false);
     modelStack.PopMatrix();
@@ -655,12 +667,7 @@ void SP2::RenderUI()
         s << "FPS:" << FramePerSecond;
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 19);
         s.str("");
-        if (flightMode) {
-            s << "COORD:(" << (int)(Player.pos.x) << "," << (int)(Player.pos.y) << "," << (int)(Player.pos.z) << ")";
-        }
-        else {
-            s << "COORD:(" << (int)(camera.position.x) << "," << (int)(camera.position.y) << "," << (int)(camera.position.z) << ")";
-        }
+        s << "COORD:(" << (int)(Player.pos.x) << "," << (int)(Player.pos.y) << "," << (int)(Player.pos.z) << ")";
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 18);
     }
 
@@ -1161,9 +1168,11 @@ void SP2::RenderPlayer()
 {
     modelStack.PushMatrix();
 
+    modelStack.Translate(0, 1, 0);
     modelStack.Translate(Player.pos.x, Player.pos.y, Player.pos.z);
 
     modelStack.Rotate(Player.yaw, 0, 1, 0);
+    modelStack.Scale(0.2f, 0.2f, 0.2f);
     RenderMesh(meshList[GEO_MAN], true);
     modelStack.PopMatrix();
 }
