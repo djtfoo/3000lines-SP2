@@ -1,3 +1,4 @@
+#include <string>
 #include "Vector3.h"
 
 #ifndef CHARACTER_H
@@ -5,43 +6,51 @@
 
 class Character
 {
+private:
+    Character();
+    virtual ~Character();
+    std::string name_;
+
 public:
-    unsigned int health;
-    Vector3 pos;
-    bool takeDamage;
-    void TakeDamage() {
-        health -= 1;
-    }
-    bool isDead() {
-        if (health == 0)
-            return true;
-        else
-            return false;
-    }
+    std::string getName();
+    Vector3 position_;
+    float direction_;
 };
 
 class Player : public Character
 {
+private:
+    unsigned int hunger_;
+    unsigned int health_;
+    unsigned int gold_;
+    //add inventory
+    //add pointers for clothes - hats, top, bottoms, etc
+
 public:
-    float pitch;
-    float yaw;
-    //float roll;
+    Player();
+    ~Player();
+    void Walk(double dt);
+    
+    unsigned int getHunger();
+    unsigned int getHealth();
+    unsigned int getGold();
+
+    unsigned int setHunger();
+    unsigned int setHealth();
+    unsigned int setGold();
+
+    bool isDead();
 };
 
-class Enemy : public Character
+class NPC : public Character
 {
-public:
-    float translation;
-    float yaw;
-    //MOVE_DIR DIRECTION;   //for enemy to move around
-};
+private:
+    unsigned int loveMeter_;
 
-struct Bullet
-{
-    Vector3 pos;
-    Vector3 dir;
-    float pitch, yaw;
-    bool collided;
+public:
+    NPC();
+    ~NPC();
+    unsigned int getLoveMeter();
 };
 
 #endif
