@@ -194,9 +194,6 @@ void SP2::Render()
         camera.target.x, camera.target.y, camera.target.z,
         camera.up.x, camera.up.y, camera.up.z);
 
-
-
-
     modelStack.LoadIdentity();
 
     //pass the position of light to shader based on light type
