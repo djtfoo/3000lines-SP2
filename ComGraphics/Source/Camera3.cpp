@@ -11,6 +11,9 @@ Default constructor
 /******************************************************************************/
 Camera3::Camera3()
 {
+    phi = 15;
+    theta = 20;
+    distance = 10;
 }
 
 /******************************************************************************/
@@ -67,7 +70,7 @@ To be called every frame. Camera will get user inputs and update its position an
 /******************************************************************************/
 static float CAMSPEED = 800.f;
 static float FLYSPEED = 800.f;
-static float ROTSPEED = 3.f;
+static float ROTSPEED = 20.f;
 
 void Camera3::Update(double dt)
 {
@@ -706,7 +709,7 @@ void Camera3::LimitedMoveCamera(double dt)
 
 void Camera3::MoveCamera(double dt, Player& player)
 {
-    if (Application::cursor_newxpos != Application::cursor_xpos) {
+    /*if (Application::cursor_newxpos != Application::cursor_xpos) {
         double diff_xpos = Application::cursor_xpos - Application::cursor_newxpos;
         Application::cursor_xpos = Application::cursor_newxpos;
 
@@ -759,7 +762,55 @@ void Camera3::MoveCamera(double dt, Player& player)
     player.yaw = Math::RadianToDegree(acos(scalar2));
     if (view.x <= 0) {
         player.yaw = 360.f - player.yaw;
+    }*/
+
+    /*if (Application::IsKeyPressed('W')) {
+        if (phi < 70) {
+            phi += 0.5f;
+        }
     }
+
+    if (Application::IsKeyPressed('S')) {
+        if (phi > -70) {
+            phi -= 0.5f;
+        }
+    }*/
+
+    if (Application::cursor_newxpos != Application::cursor_xpos) {
+        double diff_xpos = Application::cursor_xpos - Application::cursor_newxpos;
+        Application::cursor_xpos = Application::cursor_newxpos;
+
+        theta -= diff_xpos * ROTSPEED * dt;
+    }
+
+    if (Application::cursor_newypos != Application::cursor_ypos) {
+        double diff_ypos = Application::cursor_ypos - Application::cursor_newypos;
+        Application::cursor_ypos = Application::cursor_newypos;
+
+        phi -= diff_ypos * ROTSPEED * dt;
+        if (phi > 70) {
+            phi = 70;
+        }
+        else if (phi < -10) {
+            phi = -10;
+        }
+    }
+
+    if (Application::IsKeyPressed('Q')) {
+        distance += ROTSPEED * dt;
+    }
+
+    if (Application::IsKeyPressed('E')) {
+        if (distance > 1 + ROTSPEED * dt) {
+            distance -= ROTSPEED * dt;
+        }
+    }
+
+    target = player.pos;
+
+    position.x = distance * cos(Math::DegreeToRadian(phi)) * cos(Math::DegreeToRadian(theta)) + target.x;
+    position.y = distance * sin(Math::DegreeToRadian(phi)) + target.y;
+    position.z = distance * cos(Math::DegreeToRadian(phi)) * sin(Math::DegreeToRadian(theta)) + target.z;
 }
 
 void Camera3::FlightModeUpdate(double dt, const std::vector<WallCollision>& collisionWall, const std::vector<FlightCollision>& flightCollision, const Hitbox& enemyHitbox)

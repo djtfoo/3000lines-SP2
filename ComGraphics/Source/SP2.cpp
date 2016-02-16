@@ -1161,15 +1161,9 @@ void SP2::RenderPlayer()
 {
     modelStack.PushMatrix();
 
-    Vector3 view = camera.target - camera.position;
-    view.y = 0;
-    view = view.Normalized();
-    Player.pos = camera.target + 10 * view;
-
     modelStack.Translate(Player.pos.x, Player.pos.y, Player.pos.z);
 
     modelStack.Rotate(Player.yaw, 0, 1, 0);
-    modelStack.Rotate(Player.pitch, 1, 0, 0);
     RenderMesh(meshList[GEO_MAN], true);
     modelStack.PopMatrix();
 }
