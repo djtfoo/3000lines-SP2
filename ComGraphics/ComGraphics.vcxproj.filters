@@ -37,6 +37,9 @@
     <ClCompile Include="Source\SP2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Character.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene.h">
@@ -88,6 +91,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\SP2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SharedData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Interaction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

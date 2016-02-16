@@ -7,11 +7,13 @@
 class Character
 {
 private:
-    Character();
-    virtual ~Character();
     std::string name_;
 
+protected:
+    Character(std::string name, Vector3 position, float direction);
+
 public:
+    virtual ~Character();
     std::string getName();
     Vector3 position_;
     float direction_;
@@ -27,7 +29,7 @@ private:
     //add pointers for clothes - hats, top, bottoms, etc
 
 public:
-    Player();
+    Player(std::string name);
     ~Player();
     void Walk(double dt);
     
@@ -48,7 +50,7 @@ private:
     unsigned int loveMeter_;
 
 public:
-    NPC();
+    NPC(std::string name) : Character(name, Vector3(0, 0, 0), 0) {}
     ~NPC();
     unsigned int getLoveMeter();
 };

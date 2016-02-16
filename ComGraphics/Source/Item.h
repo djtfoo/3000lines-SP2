@@ -6,11 +6,13 @@
 class Item
 {
 private:
-    Item();
-    virtual ~Item();
     std::string name_;
 
+protected:
+    Item();
+
 public:
+    virtual ~Item();
     std::string getName();
 };
 

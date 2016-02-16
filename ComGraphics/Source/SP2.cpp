@@ -11,6 +11,7 @@
 #include <sstream>
 
 #include "Application.h"
+#include "SharedData.h"
 
 SP2::SP2()
 {
@@ -159,20 +160,7 @@ void SP2::Update(double dt)
 {
     FramePerSecond = 1 / dt;
 
-    if (Application::IsKeyPressed('W')) {   //player moves forward
-        Player.pos.x -= (float)(40 * sin(Math::DegreeToRadian(Player.yaw)) * dt);
-        Player.pos.z -= (float)(40 * cos(Math::DegreeToRadian(Player.yaw)) * dt);
-    }
-    if (Application::IsKeyPressed('S')) {   //player moves backward
-        Player.pos.x += (float)(35 * sin(Math::DegreeToRadian(Player.yaw)) * dt);
-        Player.pos.z += (float)(35 * cos(Math::DegreeToRadian(Player.yaw)) * dt);
-    }
-    if (Application::IsKeyPressed('A')) {   //turn left
-        Player.yaw += (float)(230 * dt);
-    }
-    if (Application::IsKeyPressed('D')) {   //turn right
-        Player.yaw -= (float)(230 * dt);
-    }
+    SharedData::GetInstance()->player->Walk(dt);
 
     camera.Update(dt);
     //options
@@ -385,7 +373,7 @@ void SP2::RenderSkybox()
     modelStack.PushMatrix();
 
     //follow player
-    modelStack.Translate(0, -100, Player.pos.z);
+    modelStack.Translate(0, -100, SharedData::GetInstance()->player->position_.z);
 
     //left
     modelStack.PushMatrix();
@@ -736,9 +724,9 @@ void SP2::RenderPlayer()
     modelStack.PushMatrix();
 
     modelStack.Translate(0, 12, 0);
-    modelStack.Translate(Player.pos.x, Player.pos.y, Player.pos.z);
+    modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
 
-    modelStack.Rotate(Player.yaw, 0, 1, 0);
+    modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
     modelStack.Scale(3.f, 3.f, 3.f);
     RenderMesh(meshList[GEO_MAN], true);
     modelStack.PopMatrix();
@@ -751,7 +739,7 @@ void SP2::RenderUI()
         s << "FPS:" << FramePerSecond;
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 19);
         s.str("");
-        s << "COORD:(" << (int)(Player.pos.x) << "," << (int)(Player.pos.y) << "," << (int)(Player.pos.z) << ")";
+        s << "COORD:(" << (int)(SharedData::GetInstance()->player->position_.x) << "," << (int)(SharedData::GetInstance()->player->position_.y) << "," << (int)(SharedData::GetInstance()->player->position_.z) << ")";
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 18);
     }
 }

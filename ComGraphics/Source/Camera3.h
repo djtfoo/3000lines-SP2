@@ -11,15 +11,15 @@
 class Camera3
 {
 private:
-    float phi;          //this is the angle of elevation
-    float theta;        //this is the angle of azimuth
-    float distance;     //this is the distance between camera and the origin
-
     Vector3 defaultPosition;
     Vector3 defaultTarget;
     Vector3 defaultUp;
 
 public:
+    float phi;          //this is the angle of elevation
+    float theta;        //this is the angle of azimuth
+    float distance;     //this is the distance between camera and the origin
+
     Vector3 position;
     Vector3 target;
     Vector3 up;

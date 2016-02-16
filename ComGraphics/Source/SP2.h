@@ -4,7 +4,6 @@
 #include "MatrixStack.h"
 #include "Light.h"
 
-#include "Character.h"
 #include "Collision.h"
 
 #include <vector>

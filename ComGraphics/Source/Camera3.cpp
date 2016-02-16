@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "Mtx44.h"
 
+#include "SharedData.h"
+
 /******************************************************************************/
 /*!
 \brief
@@ -364,8 +366,7 @@ void Camera3::MoveCamera(double dt)
         }
     }
 
-    target = player.pos;
-    target.x -= 5.f;
+    target = SharedData::GetInstance()->player->position_;
     target.y += 20.0f;
 
     position.x = distance * cos(Math::DegreeToRadian(phi)) * cos(Math::DegreeToRadian(theta)) + target.x;
