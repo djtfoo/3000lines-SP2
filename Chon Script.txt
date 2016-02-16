@@ -1,0 +1,294 @@
+Chon Script - By Group 8 / SP 2
+
+//Personality -Hardcore Otaku
+//replace ‘e’ with 3, and ‘a’ with 4 (short forms also)
+//personality: hyperactive, lost a few screws (ps can u find them in the lab)
+// nationality: German jajajaa zieg zieg.
+
+//Prolodgue
+player crashes onto an unknown planet whilst travelling in space. His ship went
+haywire and eventually crashed into one of the unknown unexplored planet called
+xxxxxxx. He/She was intercepted by the captain of the Space Station, and is
+given a room to live in while he/she earns enough money to fix his ship and 
+return to mother earth. He/she also met up with some aliens that are also
+stranded in this planet, Chon, Vee, Wingstang, Jasim, StEMMIE. And somehow 
+you managed to fell to their affection.
+
+/*=========================================================================================*/
+//Day 1 - First Half
+You decided to the the Lab that Chon resides in. You notice messy tables stacked
+with scientifict notes, and some figurines. Also having an anime poster on
+the wall of Chon.
+
+Chon: "Oh...".
+
+Chon noticed that you have came in, and panicked of what to actually do. After
+a few seconds he calmed down, and talked to the player. 
+
+Chon: "Hello, My name is Chon, I am a scientist from planet XXXX"
+"I was on an spacecraft on the way to explore other planets, but my craft eventually
+crashed here and hence I am now living here."
+
+player: 1. Nice to meet you.
+        2. ...
+
+Chon: "... Anyways, Nice to meet you! Oh and I suppose you could help me out on the
+Experiment I'm working on currently."
+
+-player proceeds to help out Chon- (Love Meter increases by 5%)
+/*=========================================================================================*/
+
+
+/*=========================================================================================*/
+//Day 1 - Second Half
+
+You entered Chon's Lab again, with much more intentions than to just help Chon out.
+
+Chon: "Oh hello Human! What matters brings you here?"
+
+player: 1. I want to assist you again.
+        2. I want to talk to you.
+        3. Nothing, just looking around.
+
+//If 1.
+Chon: "Oh, splendid! I suppose from yesterday's experience, you should be better at this!"
+- load mini game-
+
+//If 2.
+Chon: "Huh? Talk to me?... Uh... What you want to talk about?"
+
+//If 3.
+Chon: "Oh take your time."
+- Player continues do his things -
+
+
+/*=========================================================================================*/
+
+
+//Continue from 2.
+player: 1. Your Personal Life.
+        2. Your Favourite Anime.
+        3. Your Ideal.
+
+//If 1.
+Chon: "M..M..My Personal Life?". Chon started to mutter to himself.
+
+Chon: "I..I..I always... perform exper..iments.. and..."
+
+player takes a closer step in to carefully listen to what Chon was saying as he gets softer.
+
+//If 2.
+Chon: "A..A..Anime? Uh.. W..What's that?..." Chon's voice suddenly died down, becoming very soft than his usual
+
+Chon: "I..I..I Never heard of anime before... What is... it? About...?" Chon questions you.
+
+player: 1. It's the best thing humans created.
+        2. Love Live <3
+        3. Anime is a mistake.
+
+//If 1 and 2.
+Chon: "..."
+
+Chon: "U KNO WOT? I T4K3N A LIKNG IN U! WOOOOOOO BBY!!" Chon's soft voice burst out.
+//Go to "Continue 2"
+
+//If 3.
+Chon: "..."
+
+Chon: "U KNO WOT? I 4M GUNN4 PROV U WRON DIS INST4NT!!. Chon's soft voice burst out.
+
+Chon went ahead and proceeds to talk things that you didn't understand.
+//Go to "Continue 1"
+
+
+//If 3
+Chon: "My... My... Ideal?"
+
+Chon: "You mean my love one?"
+
+Chon: "Either real or virtual?"
+
+player starts to question his doubts.
+
+Chon:" I.. I.. I LIK3 MEWMEW FROM MEWMEWKISSYCUTIE2!! <3"
+
+player went from a normal face to a wtf.
+//Go "Continue 3"
+
+
+
+//Continue 3.
+Chon: "H4V U H3RD OF IT? IT'S B43ST 4NIM3 OF T3H Y34R!!"
+
+//Continue 1.
+Chon: "W4TCH ANIM3 4 LI3F B4BY!!" Chon is letting out his burning desire.
+
+//Continue 1 and 2.
+Chon: "OH U KNO, AK4M3 G4 KRILL, KNO G4M KNO LI3F, 4LL T3H B3EST 4NIM3!!"
+
+player scratches own head trying to converse the message Chon is Trying to converse.
+
+Since the player got an idea what Chon's Interests is the player slowly backed off and left
+the room while Chon is in his wonderland. (Love Meter increases by 10%)
+/*=========================================================================================*/
+
+
+
+
+/*=========================================================================================*/
+//Day 2? - First Half.
+player decides to visit back Chon again. He stood there as if he's busy af.
+
+Chon: "Oh hello human... I.. I..." Chon tries to say something.
+
+Chon: "SORRY ABOUT YESTERDAY!" Chon apologieses to you with from  his heart.
+
+player: 1. ...
+        2. It's ok.
+        3. You crepe.
+
+Chon: "I know you are going to judge me so I'm sorry for everything."
+
+Chon: "Oh I know! I shall give you a gift in return as an apology." - Chon blushes as he
+passes you the gift.
+
+player gets a gift from Chon.
+
+Chon: "Erm... See you!" Chon Locks his door.
+(Love Meter increases by 15%)
+
+/*=========================================================================================*/
+
+/*=========================================================================================*/
+//Day 2 - Second Half. - Currently 30%.
+player went to visit Chon
+Chon is busy doing something.
+
+Chon: "GOGO CUTI3-CH4N!!!" Chon with his hyper screaming. Apparently today is the day where
+his favourite anime is being broadcasted and received.
+
+Chon: "Y3S! 3VIL IS CONQ3R3D!!" Chon finished the Anime and wanted to continued do his work.
+! - Chon notices the player.
+
+Chon: "OH! YO-..." Chon turns arounds and calms himself down.
+
+Chon: "u..u.uhh.. What's the matter?" Chon blushes as he probably knew you saw everthing.
+
+Chon: "Oh! Do you like the gift I sent you?"
+
+player: 1. I like it!
+        2. I dislike it.
+
+
+//If player choose 1. (Love Meter Increase by "10%")
+Chon blushes even heavily and covers his face from the player. Eventually he turned around
+his head, no longer facing the player.
+
+Chon: "o..o..oh... what do I do?!" Chon spoke softly to himself.
+
+Chon turns back at you.
+
+He gave a warm smile and said: "I'm glad you like it!"
+
+player's heart started to beat faster, as if it has seen the crush of it's life.
+
+
+
+//If player choose 2. (Love Meter Increase by "5%)
+Chon: "Oh...". Chon turned around his head, no longer facing the player.
+
+Chon started to tear a little, as if he felt he did something wrong.
+
+player also started to feel bad, as it realizes what said was too painful.
+
+as the player tries to comfort Chon, he turns back.
+
+Chon: "I AM SORRY FOR HAVING SUCH LOW STANDARD FIGURINES FOR YOU, I TRIED TO USE THE BEST
+MATERIAL I HAD HERE TO CREATE SOMETHING YOU MIGHT LIKE!"
+
+player went silent. as it felt awkward.
+
+noticing Chon wanted to make something special for the player, player's heart started to beat
+harder than usual, eventually having a blush on the cheeks.
+
+/*=========================================================================================*/
+//Both leads to this.
+
+Chon realizes player's face blush, he turned around too.
+
+It was an awkward silence with anime musics playing in the background.
+
+Chon: "W..w..ant to help me out with Lab Experiments today?"
+
+player: 1. ...
+        2. Sure.
+        3. No.
+
+//If player choose '1' or '3'
+Chon: "..." Chon's attempt of breaking the ice failed, and he sent you off. 
+(Love Meter Increase by 10%) - Total (If minimum 45%)
+
+//If player choose '2'
+Chon: "Then.. let's get to it!"
+(Love meter Increase by 20%) - Total (If maximum 60%)
+
+/*=========================================================================================*/
+//Day 3 I guess.
+
+The player arrives back at the lab. Seeing Chon being troubled with some issues while on 
+his chair.
+
+player approaches Chon, but Chon didn't really "noticed" you when you were in his view.
+
+Chon "..."
+
+Chon seems sad for some reason. This time, you tried to break the Ice.
+
+player: 1. What happened?
+        2. Wai sho sad?
+        3. "..."
+
+//All Romes lead to Road.
+Chon: "-sigh-..." Chon let out a heavy sigh, unlike his usual self.
+
+Chon: "It's the gift I gave you, the materials of it, it's not the best after all."
+
+Chon: "I am wondering how I could find a better and more efficient substitude to create a 
+better lasting figurine."
+
+player heart starts beating faster.
+
+player convinces Chon that it doesn't matter, as long as it's a gift from him, It's enough
+to satisfy player.
+
+After Chon heard these words. He heart starts to race too.
+Chon: "Y..Y..You mean it?!"
+
+player nods it's head in agreement.
+
+Chon: "WOOOOO!!"
+
+Chon becames excited and happy after hearing player's response.
+
+player decides to leave the room afterwards.
+
+(Love Meter Increases by 10%)
+/*=========================================================================================*/
+
+/*=========================================================================================*/
+Day 3 - Second Half to Day 5 First Half, Chon's door will be locked.
+/*=========================================================================================*/
+
+/*=========================================================================================*/
+Day 5 - Second Half.
+
+player realizes Chon's doors are finally open once again.
+player enters the room.
+
+Chon is seen busy working on his computer desk filled with papers and figures.
+
+player walks up and approached Chon.
+
+Chon: "Bwaah!", Chon let out an awkward voice of shock, anyone who heard it would give a giggle.
+
+Chon: "You scared me <player>!"
