@@ -12,6 +12,8 @@
 
 #include "Application.h"
 #include "SharedData.h"
+using std::cout;
+using std::endl;
 
 SP2::SP2()
 {
@@ -108,6 +110,19 @@ SP2::SP2()
 	meshList[GEO_DEVTEXTURE] = MeshBuilder::GenerateQuad("devtexture", Color(1, 1, 1), 1, 1);
 	meshList[GEO_DEVTEXTURE]->textureID = LoadTGA("Image/devtexture.tga");
 
+	meshList[GEO_PIPETYPE1] = MeshBuilder::GenerateQuad("pipetype1", Color(1, 1, 1), 1, 1);
+	meshList[GEO_PIPETYPE1]->textureID = LoadTGA("Image/pipetype1.tga");
+				 
+	meshList[GEO_PIPETYPE2] = MeshBuilder::GenerateQuad("pipetype2", Color(1, 1, 1), 1, 1);
+	meshList[GEO_PIPETYPE2]->textureID = LoadTGA("Image/pipetype2.tga");
+				 
+	meshList[GEO_PIPETYPE3] = MeshBuilder::GenerateQuad("pipetype3", Color(1, 1, 1), 1, 1);
+	meshList[GEO_PIPETYPE3]->textureID = LoadTGA("Image/pipetype3.tga");
+				 
+	meshList[GEO_PIPETYPE4] = MeshBuilder::GenerateQuad("pipetype4", Color(1, 1, 1), 1, 1);
+	meshList[GEO_PIPETYPE4]->textureID = LoadTGA("Image/pipetype4.tga");
+
+
     viewOptions = true;
 }
 
@@ -143,6 +158,9 @@ void SP2::Init()
     glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
 
     glUniform1i(m_parameters[U_NUMLIGHTS], 1);
+	
+	srand(time(0));
+	controlpuzzle.setpuzzle();
 }
 
 static float ROT_LIMIT = 45.f;
@@ -207,6 +225,8 @@ void SP2::Render()
 	RenderLayout();
 
     RenderPlayer();
+
+	RenderPuzzle();
 
     RenderUI();
 }
@@ -1956,6 +1976,74 @@ void SP2::RenderPlayer()
     modelStack.Scale(3.f, 3.f, 3.f);
     RenderMesh(meshList[GEO_MAN], true);
     modelStack.PopMatrix();
+}
+
+void SP2::RenderPuzzle()
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(401 + (i * 10), 65 - (j * 10), 374);
+			modelStack.Rotate(180, 0, 1, 0);
+			modelStack.Scale(10, 10, 10);
+			//RenderMesh(meshList[GEO_PIPETYPE1], true);
+			
+			if (controlpuzzle.puzzlemap[i][j] == 0)
+			{
+				RenderMesh(meshList[GEO_PIPETYPE1], true);
+			}
+			else if (controlpuzzle.puzzlemap[i][j] == 1)
+			{
+				modelStack.Rotate(90, 0, 0, 1);
+				RenderMesh(meshList[GEO_PIPETYPE1], true);
+			}
+			else if (controlpuzzle.puzzlemap[i][j] == 2)
+			{
+				RenderMesh(meshList[GEO_PIPETYPE2], true);
+			}
+			else if (controlpuzzle.puzzlemap[i][j] == 3)
+			{
+				modelStack.Rotate(90, 0, 0, 1);
+				RenderMesh(meshList[GEO_PIPETYPE2], true);
+			}
+			else if (controlpuzzle.puzzlemap[i][j] == 4)
+			{
+				modelStack.Rotate(180, 0, 0, 1);
+				RenderMesh(meshList[GEO_PIPETYPE2], true);
+			}
+			else if (controlpuzzle.puzzlemap[i][j] == 5)
+			{
+				modelStack.Rotate(-90, 0, 0, 1);
+				RenderMesh(meshList[GEO_PIPETYPE2], true);
+			}
+			else if (controlpuzzle.puzzlemap[i][j] == 6)
+			{
+				RenderMesh(meshList[GEO_PIPETYPE3], true);
+			}
+			else if (controlpuzzle.puzzlemap[i][j] == 7)
+			{
+				modelStack.Rotate(90, 0, 0, 1);
+				RenderMesh(meshList[GEO_PIPETYPE3], true);
+			}
+			else if (controlpuzzle.puzzlemap[i][j] == 8)
+			{
+				modelStack.Rotate(180, 0, 0, 1);
+				RenderMesh(meshList[GEO_PIPETYPE3], true);
+			}
+			else if (controlpuzzle.puzzlemap[i][j] == 9)
+			{
+				modelStack.Rotate(-90, 0, 0, 1);
+				RenderMesh(meshList[GEO_PIPETYPE3], true);
+			}
+			else if (controlpuzzle.puzzlemap[i][j] == 10)
+			{
+				RenderMesh(meshList[GEO_PIPETYPE4], true);
+			}
+			modelStack.PopMatrix();
+		}
+	}
 }
 
 void SP2::RenderUI()

@@ -6,6 +6,10 @@
 
 #include "Collision.h"
 
+#include "PipePuzzle.h"
+
+#include <cstdlib>
+
 #include <vector>
 
 #ifndef SP2_H
@@ -31,6 +35,10 @@ class SP2 : public Scene
         GEO_DIALOGUEBOX,
 		//dev texture
 		GEO_DEVTEXTURE,
+		GEO_PIPETYPE1,
+		GEO_PIPETYPE2,
+		GEO_PIPETYPE3,
+		GEO_PIPETYPE4,
         NUM_GEOMETRY,
     };
 
@@ -82,6 +90,8 @@ public:
     unsigned m_parameters[U_TOTAL];
 
     MS modelStack, viewStack, projectionStack;
+	
+	PipePuzzle controlpuzzle;
 
     Light light[1];
 
@@ -114,6 +124,9 @@ public:
     void RenderGround();
     void RenderLayout();
     void RenderPlayer();
+	
+	void RenderPuzzle();
+
     bool viewOptions;
     void RenderUI();
 };

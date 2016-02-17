@@ -87,6 +87,7 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\MainMenu.cpp" />
     <ClCompile Include="Source\MiniMapCamera.cpp" />
+    <ClCompile Include="Source\PipePuzzle.cpp" />
     <ClCompile Include="Source\RabbitFight.cpp" />
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\SP2.cpp" />
@@ -103,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\PipePuzzle.h" />
     <ClInclude Include="Source\Interaction.h" />
     <ClInclude Include="Source\Item.h" />
     <ClInclude Include="Source\MainMenu.h" />
