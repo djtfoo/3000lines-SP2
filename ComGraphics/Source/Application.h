@@ -8,6 +8,9 @@ class Application
 {
 
 public:
+	int width;
+	int height;
+
 	Application();
 	~Application();
 	void Init();
@@ -16,9 +19,6 @@ public:
 	static bool IsKeyPressed(unsigned short key);
 
 private:
-    int width;
-    int height;
-
     void get_resolution();
 
 	//Declare a window object

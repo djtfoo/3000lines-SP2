@@ -7,6 +7,7 @@
 #include "Application.h"
 #include "Mtx44.h"
 #include "MatrixStack.h"
+#include "SharedData.h"
 
 #include "MeshBuilder.h"
 #include "Mesh.h"
@@ -25,17 +26,20 @@ class MainMenu : public Scene
 {
 	enum MENU_STATE
 	{
-		MENU_MAIN,
+		MENU_MAIN = 0,
 		MENU_PLAYNEW,
 		MENU_LOAD,
 		MENU_INSTRUCTIONS,
 		MENU_OPTIONS,
-		MEUN_CREDITS,
+		MENU_CREDITS,
 		MENU_EXIT,
 
 		MENU_TOTAL
 
 	};
+
+	
+
 	enum GEO_MENU
 	{
 		GEO_BG,
@@ -44,7 +48,7 @@ class MainMenu : public Scene
 		GEO_PLAYBUTTON, GEO_PLAYBUTTONHOVER, GEO_PLAYBUTTONSELECTED,
 		GEO_BUTTONRED, GEO_BUTTONREDHOVER,
 
-		GEO_MOUSE,
+		GEO_MOUSECUSTOM,
 		//GEO_SELECTED,
 		GEO_ICON,
 		GEO_TEXT,
@@ -107,9 +111,32 @@ public:
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
+	void RenderCursor(Mesh* mesh, std::string text, Color color, float size, float xbtn, float ybtn, float xtxt, float ytxt);
 	void RenderButtonsOnScreen(Mesh* mesh, std::string text, Color color, float size, float xbtn, float ybtn, float xtxt, float ytxt);
 	void RenderUI();
 
+	void MainMenu::MainMenuPage();
+	void MainMenu::HelpPage();
+	void MainMenu::OptionsPage();
+	void MainMenu::CreditsPage();
+
+
+	bool clicked;
+	bool isClicked;
+
+	int btncheck;
+	/*main	= 0
+	play	= 1
+	load	= 2
+	help	= 3
+	options = 4
+	credits = 5
+	exit	= 6*/
+
+	MENU_STATE state;
+
+	float delaytime;
+	float xlateXspeed;
 
 	float objx, objy;
 

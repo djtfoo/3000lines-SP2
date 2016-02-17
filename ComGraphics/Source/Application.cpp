@@ -79,8 +79,8 @@ void Application::Init()
     get_resolution();
 
 	//Create a window and create its OpenGL context
-    //m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
-    m_window = glfwCreateWindow(width, height, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
+    m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
+    //m_window = glfwCreateWindow(width, height, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
 
     glfwSetWindowSizeCallback(m_window, resize_callback);
 
@@ -113,7 +113,7 @@ void Application::Init()
 void Application::Run()
 {
 	//Main Loop
-	Scene *scene = new SP2();
+	Scene *scene = new MainMenu();
 	scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
