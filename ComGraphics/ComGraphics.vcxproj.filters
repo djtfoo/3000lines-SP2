@@ -28,9 +28,6 @@
     <ClCompile Include="Source\LoadOBJ.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MainMenu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,9 +40,10 @@
     <ClCompile Include="Source\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Minimap.cpp" />
-    <ClCompile Include="Source\RabbitFight.cpp" />
     <ClCompile Include="Source\MiniMapCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RabbitFight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,9 +84,6 @@
     <ClInclude Include="Source\LoadOBJ.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MainMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\MeshBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -113,11 +108,10 @@
     <ClInclude Include="Source\Interaction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\RabbitFight.h" />
-    <ClInclude Include="Source\Minimap.h">
+    <ClInclude Include="Source\MiniMapCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MiniMapCamera.h">
+    <ClInclude Include="Source\RabbitFight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

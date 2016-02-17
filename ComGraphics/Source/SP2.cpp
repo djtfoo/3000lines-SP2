@@ -37,8 +37,11 @@ SP2::SP2()
 
     //Initialize camera settings
 
-    camera.Init(Vector3(0, -140, 100), Vector3(0, -120, 110), Vector3(0, 1, 0));
+    camera.Init(Vector3(0, -140, 100), Vector3(0, -140, 110), Vector3(0, 1, 0));
 
+    Vector3 playerPos = (SharedData::GetInstance()->player->position_);
+
+    minimappy.Init(Vector3(playerPos.x, (playerPos.y + 100), playerPos.z), Vector3(0, -1, 0), Vector3(0, 1, 0));
 
     Mtx44 projection;
     projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -193,6 +196,9 @@ void SP2::Render()
     viewStack.LookAt(camera.position.x, camera.position.y, camera.position.z,
         camera.target.x, camera.target.y, camera.target.z,
         camera.up.x, camera.up.y, camera.up.z);
+
+
+
 
     modelStack.LoadIdentity();
 
@@ -427,1164 +433,293 @@ void SP2::RenderGround()
 
 void SP2::RenderLayout()
 {
-	//hangar start
-	for (int j = 0; j < 3; j++)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(4, 15 + (j * 30), 60);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(4, 15 + (j * 30), -60);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(4, 15 + (j * 30), 90);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(4, 15 + (j * 30), -90);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(2, 15 + (j * 30), -45);
-		modelStack.Scale(4, 30, 1);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(2, 15 + (j * 30), 45);
-		modelStack.Scale(4, 30, 1);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(0, 15 + (j * 30), 60);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(-90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(0, 15 + (j * 30), -60);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(-90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(0, 15 + (j * 30), 90);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(-90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(0, 15 + (j * 30), -90);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(-90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		for (int i = 0; i < 8; i++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(15 + (i * 30), 15 + (j * 30), 105);
-			modelStack.Scale(30, 30, 30);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(15 + (i * 30), 15 + (j * 30), 101);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(180, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			if ((i == 6) && (j == 0))
-			{
-				continue;
-			}
-
-			modelStack.PushMatrix();
-			modelStack.Translate(15 + (i * 30), 15 + (j * 30), -101);
-			modelStack.Scale(30, 30, 30);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(15 + (i * 30), 15 + (j * 30), -105);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(180, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-		}
-
-		modelStack.PushMatrix();
-		modelStack.Translate(240, 15 + (j * 30), 30);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(240, 15 + (j * 30), -30);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(240, 15 + (j * 30), 60);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(240, 15 + (j * 30), -60);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(240, 15 + (j * 30), 90);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(240, 15 + (j * 30), -90);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(238, 15 + (j * 30), -15);
-		modelStack.Scale(4, 30, 1);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(238, 15 + (j * 30), 15);
-		modelStack.Scale(4, 30, 1);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(236, 15 + (j * 30), 30);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(-90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(236, 15 + (j * 30), -30);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(-90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(236, 15 + (j * 30), 60);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(-90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(236, 15 + (j * 30), -60);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(-90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(236, 15 + (j * 30), 90);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(-90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(236, 15 + (j * 30), -90);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(-90, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-	}
-
-	modelStack.PushMatrix();
-	modelStack.Translate(236, 45, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(236, 45, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(236, 75, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(236, 75, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(240, 45, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(240, 45, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(240, 75, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(240, 75, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(180, 15, -103);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(210, 15, -103);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(238, 30, 0);
-	modelStack.Scale(4, 30, 30);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(195, 30, -103);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-	// hangar end
-
-	//hanger to main connector start
-	modelStack.PushMatrix();
-	modelStack.Translate(255, 15, -15);
-	modelStack.Scale(30, 30, 30);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(255, 15, 15);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(180, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(255, 15, -19);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(180, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(255, 15, 19);
-	modelStack.Scale(30, 30, 30);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(255, 30, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(255, 30, 0);
-	modelStack.Scale(30, 30, 38);
-	modelStack.Rotate(-90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-	//hanger to main connector end
-
-	//main start
-	for (int j = 0; j < 2; j++)
-	{
-		for (int i = 0; i < 7; i++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(266, 15 + (j * 30), 30 + (i * 30));
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(-90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(266, 15 + (j * 30), -30 - (i * 30));
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(-90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(270, 15 + (j * 30), 30 + (i * 30));
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(270, 15 + (j * 30), -30 - (i * 30));
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-		}
-
-		for (int i = 0; i < 10; i++)
-		{
-			if (i != 2)
-			{
-				modelStack.PushMatrix();
-				modelStack.Translate(281 + (i * 30), 15 + (j * 30), -221);
-				modelStack.Scale(30, 30, 30);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-
-				modelStack.PushMatrix();
-				modelStack.Translate(281 + (i * 30), 15 + (j * 30), -225);
-				modelStack.Scale(30, 30, 30);
-				modelStack.Rotate(180, 0, 1, 0);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-			}
-
-			if ((i != 1) && (i != 5) && (i != 6))
-			{
-				modelStack.PushMatrix();
-				modelStack.Translate(281 + (i * 30), 15 + (j * 30), 221);
-				modelStack.Scale(30, 30, 30);
-				modelStack.Rotate(180, 0, 1, 0);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-
-				modelStack.PushMatrix();
-				modelStack.Translate(281 + (i * 30), 15 + (j * 30), 225);
-				modelStack.Scale(30, 30, 30);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-			}
-		}
-
-		for (int i = 0; i < 15; i++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(562, 15 + (j * 30), -210 + (i * 30));
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(-90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(566, 15 + (j * 30), -210 + (i * 30));
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-		}
-	}
-	modelStack.PushMatrix();
-	modelStack.Translate(266, 45, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(270, 45, 0);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(311, 45, 221);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(180, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(311, 45, 225);
-	modelStack.Scale(30, 30, 30);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(326, 15, 223);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(296, 15, 223);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(311, 30, 223);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(341, 45, -225);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(180, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(341, 45, -221);
-	modelStack.Scale(30, 30, 30);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(326, 15, -223);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(356, 15, -223);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(341, 30, -223);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(431, 45, 221);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(180, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(431, 45, 225);
-	modelStack.Scale(30, 30, 30);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(416, 15, 223);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(476, 15, 223);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(446, 30, 223);
-	modelStack.Scale(60, 30, 4);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(461, 45, 221);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(180, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(461, 45, 225);
-	modelStack.Scale(30, 30, 30);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-	//main end
-
-	//main barracks start
-	for (int j = 0; j < 2; j++)
-	{
-		for (int i = 0; i < 11; i++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(315, 15 + (j * 30), -150 + (i * 30));
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(-90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(319, 15 + (j * 30), -150 + (i * 30));
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			if ((i != 1) && (i != 9))
-			{
-				modelStack.PushMatrix();
-				modelStack.Translate(371, 15 + (j * 30), -150 + (i * 30));
-				modelStack.Scale(30, 30, 30);
-				modelStack.Rotate(-90, 0, 1, 0);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-
-				modelStack.PushMatrix();
-				modelStack.Translate(375, 15 + (j * 30), -150 + (i * 30));
-				modelStack.Scale(30, 30, 30);
-				modelStack.Rotate(90, 0, 1, 0);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-
-				modelStack.PushMatrix();
-				modelStack.Translate(435, 15 + (j * 30), -150 + (i * 30));
-				modelStack.Scale(30, 30, 30);
-				modelStack.Rotate(-90, 0, 1, 0);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-
-				modelStack.PushMatrix();
-				modelStack.Translate(439, 15 + (j * 30), -150 + (i * 30));
-				modelStack.Scale(30, 30, 30);
-				modelStack.Rotate(90, 0, 1, 0);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-			}
-			else
-			{
-				modelStack.PushMatrix();
-				modelStack.Translate(373, 15 + (j * 30), -135 + (i * 30));
-				modelStack.Scale(4, 30, 30);
-				modelStack.Rotate(180, 0, 1, 0);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-
-				modelStack.PushMatrix();
-				modelStack.Translate(373, 15 + (j * 30), -165 + (i * 30));
-				modelStack.Scale(4, 30, 30);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-
-				modelStack.PushMatrix();
-				modelStack.Translate(437, 15 + (j * 30), -135 + (i * 30));
-				modelStack.Scale(4, 30, 30);
-				modelStack.Rotate(180, 0, 1, 0);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-
-				modelStack.PushMatrix();
-				modelStack.Translate(437, 15 + (j * 30), -165 + (i * 30));
-				modelStack.Scale(4, 30, 30);
-				RenderMesh(meshList[GEO_DEVTEXTURE], true);
-				modelStack.PopMatrix();
-			}
-
-			modelStack.PushMatrix();
-			modelStack.Translate(491, 15 + (j * 30), -150 + (i * 30));
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(-90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(495, 15 + (j * 30), -150 + (i * 30));
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-		}
-		for (int i = 0; i < 6; i++)
-		{
-			if ((i == 2) || (i == 3))
-			{
-				continue;
-			}
-			modelStack.PushMatrix();
-			modelStack.Translate(330 + (i * 30), 15 + (j * 30), -165);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(180, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(330 + (i * 30), 15 + (j * 30), -161);
-			modelStack.Scale(30, 30, 30);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(330 + (i * 30), 15 + (j * 30), 161);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(180, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(330 + (i * 30), 15 + (j * 30), 165);
-			modelStack.Scale(30, 30, 30);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(330 + (i * 30), 15 + (j * 30), -15);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(180, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(330 + (i * 30), 15 + (j * 30), -11);
-			modelStack.Scale(30, 30, 30);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(330 + (i * 30), 15 + (j * 30), 11);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(180, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(330 + (i * 30), 15 + (j * 30), 15);
-			modelStack.Scale(30, 30, 30);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-		}
-	}
-	modelStack.PushMatrix();
-	modelStack.Translate(439, 45, -120);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(435, 45, -120);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(437, 30, -120);
-	modelStack.Scale(4, 30, 30);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(375, 45, -120);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(371, 45, -120);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(373, 30, -120);
-	modelStack.Scale(4, 30, 30);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(439, 45, 120);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(435, 45, 120);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(437, 30, 120);
-	modelStack.Scale(4, 30, 30);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(375, 45, 120);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(371, 45, 120);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(373, 30, 120);
-	modelStack.Scale(4, 30, 30);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-	//main barracks end
-
-	//lab entranceway start
-	modelStack.PushMatrix();
-	modelStack.Translate(326, 15, -240);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(322, 15, -240);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(360, 15, -240);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(356, 15, -240);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(341, 30, -240);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(341, 30, -240);
-	modelStack.Scale(38, 30, 30);
-	modelStack.Rotate(-90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-	//lab entranceway end
-
-	//lab start
-	for (int j = 0; j < 2; j++)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(371, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(371, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(311, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(311, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(281, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(281, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(251, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(251, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(221, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(221, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(191, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(191, 15 + (j * 30), -255);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(371, 15 + (j * 30), -371);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(371, 15 + (j * 30), -375);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(341, 15 + (j * 30), -371);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(341, 15 + (j * 30), -375);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(311, 15 + (j * 30), -371);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(311, 15 + (j * 30), -375);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(281, 15 + (j * 30), -371);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(281, 15 + (j * 30), -375);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(251, 15 + (j * 30), -371);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(251, 15 + (j * 30), -375);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(191, 15 + (j * 30), -371);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(191, 15 + (j * 30), -375);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		for (int i = 0; i < 2; i++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(386 + ((i - 1) * 210), 15 + (j * 30), -270);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(386 + ((i - 1) * 210), 15 + (j * 30), -300);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(386 + ((i - 1) * 210), 15 + (j * 30), -330);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(386 + ((i - 1) * 210), 15 + (j * 30), -360);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(386 + ((i - 1) * 210), 15 + (j * 30), -270);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(-90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(386 + ((i - 1) * 210), 15 + (j * 30), -300);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(-90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(386 + ((i - 1) * 210), 15 + (j * 30), -330);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(-90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-
-			modelStack.PushMatrix();
-			modelStack.Translate(386 + ((i - 1) * 210), 15 + (j * 30), -360);
-			modelStack.Scale(30, 30, 30);
-			modelStack.Rotate(-90, 0, 1, 0);
-			RenderMesh(meshList[GEO_DEVTEXTURE], true);
-			modelStack.PopMatrix();
-		}
-	}
-	modelStack.PushMatrix();
-	modelStack.Translate(221, 45, -371);
-	modelStack.Scale(30, 30, 30);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(221, 45, -375);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(180, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(221, 30, -373);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(236, 15, -373);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(206, 15, -373);
-	modelStack.Scale(30, 30, 4);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(341, 45, -255);
-	modelStack.Scale(30, 30, 30);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(341, 45, -255);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(180, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-	//lab end
-
-	//connector main to control start
-	modelStack.PushMatrix();
-	modelStack.Translate(416, 15, 240);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(476, 15, 240);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(416, 15, 240);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(-90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(476, 15, 240);
-	modelStack.Scale(30, 30, 30);
-	modelStack.Rotate(90, 0, 1, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(446, 30, 240);
-	modelStack.Scale(60, 30, 30);
-	modelStack.Rotate(90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-
-	modelStack.PushMatrix();
-	modelStack.Translate(446, 30, 240);
-	modelStack.Scale(60, 30, 30);
-	modelStack.Rotate(-90, 1, 0, 0);
-	RenderMesh(meshList[GEO_DEVTEXTURE], true);
-	modelStack.PopMatrix();
-	//connector main to control end
-
-	//control room start
-	for (int i = 0; i < 8; i++)
-	{
-		if ((i == 3) || (i == 4))
-		{
-			continue;
-		}
-		modelStack.PushMatrix();
-		modelStack.Translate(551 - (i * 30), 15, 255);
-		modelStack.Scale(30, 30, 30);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(551 - (i * 30), 15, 255);
-		modelStack.Scale(30, 30, 30);
-		modelStack.Rotate(180, 0, 1, 0);
-		RenderMesh(meshList[GEO_DEVTEXTURE], true);
-		modelStack.PopMatrix();
-	}
-	//control room end
+    for (int j = 0; j < 3; j++)
+    {
+        modelStack.PushMatrix();
+        modelStack.Translate(4, 15 + (j * 30), 60);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(4, 15 + (j * 30), -60);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(4, 15 + (j * 30), 90);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(4, 15 + (j * 30), -90);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(2, 15 + (j * 30), -45);
+        modelStack.Scale(4, 30, 1);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(2, 15 + (j * 30), 45);
+        modelStack.Scale(4, 30, 1);
+        modelStack.Rotate(180, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(0, 15 + (j * 30), 60);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(0, 15 + (j * 30), -60);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(0, 15 + (j * 30), 90);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(0, 15 + (j * 30), -90);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        for (int i = 0; i < 8; i++)
+        {
+            modelStack.PushMatrix();
+            modelStack.Translate(15 + (i * 30), 15 + (j * 30), 105);
+            modelStack.Scale(30, 30, 30);
+            RenderMesh(meshList[GEO_DEVTEXTURE], true);
+            modelStack.PopMatrix();
+
+            modelStack.PushMatrix();
+            modelStack.Translate(15 + (i * 30), 15 + (j * 30), 101);
+            modelStack.Scale(30, 30, 30);
+            modelStack.Rotate(180, 0, 1, 0);
+            RenderMesh(meshList[GEO_DEVTEXTURE], true);
+            modelStack.PopMatrix();
+
+            if ((i == 6) && (j == 0))
+            {
+                continue;
+            }
+
+            modelStack.PushMatrix();
+            modelStack.Translate(15 + (i * 30), 15 + (j * 30), -101);
+            modelStack.Scale(30, 30, 30);
+            RenderMesh(meshList[GEO_DEVTEXTURE], true);
+            modelStack.PopMatrix();
+
+            modelStack.PushMatrix();
+            modelStack.Translate(15 + (i * 30), 15 + (j * 30), -105);
+            modelStack.Scale(30, 30, 30);
+            modelStack.Rotate(180, 0, 1, 0);
+            RenderMesh(meshList[GEO_DEVTEXTURE], true);
+            modelStack.PopMatrix();
+        }
+
+        modelStack.PushMatrix();
+        modelStack.Translate(240, 15 + (j * 30), 30);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(240, 15 + (j * 30), -30);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(240, 15 + (j * 30), 60);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(240, 15 + (j * 30), -60);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(240, 15 + (j * 30), 90);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(240, 15 + (j * 30), -90);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(238, 15 + (j * 30), -15);
+        modelStack.Scale(4, 30, 1);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(238, 15 + (j * 30), 15);
+        modelStack.Scale(4, 30, 1);
+        modelStack.Rotate(180, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(236, 15 + (j * 30), 30);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(236, 15 + (j * 30), -30);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(236, 15 + (j * 30), 60);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(236, 15 + (j * 30), -60);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(236, 15 + (j * 30), 90);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(236, 15 + (j * 30), -90);
+        modelStack.Scale(30, 30, 30);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_DEVTEXTURE], true);
+        modelStack.PopMatrix();
+    }
+
+    modelStack.PushMatrix();
+    modelStack.Translate(236, 45, 0);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(236, 45, 0);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(236, 75, 0);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(236, 75, 0);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(240, 45, 0);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(240, 45, 0);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(240, 75, 0);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(240, 75, 0);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(180, 15, -103);
+    modelStack.Scale(30, 30, 4);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(210, 15, -103);
+    modelStack.Scale(30, 30, 4);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(238, 30, 0);
+    modelStack.Scale(4, 30, 30);
+    modelStack.Rotate(90, 1, 0, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(195, 30, -103);
+    modelStack.Scale(30, 30, 4);
+    modelStack.Rotate(90, 1, 0, 0);
+    RenderMesh(meshList[GEO_DEVTEXTURE], true);
+    modelStack.PopMatrix();
+
 }
 
 void SP2::RenderPlayer()

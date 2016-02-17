@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Mesh.h"
 #include "Camera3.h"
+#include "MiniMapCamera.h"
 #include "MatrixStack.h"
 #include "Light.h"
 
@@ -82,6 +83,7 @@ public:
     unsigned m_parameters[U_TOTAL];
 
     Camera3 camera;
+    Minimapcamera minimappy;
     MS modelStack, viewStack, projectionStack;
 
     Light light[1];

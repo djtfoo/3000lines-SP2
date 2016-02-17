@@ -28,15 +28,5 @@ void Minimapcamera::Init(const Vector3& position, const Vector3& target, const V
 
 void Minimapcamera::Update(double dt)
 {
-    Vector3 playerPos = (SharedData::GetInstance()->player->position_);
-
-    //Camera Position Follows Player
-    this->pos.x = playerPos.x;
-    this->pos.y = (playerPos.y + 100);
-    this->pos.z = playerPos.z;
-
-    //this->targ = (0, -1, 0); //Later Initialize
-
-
 
 }
