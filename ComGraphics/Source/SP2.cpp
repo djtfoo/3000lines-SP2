@@ -37,7 +37,7 @@ SP2::SP2()
 
     //Initialize camera settings
 
-    camera.Init(Vector3(0, -140, 100), Vector3(0, -140, 110), Vector3(0, 1, 0));
+    camera.Init(Vector3(0, -140, 100), Vector3(0, -120, 110), Vector3(0, 1, 0));
 
 
     Mtx44 projection;

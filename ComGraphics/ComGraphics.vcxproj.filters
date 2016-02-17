@@ -43,6 +43,11 @@
     <ClCompile Include="Source\Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Minimap.cpp" />
+    <ClCompile Include="Source\RabbitFight.cpp" />
+    <ClCompile Include="Source\MiniMapCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene.h">
@@ -106,6 +111,13 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Interaction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\RabbitFight.h" />
+    <ClInclude Include="Source\Minimap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MiniMapCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
