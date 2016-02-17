@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\MainMenu.cpp" />
     <ClCompile Include="Source\MiniMapCamera.cpp" />
     <ClCompile Include="Source\RabbitFight.cpp" />
     <ClCompile Include="Source\Character.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Interaction.h" />
     <ClInclude Include="Source\Item.h" />
+    <ClInclude Include="Source\MainMenu.h" />
     <ClInclude Include="Source\MiniMapCamera.h" />
     <ClInclude Include="Source\RabbitFight.h" />
     <ClInclude Include="Source\SharedData.h" />
