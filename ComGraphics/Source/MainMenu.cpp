@@ -46,9 +46,20 @@ MainMenu::MainMenu()
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image/Text/small fonts.tga");
 
-	meshList[GEO_BUTTON] = MeshBuilder::GenerateQuad("dialogue_box", Color(0, 0.7, 1), 14, 5);
+	meshList[GEO_BUTTON] = MeshBuilder::GenerateQuad("menu_btn", Color(0, 0.7, 1), 14, 5);
+	meshList[GEO_BUTTONHOVER] = MeshBuilder::GenerateQuad("menu_btnhover", Color(0, 0.2, 1), 14, 5);
+	meshList[GEO_BUTTONSELECTED] = MeshBuilder::GenerateQuad("menu_btnselect", Color(1, 1, 1), 14, 5);
+
+	meshList[GEO_BUTTONRED] = MeshBuilder::GenerateQuad("menu_exit", Color(1, 0.2, 0), 14, 5);
+	meshList[GEO_BUTTONREDHOVER] = MeshBuilder::GenerateQuad("menu_exithover", Color(1, 0.2, 0), 16, 7);
+	
+	meshList[GEO_PLAYBUTTON] = MeshBuilder::GenerateQuad("play_btn", Color(0, 1, 0.5), 14, 14);
+	meshList[GEO_PLAYBUTTONHOVER] = MeshBuilder::GenerateQuad("play_btnhover", Color(0, 1, 0.2), 14, 14);
+	meshList[GEO_PLAYBUTTONSELECTED] = MeshBuilder::GenerateQuad("play_btnselect", Color(1, 1, 1), 14, 14);
 	//meshList[GEO_BUTTON]->textureID = LoadTGA("Image/Text/dialogue box.tga");
 
+
+	objx = objy = 0;
 
 }
 MainMenu::~MainMenu()
@@ -63,7 +74,17 @@ void MainMenu::Init()
 
 void MainMenu::Update(double dt)
 {
+	if (Application::IsKeyPressed('A'))
+		objx -= (3*dt);
+	if (Application::IsKeyPressed('D'))
+		objx += (3 * dt);
+	if (Application::IsKeyPressed('W'))
+		objy += (3 * dt);
+	if (Application::IsKeyPressed('S'))
+		objy -= (3 * dt);
 
+	//Play
+	//if (Application::IsKeyPressed(VK_LBUTTON))
 }
 
 void MainMenu::Render()
@@ -83,13 +104,15 @@ void MainMenu::Render()
 
 	//RenderButtonsOnScreen("Play", Color(0, 0, 0), 2,38,43);
 
-	RenderButtonsOnScreen("Play", Color(0, 0, 0), 2, 38, 36);
-	RenderButtonsOnScreen("Play", Color(0, 0, 0), 2, 38, 29);	//5
-	RenderButtonsOnScreen("Play", Color(0, 0, 0), 2, 38, 22);	//7
-	RenderButtonsOnScreen("Play", Color(0, 0, 0), 2, 38, 16);
-	RenderButtonsOnScreen("Play", Color(0, 0, 0), 2, 38, 10);
+	RenderButtonsOnScreen(meshList[GEO_PLAYBUTTON], "Play", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
+	RenderButtonsOnScreen(meshList[GEO_BUTTON], "Help!", Color(0, 0, 0), 2, 5, 36, 1, 17.4);
+	RenderButtonsOnScreen(meshList[GEO_BUTTON], "Option", Color(0, 0, 0), 2, 5, 29, 0.2, 14.);
+	RenderButtonsOnScreen(meshList[GEO_BUTTON], "Credit", Color(0, 0, 0), 2, 5, 22, 0.4, 10.5);
+	RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
 
 	RenderTextOnScreen(meshList[GEO_TEXT], " Title", Color(0, 0, 0), 6, 3, 8);
+	RenderTextOnScreen(meshList[GEO_TEXT], "objx : " + std::to_string(Application::cursor_newxpos), Color(0, 0, 0), 2, 1, 2);
+	RenderTextOnScreen(meshList[GEO_TEXT], "objy : " + std::to_string(Application::cursor_newypos), Color(0, 0, 0), 2, 1, 1);
 }
 
 void MainMenu::RenderMesh(Mesh* mesh, bool enableLight)
@@ -138,9 +161,9 @@ void MainMenu::RenderMesh(Mesh* mesh, bool enableLight)
 	}
 }
 
-void MainMenu::RenderButtonsOnScreen(std::string text, Color color, float size, float x, float y)
+void MainMenu::RenderButtonsOnScreen(Mesh* mesh,std::string text, Color color, float size, float xbtn, float ybtn, float xtxt, float ytxt)
 {
-	if (!meshList[GEO_BUTTON] )//|| meshList[GEO_BUTTON]->textureID <= 0)  //error check
+	if (!meshList[GEO_BUTTON] || !meshList[GEO_PLAYBUTTON]  || !meshList[GEO_BUTTONRED] )//|| meshList[GEO_BUTTON]->textureID <= 0)  //error check
 		return;
 
 	glDisable(GL_DEPTH_TEST);
@@ -155,11 +178,11 @@ void MainMenu::RenderButtonsOnScreen(std::string text, Color color, float size, 
 
 	
 	modelStack.PushMatrix();
-	modelStack.Translate(x, y, 0);
-	RenderMesh(meshList[GEO_BUTTON], false);
+	modelStack.Translate(xbtn, ybtn, 0);
+	RenderMesh(mesh, false);
 	modelStack.PopMatrix();
 
-	RenderTextOnScreen(meshList[GEO_TEXT], text, color, size, 1, 1);
+	RenderTextOnScreen(meshList[GEO_TEXT], text, color, size, xtxt, ytxt);
 
 	projectionStack.PopMatrix();
 	viewStack.PopMatrix();

@@ -39,9 +39,13 @@ class MainMenu : public Scene
 	enum GEO_MENU
 	{
 		GEO_BG,
-		GEO_BUTTON,
-		GEO_MOUSEOVER,
-		GEO_SELECTED,
+
+		GEO_BUTTON, GEO_BUTTONHOVER, GEO_BUTTONSELECTED,
+		GEO_PLAYBUTTON, GEO_PLAYBUTTONHOVER, GEO_PLAYBUTTONSELECTED,
+		GEO_BUTTONRED, GEO_BUTTONREDHOVER,
+
+		GEO_MOUSE,
+		//GEO_SELECTED,
 		GEO_ICON,
 		GEO_TEXT,
 
@@ -103,8 +107,11 @@ public:
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void RenderButtonsOnScreen(std::string text, Color color, float size, float x, float y);
+	void RenderButtonsOnScreen(Mesh* mesh, std::string text, Color color, float size, float xbtn, float ybtn, float xtxt, float ytxt);
 	void RenderUI();
+
+
+	float objx, objy;
 
 
 
