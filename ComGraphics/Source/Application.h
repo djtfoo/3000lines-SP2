@@ -15,13 +15,11 @@ public:
 	void Exit();
 	static bool IsKeyPressed(unsigned short key);
 
-    //cursor
-    static double cursor_xpos;
-    static double cursor_ypos;
-    static double cursor_newxpos;
-    static double cursor_newypos;
-
 private:
+    int width;
+    int height;
+
+    void get_resolution();
 
 	//Declare a window object
 	StopWatch m_timer;

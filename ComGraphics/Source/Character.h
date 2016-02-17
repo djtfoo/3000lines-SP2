@@ -37,9 +37,11 @@ public:
     unsigned int getHealth();
     unsigned int getGold();
 
-    unsigned int setHunger();
-    unsigned int setHealth();
-    unsigned int setGold();
+    void setName();
+
+    void setHunger();
+    void setHealth();
+    void setGold();
 
     bool isDead();
 };

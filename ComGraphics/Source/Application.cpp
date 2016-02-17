@@ -12,14 +12,9 @@
 
 #include "MainMenu.h"
 #include "SP2.h"
+#include "SharedData.h"
 
 GLFWwindow* m_window;
-
-//cursor
-double Application::cursor_xpos = 400;
-double Application::cursor_ypos = 300;
-double Application::cursor_newxpos = 400;
-double Application::cursor_newypos = 300;
 
 const unsigned char FPS = 60; // FPS of this game
 const unsigned int frameTime = 1000 / FPS; // time for each frame
@@ -56,6 +51,13 @@ void resize_callback(GLFWwindow * window, int w, int h)
     glViewport(0, 0, w, h);     //update opengl the new window size
 }
 
+void Application::get_resolution()
+{
+    const GLFWvidmode * mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+    width = mode->width;
+    height = mode->height;
+}
+
 void Application::Init()
 {
 	//Set the error callback
@@ -74,10 +76,11 @@ void Application::Init()
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
 
+    get_resolution();
 
 	//Create a window and create its OpenGL context
     //m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
-    m_window = glfwCreateWindow(1920, 1080, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
+    m_window = glfwCreateWindow(width, height, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
 
     glfwSetWindowSizeCallback(m_window, resize_callback);
 
@@ -110,7 +113,7 @@ void Application::Init()
 void Application::Run()
 {
 	//Main Loop
-	Scene *scene = new MainMenu();
+	Scene *scene = new SP2();
 	scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
@@ -124,7 +127,7 @@ void Application::Run()
 		glfwPollEvents();
         //setting cursor
         glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        glfwGetCursorPos(m_window, &cursor_newxpos, &cursor_newypos);
+        glfwGetCursorPos(m_window, &SharedData::GetInstance()->cursor_newxpos, &SharedData::GetInstance()->cursor_newypos);
         m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.   
 
 	} //Check if the ESC key had been pressed or if the window had been closed

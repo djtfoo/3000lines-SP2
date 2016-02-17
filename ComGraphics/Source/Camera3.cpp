@@ -336,16 +336,16 @@ void Camera3::Update(double dt)
 
 void Camera3::MoveCamera(double dt)
 {
-    if (Application::cursor_newxpos != Application::cursor_xpos) {
-        double diff_xpos = Application::cursor_xpos - Application::cursor_newxpos;
-        Application::cursor_xpos = Application::cursor_newxpos;
+    if (SharedData::GetInstance()->cursor_newxpos != SharedData::GetInstance()->cursor_xpos) {
+        double diff_xpos = SharedData::GetInstance()->cursor_xpos - SharedData::GetInstance()->cursor_newxpos;
+        SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
 
         theta -= diff_xpos * ROTSPEED * dt;
     }
 
-    if (Application::cursor_newypos != Application::cursor_ypos) {
-        double diff_ypos = Application::cursor_ypos - Application::cursor_newypos;
-        Application::cursor_ypos = Application::cursor_newypos;
+    if (SharedData::GetInstance()->cursor_newypos != SharedData::GetInstance()->cursor_ypos) {
+        double diff_ypos = SharedData::GetInstance()->cursor_ypos - SharedData::GetInstance()->cursor_newypos;
+        SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
 
         phi -= diff_ypos * ROTSPEED * dt;
         if (phi > 60) {
@@ -357,11 +357,13 @@ void Camera3::MoveCamera(double dt)
     }
 
     if (Application::IsKeyPressed('Q')) {
-        distance += ROTSPEED * dt;
+        if (distance < 40 - ROTSPEED * dt) {
+            distance += ROTSPEED * dt;
+        }
     }
 
     if (Application::IsKeyPressed('E')) {
-        if (distance > 1 + ROTSPEED * dt) {
+        if (distance > 8 + ROTSPEED * dt) {
             distance -= ROTSPEED * dt;
         }
     }
