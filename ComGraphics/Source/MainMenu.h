@@ -1,160 +1,128 @@
+#include "Scene.h"
+#include "Mesh.h"
+#include "Mtx44.h"
+#include "MatrixStack.h"
+
+#include "Light.h"
+#include "Material.h"
+
 #ifndef MAIN_MENU_H
 #define MAIN_MENU_H
 
-#include "Scene.h"
-
-#include "GL\glew.h"
-#include "Application.h"
-#include "Mtx44.h"
-#include "MatrixStack.h"
-#include "SharedData.h"
-
-#include "MeshBuilder.h"
-#include "Mesh.h"
-#include "Material.h"
-#include "LoadTGA.h"
-#include "Vertex.h"
-#include "shader.hpp"
-#include "Utility.h"
-#include "Camera3.h"
-
-#include <sstream>
-
-
-
 class MainMenu : public Scene
 {
-	enum MENU_STATE
-	{
-		MENU_MAIN = 0,
-		MENU_PLAYNEW,
-		MENU_LOAD,
-		MENU_INSTRUCTIONS,
-		MENU_OPTIONS,
-		MENU_CREDITS,
-		MENU_EXIT,
+    enum MENU_STATE
+    {
+        MENU_MAIN = 0,
+        MENU_PLAYNEW,
+        MENU_LOAD,
+        MENU_INSTRUCTIONS,
+        MENU_OPTIONS,
+        MENU_CREDITS,
+        MENU_EXIT,
 
-		MENU_TOTAL
+        MENU_TOTAL
+    };
 
-	};
+    enum GEO_MENU
+    {
+        GEO_BG,
 
-	enum GEO_MENU
-	{
-		GEO_BG,
+        GEO_BUTTON, GEO_BUTTONHOVER, GEO_BUTTONSELECTED,
+        GEO_PLAYBUTTON, GEO_PLAYBUTTONHOVER, GEO_PLAYBUTTONSELECTED,
+        GEO_BUTTONRED, GEO_BUTTONREDHOVER,
 
-		GEO_BUTTON, GEO_BUTTONHOVER, GEO_BUTTONSELECTED,
-		GEO_PLAYBUTTON, GEO_PLAYBUTTONHOVER, GEO_PLAYBUTTONSELECTED,
-		GEO_BUTTONRED, GEO_BUTTONREDHOVER,
+        GEO_MOUSECUSTOM,
+        //GEO_SELECTED,
+        GEO_ICON,
+        GEO_TEXT,
 
-		GEO_MOUSECUSTOM,
-		//GEO_SELECTED,
-		GEO_ICON,
-		GEO_TEXT,
+        GEO_TOTAL
+    };
 
-		GEO_TOTAL
+    enum UNIFORM_TYPE
+    {
+        U_MVP = 0,
+        U_MODELVIEW,
+        U_MODELVIEW_INVERSE_TRANSPOSE,
+        U_MATERIAL_AMBIENT,
+        U_MATERIAL_DIFFUSE,
+        U_MATERIAL_SPECULAR,
+        U_MATERIAL_SHININESS,
 
-	};
+        U_LIGHT0_POSITION,
+        U_LIGHT0_COLOR,
+        U_LIGHT0_POWER,
+        U_LIGHT0_KC,
+        U_LIGHT0_KL,
+        U_LIGHT0_KQ,
+        U_LIGHT0_TYPE,
+        U_LIGHT0_SPOTDIRECTION,
+        U_LIGHT0_COSCUTOFF,
+        U_LIGHT0_COSINNER,
+        U_LIGHT0_EXPONENT,
 
-	enum UNIFORM_TYPE
-	{
-		U_MVP = 0,
-		U_MODELVIEW,
-		U_MODELVIEW_INVERSE_TRANSPOSE,
-		U_MATERIAL_AMBIENT,
-		U_MATERIAL_DIFFUSE,
-		U_MATERIAL_SPECULAR,
-		U_MATERIAL_SHININESS,
+        U_LIGHTENABLED,
+        U_NUMLIGHTS,
 
-		U_LIGHT0_POSITION,
-		U_LIGHT0_COLOR,
-		U_LIGHT0_POWER,
-		U_LIGHT0_KC,
-		U_LIGHT0_KL,
-		U_LIGHT0_KQ,
-		U_LIGHT0_TYPE,
-		U_LIGHT0_SPOTDIRECTION,
-		U_LIGHT0_COSCUTOFF,
-		U_LIGHT0_COSINNER,
-		U_LIGHT0_EXPONENT,
+        U_COLOR_TEXTURE_ENABLED,
+        U_COLOR_TEXTURE,
+        U_TEXT_ENABLED,
+        U_TEXT_COLOR,
 
-		U_LIGHTENABLED,
-		U_NUMLIGHTS,
-
-		U_COLOR_TEXTURE_ENABLED,
-		U_COLOR_TEXTURE,
-		U_TEXT_ENABLED,
-		U_TEXT_COLOR,
-
-		U_TOTAL,
-	};
+        U_TOTAL,
+    };
 
 
 public:
-	MainMenu();
-	~MainMenu();
+    MainMenu();
+    ~MainMenu();
 
-	void Init();
-	void Update(double dt);
-	void Render();
-	void Exit();
+    void Init();
+    void Update(double dt);
+    void Render();
+    void Exit();
 
-	unsigned m_vertexArrayID;
-	Mesh *meshList[GEO_TOTAL];
-	unsigned m_programID;
-	unsigned m_parameters[U_TOTAL];
+    unsigned m_vertexArrayID;
+    Mesh *meshList[GEO_TOTAL];
+    unsigned m_programID;
+    unsigned m_parameters[U_TOTAL];
 
-	MS modelStack, viewStack, projectionStack;
+    MS modelStack, viewStack, projectionStack;
+    void ButtonUpdater(double dt);
+    void RenderMesh(Mesh* mesh, bool enableLight);
+    void RenderText(Mesh* mesh, std::string text, Color color);
+    void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
+    void RenderCursor(Mesh* mesh, std::string text, Color color, float size, float xbtn, float ybtn, float xtxt, float ytxt);
+    void RenderButtonsOnScreen(Mesh* mesh, std::string text, Color color, float size, float xbtn, float ybtn, float xtxt, float ytxt);
+    void RenderUI();
 
-	Camera3 camera;
-	void ButtonUpdater(double dt);
-	void RenderMesh(Mesh* mesh, bool enableLight);
-	void RenderText(Mesh* mesh, std::string text, Color color);
-	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
-	void RenderCursor(Mesh* mesh, std::string text, Color color, float size, float xbtn, float ybtn, float xtxt, float ytxt);
-	void RenderButtonsOnScreen(Mesh* mesh, std::string text, Color color, float size, float xbtn, float ybtn, float xtxt, float ytxt);
-	void RenderUI();
+    void MainMenuPage();
+    void HelpPage();
+    void OptionsPage();
+    void CreditsPage();
 
-	void MainMenu::MainMenuPage();
-	void MainMenu::HelpPage();
-	void MainMenu::OptionsPage();
-	void MainMenu::CreditsPage();
+    bool clicked;
+    bool isClicked;
 
+    int btncheck;
+    /*main	= 0
+    play	= 1
+    load	= 2
+    help	= 3
+    options = 4
+    credits = 5
+    exit	= 6*/
 
-	bool clicked;
-	bool isClicked;
+    MENU_STATE state;
 
-	int btncheck;
-	/*main	= 0
-	play	= 1
-	load	= 2
-	help	= 3
-	options = 4
-	credits = 5
-	exit	= 6*/
+    float delaytime;
 
-	MENU_STATE state;
+    float helpBtnspd;
+    float optBtnspd;
+    float credBtnspd;
 
-	float delaytime;
-
-	float helpBtnspd;
-	float optBtnspd;
-	float credBtnspd;
-
-	float objx, objy;
-
-
-
-
+    float objx, objy;
 };
 
-
-
-
-
-
-
-
 #endif
-
-
-

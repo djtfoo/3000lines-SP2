@@ -12,8 +12,6 @@
 
 #include "Application.h"
 #include "SharedData.h"
-using std::cout;
-using std::endl;
 
 SP2::SP2()
 {
@@ -108,7 +106,7 @@ SP2::SP2()
     meshList[GEO_SKYBOX_FRONT] = MeshBuilder::GenerateQuad("skybox_front", Color(1, 1, 1), 1000, 1000);
     meshList[GEO_SKYBOX_FRONT]->textureID = LoadTGA("Image/Skybox/redplanet_front.tga");
 
-    meshList[GEO_GROUND] = MeshBuilder::GenerateQuad("ground", Color(1, 1, 1), 1000, 1000);
+    meshList[GEO_GROUND] = MeshBuilder::GenerateQuad("ground", Color(1, 1, 1), 2000, 2000);
     meshList[GEO_GROUND]->textureID = LoadTGA("Image/ground2.tga");
 
     meshList[GEO_MAN] = MeshBuilder::GenerateOBJ("man", "OBJ/man.obj");
@@ -204,6 +202,8 @@ SP2::SP2()
 	meshList[GEO_PIPETYPE4] = MeshBuilder::GenerateQuad("pipetype4", Color(1, 1, 1), 1, 1);
 	meshList[GEO_PIPETYPE4]->textureID = LoadTGA("Image/pipetype4.tga");
 
+    meshList[GEO_CROSSHAIRS] = MeshBuilder::GenerateQuad("crosshairs", Color(1, 1, 1), 2, 2);
+    meshList[GEO_CROSSHAIRS]->textureID = LoadTGA("Image/crosshairs.tga");
 
     viewOptions = true;
 }
@@ -243,6 +243,13 @@ void SP2::Init()
 	
 	srand(time(0));
 	controlpuzzle.setpuzzle();
+
+    ItemCollision walltest;
+    walltest.minX = 5;     walltest.maxX = 235;     walltest.minZ = -120;  walltest.maxZ = -95;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+
+    Interaction* interactions;
+    interactions = new PipePuzzleInteraction();
+    interactions->middlePoint = Vector3(446, 15, 374.5f);   interactions->distX = 50;   interactions->distY = 15;   interactions->distZ = 5.f;     SharedData::GetInstance()->interactionItems.push_back(interactions);
 }
 
 static float ROT_LIMIT = 45.f;
@@ -258,6 +265,9 @@ void SP2::Update(double dt)
     SharedData::GetInstance()->player->Walk(dt);
 
     SharedData::GetInstance()->camera->Update(dt);
+
+    SharedData::GetInstance()->player->CheckInteraction();
+
     //options
     if (Application::IsKeyPressed('1')) //enable back face culling
         glEnable(GL_CULL_FACE);
@@ -288,14 +298,12 @@ void SP2::Render()
     minimappy.Init(Vector3(playerPos.x, (playerPos.y + 500), playerPos.z), Vector3(playerPos.x, (playerPos.y + 300), playerPos.z), Vector3(1, 0, 0));
 
     //Set view matrix using camera settings
-    //viewStack.LoadIdentity();
-    //viewStack.LookAt(minimappy.pos.x, minimappy.pos.y, minimappy.pos.z, minimappy.targ.x, minimappy.targ.y, minimappy.targ.z, minimappy.UP.x, minimappy.UP.y, minimappy.UP.z);
-
-
     viewStack.LoadIdentity();
     viewStack.
         //LookAt(minimappy.pos.x, minimappy.pos.y, minimappy.pos.z, minimappy.targ.x, minimappy.targ.y, minimappy.targ.z, minimappy.UP.x, minimappy.UP.y, minimappy.UP.z);
-        LookAt(SharedData::GetInstance()->camera->position.x, SharedData::GetInstance()->camera->position.y, SharedData::GetInstance()->camera->position.z,SharedData::GetInstance()->camera->target.x, SharedData::GetInstance()->camera->target.y, SharedData::GetInstance()->camera->target.z, SharedData::GetInstance()->camera->up.x, SharedData::GetInstance()->camera->up.y, SharedData::GetInstance()->camera->up.z);
+        LookAt(SharedData::GetInstance()->camera->position.x, SharedData::GetInstance()->camera->position.y, SharedData::GetInstance()->camera->position.z,
+        SharedData::GetInstance()->camera->target.x, SharedData::GetInstance()->camera->target.y, SharedData::GetInstance()->camera->target.z,
+        SharedData::GetInstance()->camera->up.x, SharedData::GetInstance()->camera->up.y, SharedData::GetInstance()->camera->up.z);
     //minimappy.UP.x;
     //minimappp.LoadIdentity();
     //minimappp.LookAt(minimappy.pos.x, minimappy.pos.y, minimappy.pos.z, minimappy.targ.x, minimappy.targ.y, minimappy.targ.z, minimappy.UP.x, minimappy.UP.y, minimappy.UP.z);
@@ -337,9 +345,15 @@ void SP2::Render()
     RenderPuzzle();
 
 
+    RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
     RenderUI();
 
     //RenderMinimap();
+    
+    //interaction
+    if (SharedData::GetInstance()->canInteract) {
+        RenderTextOnScreen(meshList[GEO_TEXT], "Press LMB", Color(1, 0, 0), 3, 2, 2);
+    }
 }
 
 void SP2::Exit()
@@ -420,6 +434,33 @@ void SP2::RenderText(Mesh* mesh, std::string text, Color color)
     glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
     glEnable(GL_DEPTH_TEST);
 }
+
+void SP2::RenderObjectOnScreen(Mesh* mesh, float x, float y)
+{
+    if (!mesh)  //error check
+        return;
+
+    glDisable(GL_DEPTH_TEST);
+    Mtx44 ortho;
+    ortho.SetToOrtho(0, 80, 0, 60, -10, 10);    //size of screen UI
+    projectionStack.PushMatrix();
+    projectionStack.LoadMatrix(ortho);
+    viewStack.PushMatrix();
+    viewStack.LoadIdentity();   //no need camera for ortho mode
+    modelStack.PushMatrix();
+    modelStack.LoadIdentity();  //reset modelStack
+
+    modelStack.PushMatrix();
+    modelStack.Translate(x, y, 0);
+    RenderMesh(mesh, false);
+    modelStack.PopMatrix();
+
+    projectionStack.PopMatrix();
+    viewStack.PopMatrix();
+    modelStack.PopMatrix();
+    glEnable(GL_DEPTH_TEST);
+}
+
 
 void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
@@ -2222,6 +2263,7 @@ void SP2::RenderPuzzle()
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(401 + (i * 10), 65 - (j * 10), 374);
+            modelStack.Rotate(controlpuzzle.puzzlerotation[i][j], 0, 0, 1);
 			modelStack.Rotate(180, 0, 1, 0);
 			modelStack.Scale(10, 10, 10);
 			//RenderMesh(meshList[GEO_PIPETYPE1], true);

@@ -1,5 +1,11 @@
+#include <vector>
+
 #include "Character.h"
 #include "Camera3.h"
+#include "Collision.h"
+#include "Interaction.h"
+
+using std::vector;
 
 #ifndef SHAREDDATA_H
 #define SHAREDDATA_H
@@ -7,14 +13,22 @@
 class SharedData
 {
 public:
-    static SharedData* GetInstance()
+    enum PROGRAM_STATE
     {
-        static SharedData data;
-        return &data;
-    }
+        PROGRAM_MENU,
+        PROGRAM_GAME,
+        PROGRAM_EXIT,
+
+        PROGRAM_TOTAL
+    };
+
+    PROGRAM_STATE program_state;
+    bool programstate_change;
 
     Player *player;
     Camera3 *camera;
+    vector<ItemCollision>collisionItems;
+    vector<Interaction*>interactionItems;
 
     //cursor
     double cursor_xpos;
@@ -22,8 +36,21 @@ public:
     double cursor_newxpos;
     double cursor_newypos;
 
+    //interaction
+    bool canInteract;
+    Interaction* interactptr;
+
+    static SharedData* GetInstance()
+    {
+        static SharedData data;
+        return &data;
+    }
+
 private:
     SharedData() {
+        program_state = PROGRAM_MENU;
+        programstate_change = false;
+
         player = new Player("Player");
         camera = new Camera3();
         camera->Init(Vector3(0, -140, 100), Vector3(0, -140, 110), Vector3(0, 1, 0));

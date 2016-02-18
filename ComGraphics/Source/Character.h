@@ -32,6 +32,7 @@ public:
     Player(std::string name);
     ~Player();
     void Walk(double dt);
+    void CheckInteraction();
     
     unsigned int getHunger();
     unsigned int getHealth();

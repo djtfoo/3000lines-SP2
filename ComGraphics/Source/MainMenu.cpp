@@ -1,9 +1,15 @@
 #include "MainMenu.h"
-//#include "SP2.h"
+#include "GL\glew.h"
 
+#include "shader.hpp"
+#include "Mtx44.h"
+#include "MeshBuilder.h"
 
+#include "Utility.h"
+#include "LoadTGA.h"
 
-
+#include "Application.h"
+#include "SharedData.h"
 
 MainMenu::MainMenu()
 {
@@ -16,8 +22,6 @@ MainMenu::MainMenu()
 	glBindVertexArray(m_vertexArrayID);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	camera.Init(Vector3(0, -140, 100), Vector3(0, -140, 110), Vector3(0, 1, 0));
 
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -133,6 +137,12 @@ void MainMenu::ButtonUpdater(double dt)
 	//list for button reference on header
 	if (clicked)
 	{
+        if (btncheck == 1)
+        {
+            SharedData::GetInstance()->programstate_change = true;
+            SharedData::GetInstance()->program_state = SharedData::PROGRAM_GAME;
+        }
+
 		if (btncheck == 3)
 		{
 			helpBtnspd += (80 * dt);
@@ -183,7 +193,10 @@ void MainMenu::ButtonUpdater(double dt)
 				helpBtnspd += (80 * dt);
 			}*/
 		}
-
+        else if (btncheck == 6)
+        {
+            SharedData::GetInstance()->program_state = SharedData::PROGRAM_EXIT;
+        }
 
 	}
 
@@ -211,12 +224,6 @@ void MainMenu::Render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	Mtx44 MVP;
-
-	//Set view matrix using camera settings
-	viewStack.LoadIdentity();
-	viewStack.LookAt(camera.position.x, camera.position.y, camera.position.z,
-		camera.target.x, camera.target.y, camera.target.z,
-		camera.up.x, camera.up.y, camera.up.z);
 
 	modelStack.LoadIdentity();
 
@@ -402,11 +409,15 @@ void MainMenu::MainMenuPage()
 			if (Application::IsKeyPressed(VK_LBUTTON))
 			{
 				RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONSELECTED], "Play", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
-				//INSERT SCENE TRANSITION TO GAMEPLAY
+                isClicked = true;
+                btncheck = 1;
 			}
 			else
 			{
 				RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONHOVER], "Play", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
+                if (isClicked && btncheck == 1) {
+                    clicked = true;
+                }
 			}
 		}
 		else
@@ -420,19 +431,18 @@ void MainMenu::MainMenuPage()
 			{
 				RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Help!", Color(0, 0, 0), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
 				isClicked = true;
+                btncheck = 3;
 			}
 			else 
 			{
 				RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Help!", Color(0, 0, 0), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
-				if (isClicked && btncheck == 0)
+                if (isClicked && btncheck == 3)
 				{
 					clicked = true;
-					btncheck = 3;
-					//isClicked = false;
 				}
 			}
 		}
-		else
+        else 
 			RenderButtonsOnScreen(meshList[GEO_BUTTON], "Help!", Color(0, 0, 0), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//OPTION BUTTON
@@ -443,15 +453,14 @@ void MainMenu::MainMenuPage()
 			{
 				RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Option", Color(0, 0, 0), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
 				isClicked = true;
+                btncheck = 4;
 			}
 			else 
 			{
 				RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Option", Color(0, 0, 0), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
-				if (isClicked && btncheck == 0)
+                if (isClicked && btncheck == 4)
 				{
 					clicked = true;
-					btncheck = 4;
-					//isClicked = false;
 				}
 			}
 		}
@@ -466,15 +475,14 @@ void MainMenu::MainMenuPage()
 			{
 				RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Credit", Color(0, 0, 0), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
 				isClicked = true;
+                btncheck = 5;
 			}
 			else 
 			{
 				RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Credit", Color(0, 0, 0), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
-				if (isClicked && btncheck == 0)
+				if (isClicked && btncheck == 5)
 				{
 					clicked = true;
-					btncheck = 5;
-					//isClicked = false;
 				}
 			}
 		}
@@ -488,21 +496,27 @@ void MainMenu::MainMenuPage()
 			if (Application::IsKeyPressed(VK_LBUTTON))
 			{
 				RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
-				//EXIT PROGRAM HERE
+                isClicked = true;
+                btncheck = 6;
 			}
 			else
-			{
+            {
 				RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
-			}
+                if (isClicked && btncheck == 6)
+                {
+                    clicked = true;
+                }
+            }
 		}
 		else
 			RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		RenderTextOnScreen(meshList[GEO_TEXT], " Title", Color(0, 0, 0), 6, 3, 8);
-		RenderTextOnScreen(meshList[GEO_TEXT], "objx : " + std::to_string(SharedData::GetInstance()->cursor_newxpos), Color(0, 0, 0), 2, 1, 2);
+		
+        //debug
+        RenderTextOnScreen(meshList[GEO_TEXT], "objx : " + std::to_string(SharedData::GetInstance()->cursor_newxpos), Color(0, 0, 0), 2, 1, 2);
 		RenderTextOnScreen(meshList[GEO_TEXT], "objy : " + std::to_string(SharedData::GetInstance()->cursor_newypos), Color(0, 0, 0), 2, 1, 1);
-	
 }
 
 void MainMenu::HelpPage()

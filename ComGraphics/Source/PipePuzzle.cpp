@@ -6,16 +6,21 @@ using std::endl;
 
 PipePuzzle::PipePuzzle()
 {
-};
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 6; ++j) {
+            puzzlerotation[i][j] = 0.f;
+        }
+    }
+}
 
 PipePuzzle::~PipePuzzle()
 {
-};
+}
 
 void PipePuzzle::checkpuzzle()
 {
 
-};
+}
 
 bool PipePuzzle::confirmpuzzle(int row, int col, int orientation)
 {
@@ -174,7 +179,7 @@ bool PipePuzzle::confirmpuzzle(int row, int col, int orientation)
 		return false;
 	}
 	return false;
-};
+}
 
 void PipePuzzle::setpuzzle()
 {
@@ -203,4 +208,4 @@ void PipePuzzle::setpuzzle()
 		completedpuzzle = confirmpuzzle(0, 0, 1);
 	}
 
-};
+}

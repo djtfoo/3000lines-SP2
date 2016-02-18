@@ -112,12 +112,12 @@ void Application::Init()
 
 void Application::Run()
 {
-	//Main Loop
-	Scene *scene = new MainMenu();
-	scene->Init();
+    //Main Loop
+    Scene *scene = new MainMenu();
+    scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
-	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
+    while (!glfwWindowShouldClose(m_window) && SharedData::GetInstance()->program_state != SharedData::PROGRAM_EXIT && !IsKeyPressed(VK_ESCAPE))
 	{
 		scene->Update(m_timer.getElapsedTime());
 		scene->Render();
@@ -128,7 +128,20 @@ void Application::Run()
         //setting cursor
         glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwGetCursorPos(m_window, &SharedData::GetInstance()->cursor_newxpos, &SharedData::GetInstance()->cursor_newypos);
-        m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.   
+        m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.
+
+        if (SharedData::GetInstance()->programstate_change) {
+            delete scene;
+            SharedData::GetInstance()->programstate_change = false;
+            switch (SharedData::GetInstance()->program_state)
+            {
+            case 0: scene = new MainMenu();
+                break;
+            case 1: scene = new SP2();
+                break;
+            }
+            scene->Init();
+        }
 
 	} //Check if the ESC key had been pressed or if the window had been closed
 	scene->Exit();

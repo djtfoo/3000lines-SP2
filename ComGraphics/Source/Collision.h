@@ -48,10 +48,10 @@ struct StairsCollision
     float incrementVal, incrementY;
 };
 
-struct ItemInteraction
+/*struct ItemInteraction
 {
     float minX, maxX, minY, maxY, minZ, maxZ;
-};
+};*/
 
 struct FlightCollision
 {

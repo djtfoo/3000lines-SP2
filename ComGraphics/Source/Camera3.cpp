@@ -15,7 +15,7 @@ Camera3::Camera3()
 {
     phi = 15;
     theta = 20;
-    distance = 25;
+    distance = 40;
 }
 
 /******************************************************************************/
@@ -70,264 +70,13 @@ To be called every frame. Camera will get user inputs and update its position an
 \param dt - frame time
 */
 /******************************************************************************/
-static float CAMSPEED = 800.f;
-static float FLYSPEED = 800.f;
+
 static float ROTSPEED = 5.f;
+static float CAMSPEED = 2.f * ROTSPEED;
 
 void Camera3::Update(double dt)
 {
     MoveCamera(dt);
-
-    /*if (Application::IsKeyPressed('W')) {   //move forward
-        Vector3 view = (target - position);
-        view.y = 0;
-        view = view.Normalized();
-
-        float newX = target.x + view.x * dt * CAMSPEED;
-        float newZ = target.z + view.z * dt * CAMSPEED;
-
-        bool xMovement = true, zMovement = true;
-        //collision with walls
-        for (unsigned i = 0; i < collisionWall.size(); ++i) {
-            if (collisionWall[i].dir == WALL_LEFT) {
-                if (newX < collisionWall[i].coordinate) {
-                    xMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_RIGHT) {
-                if (newX > collisionWall[i].coordinate) {
-                    xMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_FRONT) {
-                if (newZ < collisionWall[i].coordinate) {
-                    zMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_BACK) {
-                if (newZ > collisionWall[i].coordinate) {
-                    zMovement = false;
-                }
-            }
-        }
-
-        //collision with objects
-        for (unsigned i = 0; i < collisionItem.size(); ++i) {
-            if (target.x > collisionItem[i].minX && target.x < collisionItem[i].maxX) {
-                if (newZ > collisionItem[i].minZ && newZ < collisionItem[i].maxZ) {
-                    zMovement = false;
-                }
-            }
-            if (target.z > collisionItem[i].minZ && target.z < collisionItem[i].maxZ) {
-                if (newX > collisionItem[i].minX && newX < collisionItem[i].maxX) {
-                    xMovement = false;
-                }
-            }
-        }
-
-        if (xMovement) {
-            target.x += (float)(view.x * dt * CAMSPEED);
-            position.x += (float)(view.x * dt * CAMSPEED);
-        }
-        if (zMovement) {
-            target.z += (float)(view.z * dt * CAMSPEED);
-            position.z += (float)(view.z * dt * CAMSPEED);
-        }
-    }
-
-    if (Application::IsKeyPressed('S')) {   //move backward
-        Vector3 view = (target - position);
-        view.y = 0;
-        view = view.Normalized();
-
-        float newX = target.x - view.x * dt * CAMSPEED;
-        float newZ = target.z - view.z * dt * CAMSPEED;
-
-        bool xMovement = true, zMovement = true;
-        //collision with walls
-        for (unsigned i = 0; i < collisionWall.size(); ++i) {
-            if (collisionWall[i].dir == WALL_LEFT) {
-                if (newX < collisionWall[i].coordinate) {
-                    xMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_RIGHT) {
-                if (newX > collisionWall[i].coordinate) {
-                    xMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_FRONT) {
-                if (newZ < collisionWall[i].coordinate) {
-                    zMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_BACK) {
-                if (newZ > collisionWall[i].coordinate) {
-                    zMovement = false;
-                }
-            }
-        }
-
-        //collision with objects
-        for (unsigned i = 0; i < collisionItem.size(); ++i) {
-            if (target.x > collisionItem[i].minX && target.x < collisionItem[i].maxX) {
-                if (newZ > collisionItem[i].minZ && newZ < collisionItem[i].maxZ) {
-                    zMovement = false;
-                }
-            }
-            if (target.z > collisionItem[i].minZ && target.z < collisionItem[i].maxZ) {
-                if (newX > collisionItem[i].minX && newX < collisionItem[i].maxX) {
-                    xMovement = false;
-                }
-            }
-        }
-
-        if (xMovement) {
-            target.x -= (float)(view.x * dt * CAMSPEED);
-            position.x -= (float)(view.x * dt * CAMSPEED);
-        }
-        if (zMovement) {
-            target.z -= (float)(view.z * dt * CAMSPEED);
-            position.z -= (float)(view.z * dt * CAMSPEED);
-        }
-    }
-
-    if (Application::IsKeyPressed('A')) {   //strafe left
-        Vector3 view = (target - position).Normalized();
-        Vector3 right = view.Cross(up);
-        right.y = 0;
-        right.Normalize();
-
-        float newX = target.x - right.x * dt * CAMSPEED;
-        float newZ = target.z - right.z * dt * CAMSPEED;
-
-        bool xMovement = true, zMovement = true;
-        //collision with walls
-        for (unsigned i = 0; i < collisionWall.size(); ++i) {
-            if (collisionWall[i].dir == WALL_LEFT) {
-                if (newX < collisionWall[i].coordinate) {
-                    xMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_RIGHT) {
-                if (newX > collisionWall[i].coordinate) {
-                    xMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_FRONT) {
-                if (newZ < collisionWall[i].coordinate) {
-                    zMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_BACK) {
-                if (newZ > collisionWall[i].coordinate) {
-                    zMovement = false;
-                }
-            }
-        }
-
-        //collision with objects
-        for (unsigned i = 0; i < collisionItem.size(); ++i) {
-            if (target.x > collisionItem[i].minX && target.x < collisionItem[i].maxX) {
-                if (newZ > collisionItem[i].minZ && newZ < collisionItem[i].maxZ) {
-                    zMovement = false;
-                }
-            }
-            if (target.z > collisionItem[i].minZ && target.z < collisionItem[i].maxZ) {
-                if (newX > collisionItem[i].minX && newX < collisionItem[i].maxX) {
-                    xMovement = false;
-                }
-            }
-        }
-
-        if (xMovement) {
-            target.x -= (float)(right.x * dt * CAMSPEED);
-            position.x -= (float)(right.x * dt * CAMSPEED);
-        }
-        if (zMovement) {
-            target.z -= (float)(right.z * dt * CAMSPEED);
-            position.z -= (float)(right.z * dt * CAMSPEED);
-        }
-    }
-
-    if (Application::IsKeyPressed('D')) {   //strafe right
-        Vector3 view = (target - position).Normalized();
-        Vector3 right = view.Cross(up);
-        right.y = 0;
-        right.Normalize();
-
-        float newX = target.x + right.x * dt * CAMSPEED;
-        float newZ = target.z + right.z * dt * CAMSPEED;
-
-        bool xMovement = true, zMovement = true;
-        //collision with walls
-        for (unsigned i = 0; i < collisionWall.size(); ++i) {
-            if (collisionWall[i].dir == WALL_LEFT) {
-                if (newX < collisionWall[i].coordinate) {
-                    xMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_RIGHT) {
-                if (newX > collisionWall[i].coordinate) {
-                    xMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_FRONT) {
-                if (newZ < collisionWall[i].coordinate) {
-                    zMovement = false;
-                }
-            }
-            else if (collisionWall[i].dir == WALL_BACK) {
-                if (newZ > collisionWall[i].coordinate) {
-                    zMovement = false;
-                }
-            }
-        }
-
-        //collision with objects
-        for (unsigned i = 0; i < collisionItem.size(); ++i) {
-            if (target.x > collisionItem[i].minX && target.x < collisionItem[i].maxX) {
-                if (newZ > collisionItem[i].minZ && newZ < collisionItem[i].maxZ) {
-                    zMovement = false;
-                }
-            }
-            if (target.z > collisionItem[i].minZ && target.z < collisionItem[i].maxZ) {
-                if (newX > collisionItem[i].minX && newX < collisionItem[i].maxX) {
-                    xMovement = false;
-                }
-            }
-        }
-
-        if (xMovement) {
-            target.x += (float)(right.x * dt * CAMSPEED);
-            position.x += (float)(right.x * dt * CAMSPEED);
-        }
-        if (zMovement) {
-            target.z += (float)(right.z * dt * CAMSPEED);
-            position.z += (float)(right.z * dt * CAMSPEED);
-        }
-    }
-
-    //move up/down stairs
-    if (stairs.dir == STAIR_X) {
-        if (position.x < stairs.minVal) {
-            Vector3 view = (target - position).Normalized();
-            position.y = stairs.minY;
-            target = position + view;
-        }
-        else if (position.x > stairs.minVal && position.x < stairs.maxVal) {
-            for (int i = 0; i <= stairs.steps; ++i) {
-                if (position.x > stairs.minVal + i * stairs.incrementVal) {
-                    Vector3 view = (target - position).Normalized();
-                    position.y = stairs.minY + (i + 1) * stairs.incrementY;
-                    target = position + view;
-                }
-            }
-        }
-    }
-    else if (stairs.dir == STAIR_Z) {
-        //left empty (for now) as not needed for assignment 3
-    }*/
 
     if (Application::IsKeyPressed('R')) {       //reset
         Reset();
@@ -351,25 +100,25 @@ void Camera3::MoveCamera(double dt)
         if (phi > 60) {
             phi = 60;
         }
-        else if (phi < -30) {
-            phi = -30;
+        else if (phi < -45) {
+            phi = -45;
         }
     }
 
     if (Application::IsKeyPressed('Q')) {
-        if (distance < 40 - ROTSPEED * dt) {
-            distance += ROTSPEED * dt;
+        if (distance < 60 - CAMSPEED * dt) {
+            distance += CAMSPEED * dt;
         }
     }
 
     if (Application::IsKeyPressed('E')) {
-        if (distance > 8 + ROTSPEED * dt) {
-            distance -= ROTSPEED * dt;
+        if (distance > 15 + CAMSPEED * dt) {
+            distance -= CAMSPEED * dt;
         }
     }
 
     target = SharedData::GetInstance()->player->position_;
-    target.y += 20.0f;
+    target.y += 25.0f;
 
     position.x = distance * cos(Math::DegreeToRadian(phi)) * cos(Math::DegreeToRadian(theta)) + target.x;
     position.y = distance * sin(Math::DegreeToRadian(phi)) + target.y;

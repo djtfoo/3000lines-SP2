@@ -74,6 +74,8 @@ class SP2 : public Scene
 		GEO_PIPETYPE2,
 		GEO_PIPETYPE3,
 		GEO_PIPETYPE4,
+
+        GEO_CROSSHAIRS,
         NUM_GEOMETRY,
     };
 
@@ -135,28 +137,14 @@ public:
 
     Light light[1];
 
-    //text
     //float fontWidth[256];
-
-    std::vector<WallCollision> collisionWallCell;
-    std::vector<WallCollision> collisionWallCorridor;
-    std::vector<WallCollision> collisionWallCorridor2;
-    std::vector<WallCollision> collisionWallControlRoom;
-
-    std::vector<ItemCollision> collisionItemCell;
-    std::vector<ItemCollision> collisionItemCorridor;
-    std::vector<ItemCollision> collisionItemCorridor2;
-    std::vector<ItemCollision> collisionItemControlRoom;
-
-    std::vector<ItemInteraction> itemCell;
-    std::vector<ItemInteraction> itemCorridor;
-    std::vector<ItemInteraction> itemControlRoom;
 
     //reset
     void Reset();
 
     void RenderMesh(Mesh* mesh, bool enableLight);
     void RenderText(Mesh* mesh, std::string text, Color color);
+    void RenderObjectOnScreen(Mesh* mesh, float x, float y);
     void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
     void RenderDialogueOnScreen(std::string text, Color color, float size);
     
