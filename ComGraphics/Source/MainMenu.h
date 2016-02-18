@@ -3,7 +3,6 @@
 
 #include "Scene.h"
 
-#include <GLFW/glfw3.h>
 #include "GL\glew.h"
 #include "Application.h"
 #include "Mtx44.h"
