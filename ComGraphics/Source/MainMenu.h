@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 
+#include <GLFW/glfw3.h>
 #include "GL\glew.h"
 #include "Application.h"
 #include "Mtx44.h"
@@ -37,8 +38,6 @@ class MainMenu : public Scene
 		MENU_TOTAL
 
 	};
-
-	
 
 	enum GEO_MENU
 	{
@@ -108,6 +107,7 @@ public:
 	MS modelStack, viewStack, projectionStack;
 
 	Camera3 camera;
+	void ButtonUpdater(double dt);
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
@@ -136,7 +136,10 @@ public:
 	MENU_STATE state;
 
 	float delaytime;
-	float xlateXspeed;
+
+	float helpBtnspd;
+	float optBtnspd;
+	float credBtnspd;
 
 	float objx, objy;
 

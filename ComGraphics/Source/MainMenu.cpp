@@ -64,7 +64,7 @@ MainMenu::MainMenu()
 	objx = objy = 0;
 
 	btncheck = 0;
-	xlateXspeed = 0;
+	helpBtnspd = optBtnspd = credBtnspd = 0;
 	delaytime = 0;
 	state = MENU_MAIN;
 
@@ -83,6 +83,8 @@ void MainMenu::Init()
 
 void MainMenu::Update(double dt)
 {
+	//objx,y is for testing purpose use to determine location of anything
+	//can be applied on anything at will
 	if (Application::IsKeyPressed('A'))
 		objx -= (3*dt);
 	if (Application::IsKeyPressed('D'))
@@ -92,6 +94,7 @@ void MainMenu::Update(double dt)
 	if (Application::IsKeyPressed('S'))
 		objy -= (3 * dt);
 
+	//limit cursor to the resolution of the window
 	if (SharedData::GetInstance()->cursor_newxpos <= 0)
 		SharedData::GetInstance()->cursor_newxpos = 0;
 
@@ -104,16 +107,103 @@ void MainMenu::Update(double dt)
 	if (SharedData::GetInstance()->cursor_newypos >= 1080)
 		SharedData::GetInstance()->cursor_newypos = 1080;
 
-	if (delaytime >= 3)
-		delaytime = 0;
+	
+	ButtonUpdater(dt);
 
-	if (clicked)
+	//check current states and render/update based on state
+	switch (state)
 	{
-		xlateXspeed += (80 * dt);
-		delaytime += dt;
+	case MENU_MAIN:MainMenuPage();
+		break;
+	case MENU_INSTRUCTIONS:HelpPage();
+		break;
+	case MENU_OPTIONS:OptionsPage();
+		break;
+	case MENU_CREDITS:CreditsPage();
+		break;
 	}
+
 	//Play
 	//if (Application::IsKeyPressed(VK_LBUTTON))
+}
+
+void MainMenu::ButtonUpdater(double dt)
+{
+	//check for which button has been click'ed'
+	//list for button reference on header
+	if (clicked)
+	{
+		if (btncheck == 3)
+		{
+			helpBtnspd += (80 * dt);
+			optBtnspd = 0;
+			credBtnspd = 0;
+			
+			/* for 3 btn sliding
+			delaytime += dt;
+			if (delaytime >= 0.1)
+			{
+				optBtnspd += (80 * dt);
+			}
+			if (delaytime >= 0.2)
+			{
+				credBtnspd += (80 * dt);
+			}*/
+		}
+		else if (btncheck == 4)
+		{
+			optBtnspd += (80 * dt);
+			helpBtnspd = 0;
+			credBtnspd = 0;
+			/*for 3 btn sliding
+			delaytime += dt;
+			if (delaytime >= 0.1)
+			{
+				helpBtnspd += (80 * dt);
+			}
+			if (delaytime >= 0.2)
+			{
+				credBtnspd += (80 * dt);
+			}*/
+
+		}
+		else if (btncheck == 5)
+		{
+			credBtnspd += (80 * dt);
+			optBtnspd = 0;
+			helpBtnspd = 0;
+			/*for 3 btn sliding
+			delaytime += dt;
+			if (delaytime >= 0.1)
+			{
+				optBtnspd += (80 * dt);
+			}
+			if (delaytime >= 0.2)
+			{
+				helpBtnspd += (80 * dt);
+			}*/
+		}
+
+
+	}
+
+	/*check for button position, when button has moved a 
+		fixed distance,	change state*/
+	if (state == MENU_MAIN)
+	{
+		if (helpBtnspd >= 150)
+		{
+			state = MENU_INSTRUCTIONS;
+		}
+		if (optBtnspd >= 150)
+		{
+			state = MENU_OPTIONS;
+		}
+		if (credBtnspd >= 150)
+		{
+			state = MENU_CREDITS;
+		}
+	}
 }
 
 void MainMenu::Render()
@@ -130,7 +220,7 @@ void MainMenu::Render()
 
 	modelStack.LoadIdentity();
 
-
+	//check current states and render/update based on state
 	switch (state)
 	{
 	case MENU_MAIN:MainMenuPage();
@@ -143,13 +233,15 @@ void MainMenu::Render()
 		break;
 	}
 
+
+	//for testing without states, enable at will
 	//MainMenuPage();
 	//HelpPage();
 	//OptionsPage();
 	//CreditsPage();
 
 	
-
+	//custom mouse here! (o w o)b
 	RenderButtonsOnScreen(meshList[GEO_MOUSECUSTOM], "", Color(0, 0, 0), 1, SharedData::GetInstance()->cursor_newxpos / 24, 60 - SharedData::GetInstance()->cursor_newypos / 18, 1, 1);
 }
 
@@ -300,34 +392,39 @@ void MainMenu::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, flo
 void MainMenu::MainMenuPage()
 {
 	//RenderButtonsOnScreen("Play", Color(0, 0, 0), 2,38,43);
-	
+
+
+	/*Each individual buttons for menu here. Seperated by comment line*/
+		//PLAY BUTTON
 		if (SharedData::GetInstance()->cursor_newxpos >= 746 && SharedData::GetInstance()->cursor_newxpos <= 1076
 			&& SharedData::GetInstance()->cursor_newypos >= 470 && SharedData::GetInstance()->cursor_newypos <= 715)
 		{
 			if (Application::IsKeyPressed(VK_LBUTTON))
+			{
 				RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONSELECTED], "Play", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
+				//INSERT SCENE TRANSITION TO GAMEPLAY
+			}
 			else
 			{
 				RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONHOVER], "Play", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
-
 			}
 		}
 		else
 			RenderButtonsOnScreen(meshList[GEO_PLAYBUTTON], "Play", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+		//HELP BUTTON
 		if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
 			&& SharedData::GetInstance()->cursor_newypos >= 380 && SharedData::GetInstance()->cursor_newypos <= 475)
 		{
 			if (Application::IsKeyPressed(VK_LBUTTON))
 			{
-				RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Help!", Color(0, 0, 0), 2, 5 + xlateXspeed, 36, 1 + xlateXspeed / 2, 17.4);
+				RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Help!", Color(0, 0, 0), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
 				isClicked = true;
 			}
-			else
+			else 
 			{
-				RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Help!", Color(0, 0, 0), 2, 5 + xlateXspeed, 36, 1 + xlateXspeed / 2, 17.4);
-				if (isClicked)
+				RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Help!", Color(0, 0, 0), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
+				if (isClicked && btncheck == 0)
 				{
 					clicked = true;
 					btncheck = 3;
@@ -336,20 +433,21 @@ void MainMenu::MainMenuPage()
 			}
 		}
 		else
-			RenderButtonsOnScreen(meshList[GEO_BUTTON], "Help!", Color(0, 0, 0), 2, 5 + xlateXspeed, 36, 1 + xlateXspeed / 2, 17.4);
+			RenderButtonsOnScreen(meshList[GEO_BUTTON], "Help!", Color(0, 0, 0), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//OPTION BUTTON
 		if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
 			&& SharedData::GetInstance()->cursor_newypos >= 510 && SharedData::GetInstance()->cursor_newypos <= 600)
-		{
+		{	
 			if (Application::IsKeyPressed(VK_LBUTTON))
 			{
-				RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Option", Color(0, 0, 0), 2, 5 + xlateXspeed, 29, 0.2 + xlateXspeed/2, 14);
+				RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Option", Color(0, 0, 0), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
 				isClicked = true;
 			}
-			else
+			else 
 			{
-				RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Option", Color(0, 0, 0), 2, 5 + xlateXspeed, 29, 0.2 + xlateXspeed/2, 14);
-				if (isClicked)
+				RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Option", Color(0, 0, 0), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
+				if (isClicked && btncheck == 0)
 				{
 					clicked = true;
 					btncheck = 4;
@@ -358,20 +456,21 @@ void MainMenu::MainMenuPage()
 			}
 		}
 		else
-			RenderButtonsOnScreen(meshList[GEO_BUTTON], "Option", Color(0, 0, 0), 2, 5 + xlateXspeed, 29, 0.2 + xlateXspeed/2, 14);
+			RenderButtonsOnScreen(meshList[GEO_BUTTON], "Option", Color(0, 0, 0), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//CREDITS BUTTON
 		if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
 			&& SharedData::GetInstance()->cursor_newypos >= 635 && SharedData::GetInstance()->cursor_newypos <= 730)
 		{
 			if (Application::IsKeyPressed(VK_LBUTTON))
 			{
-				RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Credit", Color(0, 0, 0), 2, 5 + xlateXspeed, 22, 0.4 + xlateXspeed/2, 10.5);
+				RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Credit", Color(0, 0, 0), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
 				isClicked = true;
 			}
-			else
+			else 
 			{
-				RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Credit", Color(0, 0, 0), 2, 5 + xlateXspeed, 22, 0.4 + xlateXspeed/2, 10.5);
-				if (isClicked)
+				RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Credit", Color(0, 0, 0), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
+				if (isClicked && btncheck == 0)
 				{
 					clicked = true;
 					btncheck = 5;
@@ -380,16 +479,21 @@ void MainMenu::MainMenuPage()
 			}
 		}
 		else
-			RenderButtonsOnScreen(meshList[GEO_BUTTON], "Credit", Color(0, 0, 0), 2, 5 + xlateXspeed, 22, 0.4 + xlateXspeed/2, 10.5);
+			RenderButtonsOnScreen(meshList[GEO_BUTTON], "Credit", Color(0, 0, 0), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+		//EXIT BUTTON
 		if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
 			&& SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910)
 		{
 			if (Application::IsKeyPressed(VK_LBUTTON))
+			{
 				RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+				//EXIT PROGRAM HERE
+			}
 			else
+			{
 				RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+			}
 		}
 		else
 			RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
@@ -403,15 +507,85 @@ void MainMenu::MainMenuPage()
 
 void MainMenu::HelpPage()
 {
+	clicked = false;
+	isClicked = false;
+	delaytime = 0;
+	helpBtnspd = 0;
+	optBtnspd = 0;
+	credBtnspd = 0;
+	btncheck = 0;
+
 	RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONSELECTED], "INSTRUCTIONS", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
+
+	if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
+		&& SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910)
+	{
+		if (Application::IsKeyPressed(VK_LBUTTON))
+		{
+			RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+			state = MENU_MAIN;
+		}
+		else
+			RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+	}
+	else
+		RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+
 }
+
 void MainMenu::OptionsPage()
 {
+	clicked = false;
+	isClicked = false;
+	delaytime = 0;
+	helpBtnspd = 0;
+	optBtnspd = 0;
+	credBtnspd = 0;
+	btncheck = 0;
+
 	RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONSELECTED], "OPTIONS", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
+	if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
+		&& SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910)
+	{
+		if (Application::IsKeyPressed(VK_LBUTTON))
+		{
+			RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+			state = MENU_MAIN;
+			isClicked = true;
+		}
+		else
+			RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+	}
+	else
+		RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+
 }
+
 void MainMenu::CreditsPage()
 {
+	clicked = false;
+	isClicked = false;
+	delaytime = 0;
+	helpBtnspd = 0;
+	optBtnspd = 0;
+	credBtnspd = 0;
+	btncheck = 0;
+
 	RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONSELECTED], "CREDITS", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
+	if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
+		&& SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910)
+	{
+		if (Application::IsKeyPressed(VK_LBUTTON))
+		{
+			RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+			state = MENU_MAIN;
+		}
+		else
+			RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+	}
+	else
+		RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+
 }
 
 void MainMenu::Exit()
