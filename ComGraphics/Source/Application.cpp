@@ -79,8 +79,8 @@ void Application::Init()
     get_resolution();
 
 	//Create a window and create its OpenGL context
-    //m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
-    m_window = glfwCreateWindow(width, height, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
+    m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
+    //m_window = glfwCreateWindow(width, height, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
 
     glfwSetWindowSizeCallback(m_window, resize_callback);
 
@@ -128,6 +128,22 @@ void Application::Run()
         //setting cursor
         glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwGetCursorPos(m_window, &SharedData::GetInstance()->cursor_newxpos, &SharedData::GetInstance()->cursor_newypos);
+
+        //limit cursor to the resolution of the window
+        if (SharedData::GetInstance()->program_state == SharedData::PROGRAM_MENU) {
+            if (SharedData::GetInstance()->cursor_newxpos <= 0)
+                glfwSetCursorPos(m_window, 0, SharedData::GetInstance()->cursor_newypos);
+
+            if (SharedData::GetInstance()->cursor_newxpos >= 1920)
+                glfwSetCursorPos(m_window, 1920, SharedData::GetInstance()->cursor_newypos);
+
+            if (SharedData::GetInstance()->cursor_newypos <= 0)
+                glfwSetCursorPos(m_window, SharedData::GetInstance()->cursor_newxpos, 0);
+
+            if (SharedData::GetInstance()->cursor_newypos >= 1080)
+                glfwSetCursorPos(m_window, SharedData::GetInstance()->cursor_newxpos, 1080);
+        }
+
         m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.
 
         if (SharedData::GetInstance()->programstate_change) {
@@ -135,9 +151,9 @@ void Application::Run()
             SharedData::GetInstance()->programstate_change = false;
             switch (SharedData::GetInstance()->program_state)
             {
-            case 0: scene = new MainMenu();
+            case SharedData::PROGRAM_MENU: scene = new MainMenu();
                 break;
-            case 1: scene = new SP2();
+            case SharedData::PROGRAM_GAME: scene = new SP2();
                 break;
             }
             scene->Init();

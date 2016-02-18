@@ -182,9 +182,12 @@ void Player::CheckInteraction()
         if (distance.LengthSquared() > 5625) {  //player too far away
             continue;
         }
-        Vector3 projected = distance.Dot(view) / distance.LengthSquared() * distance;  //project view vector onto distance vector
-        float magnitude = distance.Length();
-        projected = magnitude * projected + position_;
+        float dotProduct = distance.Dot(view);
+        //Vector3 projected = dotProduct / distance.LengthSquared() * distance;  //project view vector onto distance vector
+        float distLength = distance.Length();
+        float angle = Math::RadianToDegree(acos(dotProduct / distLength));
+        float magnitude = distLength / cos(Math::DegreeToRadian(angle));
+        Vector3 projected = magnitude * view + position_;
 
         if (projected.x >(temp[i]->middlePoint.x - temp[i]->distX) && projected.x < (temp[i]->middlePoint.x + temp[i]->distX) && projected.y >(temp[i]->middlePoint.y - temp[i]->distY) && projected.y < (temp[i]->middlePoint.y + temp[i]->distY) && projected.z >(temp[i]->middlePoint.z - temp[i]->distZ) && projected.z < (temp[i]->middlePoint.z + temp[i]->distZ)) {
             std::cout << projected.x << " " << projected.y << " " << projected.z << std::endl;

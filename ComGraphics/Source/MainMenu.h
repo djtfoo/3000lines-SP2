@@ -73,7 +73,6 @@ class MainMenu : public Scene
         U_TOTAL,
     };
 
-
 public:
     MainMenu();
     ~MainMenu();
@@ -102,8 +101,12 @@ public:
     void OptionsPage();
     void CreditsPage();
 
+    //check for clicking
     bool clicked;
     bool isClicked;
+    //to prevent clicks from "overflowing"
+    double bufferTime;
+    double elapsedTime;
 
     int btncheck;
     /*main	= 0
