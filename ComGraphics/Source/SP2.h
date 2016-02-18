@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Mesh.h"
 #include "Camera3.h"
+#include "MiniMapCamera.h"
 #include "MatrixStack.h"
 #include "Light.h"
 
@@ -28,11 +29,35 @@ class SP2 : public Scene
         GEO_SKYBOX_FRONT,
 
         GEO_GROUND,
+        //Minimap
+        GEO_MAP,
+
+        //Our NPCs
+        GEO_ADOLPH,
+        GEO_STEMMIE,
+        GEO_STEMMIE_FACE,
+        GEO_WENGSTANG,
+        GEO_VEE,
+        GEO_JASIM,
+        GEO_CHON,
+        GEO_AARON,
+        GEO_MERCHANT,
         
         GEO_MAN,
         //text
         GEO_TEXT,
         GEO_DIALOGUEBOX,
+
+        //Objects
+        GEO_BENCH,
+        GEO_TOOLBOX,
+        GEO_VENDINGMACHINE,
+        GEO_TABLE,
+        GEO_HAMMER,
+
+        //Light Source
+        GEO_LIGHTBALL,
+
 		//dev texture
 		GEO_DEVTEXTURE,
 		GEO_HANGAR,
@@ -103,6 +128,11 @@ public:
 	
 	PipePuzzle controlpuzzle;
 
+    //Testing Minimap
+    MS minimappp;
+
+    Minimapcamera minimappy;
+
     Light light[1];
 
     //text
@@ -134,11 +164,13 @@ public:
     void RenderGround();
     void RenderLayout();
     void RenderPlayer();
-	
 	void RenderPuzzle();
-
+	void RenderNPC();
+    void RenderObjects();
     bool viewOptions;
     void RenderUI();
+
+    //void RenderMinimap();
 };
 
 #endif

@@ -49,6 +49,9 @@
     <ClCompile Include="Source\MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\randomNoGen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Source\PipePuzzle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
