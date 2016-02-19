@@ -253,7 +253,7 @@ void SP2::Init()
 	
 	srand(time(0));
 	controlpuzzle.setpuzzle();
-
+	rotator = 0;
     ItemCollision walltest;
     walltest.minX = 5;     walltest.maxX = 235;     walltest.minZ = -120;  walltest.maxZ = -95;    SharedData::GetInstance()->collisionItems.push_back(walltest);
 
@@ -280,7 +280,7 @@ void SP2::Update(double dt)
 
 	if (delayer > 0)
 		delayer -= 1;
-
+	rotator++;
     //options
     if (Application::IsKeyPressed('1')) //enable back face culling
         glEnable(GL_CULL_FACE);
@@ -2339,6 +2339,35 @@ void SP2::RenderPuzzle()
 	}
 }
 
+void SP2::RenderInventoryOnScreen(Mesh* mesh, float x, float y)
+{
+	if (!mesh)  //error check
+		return;
+
+	glDisable(GL_DEPTH_TEST);
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -1000, 1000);    //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity();   //no need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();  //reset modelStack
+
+	modelStack.PushMatrix();
+	modelStack.Translate(x, y, 0);
+	modelStack.Rotate(rotator, 0, 1, 0);
+	modelStack.Rotate(-75, 1, 0, 1);
+	modelStack.Scale(10, 10, 10);
+	RenderMesh(mesh, false);
+	modelStack.PopMatrix();
+
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+	glEnable(GL_DEPTH_TEST);
+}
+
 void SP2::RenderInventory()
 {
 	//SharedData::GetInstance()->player->inventory[0] = 1;
@@ -2353,13 +2382,13 @@ void SP2::RenderInventory()
 		if (SharedData::GetInstance()->player->inventory[i] == 1)
 		{
 			//gift1
-			RenderObjectOnScreen(meshList[GEO_ITEM1], 22.5 + (i * 5), 2.5);
+			RenderInventoryOnScreen(meshList[GEO_HAMMER], 22.5 + (i * 5), 2.5);
 			continue;
 		}
 		if (SharedData::GetInstance()->player->inventory[i] == 2)
 		{
 			//gift1
-			RenderObjectOnScreen(meshList[GEO_ITEM2], 22.5 + (i * 5), 2.5);
+			RenderInventoryOnScreen(meshList[GEO_STEMMIE], 22.5 + (i * 5), 2.5);
 			continue;
 		}
 	}

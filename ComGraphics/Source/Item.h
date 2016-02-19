@@ -16,4 +16,14 @@ public:
     std::string getName();
 };
 
+class Gift : public Item
+{
+private:
+	float value_;
+public:
+	Gift();
+	~Gift();
+	float getValue();
+};
+
 #endif

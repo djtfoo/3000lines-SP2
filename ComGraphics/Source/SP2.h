@@ -136,6 +136,7 @@ public:
 	
 	PipePuzzle controlpuzzle;
 	int delayer;
+	int rotator;
 
     //Testing Minimap
     MS minimappp;
@@ -154,6 +155,7 @@ public:
     void RenderObjectOnScreen(Mesh* mesh, float x, float y);
     void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
     void RenderDialogueOnScreen(std::string text, Color color, float size);
+	void SP2::RenderInventoryOnScreen(Mesh* mesh, float x, float y);
     
     void RenderSkybox();
     void RenderGround();
