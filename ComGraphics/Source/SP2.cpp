@@ -208,6 +208,13 @@ SP2::SP2()
 	meshList[GEO_INVENTORY] = MeshBuilder::GenerateQuad("invbar", Color(1, 1, 1), 40, 5);
 	meshList[GEO_INVENTORY]->textureID = LoadTGA("Image/inventorybar.tga");
 
+	meshList[GEO_ITEMSELECT] = MeshBuilder::GenerateQuad("itemselect", Color(1, 1, 1), 4, 4);
+	meshList[GEO_ITEMSELECT]->textureID = LoadTGA("Image/itemselect.tga");
+	meshList[GEO_ITEM1] = MeshBuilder::GenerateQuad("item1", Color(1, 1, 1), 4, 4);
+	meshList[GEO_ITEM1]->textureID = LoadTGA("Image/item1.tga");
+	meshList[GEO_ITEM2] = MeshBuilder::GenerateQuad("item2", Color(1, 1, 1), 4, 4);
+	meshList[GEO_ITEM2]->textureID = LoadTGA("Image/item2.tga");
+
     viewOptions = true;
 }
 
@@ -270,6 +277,9 @@ void SP2::Update(double dt)
     SharedData::GetInstance()->camera->Update(dt);
 
     SharedData::GetInstance()->player->CheckInteraction();
+
+	if (delayer > 0)
+		delayer -= 1;
 
     //options
     if (Application::IsKeyPressed('1')) //enable back face culling
@@ -2331,22 +2341,44 @@ void SP2::RenderPuzzle()
 
 void SP2::RenderInventory()
 {
-	SharedData::GetInstance()->player->inventory[0] = 1;
+	//SharedData::GetInstance()->player->inventory[0] = 1;
+	//SharedData::GetInstance()->player->inventory[1] = 1;
+	
 	for (int i = 0; i < 8; i++)
 	{
 		if (SharedData::GetInstance()->player->inventory[i] == 0)
 		{
-			return;
+			break;
 		}
 		if (SharedData::GetInstance()->player->inventory[i] == 1)
 		{
-			modelStack.PushMatrix();
-			RenderObjectOnScreen(meshList[GEO_HAMMER], 22.5, 1.25);
-			modelStack.PopMatrix();
-			
+			//gift1
+			RenderObjectOnScreen(meshList[GEO_ITEM1], 22.5 + (i * 5), 2.5);
+			continue;
 		}
-		
+		if (SharedData::GetInstance()->player->inventory[i] == 2)
+		{
+			//gift1
+			RenderObjectOnScreen(meshList[GEO_ITEM2], 22.5 + (i * 5), 2.5);
+			continue;
+		}
 	}
+	if (delayer < 1)
+	{
+		if (Application::IsKeyPressed('V'))
+			SharedData::GetInstance()->player->addItem(1);
+		if (Application::IsKeyPressed('B'))
+			SharedData::GetInstance()->player->addItem(2);
+		if ((Application::IsKeyPressed('Z')) && (SharedData::GetInstance()->player->invselect > 0))
+			SharedData::GetInstance()->player->invselect -= 1;
+		if (Application::IsKeyPressed('X'))
+			SharedData::GetInstance()->player->removeItem(SharedData::GetInstance()->player->invselect);
+		if ((Application::IsKeyPressed('C')) && (SharedData::GetInstance()->player->invselect < 7))
+			SharedData::GetInstance()->player->invselect += 1;
+		delayer = 3;
+	}
+
+	RenderObjectOnScreen(meshList[GEO_ITEMSELECT], 22.5 + (SharedData::GetInstance()->player->invselect * 5), 2.5);
 }
 
 void SP2::RenderUI()

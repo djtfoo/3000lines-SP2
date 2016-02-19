@@ -48,9 +48,10 @@ public:
 
     bool isDead();
 
+	int invselect;
 	int inventory[8];
 	std::string addItem(int itemID);
-	std::string removeItem(int itemID);
+	std::string removeItem(int itemPos);
 };
 
 class NPC : public Character

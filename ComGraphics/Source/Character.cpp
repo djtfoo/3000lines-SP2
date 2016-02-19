@@ -19,9 +19,9 @@ std::string Character::getName()
     return name_;
 }
 
-Player::Player(std::string name) : Character(name, Vector3(0, 0, 0), 0), hunger_(0), health_(100), gold_(0)
+Player::Player(std::string name) : Character(name, Vector3(0, 0, 0), 0), hunger_(0), health_(100), gold_(0), invselect(0)
 {
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		inventory[i] = 0;
 	}
@@ -245,21 +245,21 @@ std::string Player::addItem(int itemID)
 	return "Inventory is full";
 }
 
-std::string Player::removeItem(int itemID)
+std::string Player::removeItem(int itemPos)
 {
 	bool removed = false;
 	std::stringstream feedbackreport;
 	for (int i = 0; i < 8; i++)
 	{
-		if ((inventory[i] == itemID) && (removed == false))
+		if ((i == itemPos) && (removed == false))
 		{
-			feedbackreport << "The item " << itemID << " has been removed from inventory.";
+			feedbackreport << "The item at " << itemPos << " has been removed from inventory.";
 			inventory[i] = 0;
 			removed = true;
 		}
 		if (removed == true)
 		{
-			if (i == 6)
+			if (i == 7)
 			{
 				inventory[7] = 0;
 				break;
@@ -269,7 +269,7 @@ std::string Player::removeItem(int itemID)
 	}
 	if (removed == false)
 	{
-		feedbackreport << "The item " << itemID << " does not exist.";
+		feedbackreport << "Error.";
 	}
 	std::string returner = feedbackreport.str();
 	return returner;

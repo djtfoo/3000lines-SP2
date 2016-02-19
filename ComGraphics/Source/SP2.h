@@ -55,6 +55,11 @@ class SP2 : public Scene
         GEO_TABLE,
         GEO_HAMMER,
 
+		//Gifts
+		GEO_ITEMSELECT,
+		GEO_ITEM1,
+		GEO_ITEM2,
+
         //Light Source
         GEO_LIGHTBALL,
 
@@ -130,6 +135,7 @@ public:
     MS modelStack, viewStack, projectionStack;
 	
 	PipePuzzle controlpuzzle;
+	int delayer;
 
     //Testing Minimap
     MS minimappp;
