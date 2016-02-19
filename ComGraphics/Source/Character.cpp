@@ -274,3 +274,15 @@ std::string Player::removeItem(int itemPos)
 	std::string returner = feedbackreport.str();
 	return returner;
 }
+
+bool Player::itemHave(int itemID)
+{
+	for (int i = 0; i < 8; i++)
+	{
+		if (inventory[i] == itemID)
+		{
+			return true;
+		}
+	}
+	return false;
+}
