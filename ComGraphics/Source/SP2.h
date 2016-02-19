@@ -76,6 +76,7 @@ class SP2 : public Scene
 		GEO_PIPETYPE4,
 
         GEO_CROSSHAIRS,
+		GEO_INVENTORY,
         NUM_GEOMETRY,
     };
 
@@ -155,6 +156,7 @@ public:
 	void RenderPuzzle();
 	void RenderNPC();
     void RenderObjects();
+	void RenderInventory();
     bool viewOptions;
     void RenderUI();
 

@@ -27,6 +27,8 @@ private:
     unsigned int gold_;
     //add inventory
     //add pointers for clothes - hats, top, bottoms, etc
+	int* outfit;
+	int* hat;
 
 public:
     Player(std::string name);
@@ -45,6 +47,10 @@ public:
     void setGold();
 
     bool isDead();
+
+	int inventory[8];
+	std::string addItem(int itemID);
+	std::string removeItem(int itemID);
 };
 
 class NPC : public Character

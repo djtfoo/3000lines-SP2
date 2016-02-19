@@ -205,6 +205,9 @@ SP2::SP2()
     meshList[GEO_CROSSHAIRS] = MeshBuilder::GenerateQuad("crosshairs", Color(1, 1, 1), 2, 2);
     meshList[GEO_CROSSHAIRS]->textureID = LoadTGA("Image/crosshairs.tga");
 
+	meshList[GEO_INVENTORY] = MeshBuilder::GenerateQuad("invbar", Color(1, 1, 1), 40, 5);
+	meshList[GEO_INVENTORY]->textureID = LoadTGA("Image/inventorybar.tga");
+
     viewOptions = true;
 }
 
@@ -344,8 +347,10 @@ void SP2::Render()
 
     RenderPuzzle();
 
+	RenderInventory();
 
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
+	RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
     RenderUI();
 
     //RenderMinimap();
@@ -2321,6 +2326,26 @@ void SP2::RenderPuzzle()
 			}
 			modelStack.PopMatrix();
 		}
+	}
+}
+
+void SP2::RenderInventory()
+{
+	SharedData::GetInstance()->player->inventory[0] = 1;
+	for (int i = 0; i < 8; i++)
+	{
+		if (SharedData::GetInstance()->player->inventory[i] == 0)
+		{
+			return;
+		}
+		if (SharedData::GetInstance()->player->inventory[i] == 1)
+		{
+			modelStack.PushMatrix();
+			RenderObjectOnScreen(meshList[GEO_HAMMER], 22.5, 1.25);
+			modelStack.PopMatrix();
+			
+		}
+		
 	}
 }
 

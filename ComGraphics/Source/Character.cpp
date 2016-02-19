@@ -4,6 +4,7 @@
 #include "SharedData.h"
 
 #include <iostream>
+#include <sstream>
 
 Character::Character(std::string name, Vector3 position, float direction) : name_(name), position_(Vector3(0, 0, 0)), direction_(0)
 {
@@ -20,6 +21,10 @@ std::string Character::getName()
 
 Player::Player(std::string name) : Character(name, Vector3(0, 0, 0), 0), hunger_(0), health_(100), gold_(0)
 {
+	for (int i = 0; i < 5; i++)
+	{
+		inventory[i] = 0;
+	}
 }
 
 Player::~Player()
@@ -222,4 +227,50 @@ bool Player::isDead()
     else {
         return false;
     }
+}
+
+std::string Player::addItem(int itemID)
+{
+	for (int i = 0; i < 8; i++)
+	{
+		if (inventory[i] == 0)
+		{
+			inventory[i] = itemID;
+			std::stringstream feedbackreport;
+			feedbackreport << "The item " << itemID << " has been added to inventory.";
+			std::string returner = feedbackreport.str();
+			return returner;
+		}
+	}
+	return "Inventory is full";
+}
+
+std::string Player::removeItem(int itemID)
+{
+	bool removed = false;
+	std::stringstream feedbackreport;
+	for (int i = 0; i < 8; i++)
+	{
+		if ((inventory[i] == itemID) && (removed == false))
+		{
+			feedbackreport << "The item " << itemID << " has been removed from inventory.";
+			inventory[i] = 0;
+			removed = true;
+		}
+		if (removed == true)
+		{
+			if (i == 6)
+			{
+				inventory[7] = 0;
+				break;
+			}
+			inventory[i] = inventory[i + 1];
+		}
+	}
+	if (removed == false)
+	{
+		feedbackreport << "The item " << itemID << " does not exist.";
+	}
+	std::string returner = feedbackreport.str();
+	return returner;
 }
