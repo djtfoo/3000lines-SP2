@@ -8,6 +8,7 @@
 #include "Collision.h"
 
 #include "PipePuzzle.h"
+#include "GameState.h"
 
 #include <cstdlib>
 
@@ -18,6 +19,7 @@
 
 class SP2 : public Scene
 {
+
     enum GEOMETRY_TYPE
     {
         //skybox
@@ -54,6 +56,17 @@ class SP2 : public Scene
         GEO_VENDINGMACHINE,
         GEO_TABLE,
         GEO_HAMMER,
+        //newnew today vvv
+        GEO_BOXCRATE,
+        GEO_CHAIR,
+        GEO_CONTROLROOM,
+        GEO_FIREEXTINGUISHER,
+        GEO_FRIDGE,
+        GEO_PLANT,
+        GEO_SHELF,
+        GEO_TEMSHOP,
+        GEO_UMBRELLASTAND,
+        //^^^
 
 		//Gifts
 		GEO_ITEMSELECT,
@@ -132,6 +145,10 @@ public:
     unsigned m_programID;
     unsigned m_parameters[U_TOTAL];
 
+    float vibrateY, vibrateX;
+    float chonFloaty;
+    bool chonFloat;
+
     MS modelStack, viewStack, projectionStack;
 	
 	PipePuzzle controlpuzzle;
@@ -168,7 +185,17 @@ public:
     bool viewOptions;
     void RenderUI();
 
-    //void RenderMinimap();
+    void RenderMinimap();
+
+    //Dem Gamestates
+    GAME_STATE gamestate;
+
+    void loadFree();
+    void loadShop();
+    void loadWSGame();
+    void loadChonGame();
+    void loadVeeGame();
+    void loadRabbitGame();
 };
 
 #endif

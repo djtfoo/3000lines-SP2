@@ -15,6 +15,8 @@
 
 SP2::SP2()
 {
+    chonFloat = false;
+    chonFloaty = vibrateX = vibrateY = 0;
     // Set background color to dark blue
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -141,10 +143,6 @@ SP2::SP2()
     meshList[GEO_CHON] = MeshBuilder::GenerateOBJ("chon", "OBJ/chon.obj");
     meshList[GEO_CHON]->textureID = LoadTGA("Image/chonUV.tga");
 
-    //GEO_MAP
-    meshList[GEO_MAP] = MeshBuilder::GenerateQuad("minimap", Color(1, 1, 1), 10, 10);
-
-
     //Objects
     meshList[GEO_BENCH] = MeshBuilder::GenerateOBJ("bench", "OBJ/bench.obj");
     meshList[GEO_BENCH]->textureID = LoadTGA("Image/bench.tga");
@@ -160,6 +158,34 @@ SP2::SP2()
 
     meshList[GEO_HAMMER] = MeshBuilder::GenerateOBJ("hammer", "OBJ/hammer.obj");
     meshList[GEO_HAMMER]->textureID = LoadTGA("Image/hammer.tga");
+
+    //New Objects
+    meshList[GEO_BOXCRATE] = MeshBuilder::GenerateOBJ("boxcrate", "OBJ/boxcrate.obj");
+    meshList[GEO_BOXCRATE   ]->textureID = LoadTGA("Image/boxcrate.tga");
+
+    meshList[GEO_CHAIR] = MeshBuilder::GenerateOBJ("chair", "OBJ/chair.obj");
+    meshList[GEO_CHAIR]->textureID = LoadTGA("Image/chair.tga");
+
+    meshList[GEO_CONTROLROOM] = MeshBuilder::GenerateOBJ("controlroom", "OBJ/controlroom.obj");
+    meshList[GEO_CONTROLROOM]->textureID = LoadTGA("Image/controlroom.tga");
+
+    meshList[GEO_FIREEXTINGUISHER] = MeshBuilder::GenerateOBJ("fireextinguisher", "OBJ/fireextinguisher.obj");
+    meshList[GEO_FIREEXTINGUISHER]->textureID = LoadTGA("Image/fireextinguisher.tga");
+
+    meshList[GEO_FRIDGE] = MeshBuilder::GenerateOBJ("fridge", "OBJ/fridgedefault.obj");
+    meshList[GEO_FRIDGE]->textureID = LoadTGA("Image/fridgedefault.tga");
+
+    meshList[GEO_PLANT] = MeshBuilder::GenerateOBJ("plant", "OBJ/plant.obj");
+    meshList[GEO_PLANT]->textureID = LoadTGA("Image/plant.tga");
+
+    meshList[GEO_SHELF] = MeshBuilder::GenerateOBJ("shelf", "OBJ/shelf.obj");
+    meshList[GEO_SHELF]->textureID = LoadTGA("Image/shelf.tga");
+
+    meshList[GEO_TEMSHOP] = MeshBuilder::GenerateOBJ("temshop", "OBJ/temshop.obj");
+    meshList[GEO_TEMSHOP]->textureID = LoadTGA("Image/temshop.tga");
+
+    meshList[GEO_UMBRELLASTAND] = MeshBuilder::GenerateOBJ("umbrellastand", "OBJ/umbrellastand.obj");
+    meshList[GEO_UMBRELLASTAND]->textureID = LoadTGA("Image/umbrellastand.tga");
 
     //Light
     meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
@@ -210,10 +236,10 @@ SP2::SP2()
 
 	meshList[GEO_ITEMSELECT] = MeshBuilder::GenerateQuad("itemselect", Color(1, 1, 1), 4, 4);
 	meshList[GEO_ITEMSELECT]->textureID = LoadTGA("Image/itemselect.tga");
-	meshList[GEO_ITEM1] = MeshBuilder::GenerateQuad("item1", Color(1, 1, 1), 4, 4);
-	meshList[GEO_ITEM1]->textureID = LoadTGA("Image/item1.tga");
-	meshList[GEO_ITEM2] = MeshBuilder::GenerateQuad("item2", Color(1, 1, 1), 4, 4);
-	meshList[GEO_ITEM2]->textureID = LoadTGA("Image/item2.tga");
+
+
+    meshList[GEO_MAP] = MeshBuilder::GenerateMinimap("map", 10, 10);
+    meshList[GEO_MAP]->textureID = LoadTGA("Image/Donna.tga");
 
     viewOptions = true;
 }
@@ -224,6 +250,8 @@ SP2::~SP2()
 
 void SP2::Init()
 {
+    gamestate = GAME_STATE_FREE;
+
     //light 0
     light[0].type = Light::LIGHT_DIRECTIONAL;
     light[0].position.Set(0, 1000, 0);
@@ -297,6 +325,38 @@ void SP2::Update(double dt)
     if (Application::IsKeyPressed('R')) {       //reset
         Reset();
     }
+
+    if (vibrateX && vibrateY < 3)
+    {
+        vibrateX += 1;
+        vibrateY += 1;
+    }
+    else
+    {
+        vibrateX -= 1.5;
+        vibrateY -= 1.5;
+    }
+
+    if (chonFloat == false)
+    {
+        chonFloaty += 0.1;
+        if (chonFloaty >= 10.0f)
+        {
+            chonFloat = true;
+        }
+    }
+    if (chonFloat == true)
+    {
+        chonFloaty -= 0.1;
+        if (chonFloaty <= 0)
+        {
+            chonFloat = false;
+        }
+    }
+    ////minimapUpdate()
+    //GEO_MAP
+    //meshList[GEO_MAP] = MeshBuilder::GenerateMinimap("map", 10, 10);
+    //meshList[GEO_MAP]->textureID = LoadTGA("Image/Donna.tga");
 }
 
 void SP2::Render()
@@ -338,24 +398,39 @@ void SP2::Render()
         glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
     }
 
-    modelStack.PushMatrix();
-    modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
-    RenderMesh(meshList[GEO_LIGHTBALL], false);
-    modelStack.PopMatrix();
+    //modelStack.PushMatrix();
+    //modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
+    //RenderMesh(meshList[GEO_LIGHTBALL], false);
+    //modelStack.PopMatrix();
 
+    switch (gamestate)
+    {
+    case GAME_STATE_FREE: loadFree();
+        break;
+    case GAME_STATE_SHOP: loadShop();
+        break;
+    case GAME_STATE_WSGAME: loadWSGame();
+        break;
+    case GAME_STATE_CHONGAME:  loadChonGame();
+        break;
+    case GAME_STATE_VEEGAME: loadVeeGame();
+        break;
+    case GAME_STATE_RABBIT: loadRabbitGame();
+        break;
+    }
 
+    //RenderMinimap();
+}
+void SP2::loadFree()
+{  
     RenderSkybox();
     RenderGround();
-
-	RenderLayout();
-
+    RenderLayout();
     RenderObjects();
-
     RenderPlayer();
-
     RenderNPC();
-
     RenderPuzzle();
+    RenderUI();
 
 	RenderInventory();
 
@@ -369,6 +444,66 @@ void SP2::Render()
     if (SharedData::GetInstance()->canInteract) {
         RenderTextOnScreen(meshList[GEO_TEXT], "Press LMB", Color(1, 0, 0), 3, 2, 2);
     }
+    
+    if (Application::IsKeyPressed('H'))
+    {
+        gamestate = GAME_STATE_SHOP;
+    }
+}  
+void SP2::loadShop()
+{  
+    if (!meshList[GEO_DIALOGUEBOX] || meshList[GEO_DIALOGUEBOX]->textureID <= 0)  //error check
+        return;
+
+    glDisable(GL_DEPTH_TEST);
+    Mtx44 ortho;
+    ortho.SetToOrtho(0, 80, 0, 60, -10, 10);    //size of screen UI
+    projectionStack.PushMatrix();
+    projectionStack.LoadMatrix(ortho);
+    viewStack.PushMatrix();
+    viewStack.LoadIdentity();   //no need camera for ortho mode
+
+    modelStack.PushMatrix();
+    modelStack.LoadIdentity();  //reset modelStack
+
+    modelStack.PushMatrix();
+
+    modelStack.Translate(25, 25, 0);
+    modelStack.Rotate(90, 0, 1, 0);
+    modelStack.Scale(5, 5, 5);
+    RenderMesh(meshList[GEO_STEMMIE], false);
+
+    projectionStack.PopMatrix();
+    viewStack.PopMatrix();
+    modelStack.PopMatrix();
+    glEnable(GL_DEPTH_TEST);
+
+    RenderPlayer();
+
+    RenderDialogueOnScreen("temshop", Color(1, 0, 1), 15);
+    RenderTextOnScreen(meshList[GEO_TEXT], "hOi, welcom, to da tem shop", Color(1, 1, 1), 2, 5, 5);
+
+    if (Application::IsKeyPressed('L'))
+    {
+        gamestate = GAME_STATE_FREE;
+    }
+}  
+void SP2::loadWSGame()
+{  
+   
+}  
+void SP2::loadChonGame()
+{    
+     
+}    
+void SP2::loadVeeGame()
+{    
+     
+}    
+void SP2::loadRabbitGame()
+{
+
+>>>>>>> Stashed changes
 }
 
 void SP2::Exit()
@@ -2157,19 +2292,19 @@ void SP2::RenderNPC()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(576, 0, 0);
+    modelStack.Translate(580, 0, 0 + 20);
     modelStack.Scale(5, 5, 5);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_STEMMIE], true);
     modelStack.PopMatrix();
 
+
     modelStack.PushMatrix();
-    modelStack.Translate(571, 18, 6);
-    modelStack.Scale(12, 12, 12);
+    modelStack.Translate(576, 20 + vibrateY, 6 + 20 + vibrateX);
+    modelStack.Scale(10, 10, 10);
     modelStack.Rotate(-90, 0, 1, 0);
     RenderMesh(meshList[GEO_STEMMIE_FACE], true);
     modelStack.PopMatrix();
-
 
     modelStack.PushMatrix();
     modelStack.Translate(620, 0, -420);
@@ -2191,8 +2326,9 @@ void SP2::RenderNPC()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(200, 0, -295);
+    modelStack.Translate(200, 5 + chonFloaty, -295);
     modelStack.Scale(10, 10, 10);
+    modelStack.Rotate(90, 0, 1, 0);
     RenderMesh(meshList[GEO_CHON], true);
     modelStack.PopMatrix();
 
@@ -2207,11 +2343,12 @@ void SP2::RenderNPC()
 
 void SP2::RenderObjects()
 {
-    modelStack.PushMatrix();
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_BENCH], true);
-    modelStack.PopMatrix();
+    //modelStack.PushMatrix();
+    //modelStack.Scale(10, 10, 10);
+    //RenderMesh(meshList[GEO_BENCH], true);
+    //modelStack.PopMatrix();
 
+    //Canteen
     for (int i = 0; i < 130; i+=60)
     {
         modelStack.PushMatrix();
@@ -2237,36 +2374,89 @@ void SP2::RenderObjects()
     }
 
     modelStack.PushMatrix();
+    modelStack.Translate(435, 0, -275);
+    modelStack.Scale(9, 9, 9);
+    RenderMesh(meshList[GEO_VENDINGMACHINE], true);
+    modelStack.PopMatrix();
+
+    //Chon's Lab
+    modelStack.PushMatrix();
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_TOOLBOX], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Scale(5, 5, 5);
-    RenderMesh(meshList[GEO_VENDINGMACHINE], true);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_HAMMER], true);
     modelStack.PopMatrix();
+    //modelStack.PushMatrix();
+    //modelStack.Scale(5, 5, 5);
+    //RenderMesh(meshList[GEO_VENDINGMACHINE], true);
+    //modelStack.PopMatrix();
 
+    //Stemmie Shop
     modelStack.PushMatrix();
-    modelStack.Translate(588, 0, -30);
+    modelStack.Translate(588, 0, -20);
     modelStack.Scale(10, 10, 10);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_VENDINGMACHINE], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(435, 0, -275);
-    modelStack.Scale(9, 9, 9);
-    RenderMesh(meshList[GEO_VENDINGMACHINE], true);
+    modelStack.Translate(580, 0, 25);
+    modelStack.Scale(4, 4, 4);
+    RenderMesh(meshList[GEO_TEMSHOP], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
+    modelStack.Translate(10, 0, 0);
     modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_TABLE], true);
+    RenderMesh(meshList[GEO_BOXCRATE], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
+
+    modelStack.Translate(20, 0, 0);
     modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_HAMMER], true);
+    RenderMesh(meshList[GEO_CHAIR], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+
+    modelStack.Translate(30, 0, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_CONTROLROOM], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+
+    modelStack.Translate(40, 0, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(50, 0, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_FRIDGE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(60, 0, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_PLANT], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(70, 0, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_SHELF], true);
+    modelStack.PopMatrix();   
+
+    modelStack.PushMatrix();
+    modelStack.Translate(90, 0, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_UMBRELLASTAND], true);
     modelStack.PopMatrix();
 }
 
@@ -2422,47 +2612,111 @@ void SP2::RenderUI()
     }
 }
 
-//void SP2::RenderMinimap()
-//{
-//    minimappp.LoadIdentity();
-//    minimappp.LookAt(minimappy.pos.x, minimappy.pos.y, minimappy.pos.z, minimappy.targ.x, minimappy.targ.y, minimappy.targ.z, minimappy.UP.x, minimappy.UP.y, minimappy.UP.z);
-//
-//    if (!meshList[GEO_DIALOGUEBOX] || meshList[GEO_DIALOGUEBOX]->textureID <= 0)  //error check
-//        return;
-//
-//    glDisable(GL_DEPTH_TEST);
-//    Mtx44 ortho;
-//    ortho.SetToOrtho(0, 80, 0, 60, -10, 10);    //size of screen UI
-//    projectionStack.PushMatrix();
-//    projectionStack.LoadMatrix(ortho);
-//    viewStack.PushMatrix();
-//    viewStack.LoadIdentity();   //no need camera for ortho mode
-//    minimappp.PushMatrix();     //NEW CODE
-//    minimappp.LoadIdentity();   //NEW CODE
-//
-//    modelStack.PushMatrix();
-//    modelStack.LoadIdentity();  //reset modelStack
-//
-//    modelStack.PushMatrix();
-//
-//    //modelStack.PushMatrix();
-//    //modelStack.Translate(40, 10, 0);
-//    //modelStack.Scale(10, 10, 10);
-//    //RenderMesh(meshList[GEO_STEMMIE], false);
-//    //modelStack.PopMatrix();
-//
-//    ////STUFF TO ADD
-//    modelStack.Translate(75, 5, 0);
-//    modelStack.Scale(3, 3, 3);
-//    RenderMesh(meshList[GEO_MAP], false);
-//
-//    projectionStack.PopMatrix();
-//    viewStack.PopMatrix();
-//    minimappp.PopMatrix();      //NEW CODE
-//    modelStack.PopMatrix();
-//    glEnable(GL_DEPTH_TEST);
-//
-//}
+void SP2::RenderMinimap()
+{
+    minimappp.LoadIdentity();
+    minimappp.LookAt(minimappy.pos.x, minimappy.pos.y, minimappy.pos.z, minimappy.targ.x, minimappy.targ.y, minimappy.targ.z, minimappy.UP.x, minimappy.UP.y, minimappy.UP.z);
+
+    if (!meshList[GEO_DIALOGUEBOX] || meshList[GEO_DIALOGUEBOX]->textureID <= 0)  //error check
+        return;
+
+    glDisable(GL_DEPTH_TEST);
+    Mtx44 ortho;
+    ortho.SetToOrtho(0, 80, 0, 60, -10, 10);    //size of screen UI
+    projectionStack.PushMatrix();
+    projectionStack.LoadMatrix(ortho);
+    viewStack.PushMatrix();
+    viewStack.LoadIdentity();   //no need camera for ortho mode
+    minimappp.PushMatrix();     //NEW CODE
+    minimappp.LoadIdentity();   //NEW CODE
+
+    modelStack.PushMatrix();
+    modelStack.LoadIdentity();  //reset modelStack
+
+    modelStack.PushMatrix();
+
+    //modelStack.PushMatrix();
+    //modelStack.Translate(40, 10, 0);
+    //modelStack.Scale(10, 10, 10);
+    //RenderMesh(meshList[GEO_STEMMIE], false);
+    //modelStack.PopMatrix();
+
+    ////STUFF TO ADD
+    //modelStack.Translate(75, 5, 0);
+    //modelStack.Scale(3, 3, 3);
+    //RenderMesh(meshList[GEO_MAP], false);
+
+    //for (int i = 0; i < 500; i++)
+    //{
+
+    //    glPushMatrix(); //Start Phase
+    //    //modelStack.PushMatrix();
+    //    glEnable(GL_TEXTURE_2D);
+    //    glBindTexture(GL_TEXTURE_2D, GEO_GROUND);
+    //    glBegin(GL_QUADS);
+    //    glTexCoord2d(0, 0); glVertex2f(0, 0);
+    //    glTexCoord2d(1, 0); glVertex2f(0 + 1000, 0);
+    //    glTexCoord2d(1, 1); glVertex2f(0 + 1000, 0 + 1000);
+    //    glTexCoord2d(0, 1); glVertex2f(0, 0 + 1000);
+    
+    modelStack.Translate(15, 15, 0);
+    RenderMesh(meshList[GEO_MAP], false);
+    //    glEnd();
+    //    glPopMatrix();  //End Phase
+    //}
+    //modelStack.PopMatrix();
+    
+    //glDisable(GL_TEXTURE_2D);
+
+    projectionStack.PopMatrix();
+    viewStack.PopMatrix();
+    minimappp.PopMatrix();      //NEW CODE
+    modelStack.PopMatrix();
+    glEnable(GL_DEPTH_TEST);
+    //std::vector<Vertex> vertex_buffer_data;
+    //std::vector<GLuint> index_buffer_data;
+
+    //Vertex v;
+    //v.color = Color(0, 1, 0);
+
+    //float width = 1.f / 200;
+    //float height = 1.f / 200;
+    //int offset = 0;
+
+    //for (unsigned i = 0; i < 200; ++i) 
+    //{
+    //    for (unsigned j = 0; j < 200; ++j) 
+    //    {
+    //        //add 4 vertices into vertex_buffer_data
+    //        v.pos.Set(-0.5f, -0.5f, 0);     v.normal.Set(0, 0, 1);  v.texCoord.Set(width * j, 1.f - height * (i + 1));     vertex_buffer_data.push_back(v);
+    //        v.pos.Set(0.5f, -0.5f, 0);      v.normal.Set(0, 0, 1);  v.texCoord.Set(width * (j + 1), 1.f - height * (i + 1));   vertex_buffer_data.push_back(v);
+    //        v.pos.Set(0.5f, 0.5f, 0);       v.normal.Set(0, 0, 1);  v.texCoord.Set(width * (j + 1), 1.f - height * i);   vertex_buffer_data.push_back(v);
+    //        v.pos.Set(-0.5f, 0.5f, 0);      v.normal.Set(0, 0, 1);  v.texCoord.Set(width * j, 1.f - height * i);   vertex_buffer_data.push_back(v);
+
+    //        //add 6 indices into index_buffer_data
+    //        index_buffer_data.push_back(offset + 0);
+    //        index_buffer_data.push_back(offset + 1);
+    //        index_buffer_data.push_back(offset + 2);
+
+    //        index_buffer_data.push_back(offset + 0);
+    //        index_buffer_data.push_back(offset + 2);
+    //        index_buffer_data.push_back(offset + 3);
+
+    //        offset += 4;
+    //    }
+    //}
+
+    //Mesh *mesh = new Mesh("minimap");
+
+    //glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexBuffer);
+    //glBufferData(GL_ARRAY_BUFFER, vertex_buffer_data.size() * sizeof(Vertex), &vertex_buffer_data[0], GL_STATIC_DRAW);
+    //glBindBuffer(GL_ARRAY_BUFFER, mesh->indexBuffer);
+    //glBufferData(GL_ARRAY_BUFFER, index_buffer_data.size() * sizeof(GLuint), &index_buffer_data[0], GL_STATIC_DRAW);
+
+    //mesh->indexSize = index_buffer_data.size();
+    //mesh->mode = Mesh::DRAW_TRIANGLES;
+
+}
 
 void SP2::Reset()
 {
