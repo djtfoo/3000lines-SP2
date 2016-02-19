@@ -34,6 +34,8 @@ class SP2 : public Scene
         //Minimap
         GEO_MAP,
 
+        GEO_LAYOUT,
+
         //Our NPCs
         GEO_ADOLPH,
         GEO_STEMMIE,
@@ -49,6 +51,10 @@ class SP2 : public Scene
         //text
         GEO_TEXT,
         GEO_DIALOGUEBOX,
+        GEO_HUNGER_BAR,
+        GEO_HUNGER_UI,
+        GEO_DAYS_UI,
+        GEO_SHOPUI,
 
         //Objects
         GEO_BENCH,
@@ -72,6 +78,8 @@ class SP2 : public Scene
 		GEO_ITEMSELECT,
 		GEO_ITEM1,
 		GEO_ITEM2,
+
+        GEO_SHOPDISPLAY,
 
         //Light Source
         GEO_LIGHTBALL,
@@ -169,7 +177,7 @@ public:
 
     void RenderMesh(Mesh* mesh, bool enableLight);
     void RenderText(Mesh* mesh, std::string text, Color color);
-    void RenderObjectOnScreen(Mesh* mesh, float x, float y);
+    void RenderObjectOnScreen(Mesh* mesh, float x, float y, float scalex = 1, float scaley = 1);
     void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
     void RenderDialogueOnScreen(std::string text, Color color, float size);
 	void SP2::RenderInventoryOnScreen(Mesh* mesh, float x, float y);
@@ -196,6 +204,16 @@ public:
     void loadChonGame();
     void loadVeeGame();
     void loadRabbitGame();
+
+    void shoptemp();
+    void RotateDisplay();
+
+    int playerHung;
+    float objx, objy;
+
+    float rotating;
+
+    //void RenderMinimap();
 };
 
 #endif
