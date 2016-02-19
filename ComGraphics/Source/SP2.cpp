@@ -104,22 +104,22 @@ SP2::SP2()
 
 
     //skybox
-    meshList[GEO_SKYBOX_LEFT] = MeshBuilder::GenerateQuad("skybox_left", Color(1, 1, 1), 1000, 1000);
+    meshList[GEO_SKYBOX_LEFT] = MeshBuilder::GenerateQuad("skybox_left", Color(1, 1, 1), 1500, 1500);
     meshList[GEO_SKYBOX_LEFT]->textureID = LoadTGA("Image/Skybox/redplanet_left.tga");
 
-    meshList[GEO_SKYBOX_RIGHT] = MeshBuilder::GenerateQuad("skybox_right", Color(1, 1, 1), 1000, 1000);
+    meshList[GEO_SKYBOX_RIGHT] = MeshBuilder::GenerateQuad("skybox_right", Color(1, 1, 1), 1500, 1500);
     meshList[GEO_SKYBOX_RIGHT]->textureID = LoadTGA("Image/Skybox/redplanet_right.tga");
 
-    meshList[GEO_SKYBOX_TOP] = MeshBuilder::GenerateQuad("skybox_top", Color(1, 1, 1), 1000, 1000);
+    meshList[GEO_SKYBOX_TOP] = MeshBuilder::GenerateQuad("skybox_top", Color(1, 1, 1), 1500, 1500);
     meshList[GEO_SKYBOX_TOP]->textureID = LoadTGA("Image/Skybox/redplanet_top.tga");
 
-    meshList[GEO_SKYBOX_BOTTOM] = MeshBuilder::GenerateQuad("skybox_bottom", Color(1, 1, 1), 1000, 1000);
+    meshList[GEO_SKYBOX_BOTTOM] = MeshBuilder::GenerateQuad("skybox_bottom", Color(1, 1, 1), 1500, 1500);
     meshList[GEO_SKYBOX_BOTTOM]->textureID = LoadTGA("Image/Skybox/redplanet_bottom.tga");
 
-    meshList[GEO_SKYBOX_BACK] = MeshBuilder::GenerateQuad("skybox_back", Color(1, 1, 1), 1000, 1000);
+    meshList[GEO_SKYBOX_BACK] = MeshBuilder::GenerateQuad("skybox_back", Color(1, 1, 1), 1500, 1500);
     meshList[GEO_SKYBOX_BACK]->textureID = LoadTGA("Image/Skybox/redplanet_back.tga");
 
-    meshList[GEO_SKYBOX_FRONT] = MeshBuilder::GenerateQuad("skybox_front", Color(1, 1, 1), 1000, 1000);
+    meshList[GEO_SKYBOX_FRONT] = MeshBuilder::GenerateQuad("skybox_front", Color(1, 1, 1), 1500, 1500);
     meshList[GEO_SKYBOX_FRONT]->textureID = LoadTGA("Image/Skybox/redplanet_front.tga");
 
     meshList[GEO_GROUND] = MeshBuilder::GenerateQuad("ground", Color(1, 1, 1), 2000, 2000);
@@ -251,7 +251,7 @@ SP2::SP2()
 	meshList[GEO_PIPETYPE4] = MeshBuilder::GenerateQuad("pipetype4", Color(1, 1, 1), 1, 1);
 	meshList[GEO_PIPETYPE4]->textureID = LoadTGA("Image/pipetype4.tga");
 
-    meshList[GEO_CROSSHAIRS] = MeshBuilder::GenerateQuad("crosshairs", Color(1, 1, 1), 2, 2);
+    meshList[GEO_CROSSHAIRS] = MeshBuilder::GenerateQuad("crosshairs", Color(1, 1, 1), 3, 3);
     meshList[GEO_CROSSHAIRS]->textureID = LoadTGA("Image/crosshairs.tga");
 
 	meshList[GEO_INVENTORY] = MeshBuilder::GenerateQuad("invbar", Color(1, 1, 1), 40, 5);
@@ -259,7 +259,6 @@ SP2::SP2()
 
 	meshList[GEO_ITEMSELECT] = MeshBuilder::GenerateQuad("itemselect", Color(1, 1, 1), 4, 4);
 	meshList[GEO_ITEMSELECT]->textureID = LoadTGA("Image/itemselect.tga");
-
 
     meshList[GEO_MAP] = MeshBuilder::GenerateMinimap("map", 10, 10);
     meshList[GEO_MAP]->textureID = LoadTGA("Image/Donna.tga");
@@ -306,17 +305,38 @@ void SP2::Init()
 	
 	srand(time(0));
 	controlpuzzle.setpuzzle();
-	rotator = 0;
     ItemCollision walltest;
-    walltest.minX = 5;     walltest.maxX = 235;     walltest.minZ = -120;  walltest.maxZ = -95;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //hangar walls
+    walltest.minX = 5;      walltest.maxX = 180;    walltest.minZ = -110;   walltest.maxZ = -90;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 210;      walltest.maxX = 235;    walltest.minZ = -110;   walltest.maxZ = -90;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = -5;     walltest.maxX = 12;     walltest.minZ = -110;   walltest.maxZ = -40;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = -5;     walltest.maxX = 12;     walltest.minZ = 45;     walltest.maxZ = 110;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 5;      walltest.maxX = 235;    walltest.minZ = 90;   walltest.maxZ = 110;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 230;      walltest.maxX = 245;    walltest.minZ = -100;   walltest.maxZ = -12;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 230;      walltest.maxX = 245;    walltest.minZ = 12;   walltest.maxZ = 100;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    
+    //small corridor
+    walltest.minX = 230;      walltest.maxX = 275;    walltest.minZ = 12;   walltest.maxZ = 25;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 230;      walltest.maxX = 275;    walltest.minZ = -25;   walltest.maxZ = -12;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+
+    //square corridor
+    walltest.minX = 262;      walltest.maxX = 275;    walltest.minZ = 15;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 262;      walltest.maxX = 275;    walltest.minZ = -230;   walltest.maxZ = -15;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 265;      walltest.maxX = 330;    walltest.minZ = -230;   walltest.maxZ = -215;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 265;      walltest.maxX = 300;    walltest.minZ = 215;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 350;      walltest.maxX = 540;    walltest.minZ = -230;   walltest.maxZ = -215;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 320;      walltest.maxX = 420;    walltest.minZ = 215;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 557;      walltest.maxX = 570;    walltest.minZ = -255;   walltest.maxZ = -40;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 557;      walltest.maxX = 570;    walltest.minZ = 40;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    walltest.minX = 470;      walltest.maxX = 565;    walltest.minZ = 215;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
 
     Interaction* interactions;
     interactions = new PipePuzzleInteraction();
-    interactions->middlePoint = Vector3(446, 15, 374.5f);   interactions->distX = 50;   interactions->distY = 15;   interactions->distZ = 5.f;     SharedData::GetInstance()->interactionItems.push_back(interactions);
+    interactions->middlePoint = Vector3(446, 15, 378);   interactions->distX = 50;   interactions->distY = 15;   interactions->distZ = 5.f;     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     playerHung = SharedData::GetInstance()->player->getHunger();
     rotating = 0;
-
+    rotator = 0;
 }
 
 static float ROT_LIMIT = 45.f;
@@ -760,38 +780,38 @@ void SP2::RenderSkybox()
 
     //follow player
 
-    modelStack.Translate(SharedData::GetInstance()->player->position_.x, -100, SharedData::GetInstance()->player->position_.z);
+    modelStack.Translate(SharedData::GetInstance()->player->position_.x, -600, SharedData::GetInstance()->player->position_.z);
 
     //left
     modelStack.PushMatrix();
-    modelStack.Translate(-495, 495, 0);
+    modelStack.Translate(-745, 745, 0);
     modelStack.Rotate(90, 0, 1, 0);
     RenderMesh(meshList[GEO_SKYBOX_LEFT], false);
     modelStack.PopMatrix();
 
     //right
     modelStack.PushMatrix();
-    modelStack.Translate(495, 495, 0);
+    modelStack.Translate(745, 745, 0);
     modelStack.Rotate(-90, 0, 1, 0);
     RenderMesh(meshList[GEO_SKYBOX_RIGHT], false);
     modelStack.PopMatrix();
 
     //back
     modelStack.PushMatrix();
-    modelStack.Translate(0, 495, 495);
+    modelStack.Translate(0, 745, 745);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_SKYBOX_BACK], false);
     modelStack.PopMatrix();
 
     //front
     modelStack.PushMatrix();
-    modelStack.Translate(0, 495, -495);
+    modelStack.Translate(0, 745, -745);
     RenderMesh(meshList[GEO_SKYBOX_FRONT], false);
     modelStack.PopMatrix();
 
     //top
     modelStack.PushMatrix();
-    modelStack.Translate(0, 990, 0);
+    modelStack.Translate(0, 1490, 0);
     modelStack.Rotate(-90, 0, 1, 0);
     modelStack.Rotate(90, 1, 0, 0);
     RenderMesh(meshList[GEO_SKYBOX_TOP], false);
@@ -2689,7 +2709,6 @@ void SP2::RenderUI()
         RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 10, 10, playerHung / 2, 1);
     }
 }
-
 
 void SP2::RenderMinimap()
 {

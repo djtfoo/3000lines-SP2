@@ -79,8 +79,8 @@ void Application::Init()
     get_resolution();
 
 	//Create a window and create its OpenGL context
-    m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
-    //m_window = glfwCreateWindow(width, height, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
+    //m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
+    m_window = glfwCreateWindow(width, height, "Computer Graphics", glfwGetPrimaryMonitor(), NULL);
 
     glfwSetWindowSizeCallback(m_window, resize_callback);
 
@@ -113,7 +113,7 @@ void Application::Init()
 void Application::Run()
 {
 	//Main Loop
-	Scene *scene = new SP2();
+	Scene *scene = new MainMenu();
 	scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
@@ -137,14 +137,14 @@ void Application::Run()
             if (SharedData::GetInstance()->cursor_newxpos <= 0)
                 glfwSetCursorPos(m_window, 0, SharedData::GetInstance()->cursor_newypos);
 
-            if (SharedData::GetInstance()->cursor_newxpos >= 1920)
-                glfwSetCursorPos(m_window, 1920, SharedData::GetInstance()->cursor_newypos);
+            if (SharedData::GetInstance()->cursor_newxpos >= width)
+                glfwSetCursorPos(m_window, width, SharedData::GetInstance()->cursor_newypos);
 
             if (SharedData::GetInstance()->cursor_newypos <= 0)
                 glfwSetCursorPos(m_window, SharedData::GetInstance()->cursor_newxpos, 0);
 
-            if (SharedData::GetInstance()->cursor_newypos >= 1080)
-                glfwSetCursorPos(m_window, SharedData::GetInstance()->cursor_newxpos, 1080);
+            if (SharedData::GetInstance()->cursor_newypos >= height)
+                glfwSetCursorPos(m_window, SharedData::GetInstance()->cursor_newxpos, height);
         }
 
         m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.

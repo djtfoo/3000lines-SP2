@@ -19,6 +19,19 @@
 
 class SP2 : public Scene
 {
+    enum LOCATION
+    {
+        HANGAR,
+        LABORATORY,
+        CONTROLROOM,
+        CORRIDOR,
+        //can split corridor into different segments
+        CANTEEN,
+        //TOILET,
+        OUTSIDE,
+
+        LOCATION_TOTAL
+    };
 
     enum GEOMETRY_TYPE
     {
@@ -212,8 +225,6 @@ public:
     float objx, objy;
 
     float rotating;
-
-    //void RenderMinimap();
 };
 
 #endif
