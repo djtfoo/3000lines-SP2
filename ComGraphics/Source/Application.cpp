@@ -113,7 +113,14 @@ void Application::Init()
 void Application::Run()
 {
 	//Main Loop
-	Scene *scene = new MainMenu();
+	Scene *scene = 0;
+    switch (SharedData::GetInstance()->program_state)
+    {
+    case SharedData::PROGRAM_MENU: scene = new MainMenu();
+        break;
+    case SharedData::PROGRAM_GAME: scene = new SP2();
+        break;
+    }
 	scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame

@@ -332,7 +332,15 @@ void SP2::Init()
 
     Interaction* interactions;
     interactions = new PipePuzzleInteraction();
-    interactions->middlePoint = Vector3(446, 15, 378);   interactions->distX = 50;   interactions->distY = 15;   interactions->distZ = 5.f;     SharedData::GetInstance()->interactionItems.push_back(interactions);
+    //interactions->middlePoint = Vector3(446, 15, 378);
+    //interactions->distX = 50;   interactions->distY = 15;   interactions->distZ = 5.f;
+    interactions->bound1.Set(396, -15, 373);     interactions->bound2.Set(486, 55, 383);
+    //interactions->x1 = 396; interactions->x2 = 496; interactions->y1 = 0;   interactions->y2 = 30;  interactions->z1 = 373; interactions->z2 = 383;
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    
+    interactions = new Dialogue();
+    interactions->bound1.Set(410, -15, 270);     interactions->bound2.Set(470, 15, 330);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     playerHung = SharedData::GetInstance()->player->getHunger();
     rotating = 0;
@@ -486,7 +494,7 @@ void SP2::Render()
         break;
     case GAME_STATE_WSGAME: loadWSGame();
         break;
-    case GAME_STATE_CHONGAME:  loadChonGame();
+    case GAME_STATE_CHONGAME: loadChonGame();
         break;
     case GAME_STATE_VEEGAME: loadVeeGame();
         break;

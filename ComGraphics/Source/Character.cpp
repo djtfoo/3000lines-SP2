@@ -176,17 +176,88 @@ void Player::Walk(double dt)
     }
 }
 
+bool inline GetIntersection(float dist1, float dist2, Vector3 maxView, Vector3 playerPos, Vector3& intersect)
+{
+    if ((dist1 * dist2) >= 0.0f)
+        return false;
+    if (dist1 == dist2)
+        return false;
+    
+    intersect = maxView + (playerPos - maxView) * (-dist1 / (dist2 - dist1));
+    return true;
+}
+
+bool inline InBox(Vector3 intersect, Vector3 bound1, Vector3 bound2, const int axis)
+{
+    bool inbox = false;
+    switch (axis)
+    {
+    case 1:     //x-axis
+        if (intersect.y > bound1.y && intersect.y < bound2.y &&
+            intersect.z > bound1.z && intersect.z < bound2.z) {
+            inbox = true;
+        }
+        break;
+    case 2:     //y-axis
+        if (intersect.x > bound1.x && intersect.x < bound2.x &&
+            intersect.z > bound1.z && intersect.z < bound2.z) {
+            inbox = true;
+        }
+        break;
+    case 3:     //z-axis
+        if (intersect.x > bound1.x && intersect.x < bound2.x &&
+            intersect.y > bound1.y && intersect.y < bound2.y) {
+            inbox = true;
+        }
+        break;
+    }
+
+    return inbox;
+}
+
 void Player::CheckInteraction()
 {
     SharedData::GetInstance()->canInteract = false;
 
     vector<Interaction*> temp = SharedData::GetInstance()->interactionItems;
     Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
+    Vector3 maxView = position_ + 75 * view;
     for (size_t i = 0; i < temp.size(); ++i) {
-        Vector3 distance = temp[i]->middlePoint - position_;
+        
+        //if the view is totally outside the box, then don't do calculations because confirm no interaction
+        if (position_.x < temp[i]->bound1.x && maxView.x < temp[i]->bound1.x) { continue; }
+        if (position_.x > temp[i]->bound2.x && maxView.x > temp[i]->bound2.x) { continue; }
+        if (position_.y < temp[i]->bound1.y && maxView.y < temp[i]->bound1.y) { continue; }
+        if (position_.y > temp[i]->bound2.y && maxView.y > temp[i]->bound2.y) { continue; }
+        if (position_.z < temp[i]->bound1.z && maxView.z < temp[i]->bound1.z) { continue; }
+        if (position_.z > temp[i]->bound2.z && maxView.z > temp[i]->bound2.z) { continue; }
+        
+        //if end of range of view is within box, there is intersection
+        if (maxView.x > temp[i]->bound1.x && maxView.x < temp[i]->bound2.x &&
+            maxView.y > temp[i]->bound1.y && maxView.y < temp[i]->bound2.y &&
+            maxView.z > temp[i]->bound1.z && maxView.z < temp[i]->bound2.z) {
+            SharedData::GetInstance()->canInteract = true;
+            SharedData::GetInstance()->interactptr = temp[i];
+            break;
+        }
+
+        Vector3 intersect(0, 0, 0);
+        if ( (GetIntersection(maxView.x - temp[i]->bound1.x, position_.x - temp[i]->bound1.x, maxView, position_, intersect) &&  InBox(intersect, temp[i]->bound1, temp[i]->bound2, 1)) ||
+            (GetIntersection(maxView.y - temp[i]->bound1.y, position_.y - temp[i]->bound1.y, maxView, position_, intersect) && InBox(intersect, temp[i]->bound1, temp[i]->bound2, 2)) ||
+            (GetIntersection(maxView.z - temp[i]->bound1.z, position_.z - temp[i]->bound1.z, maxView, position_, intersect) && InBox(intersect, temp[i]->bound1, temp[i]->bound2, 3)) ||
+            (GetIntersection(maxView.x - temp[i]->bound2.x, position_.x - temp[i]->bound2.x, maxView, position_, intersect) && InBox(intersect, temp[i]->bound1, temp[i]->bound2, 1)) ||
+            (GetIntersection(maxView.y - temp[i]->bound2.y, position_.y - temp[i]->bound2.y, maxView, position_, intersect) && InBox(intersect, temp[i]->bound1, temp[i]->bound2, 2)) ||
+            (GetIntersection(maxView.z - temp[i]->bound2.z, position_.z - temp[i]->bound2.z, maxView, position_, intersect) && InBox(intersect, temp[i]->bound1, temp[i]->bound2, 3)) ) {
+            SharedData::GetInstance()->canInteract = true;
+            SharedData::GetInstance()->interactptr = temp[i];
+            break;
+        }
+
+        /*Vector3 distance = temp[i]->middlePoint - position_;
         if (distance.LengthSquared() > 5625) {  //player too far away
             continue;
         }
+
         float dotProduct = distance.Dot(view);
         //Vector3 projected = dotProduct / distance.LengthSquared() * distance;  //project view vector onto distance vector
         float distLength = distance.Length();
@@ -199,7 +270,7 @@ void Player::CheckInteraction()
             SharedData::GetInstance()->canInteract = true;
             SharedData::GetInstance()->interactptr = temp[i];
             break;
-        }
+        }*/
     }
 
 }
