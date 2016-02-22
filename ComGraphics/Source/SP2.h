@@ -49,6 +49,13 @@ class SP2 : public Scene
 
         GEO_LAYOUT,
 
+        //player character
+        GEO_PLAYER_HEAD,
+        GEO_PLAYER_BODY,
+        GEO_PLAYER_UPPERARM,
+        GEO_PLAYER_LOWERARM,
+        GEO_PLAYER_LEG,
+
         //Our NPCs
         GEO_ADOLPH,
         GEO_STEMMIE,
@@ -60,7 +67,6 @@ class SP2 : public Scene
         GEO_AARON,
         GEO_MERCHANT,
         
-        GEO_MAN,
         //text
         GEO_TEXT,
         GEO_DIALOGUEBOX,

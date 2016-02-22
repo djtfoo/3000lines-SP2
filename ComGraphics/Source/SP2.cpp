@@ -125,11 +125,15 @@ SP2::SP2()
     meshList[GEO_GROUND] = MeshBuilder::GenerateQuad("ground", Color(1, 1, 1), 2000, 2000);
     meshList[GEO_GROUND]->textureID = LoadTGA("Image/ground2.tga");
 
-    meshList[GEO_MAN] = MeshBuilder::GenerateOBJ("man", "OBJ/man.obj");
-    meshList[GEO_MAN]->textureID = LoadTGA("Image/man.tga");
-
 	meshList[GEO_DEVTEXTURE] = MeshBuilder::GenerateQuad("devtexture", Color(1, 1, 1), 1, 1);
 	meshList[GEO_DEVTEXTURE]->textureID = LoadTGA("Image/devtexture.tga");
+
+    //player
+    meshList[GEO_PLAYER_HEAD] = MeshBuilder::GenerateOBJ("player head", "OBJ/cube.obj");
+    meshList[GEO_PLAYER_BODY] = MeshBuilder::GenerateOBJ("player body", "OBJ/cube.obj");
+    meshList[GEO_PLAYER_UPPERARM] = MeshBuilder::GenerateOBJ("player upp arm", "OBJ/cube.obj");
+    meshList[GEO_PLAYER_LOWERARM] = MeshBuilder::GenerateOBJ("player lower arm", "OBJ/lower arm.obj");
+    meshList[GEO_PLAYER_LEG] = MeshBuilder::GenerateOBJ("player leg", "OBJ/cube.obj");
 
     //Render NPCs
     meshList[GEO_ADOLPH] = MeshBuilder::GenerateOBJ("man", "OBJ/machoaf.obj");
@@ -306,29 +310,29 @@ void SP2::Init()
 	srand(time(0));
 	controlpuzzle.setpuzzle();
     ItemCollision walltest;
-    //hangar walls
-    walltest.minX = 5;      walltest.maxX = 180;    walltest.minZ = -110;   walltest.maxZ = -90;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 210;      walltest.maxX = 235;    walltest.minZ = -110;   walltest.maxZ = -90;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = -5;     walltest.maxX = 12;     walltest.minZ = -110;   walltest.maxZ = -40;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = -5;     walltest.maxX = 12;     walltest.minZ = 45;     walltest.maxZ = 110;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 5;      walltest.maxX = 235;    walltest.minZ = 90;   walltest.maxZ = 110;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 230;      walltest.maxX = 245;    walltest.minZ = -100;   walltest.maxZ = -12;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 230;      walltest.maxX = 245;    walltest.minZ = 12;   walltest.maxZ = 100;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    
-    //small corridor
-    walltest.minX = 230;      walltest.maxX = 275;    walltest.minZ = 12;   walltest.maxZ = 25;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 230;      walltest.maxX = 275;    walltest.minZ = -25;   walltest.maxZ = -12;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    ////hangar walls
+    //walltest.minX = 5;      walltest.maxX = 180;    walltest.minZ = -110;   walltest.maxZ = -90;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 210;      walltest.maxX = 235;    walltest.minZ = -110;   walltest.maxZ = -90;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = -5;     walltest.maxX = 12;     walltest.minZ = -110;   walltest.maxZ = -40;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = -5;     walltest.maxX = 12;     walltest.minZ = 45;     walltest.maxZ = 110;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 5;      walltest.maxX = 235;    walltest.minZ = 90;   walltest.maxZ = 110;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 230;      walltest.maxX = 245;    walltest.minZ = -100;   walltest.maxZ = -12;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 230;      walltest.maxX = 245;    walltest.minZ = 12;   walltest.maxZ = 100;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //
+    ////small corridor
+    //walltest.minX = 230;      walltest.maxX = 275;    walltest.minZ = 12;   walltest.maxZ = 25;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 230;      walltest.maxX = 275;    walltest.minZ = -25;   walltest.maxZ = -12;    SharedData::GetInstance()->collisionItems.push_back(walltest);
 
-    //square corridor
-    walltest.minX = 262;      walltest.maxX = 275;    walltest.minZ = 15;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 262;      walltest.maxX = 275;    walltest.minZ = -230;   walltest.maxZ = -15;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 265;      walltest.maxX = 330;    walltest.minZ = -230;   walltest.maxZ = -215;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 265;      walltest.maxX = 300;    walltest.minZ = 215;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 350;      walltest.maxX = 540;    walltest.minZ = -230;   walltest.maxZ = -215;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 320;      walltest.maxX = 420;    walltest.minZ = 215;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 557;      walltest.maxX = 570;    walltest.minZ = -255;   walltest.maxZ = -40;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 557;      walltest.maxX = 570;    walltest.minZ = 40;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
-    walltest.minX = 470;      walltest.maxX = 565;    walltest.minZ = 215;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    ////square corridor
+    //walltest.minX = 262;      walltest.maxX = 275;    walltest.minZ = 15;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 262;      walltest.maxX = 275;    walltest.minZ = -230;   walltest.maxZ = -15;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 265;      walltest.maxX = 330;    walltest.minZ = -230;   walltest.maxZ = -215;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 265;      walltest.maxX = 300;    walltest.minZ = 215;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 350;      walltest.maxX = 540;    walltest.minZ = -230;   walltest.maxZ = -215;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 320;      walltest.maxX = 420;    walltest.minZ = 215;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 557;      walltest.maxX = 570;    walltest.minZ = -255;   walltest.maxZ = -40;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 557;      walltest.maxX = 570;    walltest.minZ = 40;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
+    //walltest.minX = 470;      walltest.maxX = 565;    walltest.minZ = 215;   walltest.maxZ = 230;    SharedData::GetInstance()->collisionItems.push_back(walltest);
 
     Interaction* interactions;
     interactions = new PipePuzzleInteraction();
@@ -339,7 +343,9 @@ void SP2::Init()
     SharedData::GetInstance()->interactionItems.push_back(interactions);
     
     interactions = new Dialogue();
-    interactions->bound1.Set(410, -15, 270);     interactions->bound2.Set(470, 15, 330);
+    //Vee
+    interactions->bound1.Set(425, -15, 285);     interactions->bound2.Set(455, 15, 315);
+    //interactions->bound1.Set(410, -15, 270);     interactions->bound2.Set(470, 15, 330);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     playerHung = SharedData::GetInstance()->player->getHunger();
@@ -362,6 +368,10 @@ void SP2::Update(double dt)
     SharedData::GetInstance()->camera->Update(dt);
 
     SharedData::GetInstance()->player->CheckInteraction();
+
+    if (SharedData::GetInstance()->canInteract && Application::IsKeyPressed(VK_LBUTTON)) {
+        SharedData::GetInstance()->interactptr->DoInteraction();
+    }
 
 	if (delayer > 0)
 		delayer -= 1;
@@ -519,7 +529,14 @@ void SP2::loadFree()
     modelStack.PopMatrix();
 
     RenderObjects();
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 12, 0);
+    modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
+    modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
     RenderPlayer();
+    modelStack.PopMatrix();
+
     RenderNPC();
     RenderPuzzle();
     RenderUI();
@@ -2371,13 +2388,70 @@ void SP2::RenderLayout()
 void SP2::RenderPlayer()
 {
     modelStack.PushMatrix();
+    modelStack.Translate(0, 5, 0);
+    modelStack.Scale(2, 5, 2);
 
-    modelStack.Translate(0, 12, 0);
-    modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
+    //body
+    modelStack.PushMatrix();
+    modelStack.Scale(1.5f, 2.f, 0.7f);
+    RenderMesh(meshList[GEO_PLAYER_BODY], true);
+    modelStack.PopMatrix();
 
-    modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
-    modelStack.Scale(3.f, 3.f, 3.f);
-    RenderMesh(meshList[GEO_MAN], true);
+    //head
+    modelStack.PushMatrix();
+    modelStack.Translate(0.f, 1.5f, 0.f);
+    modelStack.Scale(1.f, 1.f, 0.8f);
+    RenderMesh(meshList[GEO_PLAYER_HEAD], true);
+    modelStack.PopMatrix();
+
+    //right leg
+    modelStack.PushMatrix();
+    modelStack.Translate(0.4f, -1.5f, 0.f);
+    modelStack.Scale(0.6f, 1.5f, 0.5f);
+    RenderMesh(meshList[GEO_PLAYER_LEG], true);
+    modelStack.PopMatrix();
+
+    //left leg
+    modelStack.PushMatrix();
+    modelStack.Translate(-0.4f, -1.5f, 0.f);
+    modelStack.Scale(0.6f, 1.5f, 0.5f);
+    RenderMesh(meshList[GEO_PLAYER_LEG], true);
+    modelStack.PopMatrix();
+
+    //right arm
+    modelStack.PushMatrix();
+    modelStack.Translate(1.f, 0.f, 0.f);
+
+    modelStack.PushMatrix();
+    modelStack.Scale(0.5f, 1.5f, 0.5f);
+    RenderMesh(meshList[GEO_PLAYER_UPPERARM], true);
+    modelStack.PopMatrix();
+
+    //lower arm
+    modelStack.PushMatrix();
+    modelStack.Translate(0.f, -1.f, 0.f);
+    RenderMesh(meshList[GEO_PLAYER_LOWERARM], true);
+    modelStack.PopMatrix();
+
+    modelStack.PopMatrix();
+
+    //left arm
+    modelStack.PushMatrix();
+    modelStack.Translate(-1.f, 0.f, 0.f);
+
+    modelStack.PushMatrix();
+    modelStack.Scale(0.5f, 1.5f, 0.5f);
+    RenderMesh(meshList[GEO_PLAYER_UPPERARM], true);
+    modelStack.PopMatrix();
+
+    //lower arm
+    modelStack.PushMatrix();
+    modelStack.Translate(0.f, -1.f, 0.f);
+    RenderMesh(meshList[GEO_PLAYER_LOWERARM], true);
+    modelStack.PopMatrix();
+    
+    modelStack.PopMatrix();
+
     modelStack.PopMatrix();
 }
 
@@ -2700,8 +2774,6 @@ void SP2::RenderInventory()
 
 void SP2::RenderUI()
 {
-    
-    
     if (viewOptions) {
         std::stringstream s;
         s << "FPS:" << FramePerSecond;
