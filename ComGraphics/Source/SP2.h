@@ -108,6 +108,9 @@ class SP2 : public Scene
         GEO_SHOP_WALLS,
         GEO_CANTEENWALLS,
 
+        GEO_COUNTER,
+        //GEO_SHELF,
+        //GEO_FRIDGE,
 
 		GEO_PIPETYPE1,
 		GEO_PIPETYPE2,
