@@ -183,6 +183,7 @@ public:
 
     float vibrateY, vibrateX;
     float chonFloaty;
+    float lightpower;
     bool chonFloat;
 
     MS modelStack, viewStack, projectionStack;
@@ -221,8 +222,8 @@ public:
     void chonLab();
     void veeControlroom();
     void jasimCanteen();
+    void loadHangar();
 	void RenderNPC();
-    void RenderObjects();
 	void RenderInventory();
 	void RenderTime();
     bool viewOptions;

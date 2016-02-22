@@ -9,13 +9,13 @@
 #include "LoadTGA.h"
 
 #include <sstream>
-#include <cstdlib>
 
 #include "Application.h"
 #include "SharedData.h"
 
 SP2::SP2()
 {
+    lightpower = 0.5;
     chonFloat = false;
     chonFloaty = vibrateX = vibrateY = 0;
     // Set background color to dark blue
@@ -375,9 +375,9 @@ void SP2::Init()
 {
     //light 0
     light[0].type = Light::LIGHT_DIRECTIONAL;
-    light[0].position.Set(0, 1000, 0);
+    light[0].position.Set(0, 1000, 100);
     light[0].color.Set(1, 1, 1);
-    light[0].power = 1.f;
+    light[0].power = lightpower;
     light[0].kC = 1.f;
     light[0].kL = 0.01f;
     light[0].kQ = 0.001f;
@@ -416,8 +416,6 @@ void SP2::Init()
     interactions = new ShopInteraction();
     interactions->bound1.Set(890, -15, -35);     interactions->bound2.Set(900, 20, -25);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
-    
-
 
     playerHung = SharedData::GetInstance()->player->getHunger();
     rotating = 0;
@@ -434,6 +432,9 @@ static double FramePerSecond;
 
 void SP2::Update(double dt)
 {
+    //Temmie vibration
+    srand(dt);
+
     FramePerSecond = 1 / dt;
 
     SharedData::GetInstance()->player->Walk(dt);
@@ -475,30 +476,15 @@ void SP2::Update(double dt)
         Reset();
     }
 
-    //Temmie vibration
-    srand(dt);
-    int temp, tempx, tempy;
-    temp = rand() % 2 + 1;
-    tempx = 0;
-    tempy = 0;
-
-    switch (temp)
+    if (vibrateX < 0.6 && vibrateY < 0.6)
     {
-    case 1: std::cout << "test1"; temp = rand() % 5 - 1; break;
-    case 2: std::cout << "test2"; temp = rand() % 2; break;
-    case 3: std::cout << "test3"; temp = rand() % 2 + 1; break;
-    }
-
-    if (vibrateX < 3|| vibrateY > 3)
-    {
-        vibrateX += tempx;
-        vibrateY += tempy;
+        vibrateX += 0.25;
+        vibrateY += 0.17;
     }
     else
     {
-        vibrateX -= tempx;
-        vibrateY -= tempy;
-        //srand(dt + dt);
+        vibrateX = 0;
+        vibrateY = 0;
     }
 
     if (chonFloat == false)
@@ -533,10 +519,9 @@ void SP2::Update(double dt)
         playerHung += 1;
         if (playerHung >= 100)
             playerHung = 100;
-
     }
 
-    rotating += 30*dt;
+    rotating += 30 * dt;
 
     if (Application::IsKeyPressed('I'))
         objy += 30 * dt;
@@ -546,6 +531,20 @@ void SP2::Update(double dt)
         objx -= 30 * dt;
     if (Application::IsKeyPressed('L'))
         objx += 30 * dt;
+
+    //Lighting
+    if (daynighttime >= 0700 && daynighttime <= 1859 && lightpower <= 5)
+    {
+        lightpower += 0.001;
+        light[0].power = lightpower;
+        glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
+    }
+    if (daynighttime >= 1900 && lightpower >= 0)
+    {
+        lightpower -= 0.001;
+        light[0].power = lightpower;
+        glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
+    }
 }
 
 void SP2::Render()
@@ -572,12 +571,6 @@ void SP2::Render()
 
     modelStack.LoadIdentity();
 
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 1, 0);
-    modelStack.Scale(3, 3, 3);
-    RenderMesh(meshList[GEO_MAP], false);
-    modelStack.PopMatrix();
-
     //pass the position of light to shader based on light type
     //spotlights
     if (light[0].type == Light::LIGHT_DIRECTIONAL)
@@ -586,11 +579,6 @@ void SP2::Render()
         Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
         glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
     }
-
-    //modelStack.PushMatrix();
-    //modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
-    //RenderMesh(meshList[GEO_LIGHTBALL], false);
-    //modelStack.PopMatrix();
 
     switch (SharedData::GetInstance()->gamestate)
     {
@@ -607,22 +595,27 @@ void SP2::Render()
     case GAME_STATE_RABBIT: loadRabbitGame();
         break;
     }
-
     //RenderMinimap();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_STEMMIE_FACE], true);
+    modelStack.PopMatrix();
 }
+
 void SP2::loadFree()
 {  
     RenderSkybox();
     RenderGround();
 
+    //The House
     modelStack.PushMatrix();
     modelStack.Translate(420, -3, -23);
     modelStack.Scale(50, 50, 50);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_LAYOUT], true);
     modelStack.PopMatrix();
-
-    RenderObjects();
     
     modelStack.PushMatrix();
     modelStack.Translate(0, 12, 0);
@@ -632,11 +625,11 @@ void SP2::loadFree()
     modelStack.PopMatrix();
 
     RenderNPC();
-
     stemmieShop();
     chonLab();
     veeControlroom();
     jasimCanteen();
+    loadHangar();
 
     RenderPuzzle();
     RenderUI();
@@ -645,13 +638,14 @@ void SP2::loadFree()
 	RenderTime();
 
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
-	RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
-
+    RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30,1,1);
     
     //shoptemp();
     
     RenderUI();
+
+
 
     //RenderMinimap();
     
@@ -663,40 +657,6 @@ void SP2::loadFree()
 
 void SP2::loadShop()
 {  
- 
-    //glDisable(GL_DEPTH_TEST);
-    //Mtx44 ortho;
-    //ortho.SetToOrtho(0, 80, 0, 60, -10, 10);    //size of screen UI
-    //projectionStack.PushMatrix();
-    //projectionStack.LoadMatrix(ortho);
-    //viewStack.PushMatrix();
-    //viewStack.LoadIdentity();   //no need camera for ortho mode
-
-    //modelStack.PushMatrix();
-    //modelStack.LoadIdentity();  //reset modelStack
-
-    //modelStack.PushMatrix();
-
-    //modelStack.Translate(25, 25, 0);
-    //modelStack.Rotate(90, 0, 1, 0);
-    //modelStack.Scale(5, 5, 5);
-    //RenderMesh(meshList[GEO_STEMMIE], false);
-    //modelStack.PopMatrix();
-
-
-    //projectionStack.PopMatrix();
-    //viewStack.PopMatrix();
-    //modelStack.PopMatrix();
-    //glEnable(GL_DEPTH_TEST);
-
-    //RenderPlayer();
-
-    //RenderDialogueOnScreen("temshop", Color(1, 0, 1), 15);
-    //RenderTextOnScreen(meshList[GEO_TEXT], "hOi, welcom, to da tem shop", Color(1, 1, 1), 2, 5, 5);
-
-
-    
-
     loadFree();
     shoptemp();
 
@@ -1052,106 +1012,41 @@ void SP2::RenderNPC()
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_WENGSTANG], true);
     modelStack.PopMatrix();
-
-    //modelStack.PushMatrix();
-    //RenderMesh(meshList[GEO_AARON], true);
-    //modelStack.PopMatrix();
-
-    //modelStack.PushMatrix();
-    //RenderMesh(meshList[GEO_MERCHANT], true);
-    //modelStack.PopMatrix();
-}
-
-void SP2::RenderObjects()
-{
-    //Unassigned
-   /* modelStack.PushMatrix();
-
-    modelStack.Translate(40, 0, 0);
-    modelStack.Scale(7, 7, 7);
-    RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(50, 0, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_FRIDGE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(60, 0, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_PLANT], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(70, 0, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_SHELF], true);
-    modelStack.PopMatrix();   
-
-    modelStack.PushMatrix();
-    modelStack.Translate(90, 0, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_UMBRELLASTAND], true);
-    modelStack.PopMatrix();*/
 }
 
 void SP2::stemmieShop()
 {
     //stemmie herself
     modelStack.PushMatrix();
-    modelStack.Translate(875 - 5, 0, 0 + 60);
-    modelStack.Scale(5, 5, 5);
-    modelStack.Rotate(180, 0, 1, 0);
+    modelStack.Translate(890, 15, -40);
+    modelStack.Scale(4, 4, 4);
+    modelStack.Rotate(-90, 0, 1, 0);
     RenderMesh(meshList[GEO_STEMMIE], true);
     modelStack.PopMatrix();
 
-
     modelStack.PushMatrix();
-    modelStack.Scale(10, 10, 10);
-    modelStack.Rotate(-90, 0, 1, 0);
-    RenderMesh(meshList[GEO_STEMMIE_FACE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 20 + vibrateY, vibrateX);
-    modelStack.Scale(10, 10, 10);
-    modelStack.Rotate(-90, 0, 1, 0);
-    RenderMesh(meshList[GEO_STEMMIE_FACE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(875 - 5, 0, 65);
+    modelStack.Translate(895, 15, -45);
     modelStack.Scale(4, 4, 4);
+    modelStack.Rotate(90, 0, 1, 0);
     RenderMesh(meshList[GEO_TEMSHOP], true);
     modelStack.PopMatrix();
 
+
     //Shop objs
     modelStack.PushMatrix();
-    modelStack.Translate(875, 0, -55);
+    modelStack.Translate(935, 0, 60);
     modelStack.Scale(10, 10, 10);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_VENDINGMACHINE], true);
     modelStack.PopMatrix();
 
+    //Cratez
     for (int i = 0; i < 21; i += 20)
     {
-        for (int y = 0; y < 126; y += 25)
+        for (int y = 0; y < 51; y += 25)
         {//y = 25
             modelStack.PushMatrix();
-            modelStack.Translate(920, 0 + i, 75 - y);
-            modelStack.Scale(8, 8, 8);
-            RenderMesh(meshList[GEO_BOXCRATE], true);
-            modelStack.PopMatrix();
-        }
-    }
-    for (int i = 0; i < 21; i += 20)
-    {
-        for (int y = 0; y < 126; y += 25)
-        {//y = 25
-            modelStack.PushMatrix();
-            modelStack.Translate(900, 0 + i, 75 - y);
+            modelStack.Translate(875, 0 + i, 75 - y);
             modelStack.Scale(8, 8, 8);
             RenderMesh(meshList[GEO_BOXCRATE], true);
             modelStack.PopMatrix();
@@ -1162,7 +1057,7 @@ void SP2::stemmieShop()
         for (int y = 0; y < 51; y += 25)
         {//y = 25
             modelStack.PushMatrix();
-            modelStack.Translate(880, 0 + i, 25 - y);
+            modelStack.Translate(850, 0 + i, 75 - y);
             modelStack.Scale(8, 8, 8);
             RenderMesh(meshList[GEO_BOXCRATE], true);
             modelStack.PopMatrix();
@@ -1176,74 +1071,22 @@ void SP2::stemmieShop()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(830, 0, 100);
-    modelStack.Scale(3, 3, 3);
-    RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
-
-    modelStack.Translate(875 - 5, 0, 65);
-    modelStack.Scale(4, 4, 4);
-    RenderMesh(meshList[GEO_TEMSHOP], true);
-    modelStack.PopMatrix();
-
-    //Shop objs
-    modelStack.PushMatrix();
-    modelStack.Translate(875, 0, -55);
-    modelStack.Scale(10, 10, 10);
-    modelStack.Rotate(180, 0, 1, 0);
-    RenderMesh(meshList[GEO_VENDINGMACHINE], true);
-    modelStack.PopMatrix();
-
-    for (int i = 0; i < 21; i += 20)
-    {
-        for (int y = 0; y < 126; y += 25)
-        {//y = 25
-            modelStack.PushMatrix();
-            modelStack.Translate(920, 0 + i, 75 - y);
-            modelStack.Scale(8, 8, 8);
-            RenderMesh(meshList[GEO_BOXCRATE], true);
-            modelStack.PopMatrix();
-        }
-    }
-    for (int i = 0; i < 21; i += 20)
-    {
-        for (int y = 0; y < 126; y += 25)
-        {//y = 25
-            modelStack.PushMatrix();
-            modelStack.Translate(900, 0 + i, 75 - y);
-            modelStack.Scale(8, 8, 8);
-            RenderMesh(meshList[GEO_BOXCRATE], true);
-            modelStack.PopMatrix();
-        }
-    }
-    for (int i = 0; i < 21; i += 20)
-    {
-        for (int y = 0; y < 51; y += 25)
-        {//y = 25
-            modelStack.PushMatrix();
-            modelStack.Translate(880, 0 + i, 25 - y);
-            modelStack.Scale(8, 8, 8);
-            RenderMesh(meshList[GEO_BOXCRATE], true);
-            modelStack.PopMatrix();
-        }
-    }
-
-    modelStack.PushMatrix();
-    modelStack.Translate(845, 0, -70);
-    modelStack.Scale(5, 5, 5);
-    RenderMesh(meshList[GEO_PLANT], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(830, 0, 100);
+    modelStack.Translate(830, 3, 100);
     modelStack.Scale(3, 3, 3);
     RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(860, 0, 10);
-    modelStack.Rotate(180, 0, 1, 0);
+    modelStack.Translate(860, 0, 8);
+    modelStack.Rotate(90, 0, 1, 0);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_SHELF], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(900, 0, -45);
+    modelStack.Scale(18, 6, 4);
+    RenderMesh(meshList[GEO_COUNTER], true);
     modelStack.PopMatrix();
 }
 
@@ -1263,11 +1106,6 @@ void SP2::chonLab()
     modelStack.Translate(350, 0, -370);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_TOOLBOX], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_HAMMER], true);
     modelStack.PopMatrix();
 }
 
@@ -1366,8 +1204,8 @@ void SP2::jasimCanteen()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(935, 5, 50);
-    modelStack.Rotate(180, 0, 1, 0);
+    //modelStack.Translate(935, 5, 50);
+    //modelStack.Rotate(180, 0, 1, 0);
     modelStack.Translate(685, 0, -430);
     modelStack.Scale(10, 10, 10);
     modelStack.Rotate(180, 0, 1, 0);
@@ -1402,13 +1240,6 @@ void SP2::jasimCanteen()
     }
 
     modelStack.PushMatrix();
-    modelStack.Translate(900, 0, -40);
-    modelStack.Scale(18, 6, 2);
-    RenderMesh(meshList[GEO_COUNTER], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(60, 0, 0);
     modelStack.Translate(685, 0, -375);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_VENDINGMACHINE], true);
@@ -1431,6 +1262,87 @@ void SP2::jasimCanteen()
     modelStack.Translate(685, 0, -475);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_FRIDGE], true);
+    modelStack.PopMatrix();
+}
+
+void SP2::loadHangar()
+{
+    for (int i = -175; i < 176; i += 350)
+    {
+        modelStack.PushMatrix();
+        modelStack.Translate(75, 0, i);
+        modelStack.Scale(5, 8, 5);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_TABLE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(115, 0, i);
+        modelStack.Scale(5, 8, 5);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_TABLE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(155, 0, i);
+        modelStack.Scale(5, 8, 5);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_TABLE], true);
+        modelStack.PopMatrix();
+    }
+    modelStack.PushMatrix();
+    modelStack.Translate(75, 15, -175);
+    modelStack.Scale(5, 8, 5);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_TOOLBOX], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(75, 15, 175);
+    modelStack.Scale(5, 8, 5);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_TOOLBOX], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(50, 7, 193);
+    modelStack.Scale(3, 3, 3);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(50, 7, -193);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(100, 17, -175);
+    modelStack.Scale(5, 8, 5);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_HAMMER], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(140, 17, -175);
+    modelStack.Scale(5, 8, 5);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_HAMMER], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(100, 17, 175);
+    modelStack.Scale(5, 8, 5);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_HAMMER], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(140, 17, 175);
+    modelStack.Scale(5, 8, 5);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_HAMMER], true);
     modelStack.PopMatrix();
 }
 
