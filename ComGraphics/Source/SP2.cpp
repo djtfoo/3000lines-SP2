@@ -263,6 +263,9 @@ SP2::SP2()
     meshList[GEO_MAP] = MeshBuilder::GenerateMinimap("map", 10, 10);
     meshList[GEO_MAP]->textureID = LoadTGA("Image/Donna.tga");
 
+	meshList[GEO_DAYNIGHTICON] = MeshBuilder::GenerateQuad("daynight", Color(1, 1, 1), 18, 18);
+	meshList[GEO_DAYNIGHTICON]->textureID = LoadTGA("Image/daynighticon.tga");
+
     viewOptions = true;
 
     objx = objy = 0;
@@ -345,6 +348,7 @@ void SP2::Init()
     playerHung = SharedData::GetInstance()->player->getHunger();
     rotating = 0;
     rotator = 0;
+	daynighttime = 0000;
 }
 
 static float ROT_LIMIT = 45.f;
@@ -366,6 +370,15 @@ void SP2::Update(double dt)
 	if (delayer > 0)
 		delayer -= 1;
 	rotator++;
+	daynighttime+= (dt * 10);
+	if (((int)daynighttime % 100) > 60)
+	{
+		daynighttime += 40;
+	}
+	if (daynighttime > 2400)
+	{
+		daynighttime = 0;
+	}
     //options
     if (Application::IsKeyPressed('1')) //enable back face culling
         glEnable(GL_CULL_FACE);
@@ -525,6 +538,7 @@ void SP2::loadFree()
     RenderUI();
 
 	RenderInventory();
+	RenderTime();
 
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
 	RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
@@ -542,10 +556,10 @@ void SP2::loadFree()
         RenderTextOnScreen(meshList[GEO_TEXT], "Press LMB", Color(1, 0, 0), 3, 2, 2);
     }
     
-    if (Application::IsKeyPressed('H'))
-    {
-        gamestate = GAME_STATE_SHOP;
-    }
+    //if (Application::IsKeyPressed('H'))
+    //{
+    //    gamestate = GAME_STATE_SHOP;
+    //}
 }  
 void SP2::loadShop()
 {  
@@ -2646,7 +2660,42 @@ void SP2::RenderInventoryOnScreen(Mesh* mesh, float x, float y)
 	modelStack.Translate(x, y, 0);
 	modelStack.Rotate(rotator, 0, 1, 0);
 	modelStack.Rotate(-75, 1, 0, 1);
-	modelStack.Scale(10, 10, 10);
+	modelStack.Scale(1.2, 1.2, 1.2);
+	RenderMesh(mesh, false);
+	modelStack.PopMatrix();
+
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+	glEnable(GL_DEPTH_TEST);
+}
+
+void SP2::RenderTimeOnScreen(Mesh* mesh, float x, float y)
+{
+	if (!mesh)  //error check
+		return;
+
+	glDisable(GL_DEPTH_TEST);
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -1000, 1000);    //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity();   //no need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();  //reset modelStack
+
+	float timerotator = 0;
+	timerotator += ((int)daynighttime / 100) * 60;
+	timerotator += ((int)daynighttime % 100);
+	timerotator /= 1440;
+	timerotator *= 360;
+
+	modelStack.PushMatrix();
+	modelStack.Translate(x, y, 0);
+	modelStack.Rotate(-timerotator, 0, 0, 1);
+	modelStack.Rotate(-75, 0, 0, 1);
+	modelStack.Scale(1.3, 1.3, 1.3);
 	RenderMesh(mesh, false);
 	modelStack.PopMatrix();
 
@@ -2696,6 +2745,16 @@ void SP2::RenderInventory()
 	}
 
 	RenderObjectOnScreen(meshList[GEO_ITEMSELECT], 22.5 + (SharedData::GetInstance()->player->invselect * 5), 2.5);
+}
+
+void SP2::RenderTime()
+{
+	//teleporter
+	std::stringstream timey;
+	timey << "TIME: " << ((int)daynighttime / 1000) << (((int)daynighttime / 100) % 10) << (((int)daynighttime / 10) % 10) << ((int)daynighttime % 10);
+	timey.str();
+	RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(1, 0, 0), 3, 0, 16);
+	RenderTimeOnScreen(meshList[GEO_DAYNIGHTICON], 80, 60);
 }
 
 void SP2::RenderUI()

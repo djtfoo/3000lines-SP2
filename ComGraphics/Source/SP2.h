@@ -108,6 +108,8 @@ class SP2 : public Scene
         GEO_SHOP_WALLS,
         GEO_CANTEENWALLS,
 
+		//day night
+		GEO_DAYNIGHTICON,
 
 		GEO_PIPETYPE1,
 		GEO_PIPETYPE2,
@@ -175,6 +177,7 @@ public:
 	PipePuzzle controlpuzzle;
 	int delayer;
 	int rotator;
+	float daynighttime;
 
     //Testing Minimap
     MS minimappp;
@@ -194,6 +197,7 @@ public:
     void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
     void RenderDialogueOnScreen(std::string text, Color color, float size);
 	void SP2::RenderInventoryOnScreen(Mesh* mesh, float x, float y);
+	void SP2::RenderTimeOnScreen(Mesh* mesh, float x, float y);
     
     void RenderSkybox();
     void RenderGround();
@@ -203,6 +207,7 @@ public:
 	void RenderNPC();
     void RenderObjects();
 	void RenderInventory();
+	void RenderTime();
     bool viewOptions;
     void RenderUI();
 
