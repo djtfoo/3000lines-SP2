@@ -48,11 +48,16 @@ public:
 
     bool isDead();
 
-	int invselect;
-	int inventory[8];
-	std::string addItem(int itemID);
-	std::string removeItem(int itemPos);
-	bool itemHave(int itemID);
+    //movement
+    float R_leg_rotation;
+    float L_leg_rotation;
+
+    //inventory
+    int invselect;
+    int inventory[8];
+    std::string addItem(int itemID);
+    std::string removeItem(int itemPos);
+    bool itemHave(int itemID);
 };
 
 class NPC : public Character

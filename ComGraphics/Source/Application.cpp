@@ -133,13 +133,13 @@ void Application::Run()
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...
 		glfwPollEvents();
         //setting cursor
-        if (IsKeyPressed('H')) // Check if shop on
-            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        if (SharedData::GetInstance()->program_state == SharedData::PROGRAM_MENU)
+            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
         else
             glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwGetCursorPos(m_window, &SharedData::GetInstance()->cursor_newxpos, &SharedData::GetInstance()->cursor_newypos);
 
-        //limit cursor to the resolution of the window
+        /*//limit cursor to the resolution of the window
         if (SharedData::GetInstance()->program_state == SharedData::PROGRAM_MENU) {
             if (SharedData::GetInstance()->cursor_newxpos <= 0)
                 glfwSetCursorPos(m_window, 0, SharedData::GetInstance()->cursor_newypos);
@@ -152,7 +152,7 @@ void Application::Run()
 
             if (SharedData::GetInstance()->cursor_newypos >= height)
                 glfwSetCursorPos(m_window, SharedData::GetInstance()->cursor_newxpos, height);
-        }
+        }*/
 
         m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.
 

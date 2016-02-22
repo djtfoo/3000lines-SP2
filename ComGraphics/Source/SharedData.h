@@ -4,6 +4,7 @@
 #include "Camera3.h"
 #include "Collision.h"
 #include "Interaction.h"
+#include "GameState.h"
 
 using std::vector;
 
@@ -24,6 +25,9 @@ public:
 
     PROGRAM_STATE program_state;
     bool programstate_change;
+
+    //Dem Gamestates
+    GAME_STATE gamestate;
 
     Player *player;
     Camera3 *camera;
@@ -54,6 +58,8 @@ private:
         player = new Player("Player");
         camera = new Camera3();
         camera->Init(Vector3(0, -140, 100), Vector3(0, -140, 110), Vector3(0, 1, 0));
+
+        gamestate = GAME_STATE_FREE;
 
         cursor_xpos = 400;
         cursor_ypos = 300;
