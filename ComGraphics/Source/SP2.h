@@ -93,6 +93,8 @@ class SP2 : public Scene
         GEO_SHELF,
         GEO_TEMSHOP,
         GEO_UMBRELLASTAND,
+        GEO_TOILBOWL,
+        GEO_LMAO,   //a sh*tty joke
         //^^^
 
 		//Gifts
@@ -237,15 +239,22 @@ public:
     void loadWSGame();
     void loadChonGame();
     void loadVeeGame();
+    void pauseGame();
     void loadRabbitGame();
 
     void shoptemp();
     void RotateDisplay();
+    void pauseAnimation(double dt);
+
 
     int playerHung;
     float objx, objy;
 
     float rotating;
+    float ptxt1;    //pause text 1
+    float ptxt2;
+    float ptxt3;
+    float ptxtexit;
 
 	std::map<int, Gift>invmap;
 	std::map<int, GEOMETRY_TYPE>modelmap;

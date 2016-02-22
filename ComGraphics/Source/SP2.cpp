@@ -288,6 +288,19 @@ SP2::SP2()
     meshList[GEO_UMBRELLASTAND]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_UMBRELLASTAND]->material.kShininess = 1.f;
 
+    meshList[GEO_TOILBOWL] = MeshBuilder::GenerateOBJ("toiletbowl", "OBJ/toilbowl.obj");
+    meshList[GEO_TOILBOWL]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    meshList[GEO_TOILBOWL]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_TOILBOWL]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_TOILBOWL]->material.kShininess = 1.f;
+
+    meshList[GEO_LMAO] = MeshBuilder::GenerateQuad("beautifulstuff", Color(0, 0, 0), 5, 5);
+    meshList[GEO_LMAO]->textureID = LoadTGA("Image/LMAO.tga");
+    meshList[GEO_LMAO]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    meshList[GEO_LMAO]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_LMAO]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_LMAO]->material.kShininess = 1.f;
+
     meshList[GEO_SHOPDISPLAY] = MeshBuilder::GenerateCube("display", Color(0, 0, 1), 5, 5, 5);
     meshList[GEO_SHOPDISPLAY]->textureID = LoadTGA("Image/layout/canteen_walls.tga");
     meshList[GEO_SHOPDISPLAY]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
@@ -419,6 +432,8 @@ void SP2::Init()
 
     playerHung = SharedData::GetInstance()->player->getHunger();
     rotating = 0;
+     ptxt2 = ptxt3 = ptxtexit = 0;
+     ptxt1 = 40;
     rotator = 0;
 	daynighttime = 0000;
 
@@ -430,17 +445,18 @@ static float SCALE_LIMIT = 5.f;
 static float LSPEED = 10.f;
 static double FramePerSecond;
 
+
 void SP2::Update(double dt)
 {
     //Temmie vibration
     srand(dt);
 
     FramePerSecond = 1 / dt;
-
+    
     SharedData::GetInstance()->player->Walk(dt);
 
     SharedData::GetInstance()->camera->Update(dt);
-
+    
     SharedData::GetInstance()->player->CheckInteraction();
 
     if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract) {
@@ -524,15 +540,27 @@ void SP2::Update(double dt)
     rotating += 30 * dt;
 
     if (Application::IsKeyPressed('I'))
-        objy += 30 * dt;
+        objy += 1 * dt;
     if (Application::IsKeyPressed('K'))
-        objy -= 30 * dt;
+        objy -= 1 * dt;
     if (Application::IsKeyPressed('J'))
-        objx -= 30 * dt;
+        objx -= 1 * dt;
     if (Application::IsKeyPressed('L'))
-        objx += 30 * dt;
+        objx += 1 * dt;
 
-    //Lighting
+    if (Application::IsKeyPressed('N'))
+    {
+       
+        SharedData::GetInstance()->gamestate = GAME_STATE_PAUSED;
+        pauseAnimation(dt);
+    }
+
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_PAUSED)
+    {
+        pauseAnimation(dt);
+    }
+
+        //Lighting
     if (daynighttime >= 0700 && daynighttime <= 1859 && lightpower <= 5)
     {
         lightpower += 0.001;
@@ -545,6 +573,9 @@ void SP2::Update(double dt)
         light[0].power = lightpower;
         glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
     }
+
+
+
 }
 
 void SP2::Render()
@@ -592,6 +623,8 @@ void SP2::Render()
         break;
     case GAME_STATE_VEEGAME: loadVeeGame();
         break;
+    case GAME_STATE_PAUSED: pauseGame();
+        break;
     case GAME_STATE_RABBIT: loadRabbitGame();
         break;
     }
@@ -611,7 +644,7 @@ void SP2::loadFree()
 
     //The House
     modelStack.PushMatrix();
-    modelStack.Translate(420, -3, -23);
+    modelStack.Translate(420, -1, -23);
     modelStack.Scale(50, 50, 50);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_LAYOUT], true);
@@ -654,7 +687,7 @@ void SP2::loadFree()
 }  
 
 void SP2::loadShop()
-{  
+{   
     loadFree();
     shoptemp();
 
@@ -680,6 +713,40 @@ void SP2::loadVeeGame()
 {    
      
 }    
+
+void SP2::pauseGame()
+{
+
+    loadFree();
+
+    RenderObjectOnScreen(meshList[GEO_SHOPUI], 40, 30, 50, 50);
+    RenderTextOnScreen(meshList[GEO_TEXT], "PAUSED", Color(0, 0.6, 1), 5, 5, 9);
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, ptxt1, 0.3, 0.3);
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, 32, 0.3, 0.3);
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, 24, 0.3, 0.3);
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, 12, 0.3, 0.3);
+    
+
+    
+    //RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, 25, 0.2, 0.2);
+
+    if (Application::IsKeyPressed('L'))
+    {
+        SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
+        ptxt1 = 40;
+    }
+    
+}
+void SP2::pauseAnimation(double dt)
+{
+    
+
+    ptxt1 -= 40 * dt;
+
+    if (ptxt1 <= 10)
+        ptxt1 = 40;
+   
+}
 
 void SP2::loadRabbitGame()
 {
@@ -1261,6 +1328,21 @@ void SP2::jasimCanteen()
     modelStack.Translate(685, 0, -475);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_FRIDGE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(780, 0, -615);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_TOILBOWL], true);
+
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(779.6, 7.39, -614.9);
+    modelStack.Scale(1.11, 1, 1.11);
+    modelStack.Rotate(-90, 1, 0, 0);
+    RenderMesh(meshList[GEO_LMAO], true);
     modelStack.PopMatrix();
 }
 

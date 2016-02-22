@@ -36,3 +36,17 @@ void ShopInteraction::DoInteraction()
 {
     SharedData::GetInstance()->gamestate = GAME_STATE_SHOP;
 }
+
+//flush away~! (get rid of manure)
+ManureInteraction::ManureInteraction() : Interaction()
+{
+}
+
+ManureInteraction::~ManureInteraction()
+{
+}
+
+void ManureInteraction::DoInteraction()
+{
+
+}

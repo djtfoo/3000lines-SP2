@@ -39,4 +39,12 @@ public :
     ~ShopInteraction();
     virtual void DoInteraction();
 };
+
+class ManureInteraction : public Interaction
+{
+public:
+    ManureInteraction();
+    ~ManureInteraction();
+    virtual void DoInteraction();
+};
 #endif
