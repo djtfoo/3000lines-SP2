@@ -48,5 +48,5 @@ ManureInteraction::~ManureInteraction()
 
 void ManureInteraction::DoInteraction()
 {
-
+	SharedData::GetInstance()->toiletflood = true;
 }

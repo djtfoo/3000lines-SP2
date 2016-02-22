@@ -633,7 +633,7 @@ void PipePuzzle::setpuzzle()
 		}
 		cout << endl;
 		//completedpuzzle = confirmpuzzle(0, 0, 1);
-		completedpuzzle = checkpuzzle(0, 0, 1);
+		completedpuzzle = confirmpuzzle(0, 0, 1);
 	}
 
 }

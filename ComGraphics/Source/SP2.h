@@ -117,6 +117,7 @@ class SP2 : public Scene
         GEO_CONTROLWALLS,
         GEO_SHOP_WALLS,
         GEO_CANTEENWALLS,
+		GEO_TOILETFLOOD,
 
 
 		//day night
@@ -193,6 +194,7 @@ public:
 	PipePuzzle controlpuzzle;
 	int delayer;
 	int rotator;
+	float floodlevel;
 	float daynighttime;
 
     //Testing Minimap

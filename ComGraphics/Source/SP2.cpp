@@ -367,6 +367,9 @@ SP2::SP2()
 	meshList[GEO_DAYNIGHTICON] = MeshBuilder::GenerateQuad("daynight", Color(1, 1, 1), 18, 18);
 	meshList[GEO_DAYNIGHTICON]->textureID = LoadTGA("Image/daynighticon.tga");
 
+	meshList[GEO_TOILETFLOOD] = MeshBuilder::GenerateQuad("toiletflood", Color(1, 1, 1), 18, 18);
+	meshList[GEO_TOILETFLOOD]->textureID = LoadTGA("Image/shltwater.tga");
+
     viewOptions = true;
 
     objx = objy = 1;
@@ -430,12 +433,17 @@ void SP2::Init()
     interactions->bound1.Set(890, -15, -35);     interactions->bound2.Set(900, 20, -25);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
+	interactions = new ManureInteraction();
+	interactions->bound1.Set(780, -5, -612);     interactions->bound2.Set(800, 5, -616);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
     playerHung = SharedData::GetInstance()->player->getHunger();
     rotating = 0;
      ptxt2 = ptxt3 = ptxtexit = 0;
      ptxt1 = 40;
     rotator = 0;
 	daynighttime = 0000;
+	floodlevel = -1;
 
 	loadInv();
 }
@@ -574,7 +582,10 @@ void SP2::Update(double dt)
         glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
     }
 
-
+	if ((SharedData::GetInstance()->toiletflood == true)&&(floodlevel < 3))
+	{
+		floodlevel += dt;
+	}
 
 }
 
@@ -1338,6 +1349,13 @@ void SP2::jasimCanteen()
 
     modelStack.PopMatrix();
 
+	modelStack.PushMatrix();
+	modelStack.Translate(732, floodlevel, -594);
+	modelStack.Scale(7, 5, 4.3);
+	modelStack.Rotate(-90, 1, 0, 0);
+	RenderMesh(meshList[GEO_TOILETFLOOD], true);
+	modelStack.PopMatrix();
+
     modelStack.PushMatrix();
     modelStack.Translate(779.6, 7.39, -614.9);
     modelStack.Scale(1.11, 1, 1.11);
@@ -1664,7 +1682,6 @@ void SP2::RenderInventory()
 
 void SP2::RenderTime()
 {
-	//teleporter
 	std::stringstream timey;
 	timey << "TIME: " << ((int)daynighttime / 1000) << (((int)daynighttime / 100) % 10) << (((int)daynighttime / 10) % 10) << ((int)daynighttime % 10);
 	timey.str();
