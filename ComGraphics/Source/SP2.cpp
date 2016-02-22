@@ -1391,7 +1391,7 @@ void SP2::RenderPuzzle()
 		for (int j = 0; j < 6; j++)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(401 + (i * 10), 65 - (j * 10), 374);
+			modelStack.Translate(481 - (i * 10), 65 - (j * 10), 374);
             modelStack.Rotate(controlpuzzle.puzzlerotation[i][j], 0, 0, 1);
 			modelStack.Rotate(180, 0, 1, 0);
 			modelStack.Scale(10, 10, 10);
@@ -1408,21 +1408,23 @@ void SP2::RenderPuzzle()
 			}
 			else if (controlpuzzle.puzzlemap[i][j] == 2)
 			{
+				
 				RenderMesh(meshList[GEO_PIPETYPE2], true);
 			}
 			else if (controlpuzzle.puzzlemap[i][j] == 3)
 			{
-				modelStack.Rotate(90, 0, 0, 1);
+				modelStack.Rotate(180, 0, 0, 1);
 				RenderMesh(meshList[GEO_PIPETYPE2], true);
 			}
 			else if (controlpuzzle.puzzlemap[i][j] == 4)
 			{
-				modelStack.Rotate(180, 0, 0, 1);
+				modelStack.Rotate(-90, 0, 0, 1);
+				
 				RenderMesh(meshList[GEO_PIPETYPE2], true);
 			}
 			else if (controlpuzzle.puzzlemap[i][j] == 5)
 			{
-				modelStack.Rotate(-90, 0, 0, 1);
+				modelStack.Rotate(90, 0, 0, 1);
 				RenderMesh(meshList[GEO_PIPETYPE2], true);
 			}
 			else if (controlpuzzle.puzzlemap[i][j] == 6)
@@ -1431,17 +1433,19 @@ void SP2::RenderPuzzle()
 			}
 			else if (controlpuzzle.puzzlemap[i][j] == 7)
 			{
-				modelStack.Rotate(90, 0, 0, 1);
+				modelStack.Rotate(180, 0, 0, 1);
+				
 				RenderMesh(meshList[GEO_PIPETYPE3], true);
 			}
 			else if (controlpuzzle.puzzlemap[i][j] == 8)
 			{
-				modelStack.Rotate(180, 0, 0, 1);
+				modelStack.Rotate(-90, 0, 0, 1);
+				
 				RenderMesh(meshList[GEO_PIPETYPE3], true);
 			}
 			else if (controlpuzzle.puzzlemap[i][j] == 9)
 			{
-				modelStack.Rotate(-90, 0, 0, 1);
+				modelStack.Rotate(90, 0, 0, 1);
 				RenderMesh(meshList[GEO_PIPETYPE3], true);
 			}
 			else if (controlpuzzle.puzzlemap[i][j] == 10)

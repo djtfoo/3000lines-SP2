@@ -13,7 +13,7 @@ public:
 
 	PipePuzzle();
 	~PipePuzzle();
-	void checkpuzzle();
+	bool checkpuzzle(int row = 0, int col = 0, int orientation = 1);
 	
 	bool confirmpuzzle(int row, int col, int orientation);
 	void setpuzzle();
