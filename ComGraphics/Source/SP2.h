@@ -9,10 +9,12 @@
 
 #include "PipePuzzle.h"
 #include "GameState.h"
+#include "Item.h"
 
 #include <cstdlib>
 
 #include <vector>
+#include <map>
 
 #ifndef SP2_H
 #define SP2_H
@@ -196,7 +198,8 @@ public:
     void RenderObjectOnScreen(Mesh* mesh, float x, float y, float scalex = 1, float scaley = 1);
     void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
     void RenderDialogueOnScreen(std::string text, Color color, float size);
-	void SP2::RenderInventoryOnScreen(Mesh* mesh, float x, float y);
+	void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y);
+	void SP2::RenderInventoryOnScreenRotating(Mesh* mesh, float x, float y);
 	void SP2::RenderTimeOnScreen(Mesh* mesh, float x, float y);
     
     void RenderSkybox();
@@ -216,6 +219,7 @@ public:
     //Dem Gamestates
     GAME_STATE gamestate;
 
+	void loadInv();
     void loadFree();
     void loadShop();
     void loadWSGame();
@@ -230,6 +234,9 @@ public:
     float objx, objy;
 
     float rotating;
+
+	std::map<int, Gift>invmap;
+	std::map<int, GEOMETRY_TYPE>modelmap;
 };
 
 #endif

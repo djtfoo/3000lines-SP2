@@ -10,6 +10,7 @@ private:
 
 protected:
     Item();
+	Item(std::string name);
 
 public:
     virtual ~Item();
@@ -22,6 +23,7 @@ private:
 	float value_;
 public:
 	Gift();
+	Gift(std::string name);
 	~Gift();
 	float getValue();
 };

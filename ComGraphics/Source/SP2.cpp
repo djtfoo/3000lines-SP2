@@ -275,6 +275,14 @@ SP2::~SP2()
 {
 }
 
+void SP2::loadInv()
+{
+	invmap.insert(std::pair<int, Gift>(1, Gift("hammer")));
+	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(1, GEO_HAMMER));
+	invmap.insert(std::pair<int, Gift>(2, Gift("tEmmEh")));
+	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(2, GEO_STEMMIE));
+}
+
 void SP2::Init()
 {
     gamestate = GAME_STATE_FREE;
@@ -349,6 +357,8 @@ void SP2::Init()
     rotating = 0;
     rotator = 0;
 	daynighttime = 0000;
+
+	loadInv();
 }
 
 static float ROT_LIMIT = 45.f;
@@ -2641,7 +2651,36 @@ void SP2::RenderPuzzle()
 	}
 }
 
-void SP2::RenderInventoryOnScreen(Mesh* mesh, float x, float y)
+void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y)
+{
+	if (!mesh)  //error check
+		return;
+
+	glDisable(GL_DEPTH_TEST);
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -1000, 1000);    //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity();   //no need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity();  //reset modelStack
+
+	modelStack.PushMatrix();
+	modelStack.Translate(x, y, 0);
+	//modelStack.Rotate(rotator, 0, 1, 0);
+	modelStack.Rotate(-75, 1, 0, 1);
+	modelStack.Scale(1.2, 1.2, 1.2);
+	RenderMesh(mesh, false);
+	modelStack.PopMatrix();
+
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+	glEnable(GL_DEPTH_TEST);
+}
+
+void SP2::RenderInventoryOnScreenRotating(Mesh* mesh, float x, float y)
 {
 	if (!mesh)  //error check
 		return;
@@ -2716,18 +2755,34 @@ void SP2::RenderInventory()
 		{
 			break;
 		}
-		if (SharedData::GetInstance()->player->inventory[i] == 1)
-		{
+		//if (SharedData::GetInstance()->player->inventory[i] == 1)
+		//{
 			//gift1
-			RenderInventoryOnScreen(meshList[GEO_HAMMER], 22.5 + (i * 5), 2.5);
+			if (SharedData::GetInstance()->player->invselect != i)
+			{
+				RenderInventoryOnScreenStatic(meshList[modelmap.find(SharedData::GetInstance()->player->inventory[i])->second], 22.5 + (i * 5), 2.5);
+			}
+			else
+			{
+				//RenderInventoryOnScreenRotating(meshList[GEO_HAMMER], 22.5 + (i * 5), 2.5);
+				RenderInventoryOnScreenRotating(meshList[modelmap.find(SharedData::GetInstance()->player->inventory[i])->second], 22.5 + (i * 5), 2.5);
+			}
+			//RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(1)->second).getName(), Color(1, 1, 0), 3, 10, 2);
 			continue;
-		}
-		if (SharedData::GetInstance()->player->inventory[i] == 2)
-		{
-			//gift1
-			RenderInventoryOnScreen(meshList[GEO_STEMMIE], 22.5 + (i * 5), 2.5);
-			continue;
-		}
+		//}
+		//if (SharedData::GetInstance()->player->inventory[i] == 2)
+		//{
+		//	//gift2
+		//	if (SharedData::GetInstance()->player->invselect != i)
+		//	{
+		//		RenderInventoryOnScreenStatic(meshList[GEO_STEMMIE], 22.5 + (i * 5), 2.5);
+		//	}
+		//	else
+		//	{
+		//		RenderInventoryOnScreenRotating(meshList[GEO_STEMMIE], 22.5 + (i * 5), 2.5);
+		//	}
+		//	continue;
+		//}
 	}
 	if (delayer < 1)
 	{
@@ -2736,15 +2791,26 @@ void SP2::RenderInventory()
 		if (Application::IsKeyPressed('B'))
 			SharedData::GetInstance()->player->addItem(2);
 		if ((Application::IsKeyPressed('Z')) && (SharedData::GetInstance()->player->invselect > 0))
+		{
 			SharedData::GetInstance()->player->invselect -= 1;
+			rotator = 0;
+		}
 		if (Application::IsKeyPressed('X'))
+		{
 			SharedData::GetInstance()->player->removeItem(SharedData::GetInstance()->player->invselect);
+			rotator = 0;
+		}
 		if ((Application::IsKeyPressed('C')) && (SharedData::GetInstance()->player->invselect < 7))
+		{
 			SharedData::GetInstance()->player->invselect += 1;
+			rotator = 0;
+		}
 		delayer = 3;
 	}
 
 	RenderObjectOnScreen(meshList[GEO_ITEMSELECT], 22.5 + (SharedData::GetInstance()->player->invselect * 5), 2.5);
+	if (SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect] != 0)
+	RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 10, 2);
 }
 
 void SP2::RenderTime()
