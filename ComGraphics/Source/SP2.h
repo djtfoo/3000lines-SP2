@@ -51,6 +51,13 @@ class SP2 : public Scene
 
         GEO_LAYOUT,
 
+        //player character
+        GEO_PLAYER_HEAD,
+        GEO_PLAYER_BODY,
+        GEO_PLAYER_UPPERARM,
+        GEO_PLAYER_LOWERARM,
+        GEO_PLAYER_LEG,
+
         //Our NPCs
         GEO_ADOLPH,
         GEO_STEMMIE,
@@ -62,7 +69,6 @@ class SP2 : public Scene
         GEO_AARON,
         GEO_MERCHANT,
         
-        GEO_MAN,
         //text
         GEO_TEXT,
         GEO_DIALOGUEBOX,
@@ -110,8 +116,13 @@ class SP2 : public Scene
         GEO_SHOP_WALLS,
         GEO_CANTEENWALLS,
 
+
 		//day night
 		GEO_DAYNIGHTICON,
+
+        GEO_COUNTER,
+        //GEO_SHELF,
+        //GEO_FRIDGE,
 
 		GEO_PIPETYPE1,
 		GEO_PIPETYPE2,
@@ -204,7 +215,6 @@ public:
     
     void RenderSkybox();
     void RenderGround();
-    void RenderLayout();
     void RenderPlayer();
 	void RenderPuzzle();
 	void RenderNPC();
@@ -215,9 +225,6 @@ public:
     void RenderUI();
 
     void RenderMinimap();
-
-    //Dem Gamestates
-    GAME_STATE gamestate;
 
 	void loadInv();
     void loadFree();
