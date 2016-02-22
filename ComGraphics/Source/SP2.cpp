@@ -9,6 +9,7 @@
 #include "LoadTGA.h"
 
 #include <sstream>
+#include <cstdlib>
 
 #include "Application.h"
 #include "SharedData.h"
@@ -145,21 +146,41 @@ SP2::SP2()
 
     meshList[GEO_STEMMIE] = MeshBuilder::GenerateOBJ("stemmie", "OBJ/hOi.obj");
     meshList[GEO_STEMMIE]->textureID = LoadTGA("Image/temmie.tga");
+    meshList[GEO_STEMMIE]->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_STEMMIE]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
+    meshList[GEO_STEMMIE]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_STEMMIE]->material.kShininess = 1.f;
 
     meshList[GEO_STEMMIE_FACE] = MeshBuilder::GenerateQuad("stemmieface", Color(1, 1, 1), 1, 1);
     meshList[GEO_STEMMIE_FACE]->textureID = LoadTGA("Image/hOiWAT.tga");
 
     meshList[GEO_WENGSTANG] = MeshBuilder::GenerateOBJ("wengstang", "OBJ/toriel.obj");
     meshList[GEO_WENGSTANG]->textureID = LoadTGA("Image/toriel.tga");
+    meshList[GEO_WENGSTANG]->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_WENGSTANG]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
+    meshList[GEO_WENGSTANG]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_WENGSTANG]->material.kShininess = 1.f;
 
     meshList[GEO_VEE] = MeshBuilder::GenerateOBJ("vee", "OBJ/asgore.obj");
     meshList[GEO_VEE]->textureID = LoadTGA("Image/asgore.tga");
+    meshList[GEO_VEE]->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_VEE]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
+    meshList[GEO_VEE]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_VEE]->material.kShininess = 1.f;
 
     meshList[GEO_JASIM] = MeshBuilder::GenerateOBJ("jasim", "OBJ/sans.obj");
     meshList[GEO_JASIM]->textureID = LoadTGA("Image/sans.tga");
+    meshList[GEO_JASIM]->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_JASIM]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
+    meshList[GEO_JASIM]->material.kSpecular.Set(0.9f, 0.9f, 0.9f);
+    meshList[GEO_JASIM]->material.kShininess = 1.f;
 
     meshList[GEO_CHON] = MeshBuilder::GenerateOBJ("chon", "OBJ/chon.obj");
     meshList[GEO_CHON]->textureID = LoadTGA("Image/chonUV.tga");
+    meshList[GEO_CHON]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_CHON]->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_CHON]->material.kSpecular.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_CHON]->material.kShininess = 1.f;
 
     //GEO_MAP
     meshList[GEO_MAP] = MeshBuilder::GenerateQuad("minimap", Color(1, 1, 1), 10, 10);
@@ -170,49 +191,109 @@ SP2::SP2()
     //Objects
     meshList[GEO_BENCH] = MeshBuilder::GenerateOBJ("bench", "OBJ/bench.obj");
     meshList[GEO_BENCH]->textureID = LoadTGA("Image/bench.tga");
+    meshList[GEO_BENCH]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    meshList[GEO_BENCH]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
+    meshList[GEO_BENCH]->material.kSpecular.Set(0.1f, 0.1f, 0.1f);
+    meshList[GEO_BENCH]->material.kShininess = 1.f;
 
     meshList[GEO_TOOLBOX] = MeshBuilder::GenerateOBJ("toolbox", "OBJ/toolbox.obj");
     meshList[GEO_TOOLBOX]->textureID = LoadTGA("Image/toolbox.tga");
+    meshList[GEO_TOOLBOX]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_TOOLBOX]->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_TOOLBOX]->material.kSpecular.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_TOOLBOX]->material.kShininess = 1.f;
 
     meshList[GEO_VENDINGMACHINE] = MeshBuilder::GenerateOBJ("vendingmachine", "OBJ/vendingmachine.obj");
     meshList[GEO_VENDINGMACHINE]->textureID = LoadTGA("Image/vendingmachine.tga");
+    meshList[GEO_VENDINGMACHINE]->material.kAmbient.Set(0.5f, 0.5f, 0.5f);
+    meshList[GEO_VENDINGMACHINE]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_VENDINGMACHINE]->material.kSpecular.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_VENDINGMACHINE]->material.kShininess = 1.f;
 
     meshList[GEO_TABLE] = MeshBuilder::GenerateOBJ("table", "OBJ/table.obj");
     meshList[GEO_TABLE]->textureID = LoadTGA("Image/table.tga");
+    meshList[GEO_TABLE]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    meshList[GEO_TABLE]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
+    meshList[GEO_TABLE]->material.kSpecular.Set(0.1f, 0.1f, 0.1f);
+    meshList[GEO_TABLE]->material.kShininess = 1.f;
 
     meshList[GEO_HAMMER] = MeshBuilder::GenerateOBJ("hammer", "OBJ/hammer.obj");
     meshList[GEO_HAMMER]->textureID = LoadTGA("Image/hammer.tga");
+    meshList[GEO_HAMMER]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_HAMMER]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_HAMMER]->material.kSpecular.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_HAMMER]->material.kShininess = 1.f;
 
     //New Objects
     meshList[GEO_BOXCRATE] = MeshBuilder::GenerateOBJ("boxcrate", "OBJ/boxcrate.obj");
     meshList[GEO_BOXCRATE]->textureID = LoadTGA("Image/boxcrate.tga");
+    meshList[GEO_BOXCRATE]->material.kAmbient.Set(0.5f, 0.5f, 0.5f);
+    meshList[GEO_BOXCRATE]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
+    meshList[GEO_BOXCRATE]->material.kSpecular.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_BOXCRATE]->material.kShininess = 1.f;
 
     meshList[GEO_CHAIR] = MeshBuilder::GenerateOBJ("chair", "OBJ/chair.obj");
     meshList[GEO_CHAIR]->textureID = LoadTGA("Image/chair.tga");
+    meshList[GEO_CHAIR]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    meshList[GEO_CHAIR]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
+    meshList[GEO_CHAIR]->material.kSpecular.Set(0.1f, 0.1f, 0.1f);
+    meshList[GEO_CHAIR]->material.kShininess = 1.f;
 
     meshList[GEO_CONTROLROOM] = MeshBuilder::GenerateOBJ("controlroom", "OBJ/controlroom.obj");
     meshList[GEO_CONTROLROOM]->textureID = LoadTGA("Image/controlroom.tga");
+    meshList[GEO_CONTROLROOM]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    meshList[GEO_CONTROLROOM]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
+    meshList[GEO_CONTROLROOM]->material.kSpecular.Set(0.1f, 0.1f, 0.1f);
+    meshList[GEO_CONTROLROOM]->material.kShininess = 1.f;
 
     meshList[GEO_FIREEXTINGUISHER] = MeshBuilder::GenerateOBJ("fireextinguisher", "OBJ/fireextinguisher.obj");
     meshList[GEO_FIREEXTINGUISHER]->textureID = LoadTGA("Image/fireextinguisher.tga");
+    meshList[GEO_FIREEXTINGUISHER]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_FIREEXTINGUISHER]->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_FIREEXTINGUISHER]->material.kSpecular.Set(0.5f, 0.5f, 0.5f);
+    meshList[GEO_FIREEXTINGUISHER]->material.kShininess = 1.f;
 
     meshList[GEO_FRIDGE] = MeshBuilder::GenerateOBJ("fridge", "OBJ/fridgedefault.obj");
     meshList[GEO_FRIDGE]->textureID = LoadTGA("Image/fridgedefault.tga");
-
+    meshList[GEO_FRIDGE]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_FRIDGE]->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_FRIDGE]->material.kSpecular.Set(0.5f, 0.5f, 0.5f);
+    meshList[GEO_FRIDGE]->material.kShininess = 1.f;
+    
     meshList[GEO_PLANT] = MeshBuilder::GenerateOBJ("plant", "OBJ/plant.obj");
     meshList[GEO_PLANT]->textureID = LoadTGA("Image/plant.tga");
+    meshList[GEO_PLANT]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_PLANT]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_PLANT]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_PLANT]->material.kShininess = 1.f;
 
     meshList[GEO_SHELF] = MeshBuilder::GenerateOBJ("shelf", "OBJ/shelf.obj");
     meshList[GEO_SHELF]->textureID = LoadTGA("Image/shelf.tga");
+    meshList[GEO_SHELF]->material.kAmbient.Set(0.9f, 0.9f, 0.9f);
+    meshList[GEO_SHELF]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_SHELF]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_SHELF]->material.kShininess = 1.f;
 
     meshList[GEO_TEMSHOP] = MeshBuilder::GenerateOBJ("temshop", "OBJ/temshop.obj");
     meshList[GEO_TEMSHOP]->textureID = LoadTGA("Image/temshop.tga");
+    meshList[GEO_TEMSHOP]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_TEMSHOP]->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_TEMSHOP]->material.kSpecular.Set(0.6f, 0.6f, 0.6f);
+    meshList[GEO_TEMSHOP]->material.kShininess = 1.f;
 
     meshList[GEO_UMBRELLASTAND] = MeshBuilder::GenerateOBJ("umbrellastand", "OBJ/umbrellastand.obj");
     meshList[GEO_UMBRELLASTAND]->textureID = LoadTGA("Image/umbrellastand.tga");
+    meshList[GEO_UMBRELLASTAND]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    meshList[GEO_UMBRELLASTAND]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_UMBRELLASTAND]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_UMBRELLASTAND]->material.kShininess = 1.f;
 
     meshList[GEO_SHOPDISPLAY] = MeshBuilder::GenerateCube("display", Color(0, 0, 1), 5, 5, 5);
     meshList[GEO_SHOPDISPLAY]->textureID = LoadTGA("Image/layout/canteen_walls.tga");
+    meshList[GEO_SHOPDISPLAY]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_SHOPDISPLAY]->material.kDiffuse.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_SHOPDISPLAY]->material.kSpecular.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_SHOPDISPLAY]->material.kShininess = 1.f;
 
     meshList[GEO_COUNTER] = MeshBuilder::GenerateCube("counter", Color(0, 0.7, 1), 5, 5, 5);
 
@@ -354,7 +435,6 @@ void SP2::Init()
 static float ROT_LIMIT = 45.f;
 static float SCALE_LIMIT = 5.f;
 static float LSPEED = 10.f;
-
 static double FramePerSecond;
 
 void SP2::Update(double dt)
@@ -401,15 +481,29 @@ void SP2::Update(double dt)
     }
 
     //Temmie vibration
-    if (vibrateX && vibrateY < 3)
+    srand(dt);
+    int temp, tempx, tempy;
+    temp = rand() % 2 + 1;
+    tempx = 0;
+    tempy = 0;
+
+    switch (temp)
     {
-        vibrateX += 1;
-        vibrateY += 1;
+    case 1: std::cout << "test1"; temp = rand() % 5 - 1; break;
+    case 2: std::cout << "test2"; temp = rand() % 2; break;
+    case 3: std::cout << "test3"; temp = rand() % 2 + 1; break;
+    }
+
+    if (vibrateX < 3|| vibrateY > 3)
+    {
+        vibrateX += tempx;
+        vibrateY += tempy;
     }
     else
     {
-        vibrateX -= 1.5;
-        vibrateY -= 1.5;
+        vibrateX -= tempx;
+        vibrateY -= tempy;
+        //srand(dt + dt);
     }
 
     if (chonFloat == false)
@@ -527,7 +621,7 @@ void SP2::loadFree()
     RenderGround();
 
     modelStack.PushMatrix();
-    modelStack.Translate(420, 1, -23);
+    modelStack.Translate(420, -3, -23);
     modelStack.Scale(50, 50, 50);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_LAYOUT], true);
@@ -543,6 +637,12 @@ void SP2::loadFree()
     modelStack.PopMatrix();
 
     RenderNPC();
+
+    stemmieShop();
+    chonLab();
+    veeControlroom();
+    jasimCanteen();
+
     RenderPuzzle();
     RenderUI();
 
@@ -565,6 +665,7 @@ void SP2::loadFree()
         RenderTextOnScreen(meshList[GEO_TEXT], "Press U", Color(1, 0, 0), 3, 2, 2);
     }
 }  
+
 void SP2::loadShop()
 {  
  
@@ -604,23 +705,29 @@ void SP2::loadShop()
     loadFree();
     shoptemp();
 
+    stemmieShop();
+
     if (Application::IsKeyPressed('L'))
     {
         SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
     }
 }  
+
 void SP2::loadWSGame()
 {  
    
 }  
+
 void SP2::loadChonGame()
 {    
      
 }    
+
 void SP2::loadVeeGame()
 {    
      
 }    
+
 void SP2::loadRabbitGame()
 {
 
@@ -947,44 +1054,9 @@ void SP2::RenderNPC()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(580, 0, 0 + 20);
-    modelStack.Scale(5, 5, 5);
-    modelStack.Rotate(180, 0, 1, 0);
-    RenderMesh(meshList[GEO_STEMMIE], true);
-    modelStack.PopMatrix();
-
-
-    modelStack.PushMatrix();
-    modelStack.Translate(576, 20 + vibrateY, 6 + 20 + vibrateX);
-    modelStack.Scale(10, 10, 10);
-    modelStack.Rotate(-90, 0, 1, 0);
-    RenderMesh(meshList[GEO_STEMMIE_FACE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(620, 0, -420);
+    modelStack.Translate(950, 0, -460);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_WENGSTANG], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(440, 0, 300);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_VEE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(440, 0, -344);
-    modelStack.Scale(10, 10, 10);
-    modelStack.Rotate(180, 0, 1, 0);
-    RenderMesh(meshList[GEO_JASIM], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(200, 5 + chonFloaty, -295);
-    modelStack.Scale(10, 10, 10);
-    modelStack.Rotate(90, 0, 1, 0);
-    RenderMesh(meshList[GEO_CHON], true);
     modelStack.PopMatrix();
 
     //modelStack.PushMatrix();
@@ -998,123 +1070,18 @@ void SP2::RenderNPC()
 
 void SP2::RenderObjects()
 {
-    //modelStack.PushMatrix();
-    //modelStack.Scale(10, 10, 10);
-    //RenderMesh(meshList[GEO_BENCH], true);
-    //modelStack.PopMatrix();
-
-    //Canteen
-    for (int i = 0; i < 130; i+=60)
-    {
-        modelStack.PushMatrix();
-        modelStack.Translate(500, 0, -420 + i);
-        modelStack.Scale(7, 7, 7);
-        modelStack.Rotate(-90, 0, 1, 0);
-        RenderMesh(meshList[GEO_BENCH], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(500, 0, -405 + i);
-        modelStack.Scale(7, 7, 7);
-        modelStack.Rotate(90, 0, 1, 0);
-        RenderMesh(meshList[GEO_TABLE], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(500, 0, -390 + i);
-        modelStack.Scale(7, 7, 7);
-        modelStack.Rotate(90, 0, 1, 0);
-        RenderMesh(meshList[GEO_BENCH], true);
-        modelStack.PopMatrix();
-    }
-
-    modelStack.PushMatrix();
-    modelStack.Translate(435, 0, -275);
-    modelStack.Scale(9, 9, 9);
-    RenderMesh(meshList[GEO_VENDINGMACHINE], true);
-    modelStack.PopMatrix();
-
-    //Chon's Lab
-    modelStack.PushMatrix();
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_TOOLBOX], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_HAMMER], true);
-    modelStack.PopMatrix();
-    //modelStack.PushMatrix();
-    //modelStack.Scale(5, 5, 5);
-    //RenderMesh(meshList[GEO_VENDINGMACHINE], true);
-    //modelStack.PopMatrix();
-
-    //Stemmie Shop
-    modelStack.PushMatrix();
-    modelStack.Translate(588, 0, -20);
-    modelStack.Scale(10, 10, 10);
-    modelStack.Rotate(180, 0, 1, 0);
-    RenderMesh(meshList[GEO_VENDINGMACHINE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(580, 0, 25);
-    modelStack.Scale(4, 4, 4);
-    RenderMesh(meshList[GEO_TEMSHOP], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(10, 0, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_BOXCRATE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-
-    modelStack.Translate(20, 0, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_CHAIR], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-
-    modelStack.Translate(30, 0, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_CONTROLROOM], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
+    //Unassigned
+   /* modelStack.PushMatrix();
 
     modelStack.Translate(40, 0, 0);
-    modelStack.Scale(10, 10, 10);
+    modelStack.Scale(7, 7, 7);
     RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(935, 5, -10);
-    modelStack.Rotate(180, 0, 1, 0);
+    modelStack.Translate(50, 0, 0);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_FRIDGE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(935, 5, 20);
-    modelStack.Rotate(180, 0, 1, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_FRIDGE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(935, 5, 50);
-    modelStack.Rotate(180, 0, 1, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_FRIDGE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(900, 0, -40);
-    modelStack.Scale(18, 6, 2);
-    RenderMesh(meshList[GEO_COUNTER], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
@@ -1133,6 +1100,287 @@ void SP2::RenderObjects()
     modelStack.Translate(90, 0, 0);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_UMBRELLASTAND], true);
+    modelStack.PopMatrix();*/
+}
+
+void SP2::stemmieShop()
+{
+    //stemmie herself
+    modelStack.PushMatrix();
+    modelStack.Translate(875 - 5, 0, 0 + 60);
+    modelStack.Scale(5, 5, 5);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_STEMMIE], true);
+    modelStack.PopMatrix();
+
+
+    modelStack.PushMatrix();
+    modelStack.Translate(871 - 5, 20 + vibrateY, 6 + 55 + vibrateX);
+    modelStack.Scale(10, 10, 10);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_STEMMIE_FACE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 20 + vibrateY, vibrateX);
+    modelStack.Scale(10, 10, 10);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_STEMMIE_FACE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(875 - 5, 0, 65);
+    modelStack.Scale(4, 4, 4);
+    RenderMesh(meshList[GEO_TEMSHOP], true);
+    modelStack.PopMatrix();
+
+    //Shop objs
+    modelStack.PushMatrix();
+    modelStack.Translate(875, 0, -55);
+    modelStack.Scale(10, 10, 10);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_VENDINGMACHINE], true);
+    modelStack.PopMatrix();
+
+    for (int i = 0; i < 21; i += 20)
+    {
+        for (int y = 0; y < 126; y += 25)
+        {//y = 25
+            modelStack.PushMatrix();
+            modelStack.Translate(920, 0 + i, 75 - y);
+            modelStack.Scale(8, 8, 8);
+            RenderMesh(meshList[GEO_BOXCRATE], true);
+            modelStack.PopMatrix();
+        }
+    }
+    for (int i = 0; i < 21; i += 20)
+    {
+        for (int y = 0; y < 126; y += 25)
+        {//y = 25
+            modelStack.PushMatrix();
+            modelStack.Translate(900, 0 + i, 75 - y);
+            modelStack.Scale(8, 8, 8);
+            RenderMesh(meshList[GEO_BOXCRATE], true);
+            modelStack.PopMatrix();
+        }
+    }
+    for (int i = 0; i < 21; i += 20)
+    {
+        for (int y = 0; y < 51; y += 25)
+        {//y = 25
+            modelStack.PushMatrix();
+            modelStack.Translate(880, 0 + i, 25 - y);
+            modelStack.Scale(8, 8, 8);
+            RenderMesh(meshList[GEO_BOXCRATE], true);
+            modelStack.PopMatrix();
+        }
+    }
+
+    modelStack.PushMatrix();
+    modelStack.Translate(845, 0, -70);
+    modelStack.Scale(5, 5, 5);
+    RenderMesh(meshList[GEO_PLANT], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(830, 0, 100);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(860, 0, 10);
+    modelStack.Rotate(180, 0, 1, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_SHELF], true);
+    modelStack.PopMatrix();
+}
+
+void SP2::chonLab()
+{
+    //NPC
+    modelStack.PushMatrix();
+    modelStack.Translate(360, 5 + chonFloaty, -375);
+    modelStack.Scale(10, 10, 10);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_CHON], true);
+    modelStack.PopMatrix();
+
+    //OBJ
+    //Literally nothing
+    //Chon's Lab
+    modelStack.PushMatrix();
+    modelStack.Translate(350, 0, -370);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_TOOLBOX], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_HAMMER], true);
+    modelStack.PopMatrix();
+}
+
+void SP2::veeControlroom()
+{
+    //Vee Model
+    modelStack.PushMatrix();
+    modelStack.Translate(600, 0, 440);
+    modelStack.Rotate(-90, 0, 1, 0);
+    modelStack.Scale(7, 7, 7);
+    RenderMesh(meshList[GEO_VEE], true);
+    modelStack.PopMatrix();
+
+    //Control Room
+    modelStack.PushMatrix();
+    modelStack.Translate(650, 0, 490);
+    modelStack.Rotate(-90, 0, 1, 0);
+    modelStack.Scale(7, 7, 7);
+    RenderMesh(meshList[GEO_CONTROLROOM], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(640, 0, 460);
+    modelStack.Rotate(-90, 0, 1, 0);
+    modelStack.Scale(6, 6, 6);
+    RenderMesh(meshList[GEO_CHAIR], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(510, 0, 490);
+    modelStack.Rotate(-90, 0, 1, 0);
+    modelStack.Scale(7, 7, 7);
+    RenderMesh(meshList[GEO_CONTROLROOM], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(510, 0, 460);
+    modelStack.Rotate(-90, 0, 1, 0);
+    modelStack.Scale(6, 6, 6);
+    RenderMesh(meshList[GEO_CHAIR], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(675, 0, 435);
+    modelStack.Rotate(180, 0, 1, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_SHELF], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(480, 0, 435);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_SHELF], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(480, 0, 390);
+    modelStack.Scale(5, 5, 5);
+    RenderMesh(meshList[GEO_PLANT], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(670, 0, 390);
+    modelStack.Scale(5, 5, 5);
+    RenderMesh(meshList[GEO_PLANT], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(550, 3, 370);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_UMBRELLASTAND], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(620, 3, 360);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
+    modelStack.PopMatrix();
+}
+
+void SP2::jasimCanteen()
+{
+    //Jasim is Hawt
+    modelStack.PushMatrix();
+    modelStack.Translate(935, 5, -10);
+    modelStack.Rotate(180, 0, 1, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_FRIDGE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(935, 5, 20);
+    modelStack.Rotate(180, 0, 1, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_FRIDGE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(935, 5, 50);
+    modelStack.Rotate(180, 0, 1, 0);
+    modelStack.Translate(685, 0, -430);
+    modelStack.Scale(10, 10, 10);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_JASIM], true);
+    modelStack.PopMatrix();
+
+    //OBJ stuff
+    //Canteen
+    for (int i = 0; i < 130; i += 60)
+    {
+        //-520 //-505
+        modelStack.PushMatrix();
+        modelStack.Translate(740, 0, -515 + i);
+        modelStack.Scale(7, 7, 7);
+        modelStack.Rotate(-90, 0, 1, 0);
+        RenderMesh(meshList[GEO_BENCH], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(740, 0, -500 + i);
+        modelStack.Scale(7, 7, 7);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_TABLE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(740, 0, -485 + i);
+        modelStack.Scale(7, 7, 7);
+        modelStack.Rotate(90, 0, 1, 0);
+        RenderMesh(meshList[GEO_BENCH], true);
+        modelStack.PopMatrix();
+    }
+
+    modelStack.PushMatrix();
+    modelStack.Translate(900, 0, -40);
+    modelStack.Scale(18, 6, 2);
+    RenderMesh(meshList[GEO_COUNTER], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(60, 0, 0);
+    modelStack.Translate(685, 0, -375);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_VENDINGMACHINE], true);
+    modelStack.PopMatrix();
+
+
+    modelStack.PushMatrix();
+    modelStack.Translate(819, 0, -350);
+    modelStack.Scale(6, 6, 6);
+    RenderMesh(meshList[GEO_PLANT], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(819, 0, -515);
+    modelStack.Scale(6, 6, 6);
+    RenderMesh(meshList[GEO_PLANT], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(685, 0, -475);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_FRIDGE], true);
     modelStack.PopMatrix();
 }
 
@@ -1400,7 +1648,7 @@ void SP2::RenderMinimap()
     minimappp.LoadIdentity();
     minimappp.LookAt(minimappy.pos.x, minimappy.pos.y, minimappy.pos.z, minimappy.targ.x, minimappy.targ.y, minimappy.targ.z, minimappy.UP.x, minimappy.UP.y, minimappy.UP.z);
 
-    if (!meshList[GEO_DIALOGUEBOX] || meshList[GEO_DIALOGUEBOX]->textureID <= 0)  //error check
+    if (!meshList[GEO_MAP]->textureID <= 0)  //error check
         return;
 
     glDisable(GL_DEPTH_TEST);
@@ -1410,95 +1658,19 @@ void SP2::RenderMinimap()
     projectionStack.LoadMatrix(ortho);
     viewStack.PushMatrix();
     viewStack.LoadIdentity();   //no need camera for ortho mode
-    minimappp.PushMatrix();     //NEW CODE
-    minimappp.LoadIdentity();   //NEW CODE
 
     modelStack.PushMatrix();
     modelStack.LoadIdentity();  //reset modelStack
 
     modelStack.PushMatrix();
-
-    //modelStack.PushMatrix();
-    //modelStack.Translate(40, 10, 0);
-    //modelStack.Scale(10, 10, 10);
-    //RenderMesh(meshList[GEO_STEMMIE], false);
-    //modelStack.PopMatrix();
-
-    ////STUFF TO ADD
-    //modelStack.Translate(75, 5, 0);
-    //modelStack.Scale(3, 3, 3);
-    //RenderMesh(meshList[GEO_MAP], false);
-
-    //for (int i = 0; i < 500; i++)
-    //{
-
-    //    glPushMatrix(); //Start Phase
-    //    //modelStack.PushMatrix();
-    //    glEnable(GL_TEXTURE_2D);
-    //    glBindTexture(GL_TEXTURE_2D, GEO_GROUND);
-    //    glBegin(GL_QUADS);
-    //    glTexCoord2d(0, 0); glVertex2f(0, 0);
-    //    glTexCoord2d(1, 0); glVertex2f(0 + 1000, 0);
-    //    glTexCoord2d(1, 1); glVertex2f(0 + 1000, 0 + 1000);
-    //    glTexCoord2d(0, 1); glVertex2f(0, 0 + 1000);
     
     modelStack.Translate(15, 15, 0);
     RenderMesh(meshList[GEO_MAP], false);
-    //    glEnd();
-    //    glPopMatrix();  //End Phase
-    //}
-    //modelStack.PopMatrix();
-    
-    //glDisable(GL_TEXTURE_2D);
 
     projectionStack.PopMatrix();
     viewStack.PopMatrix();
-    minimappp.PopMatrix();      //NEW CODE
     modelStack.PopMatrix();
     glEnable(GL_DEPTH_TEST);
-    //std::vector<Vertex> vertex_buffer_data;
-    //std::vector<GLuint> index_buffer_data;
-
-    //Vertex v;
-    //v.color = Color(0, 1, 0);
-
-    //float width = 1.f / 200;
-    //float height = 1.f / 200;
-    //int offset = 0;
-
-    //for (unsigned i = 0; i < 200; ++i) 
-    //{
-    //    for (unsigned j = 0; j < 200; ++j) 
-    //    {
-    //        //add 4 vertices into vertex_buffer_data
-    //        v.pos.Set(-0.5f, -0.5f, 0);     v.normal.Set(0, 0, 1);  v.texCoord.Set(width * j, 1.f - height * (i + 1));     vertex_buffer_data.push_back(v);
-    //        v.pos.Set(0.5f, -0.5f, 0);      v.normal.Set(0, 0, 1);  v.texCoord.Set(width * (j + 1), 1.f - height * (i + 1));   vertex_buffer_data.push_back(v);
-    //        v.pos.Set(0.5f, 0.5f, 0);       v.normal.Set(0, 0, 1);  v.texCoord.Set(width * (j + 1), 1.f - height * i);   vertex_buffer_data.push_back(v);
-    //        v.pos.Set(-0.5f, 0.5f, 0);      v.normal.Set(0, 0, 1);  v.texCoord.Set(width * j, 1.f - height * i);   vertex_buffer_data.push_back(v);
-
-    //        //add 6 indices into index_buffer_data
-    //        index_buffer_data.push_back(offset + 0);
-    //        index_buffer_data.push_back(offset + 1);
-    //        index_buffer_data.push_back(offset + 2);
-
-    //        index_buffer_data.push_back(offset + 0);
-    //        index_buffer_data.push_back(offset + 2);
-    //        index_buffer_data.push_back(offset + 3);
-
-    //        offset += 4;
-    //    }
-    //}
-
-    //Mesh *mesh = new Mesh("minimap");
-
-    //glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexBuffer);
-    //glBufferData(GL_ARRAY_BUFFER, vertex_buffer_data.size() * sizeof(Vertex), &vertex_buffer_data[0], GL_STATIC_DRAW);
-    //glBindBuffer(GL_ARRAY_BUFFER, mesh->indexBuffer);
-    //glBufferData(GL_ARRAY_BUFFER, index_buffer_data.size() * sizeof(GLuint), &index_buffer_data[0], GL_STATIC_DRAW);
-
-    //mesh->indexSize = index_buffer_data.size();
-    //mesh->mode = Mesh::DRAW_TRIANGLES;
-
 }
 
 void SP2::shoptemp()

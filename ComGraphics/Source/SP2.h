@@ -217,6 +217,10 @@ public:
     void RenderGround();
     void RenderPlayer();
 	void RenderPuzzle();
+    void stemmieShop();
+    void chonLab();
+    void veeControlroom();
+    void jasimCanteen();
 	void RenderNPC();
     void RenderObjects();
 	void RenderInventory();
