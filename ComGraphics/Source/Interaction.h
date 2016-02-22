@@ -31,7 +31,6 @@ public:
     virtual void DoInteraction() {}
 };
 
-
 class ShopInteraction : public Interaction
 {
 public :

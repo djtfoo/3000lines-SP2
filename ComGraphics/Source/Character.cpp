@@ -3,7 +3,6 @@
 #include "Application.h"
 #include "SharedData.h"
 
-#include <iostream>
 #include <sstream>
 
 Character::Character(std::string name, Vector3 position, float direction) : name_(name), position_(Vector3(0, 0, 0)), direction_(0)
@@ -33,84 +32,31 @@ Player::~Player()
 
 void Player::Walk(double dt)
 {
+    bool xMovement = true, zMovement = true;
+    float newX = position_.x;
+    float newZ = position_.z;
+
     if (Application::IsKeyPressed('W')) {   //player moves forward
         direction_ = 90 - SharedData::GetInstance()->camera->theta;
 
-        bool xMovement = true, zMovement = true;
-        float newX = position_.x - 40 * sin(Math::DegreeToRadian(direction_)) * dt;
-        float newZ = position_.z - 40 * cos(Math::DegreeToRadian(direction_)) * dt;
-        for (size_t i = 0; i < SharedData::GetInstance()->collisionItems.size(); ++i) {
-            if (position_.x > SharedData::GetInstance()->collisionItems[i].minX && position_.x < SharedData::GetInstance()->collisionItems[i].maxX) {
-                if (newZ > SharedData::GetInstance()->collisionItems[i].minZ && newZ < SharedData::GetInstance()->collisionItems[i].maxZ) {
-                    zMovement = false;
-                }
-            }
-            else if (position_.z > SharedData::GetInstance()->collisionItems[i].minZ && position_.z < SharedData::GetInstance()->collisionItems[i].maxZ) {
-                if (newX > SharedData::GetInstance()->collisionItems[i].minX && newX < SharedData::GetInstance()->collisionItems[i].maxX) {
-                    xMovement = false;
-                }
-            }
-        }
-
-        if (xMovement) {
-            position_.x -= (float)(40 * sin(Math::DegreeToRadian(direction_)) * dt);
-        }
-        if (zMovement) {
-            position_.z -= (float)(40 * cos(Math::DegreeToRadian(direction_)) * dt);
-        }
+        newX -= 40 * sin(Math::DegreeToRadian(direction_)) * dt;
+        newZ -= 40 * cos(Math::DegreeToRadian(direction_)) * dt;
     }
-    if (Application::IsKeyPressed('F')) {
+
+    if (Application::IsKeyPressed('F')) {   //sped up moving forward
         direction_ = 90 - SharedData::GetInstance()->camera->theta;
 
-        bool xMovement = true, zMovement = true;
-        float newX = position_.x - 130 * sin(Math::DegreeToRadian(direction_)) * dt;
-        float newZ = position_.z - 130 * cos(Math::DegreeToRadian(direction_)) * dt;
-        for (size_t i = 0; i < SharedData::GetInstance()->collisionItems.size(); ++i) {
-            if (position_.x > SharedData::GetInstance()->collisionItems[i].minX && position_.x < SharedData::GetInstance()->collisionItems[i].maxX) {
-                if (newZ > SharedData::GetInstance()->collisionItems[i].minZ && newZ < SharedData::GetInstance()->collisionItems[i].maxZ) {
-                    zMovement = false;
-                }
-            }
-            else if (position_.z > SharedData::GetInstance()->collisionItems[i].minZ && position_.z < SharedData::GetInstance()->collisionItems[i].maxZ) {
-                if (newX > SharedData::GetInstance()->collisionItems[i].minX && newX < SharedData::GetInstance()->collisionItems[i].maxX) {
-                    xMovement = false;
-                }
-            }
-        }
-
-        if (xMovement) {
-            position_.x -= (float)(130 * sin(Math::DegreeToRadian(direction_)) * dt);
-        }
-        if (zMovement) {
-            position_.z -= (float)(130 * cos(Math::DegreeToRadian(direction_)) * dt);
-        }
+        newX -= 130 * sin(Math::DegreeToRadian(direction_)) * dt;
+        newZ -= 130 * cos(Math::DegreeToRadian(direction_)) * dt;
     }
+
     if (Application::IsKeyPressed('S')) {   //player moves backward
         direction_ = 90 - SharedData::GetInstance()->camera->theta;
 
-        bool xMovement = true, zMovement = true;
-        float newX = position_.x + 40 * sin(Math::DegreeToRadian(direction_)) * dt;
-        float newZ = position_.z + 40 * cos(Math::DegreeToRadian(direction_)) * dt;
-        for (size_t i = 0; i < SharedData::GetInstance()->collisionItems.size(); ++i) {
-            if (position_.x > SharedData::GetInstance()->collisionItems[i].minX && position_.x < SharedData::GetInstance()->collisionItems[i].maxX) {
-                if (newZ > SharedData::GetInstance()->collisionItems[i].minZ && newZ < SharedData::GetInstance()->collisionItems[i].maxZ) {
-                    zMovement = false;
-                }
-            }
-            else if (position_.z > SharedData::GetInstance()->collisionItems[i].minZ && position_.z < SharedData::GetInstance()->collisionItems[i].maxZ) {
-                if (newX > SharedData::GetInstance()->collisionItems[i].minX && newX < SharedData::GetInstance()->collisionItems[i].maxX) {
-                    xMovement = false;
-                }
-            }
-        }
-
-        if (xMovement) {
-            position_.x += (float)(40 * sin(Math::DegreeToRadian(direction_)) * dt);
-        }
-        if (zMovement) {
-            position_.z += (float)(40 * cos(Math::DegreeToRadian(direction_)) * dt);
-        }
+        newX += 40 * sin(Math::DegreeToRadian(direction_)) * dt;
+        newZ += 40 * cos(Math::DegreeToRadian(direction_)) * dt;
     }
+
     if (Application::IsKeyPressed('A')) {   //strafe left
         direction_ = 90 - SharedData::GetInstance()->camera->theta;
         Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
@@ -118,29 +64,10 @@ void Player::Walk(double dt)
         right.y = 0;
         right.Normalize();
 
-        bool xMovement = true, zMovement = true;
-        float newX = position_.x - 50 * right.x * dt;
-        float newZ = position_.z - 50 * right.z * dt;
-        for (size_t i = 0; i < SharedData::GetInstance()->collisionItems.size(); ++i) {
-            if (position_.x > SharedData::GetInstance()->collisionItems[i].minX && position_.x < SharedData::GetInstance()->collisionItems[i].maxX) {
-                if (newZ > SharedData::GetInstance()->collisionItems[i].minZ && newZ < SharedData::GetInstance()->collisionItems[i].maxZ) {
-                    zMovement = false;
-                }
-            }
-            else if (position_.z > SharedData::GetInstance()->collisionItems[i].minZ && position_.z < SharedData::GetInstance()->collisionItems[i].maxZ) {
-                if (newX > SharedData::GetInstance()->collisionItems[i].minX && newX < SharedData::GetInstance()->collisionItems[i].maxX) {
-                    xMovement = false;
-                }
-            }
-        }
-
-        if (xMovement) {
-            position_.x -= (float)(50 * right.x * dt);
-        }
-        if (zMovement) {
-            position_.z -= (float)(50 * right.z * dt);
-        }
+        newX -= 50 * right.x * dt;
+        newZ -= 50 * right.z * dt;
     }
+
     if (Application::IsKeyPressed('D')) {   //strafe right
         direction_ = 90 - SharedData::GetInstance()->camera->theta;
         Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
@@ -148,32 +75,39 @@ void Player::Walk(double dt)
         right.y = 0;
         right.Normalize();
 
-        bool xMovement = true, zMovement = true;
-        float newX = position_.x + 50 * right.x * dt;
-        float newZ = position_.z + 50 * right.z * dt;
+        newX += 50 * right.x * dt;
+        newZ += 50 * right.z * dt;
+    }
 
-        vector<ItemCollision> temp = SharedData::GetInstance()->collisionItems;
+    CheckCollision(newX, newZ, xMovement, zMovement);
 
-        for (size_t i = 0; i < temp.size(); ++i) {
-            if (position_.x > temp[i].minX && position_.x < temp[i].maxX) {
-                if (newZ > temp[i].minZ && newZ < temp[i].maxZ) {
-                    zMovement = false;
-                }
-            }
-            else if (position_.z > temp[i].minZ && position_.z < temp[i].maxZ) {
-                if (newX > temp[i].minX && newX < temp[i].maxX) {
-                    xMovement = false;
-                }
+    if (xMovement) {
+        position_.x = newX;
+    }
+    if (zMovement) {
+        position_.z = newZ;
+    }
+
+}
+
+void Player::CheckCollision(float newX, float newZ, bool& xMovement, bool& zMovement)
+{
+    map<LOCATION, vector<ItemCollision>>::iterator it = SharedData::GetInstance()->collisionMap.find(SharedData::GetInstance()->location);
+    vector<ItemCollision> temp = it->second;
+
+    for (vector<ItemCollision>::iterator i = temp.begin(); i != temp.end(); ++i) {
+        if (position_.x > i->minX && position_.x < i->maxX) {
+            if (newZ > i->minZ && newZ < i->maxZ) {
+                zMovement = false;
             }
         }
-
-        if (xMovement) {
-            position_.x += (float)(50 * right.x * dt);
-        }
-        if (zMovement) {
-            position_.z += (float)(50 * right.z * dt);
+        else if (position_.z > i->minZ && position_.z < i->maxZ) {
+            if (newX > i->minX && newX < i->maxX) {
+                xMovement = false;
+            }
         }
     }
+
 }
 
 bool inline GetIntersection(float dist1, float dist2, Vector3 maxView, Vector3 playerPos, Vector3& intersect)
@@ -222,55 +156,37 @@ void Player::CheckInteraction()
     vector<Interaction*> temp = SharedData::GetInstance()->interactionItems;
     Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
     Vector3 maxView = position_ + 75 * view;
-    for (size_t i = 0; i < temp.size(); ++i) {
+    for (vector<Interaction*>::iterator it = temp.begin(); it != temp.end(); ++it) {
         
         //if the view is totally outside the box, then don't do calculations because confirm no interaction
-        if (position_.x < temp[i]->bound1.x && maxView.x < temp[i]->bound1.x) { continue; }
-        if (position_.x > temp[i]->bound2.x && maxView.x > temp[i]->bound2.x) { continue; }
-        if (position_.y < temp[i]->bound1.y && maxView.y < temp[i]->bound1.y) { continue; }
-        if (position_.y > temp[i]->bound2.y && maxView.y > temp[i]->bound2.y) { continue; }
-        if (position_.z < temp[i]->bound1.z && maxView.z < temp[i]->bound1.z) { continue; }
-        if (position_.z > temp[i]->bound2.z && maxView.z > temp[i]->bound2.z) { continue; }
+        if (position_.x < (*it)->bound1.x && maxView.x < (*it)->bound1.x) { continue; }
+        if (position_.x > (*it)->bound2.x && maxView.x > (*it)->bound2.x) { continue; }
+        if (position_.y < (*it)->bound1.y && maxView.y < (*it)->bound1.y) { continue; }
+        if (position_.y > (*it)->bound2.y && maxView.y > (*it)->bound2.y) { continue; }
+        if (position_.z < (*it)->bound1.z && maxView.z < (*it)->bound1.z) { continue; }
+        if (position_.z > (*it)->bound2.z && maxView.z > (*it)->bound2.z) { continue; }
         
         //if end of range of view is within box, there is intersection
-        if (maxView.x > temp[i]->bound1.x && maxView.x < temp[i]->bound2.x &&
-            maxView.y > temp[i]->bound1.y && maxView.y < temp[i]->bound2.y &&
-            maxView.z > temp[i]->bound1.z && maxView.z < temp[i]->bound2.z) {
+        if (maxView.x > (*it)->bound1.x && maxView.x < (*it)->bound2.x &&
+            maxView.y > (*it)->bound1.y && maxView.y < (*it)->bound2.y &&
+            maxView.z > (*it)->bound1.z && maxView.z < (*it)->bound2.z) {
             SharedData::GetInstance()->canInteract = true;
-            SharedData::GetInstance()->interactptr = temp[i];
+            SharedData::GetInstance()->interactptr = *it;
             break;
         }
 
         Vector3 intersect(0, 0, 0);
-        if ( (GetIntersection(maxView.x - temp[i]->bound1.x, position_.x - temp[i]->bound1.x, maxView, position_, intersect) &&  InBox(intersect, temp[i]->bound1, temp[i]->bound2, 1)) ||
-            (GetIntersection(maxView.y - temp[i]->bound1.y, position_.y - temp[i]->bound1.y, maxView, position_, intersect) && InBox(intersect, temp[i]->bound1, temp[i]->bound2, 2)) ||
-            (GetIntersection(maxView.z - temp[i]->bound1.z, position_.z - temp[i]->bound1.z, maxView, position_, intersect) && InBox(intersect, temp[i]->bound1, temp[i]->bound2, 3)) ||
-            (GetIntersection(maxView.x - temp[i]->bound2.x, position_.x - temp[i]->bound2.x, maxView, position_, intersect) && InBox(intersect, temp[i]->bound1, temp[i]->bound2, 1)) ||
-            (GetIntersection(maxView.y - temp[i]->bound2.y, position_.y - temp[i]->bound2.y, maxView, position_, intersect) && InBox(intersect, temp[i]->bound1, temp[i]->bound2, 2)) ||
-            (GetIntersection(maxView.z - temp[i]->bound2.z, position_.z - temp[i]->bound2.z, maxView, position_, intersect) && InBox(intersect, temp[i]->bound1, temp[i]->bound2, 3)) ) {
+        if ( (GetIntersection(maxView.x - (*it)->bound1.x, position_.x - (*it)->bound1.x, maxView, position_, intersect) && InBox(intersect, (*it)->bound1, (*it)->bound2, 1)) ||
+            (GetIntersection(maxView.y - (*it)->bound1.y, position_.y - (*it)->bound1.y, maxView, position_, intersect) && InBox(intersect, (*it)->bound1, (*it)->bound2, 2)) ||
+            (GetIntersection(maxView.z - (*it)->bound1.z, position_.z - (*it)->bound1.z, maxView, position_, intersect) && InBox(intersect, (*it)->bound1, (*it)->bound2, 3)) ||
+            (GetIntersection(maxView.x - (*it)->bound2.x, position_.x - (*it)->bound2.x, maxView, position_, intersect) && InBox(intersect, (*it)->bound1, (*it)->bound2, 1)) ||
+            (GetIntersection(maxView.y - (*it)->bound2.y, position_.y - (*it)->bound2.y, maxView, position_, intersect) && InBox(intersect, (*it)->bound1, (*it)->bound2, 2)) ||
+            (GetIntersection(maxView.z - (*it)->bound2.z, position_.z - (*it)->bound2.z, maxView, position_, intersect) && InBox(intersect, (*it)->bound1, (*it)->bound2, 3))) {
             SharedData::GetInstance()->canInteract = true;
-            SharedData::GetInstance()->interactptr = temp[i];
+            SharedData::GetInstance()->interactptr = *it;
             break;
         }
 
-        /*Vector3 distance = temp[i]->middlePoint - position_;
-        if (distance.LengthSquared() > 5625) {  //player too far away
-            continue;
-        }
-
-        float dotProduct = distance.Dot(view);
-        //Vector3 projected = dotProduct / distance.LengthSquared() * distance;  //project view vector onto distance vector
-        float distLength = distance.Length();
-        float angle = Math::RadianToDegree(acos(dotProduct / distLength));
-        float magnitude = distLength / cos(Math::DegreeToRadian(angle));
-        Vector3 projected = magnitude * view + position_;
-
-        if (projected.x >(temp[i]->middlePoint.x - temp[i]->distX) && projected.x < (temp[i]->middlePoint.x + temp[i]->distX) && projected.y >(temp[i]->middlePoint.y - temp[i]->distY) && projected.y < (temp[i]->middlePoint.y + temp[i]->distY) && projected.z >(temp[i]->middlePoint.z - temp[i]->distZ) && projected.z < (temp[i]->middlePoint.z + temp[i]->distZ)) {
-            std::cout << projected.x << " " << projected.y << " " << projected.z << std::endl;
-            SharedData::GetInstance()->canInteract = true;
-            SharedData::GetInstance()->interactptr = temp[i];
-            break;
-        }*/
     }
 
 }

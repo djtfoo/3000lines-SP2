@@ -15,6 +15,24 @@ enum GAME_STATE
     GAME_STATE_TOTAL,
 };
 
+enum LOCATION
+{
+    OUTSIDE,
+    HANGAR,
+    CORRIDOR,   //can split corridor into different segments
+    SHOP,
+    LABORATORY,
+    CONTROLROOM,
+    CANTEEN,
+    TOILET,
+    ROOM1,
+    ROOM2,
+    ROOM3,
+    ROOM4,
+
+    LOCATION_TOTAL
+};
+
 //GAME_STATE gamestate;
 
 #endif /* GAMESTATE_H */

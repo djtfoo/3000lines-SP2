@@ -21,20 +21,6 @@
 
 class SP2 : public Scene
 {
-    enum LOCATION
-    {
-        HANGAR,
-        LABORATORY,
-        CONTROLROOM,
-        CORRIDOR,
-        //can split corridor into different segments
-        CANTEEN,
-        //TOILET,
-        OUTSIDE,
-
-        LOCATION_TOTAL
-    };
-
     enum GEOMETRY_TYPE
     {
         //skybox
@@ -243,6 +229,9 @@ public:
     void loadVeeGame();
     void pauseGame();
     void loadRabbitGame();
+
+    //initialise collisions
+    void loadCollisions();
 
     void shoptemp();
     void RotateDisplay();

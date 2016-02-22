@@ -1,4 +1,5 @@
 #include <vector>
+#include <map>
 
 #include "Character.h"
 #include "Camera3.h"
@@ -7,6 +8,7 @@
 #include "GameState.h"
 
 using std::vector;
+using std::map;
 
 #ifndef SHAREDDATA_H
 #define SHAREDDATA_H
@@ -28,10 +30,11 @@ public:
 
     //Dem Gamestates
     GAME_STATE gamestate;
+    LOCATION location;
 
     Player *player;
     Camera3 *camera;
-    vector<ItemCollision>collisionItems;
+    map<LOCATION, vector<ItemCollision>> collisionMap;
     vector<Interaction*>interactionItems;
 
     //monitor
@@ -65,6 +68,7 @@ private:
         camera->Init(Vector3(0, -140, 100), Vector3(0, -140, 110), Vector3(0, 1, 0));
 
         gamestate = GAME_STATE_FREE;
+        location = OUTSIDE;
 
         cursor_xpos = 400;
         cursor_ypos = 300;

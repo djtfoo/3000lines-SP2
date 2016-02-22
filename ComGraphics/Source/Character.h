@@ -37,6 +37,7 @@ public:
     Player(std::string name);
     ~Player();
     void Walk(double dt);
+    void CheckCollision(float newX, float newZ, bool& zMovement, bool& xMovement);
     void CheckInteraction();
     
     unsigned int getHunger();

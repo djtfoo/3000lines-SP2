@@ -8,10 +8,13 @@
 #include "Utility.h"
 #include "LoadTGA.h"
 
+#include <fstream>
 #include <sstream>
 
 #include "Application.h"
 #include "SharedData.h"
+
+#include <iostream>
 
 SP2::SP2()
 {
@@ -387,6 +390,55 @@ void SP2::loadInv()
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(2, GEO_STEMMIE));
 }
 
+void SP2::loadCollisions()
+{
+    vector<ItemCollision> outsideVec, ICvec;
+    ItemCollision IC;
+    int loc;
+    //IC.minX = 0;    IC.maxX = 0;    IC.minZ = 0;    IC.maxZ = 0;    ICvec.push_back(IC);
+
+    for (LOCATION loc = OUTSIDE; loc < LOCATION_TOTAL; loc = static_cast<LOCATION>(loc+1)) {
+        SharedData::GetInstance()->collisionMap.insert(std::pair<LOCATION, vector<ItemCollision>>(loc, ICvec));
+    }
+
+    std::ifstream inData;
+    std::string data;
+    inData.open("collisions.txt");
+
+    if (inData.is_open()) {
+        while (!inData.eof()) {
+            std::getline(inData, data);
+
+            std::stringstream dataStream(data);
+            std::string line;
+
+            //1st data
+            std::getline(dataStream, line, ',');
+            loc = std::stoi(line);
+
+            //2nd data
+            std::getline(dataStream, line, ',');
+            IC.minX = std::stof(line);
+
+            //3rd data
+            std::getline(dataStream, line, ',');
+            IC.maxX = std::stof(line);
+
+            //4th data
+            std::getline(dataStream, line, ',');
+            IC.minZ = std::stof(line);
+
+            //5th data
+            std::getline(dataStream, line);
+            IC.maxZ = std::stof(line);
+
+            map<LOCATION, vector<ItemCollision>>::iterator it = SharedData::GetInstance()->collisionMap.find(static_cast<LOCATION>(loc));
+            it->second.push_back(IC);
+        }
+    }
+    inData.close();
+}
+
 void SP2::Init()
 {
     //light 0
@@ -446,6 +498,7 @@ void SP2::Init()
 	floodlevel = -1;
 
 	loadInv();
+    loadCollisions();
 }
 
 static float ROT_LIMIT = 45.f;
