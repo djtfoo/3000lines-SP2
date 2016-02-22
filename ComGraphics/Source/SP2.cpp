@@ -377,15 +377,10 @@ void SP2::Init()
     light[0].type = Light::LIGHT_DIRECTIONAL;
     light[0].position.Set(0, 1000, 0);
     light[0].color.Set(1, 1, 1);
-    light[0].power = 1;
+    light[0].power = 1.f;
     light[0].kC = 1.f;
     light[0].kL = 0.01f;
     light[0].kQ = 0.001f;
-
-    light[0].cosCutoff = cos(Math::DegreeToRadian(45));
-    light[0].cosInner = cos(Math::DegreeToRadian(30));
-    light[0].exponent = 3.f;
-    light[0].spotDirection.Set(0.f, 1.f, 0.f);
 
     //make sure uniform parameters are passed in after glUseProgram()
     glUniform1i(m_parameters[U_LIGHT0_TYPE], light[0].type);
@@ -978,7 +973,6 @@ void SP2::RenderGround()
 void SP2::RenderPlayer()
 {
     modelStack.PushMatrix();
-    modelStack.Translate(0, 5, 0);
     modelStack.Scale(2, 5, 2);
 
     //body
@@ -989,8 +983,8 @@ void SP2::RenderPlayer()
 
     //head
     modelStack.PushMatrix();
-    modelStack.Translate(0.f, 1.5f, 0.f);
-    modelStack.Scale(1.f, 1.f, 0.8f);
+    modelStack.Translate(0.f, 1.4f, 0.f);
+    modelStack.Scale(1.f, 0.8f, 0.8f);
     RenderMesh(meshList[GEO_PLAYER_HEAD], true);
     modelStack.PopMatrix();
 
@@ -1010,7 +1004,7 @@ void SP2::RenderPlayer()
 
     //right arm
     modelStack.PushMatrix();
-    modelStack.Translate(1.f, 0.f, 0.f);
+    modelStack.Translate(1.f, 0.25f, 0.f);
 
     modelStack.PushMatrix();
     modelStack.Scale(0.5f, 1.5f, 0.5f);
@@ -1027,7 +1021,7 @@ void SP2::RenderPlayer()
 
     //left arm
     modelStack.PushMatrix();
-    modelStack.Translate(-1.f, 0.f, 0.f);
+    modelStack.Translate(-1.f, 0.25f, 0.f);
 
     modelStack.PushMatrix();
     modelStack.Scale(0.5f, 1.5f, 0.5f);
@@ -1115,7 +1109,6 @@ void SP2::stemmieShop()
 
 
     modelStack.PushMatrix();
-    modelStack.Translate(871 - 5, 20 + vibrateY, 6 + 55 + vibrateX);
     modelStack.Scale(10, 10, 10);
     modelStack.Rotate(-90, 0, 1, 0);
     RenderMesh(meshList[GEO_STEMMIE_FACE], true);
@@ -1129,6 +1122,64 @@ void SP2::stemmieShop()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
+    modelStack.Translate(875 - 5, 0, 65);
+    modelStack.Scale(4, 4, 4);
+    RenderMesh(meshList[GEO_TEMSHOP], true);
+    modelStack.PopMatrix();
+
+    //Shop objs
+    modelStack.PushMatrix();
+    modelStack.Translate(875, 0, -55);
+    modelStack.Scale(10, 10, 10);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_VENDINGMACHINE], true);
+    modelStack.PopMatrix();
+
+    for (int i = 0; i < 21; i += 20)
+    {
+        for (int y = 0; y < 126; y += 25)
+        {//y = 25
+            modelStack.PushMatrix();
+            modelStack.Translate(920, 0 + i, 75 - y);
+            modelStack.Scale(8, 8, 8);
+            RenderMesh(meshList[GEO_BOXCRATE], true);
+            modelStack.PopMatrix();
+        }
+    }
+    for (int i = 0; i < 21; i += 20)
+    {
+        for (int y = 0; y < 126; y += 25)
+        {//y = 25
+            modelStack.PushMatrix();
+            modelStack.Translate(900, 0 + i, 75 - y);
+            modelStack.Scale(8, 8, 8);
+            RenderMesh(meshList[GEO_BOXCRATE], true);
+            modelStack.PopMatrix();
+        }
+    }
+    for (int i = 0; i < 21; i += 20)
+    {
+        for (int y = 0; y < 51; y += 25)
+        {//y = 25
+            modelStack.PushMatrix();
+            modelStack.Translate(880, 0 + i, 25 - y);
+            modelStack.Scale(8, 8, 8);
+            RenderMesh(meshList[GEO_BOXCRATE], true);
+            modelStack.PopMatrix();
+        }
+    }
+
+    modelStack.PushMatrix();
+    modelStack.Translate(845, 0, -70);
+    modelStack.Scale(5, 5, 5);
+    RenderMesh(meshList[GEO_PLANT], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(830, 0, 100);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
+
     modelStack.Translate(875 - 5, 0, 65);
     modelStack.Scale(4, 4, 4);
     RenderMesh(meshList[GEO_TEMSHOP], true);
@@ -1204,7 +1255,6 @@ void SP2::chonLab()
     modelStack.Scale(10, 10, 10);
     modelStack.Rotate(90, 0, 1, 0);
     RenderMesh(meshList[GEO_CHON], true);
-    modelStack.PopMatrix();
 
     //OBJ
     //Literally nothing

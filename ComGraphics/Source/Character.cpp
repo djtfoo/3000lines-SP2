@@ -19,7 +19,7 @@ std::string Character::getName()
     return name_;
 }
 
-Player::Player(std::string name) : Character(name, Vector3(0, 0, 0), 0), hunger_(0), health_(100), gold_(0), invselect(0)
+Player::Player(std::string name) : Character(name, Vector3(0, 0, 0), 0), hunger_(0), health_(100), gold_(0), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0)
 {
 	for (int i = 0; i < 8; i++)
 	{

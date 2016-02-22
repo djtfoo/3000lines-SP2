@@ -1,5 +1,6 @@
 #include "Item.h"
 
+//Item abstract class
 Item::Item() : name_("")
 {
 }
@@ -17,6 +18,7 @@ std::string Item::getName()
 	return name_;
 }
 
+//Gift item
 Gift::Gift() : Item(), value_(0)
 {
 

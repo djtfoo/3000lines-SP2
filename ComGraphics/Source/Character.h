@@ -1,5 +1,7 @@
 #include <string>
 #include "Vector3.h"
+#include "Item.h"
+#include "Outfit.h"
 
 #ifndef CHARACTER_H
 #define CHARACTER_H
@@ -27,8 +29,9 @@ private:
     unsigned int gold_;
     //add inventory
     //add pointers for clothes - hats, top, bottoms, etc
-	int* outfit;
-	int* hat;
+    Hat* hat;
+    Top* top;
+    Bottoms* bottoms;
 
 public:
     Player(std::string name);

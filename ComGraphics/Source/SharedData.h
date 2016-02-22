@@ -34,6 +34,10 @@ public:
     vector<ItemCollision>collisionItems;
     vector<Interaction*>interactionItems;
 
+    //monitor
+    int width;
+    int height;
+
     //cursor
     double cursor_xpos;
     double cursor_ypos;

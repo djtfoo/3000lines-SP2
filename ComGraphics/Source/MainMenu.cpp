@@ -73,9 +73,9 @@ MainMenu::MainMenu()
 	state = MENU_MAIN;
     
     elapsedTime = 0;
-    bufferTime = 1.5;
+    bufferTime = 0.125;
 
-	clicked = isClicked = false;
+	clicked = isClicked = selected = false;
 
 }
 MainMenu::~MainMenu()
@@ -99,20 +99,21 @@ void MainMenu::Update(double dt)
         elapsedTime += dt;
         if (SharedData::GetInstance()->cursor_newxpos >= 746 && SharedData::GetInstance()->cursor_newxpos <= 1076
             && SharedData::GetInstance()->cursor_newypos >= 470 && SharedData::GetInstance()->cursor_newypos <= 715) {
-            if (Application::IsKeyPressed(VK_LBUTTON)) {
+            if (!selected && Application::IsKeyPressed(VK_LBUTTON)) {
                 isClicked = true;
                 btncheck = 1;
             }
             else if (isClicked && btncheck == 1) {
                 clicked = true;
                 isClicked = false;
+                selected = true;
             }
         }
 
         //HELP BUTTON
         if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
             && SharedData::GetInstance()->cursor_newypos >= 380 && SharedData::GetInstance()->cursor_newypos <= 475) {
-            if (Application::IsKeyPressed(VK_LBUTTON))
+            if (!selected && Application::IsKeyPressed(VK_LBUTTON))
             {
                 isClicked = true;
                 btncheck = 3;
@@ -120,26 +121,28 @@ void MainMenu::Update(double dt)
             else if (isClicked && btncheck == 3) {
                 clicked = true;
                 isClicked = false;
+                selected = true;
             }
         }
 
         //OPTION BUTTON
         if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
             && SharedData::GetInstance()->cursor_newypos >= 510 && SharedData::GetInstance()->cursor_newypos <= 600) {
-            if (Application::IsKeyPressed(VK_LBUTTON)) {
+            if (!selected && Application::IsKeyPressed(VK_LBUTTON)) {
                 isClicked = true;
                 btncheck = 4;
             }
             else if (isClicked && btncheck == 4) {
                 clicked = true;
                 isClicked = false;
+                selected = true;
             }
         }
 
         //CREDITS BUTTON
         if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
             && SharedData::GetInstance()->cursor_newypos >= 635 && SharedData::GetInstance()->cursor_newypos <= 730) {
-            if (Application::IsKeyPressed(VK_LBUTTON))
+            if (!selected && Application::IsKeyPressed(VK_LBUTTON))
             {
                 isClicked = true;
                 btncheck = 5;
@@ -147,13 +150,14 @@ void MainMenu::Update(double dt)
             else if (isClicked && btncheck == 5) {
                 clicked = true;
                 isClicked = false;
+                selected = true;
             }
         }
 
         //EXIT BUTTON
         if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
             && SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910) {
-            if (Application::IsKeyPressed(VK_LBUTTON) && elapsedTime >= bufferTime)
+            if (!selected && Application::IsKeyPressed(VK_LBUTTON) && elapsedTime >= bufferTime)
             {
                 isClicked = true;
                 btncheck = 6;
@@ -161,6 +165,7 @@ void MainMenu::Update(double dt)
             else if (isClicked && btncheck == 6) {
                 clicked = true;
                 isClicked = false;
+                selected = true;
             }
         }
 
@@ -202,8 +207,6 @@ void MainMenu::Update(double dt)
 
 	ButtonUpdater(dt);
 
-	//Play
-	//if (Application::IsKeyPressed(VK_LBUTTON))
 }
 
 void MainMenu::ButtonUpdater(double dt)
@@ -216,6 +219,7 @@ void MainMenu::ButtonUpdater(double dt)
         {
             SharedData::GetInstance()->programstate_change = true;
             SharedData::GetInstance()->program_state = SharedData::PROGRAM_GAME;
+            selected = false;
         }
 
 		if (btncheck == 3)
@@ -291,7 +295,7 @@ void MainMenu::Render()
 
 	
 	//custom mouse here! (o w o)b
-	RenderButtonsOnScreen(meshList[GEO_MOUSECUSTOM], "", Color(0, 0, 0), 1, SharedData::GetInstance()->cursor_newxpos / 24, 60 - SharedData::GetInstance()->cursor_newypos / 18, 1, 1);
+    RenderButtonsOnScreen(meshList[GEO_MOUSECUSTOM], "", Color(0, 0, 0), 1, SharedData::GetInstance()->cursor_newxpos / (SharedData::GetInstance()->width / 80), 60 - SharedData::GetInstance()->cursor_newypos / (SharedData::GetInstance()->height / 60), 1, 1);
 }
 
 void MainMenu::RenderMesh(Mesh* mesh, bool enableLight)
@@ -528,6 +532,7 @@ void MainMenu::HelpPage()
 {
     clicked = false;
 	isClicked = false;
+    selected = false;
 	delaytime = 0;
 	helpBtnspd = 0;
 	optBtnspd = 0;
@@ -550,6 +555,7 @@ void MainMenu::OptionsPage()
 {
 	clicked = false;
 	isClicked = false;
+    selected = false;
 	delaytime = 0;
 	helpBtnspd = 0;
 	optBtnspd = 0;
@@ -571,6 +577,7 @@ void MainMenu::CreditsPage()
 {
 	clicked = false;
 	isClicked = false;
+    selected = false;
 	delaytime = 0;
 	helpBtnspd = 0;
 	optBtnspd = 0;

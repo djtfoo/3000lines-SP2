@@ -104,6 +104,8 @@ public:
     //check for clicking
     bool clicked;
     bool isClicked;
+    bool selected;  //prevent clicking of other buttons
+
     //to prevent clicks from "overflowing"
     double bufferTime;
     double elapsedTime;

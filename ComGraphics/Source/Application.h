@@ -7,9 +7,6 @@ class Application
 {
 
 public:
-	int width;
-	int height;
-
 	Application();
 	~Application();
 	void Init();
