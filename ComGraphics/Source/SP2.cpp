@@ -624,13 +624,6 @@ void SP2::loadFree()
     RenderPlayer();
     modelStack.PopMatrix();
 
-    RenderNPC();
-    stemmieShop();
-    chonLab();
-    veeControlroom();
-    jasimCanteen();
-    loadHangar();
-
     RenderPuzzle();
     RenderUI();
 
@@ -645,7 +638,12 @@ void SP2::loadFree()
     
     RenderUI();
 
-
+    RenderNPC();
+    stemmieShop();
+    chonLab();
+    veeControlroom();
+    jasimCanteen();
+    loadHangar();
 
     //RenderMinimap();
     
@@ -1098,6 +1096,7 @@ void SP2::chonLab()
     modelStack.Scale(10, 10, 10);
     modelStack.Rotate(90, 0, 1, 0);
     RenderMesh(meshList[GEO_CHON], true);
+    modelStack.PopMatrix();
 
     //OBJ
     //Literally nothing
