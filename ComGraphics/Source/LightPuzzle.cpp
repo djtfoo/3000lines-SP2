@@ -6,6 +6,8 @@ using std::endl;
 
 LightPuzzle::LightPuzzle() : checker(0)
 {
+    one = two = three = four = false;
+
     puzzlePos.Set(0, 0, 0);
     for (int i = 0; i < 4; i++)
     {
@@ -62,20 +64,25 @@ bool LightPuzzle::checkPuzzle(int first, int second, int third, int forth)
     puzzleAns[0][1] = second;
     puzzleAns[0][2] = third;
     puzzleAns[0][3] = forth;
-
-    for (int i = 0; i < 1; i++)
+    if (puzzleAns[0][0] == puzzleSize[0][0])
     {
-        for (int p = 0; p < 4; p++)
-        {
-            if (puzzleAns[i][p] == puzzleSize[i][p])
-            {
-                checker++;
-            }
-        }
+        one = true;
     }
-    if (checker >= 4)
+    if (puzzleAns[0][1] == puzzleSize[0][1])
     {
-        checker = 0;
+        two = true;
+    }
+    if (puzzleAns[0][2] == puzzleSize[0][2])
+    {
+        three = true;
+    }
+    if (puzzleAns[0][3] == puzzleSize[0][3])
+    {
+        four = true;
+    }
+    if (one == true && two == true && three == true && four == true)
+    {
+        one = two = three = four = false;
         return true;
     }
 

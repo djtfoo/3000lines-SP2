@@ -16,6 +16,8 @@ public:
     float puzzleSize[4][4];
     float puzzleAns[4][4];
 
+    bool one, two, three, four;
+
     int checker;
 
     Vector3 puzzlePos;

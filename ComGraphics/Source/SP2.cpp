@@ -627,6 +627,15 @@ void SP2::Init()
     interactions = new VeePuzzleInteraction();
     interactions->bound1.Set(597, -10, 490);    interactions->bound2.Set(607, 5, 500);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
+    interactions = new VeePuzzleInteraction();
+    interactions->bound1.Set(580, -10, 490);    interactions->bound2.Set(587, 5, 500);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    interactions = new VeePuzzleInteraction();
+    interactions->bound1.Set(564, -10, 490);    interactions->bound2.Set(575, 5, 500);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    interactions = new VeePuzzleInteraction();
+    interactions->bound1.Set(549, -10, 490);    interactions->bound2.Set(558, 5, 500);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     rotating = 0;
     ptxt1 = 70;
@@ -806,6 +815,24 @@ void SP2::Update(double dt)
         if (one > 5)
             one = 0;
     }
+    if (Application::IsKeyPressed('9'))
+    {
+        two += 1;
+        if (two > 5)
+            two = 0;
+    }
+    if (Application::IsKeyPressed('8'))
+    {
+        three += 1;
+        if (three > 5)
+            three = 0;
+    }
+    if (Application::IsKeyPressed('7'))
+    {
+        four += 1;
+        if (four > 5)
+            four = 0;
+    }
 
     if (one == 1)
         meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
@@ -850,6 +877,16 @@ void SP2::Update(double dt)
         meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 1, 0), 1, 15, 4);
     if (four == 5)
         meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 1, 1), 1, 15, 4);
+
+    
+    if (lightpuzz.checkPuzzle(one, two, three, four) == true)
+    {
+        std::cout << one << " " << two << " " << three << " " << four << std::endl;
+        std::cout << "You win!" <<  std::endl;
+        one = two = three = four = 0;
+        lightpuzz.generatePuzzle();
+    }
+
 }
 
 void SP2::Render()
