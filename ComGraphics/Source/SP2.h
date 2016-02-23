@@ -80,6 +80,7 @@ class SP2 : public Scene
         GEO_TEMSHOP,
         GEO_UMBRELLASTAND,
         GEO_TOILBOWL,
+		GEO_BED,
         GEO_LMAO,   //a sh*tty joke
         //^^^
 
@@ -217,6 +218,7 @@ public:
     void RenderPlayer();
 	void RenderPuzzle();
     void stemmieShop();
+	void RenderRoom();
     void chonLab();
     void veeControlroom();
     void jasimCanteen();
