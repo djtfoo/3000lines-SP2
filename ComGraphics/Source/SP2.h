@@ -110,9 +110,16 @@ class SP2 : public Scene
 		GEO_DAYNIGHTICON,
 
         GEO_COUNTER,
+
         //GEO_SHELF,
         //GEO_FRIDGE,
 		GEO_SPAGHETTO,
+
+        GEO_SHOPSHELF,
+        GEO_LABCOUNTER1,
+        GEO_LABCOUNTER_CORNER,
+        GEO_SPHERETEMP,
+
 
 		GEO_PIPETYPE1,
 		GEO_PIPETYPE2,

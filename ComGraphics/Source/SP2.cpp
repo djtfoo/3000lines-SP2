@@ -189,7 +189,7 @@ SP2::SP2()
     //GEO_MAP
     meshList[GEO_MAP] = MeshBuilder::GenerateQuad("minimap", Color(1, 1, 1), 10, 10);
     
-    meshList[GEO_LAYOUT] = MeshBuilder::GenerateOBJ("big map", "OBJ/bigarea.obj");
+    meshList[GEO_LAYOUT] = MeshBuilder::GenerateOBJ("big map", "OBJ/bigareaFixed.obj");
     meshList[GEO_LAYOUT]->textureID = LoadTGA("Image/layout/bigareatxture.tga");
 
     //Objects
@@ -278,6 +278,13 @@ SP2::SP2()
     meshList[GEO_SHELF]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SHELF]->material.kShininess = 1.f;
 
+    meshList[GEO_SHOPSHELF] = MeshBuilder::GenerateOBJ("shelf", "OBJ/shelfshop.obj");
+    meshList[GEO_SHOPSHELF]->textureID = LoadTGA("Image/bench.tga");
+    meshList[GEO_SHOPSHELF]->material.kAmbient.Set(0.9f, 0.9f, 0.9f);
+    meshList[GEO_SHOPSHELF]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_SHOPSHELF]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_SHOPSHELF]->material.kShininess = 1.f;
+
     meshList[GEO_TEMSHOP] = MeshBuilder::GenerateOBJ("temshop", "OBJ/temshop.obj");
     meshList[GEO_TEMSHOP]->textureID = LoadTGA("Image/temshop.tga");
     meshList[GEO_TEMSHOP]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
@@ -314,6 +321,25 @@ SP2::SP2()
 
     meshList[GEO_COUNTER] = MeshBuilder::GenerateCube("counter", Color(0, 0.7, 1), 5, 5, 5);
 
+
+    meshList[GEO_LABCOUNTER1] = MeshBuilder::GenerateOBJ("toiletbowl", "OBJ/linerLabtable.obj");
+    meshList[GEO_LABCOUNTER1]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    meshList[GEO_LABCOUNTER1]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_LABCOUNTER1]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_LABCOUNTER1]->material.kShininess = 1.f;
+
+    meshList[GEO_LABCOUNTER_CORNER] = MeshBuilder::GenerateOBJ("toiletbowl", "OBJ/cornerLabtable.obj");
+    meshList[GEO_LABCOUNTER_CORNER]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    meshList[GEO_LABCOUNTER_CORNER]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_LABCOUNTER_CORNER]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_LABCOUNTER_CORNER]->material.kShininess = 1.f;
+
+    meshList[GEO_SPHERETEMP] = MeshBuilder::GenerateSphere("spheretemp", Color(1, 1, 0), 5,5);//, 36, 18);
+    meshList[GEO_SPHERETEMP]->textureID = LoadTGA("Image/translucenttest.tga");
+    //meshList[GEO_SPHERETEMP]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    //meshList[GEO_SPHERETEMP]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    //meshList[GEO_SPHERETEMP]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    //meshList[GEO_SPHERETEMP]->material.kShininess = 1.f;
 
     //Light
     meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
@@ -534,8 +560,10 @@ void SP2::Init()
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     rotating = 0;
-    ptxt2 = ptxt3 = ptxtexit = 0;
-    ptxt1 = 40;
+     ptxt1 = 70;
+     ptxt2 = 78;
+     ptxt3 = 86;
+     ptxtexit = 94;
     rotator = 0;
 	daynighttime = 0000;
 	floodlevel = -1;
@@ -642,6 +670,7 @@ void SP2::Update(double dt)
     rotating += 30 * dt;
 
     if (Application::IsKeyPressed('I'))
+
         objy += 100 * dt;
     if (Application::IsKeyPressed('K'))
         objy -= 100 * dt;
@@ -649,6 +678,15 @@ void SP2::Update(double dt)
         objx -= 100 * dt;
     if (Application::IsKeyPressed('L'))
         objx += 100 * dt;
+
+        objy += 50 * dt;
+    if (Application::IsKeyPressed('K'))
+        objy -= 50 * dt;
+    if (Application::IsKeyPressed('J'))
+        objx -= 50 * dt;
+    if (Application::IsKeyPressed('L'))
+        objx += 50 * dt;
+
 
     if (Application::IsKeyPressed('N'))
     {
@@ -855,9 +893,9 @@ void SP2::pauseGame()
     RenderObjectOnScreen(meshList[GEO_SHOPUI], 40, 30, 50, 50);
     RenderTextOnScreen(meshList[GEO_TEXT], "PAUSED", Color(0, 0.6, 1), 5, 5, 9);
     RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, ptxt1, 0.3, 0.3);
-    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, 32, 0.3, 0.3);
-    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, 24, 0.3, 0.3);
-    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, 12, 0.3, 0.3);
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, ptxt2, 0.3, 0.3);
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, ptxt3, 0.3, 0.3);
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, ptxtexit, 0.3, 0.3);
     
 
     
@@ -866,7 +904,11 @@ void SP2::pauseGame()
     if (Application::IsKeyPressed('L'))
     {
         SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
-        ptxt1 = 40;
+
+        ptxt1 = 70;
+        ptxt2 = 78;
+        ptxt3 = 86;
+        ptxtexit = 94;
     }
     
 }
@@ -874,10 +916,20 @@ void SP2::pauseAnimation(double dt)
 {
     
 
-    ptxt1 -= 40 * dt;
+    ptxt1 -= 80 * dt;
+    ptxt2 -= 80 * dt;
+    ptxt3 -= 80 * dt;
+    ptxtexit -= 80 * dt;
 
-    if (ptxt1 <= 10)
+    if (ptxt1 <= 40)
         ptxt1 = 40;
+    if (ptxt2 <= 32)
+        ptxt2 = 32;
+    if (ptxt3 <= 24)
+        ptxt3 = 24;
+    if (ptxtexit <= 12)
+        ptxtexit = 12;
+
    
 }
 
@@ -1238,29 +1290,17 @@ void SP2::stemmieShop()
     RenderMesh(meshList[GEO_VENDINGMACHINE], true);
     modelStack.PopMatrix();
 
-    //Cratez
-    for (int i = 0; i < 21; i += 20)
-    {
-        for (int y = 0; y < 51; y += 25)
-        {//y = 25
-            modelStack.PushMatrix();
-            modelStack.Translate(875, 0 + i, 75 - y);
-            modelStack.Scale(8, 8, 8);
-            RenderMesh(meshList[GEO_BOXCRATE], true);
-            modelStack.PopMatrix();
-        }
-    }
-    for (int i = 0; i < 21; i += 20)
-    {
-        for (int y = 0; y < 51; y += 25)
-        {//y = 25
-            modelStack.PushMatrix();
-            modelStack.Translate(850, 0 + i, 75 - y);
-            modelStack.Scale(8, 8, 8);
-            RenderMesh(meshList[GEO_BOXCRATE], true);
-            modelStack.PopMatrix();
-        }
-    }
+    modelStack.PushMatrix();
+    modelStack.Translate(900, 1, 30);
+    modelStack.Scale(8,8,8);
+    RenderMesh(meshList[GEO_SHOPSHELF], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(860, 1, 30);
+    modelStack.Scale(8, 8, 8); 
+    RenderMesh(meshList[GEO_SHOPSHELF], true);
+    modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(845, 0, -70);
@@ -1275,13 +1315,6 @@ void SP2::stemmieShop()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(860, 0, 8);
-    modelStack.Rotate(90, 0, 1, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_SHELF], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
     modelStack.Translate(900, 0, -45);
     modelStack.Scale(18, 6, 4);
     RenderMesh(meshList[GEO_COUNTER], true);
@@ -1292,19 +1325,73 @@ void SP2::chonLab()
 {
     //NPC
     modelStack.PushMatrix();
-    modelStack.Translate(360, 5 + chonFloaty, -375);
+    modelStack.Translate(412, 5 + chonFloaty, -459);
     modelStack.Scale(10, 10, 10);
-    modelStack.Rotate(90, 0, 1, 0);
+    modelStack.Rotate(0, 0, 1, 0);
     RenderMesh(meshList[GEO_CHON], true);
     modelStack.PopMatrix();
 
     //OBJ
-    //Literally nothing
+    modelStack.PushMatrix();
+    modelStack.Translate(506, 2, -446);
+    modelStack.Scale(12, 12, 12);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_LABCOUNTER_CORNER], true);      //top left corner
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(310, 2, -363);
+    modelStack.Scale(12, 12, 12);
+    modelStack.Rotate(270, 0, 1, 0);
+    RenderMesh(meshList[GEO_LABCOUNTER_CORNER], true);  //btm right corner
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(334, 2, -468);
+    modelStack.Scale(12, 12, 12);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_LABCOUNTER_CORNER], true);  //btm left corner
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(460, 2, -453);
+    modelStack.Scale(12, 12, 8);
+    modelStack.Rotate(270, 0, 1, 0);
+    RenderMesh(meshList[GEO_LABCOUNTER1], true);    //facenorth
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(373, 2, -440);
+    modelStack.Scale(12, 12, 8);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_LABCOUNTER1], true);    //facesouth
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(413, 2, -395);
+    modelStack.Scale(8, 12, 12);
+    modelStack.Rotate(0, 0, 1, 0);
+    RenderMesh(meshList[GEO_LABCOUNTER1], true);    //faceleft
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(424, 2, -382);
+    modelStack.Scale(8, 12, 12);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_LABCOUNTER1], true);    //faceright
+    modelStack.PopMatrix();
+
     //Chon's Lab
     modelStack.PushMatrix();
-    modelStack.Translate(350, 0, -370);
-    modelStack.Scale(10, 10, 10);
+    modelStack.Translate(459.2, 12, -466);
+    modelStack.Scale(9, 8, 6);
     RenderMesh(meshList[GEO_TOOLBOX], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(objx, 10, objy);
+    modelStack.Scale(5, 5, 5);
+    RenderMesh(meshList[GEO_SPHERETEMP], true);
     modelStack.PopMatrix();
 }
 
@@ -1379,7 +1466,7 @@ void SP2::veeControlroom()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(620, 3, 360);
+    modelStack.Translate(620, 5, 360);
     modelStack.Scale(3, 3, 3);
     RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
     modelStack.PopMatrix();
