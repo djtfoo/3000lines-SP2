@@ -191,7 +191,7 @@ void Player::CheckInteraction()
 
 }
 
-unsigned int Player::getHunger()
+int Player::getHunger()
 {
     return hunger_;
 }
@@ -204,6 +204,11 @@ unsigned int Player::getHealth()
 unsigned int Player::getGold()
 {
     return gold_;
+}
+
+void Player::setHunger(int hungee)
+{
+	hunger_ = hungee;
 }
 
 bool Player::isDead()

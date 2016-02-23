@@ -112,6 +112,7 @@ class SP2 : public Scene
         GEO_COUNTER,
         //GEO_SHELF,
         //GEO_FRIDGE,
+		GEO_SPAGHETTO,
 
 		GEO_PIPETYPE1,
 		GEO_PIPETYPE2,
@@ -237,7 +238,6 @@ public:
     void pauseAnimation(double dt);
 
 
-    int playerHung;
     float objx, objy;
 
     float rotating;

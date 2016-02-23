@@ -24,7 +24,7 @@ public:
 class Player : public Character
 {
 private:
-    unsigned int hunger_;
+    int hunger_;
     unsigned int health_;
     unsigned int gold_;
     //add inventory
@@ -40,13 +40,13 @@ public:
     void CheckCollision(float newX, float newZ, bool& zMovement, bool& xMovement);
     void CheckInteraction();
     
-    unsigned int getHunger();
+    int getHunger();
     unsigned int getHealth();
     unsigned int getGold();
 
     void setName();
 
-    void setHunger();
+    void setHunger(int hungee);
     void setHealth();
     void setGold();
 

@@ -373,6 +373,13 @@ SP2::SP2()
 	meshList[GEO_TOILETFLOOD] = MeshBuilder::GenerateQuad("toiletflood", Color(1, 1, 1), 18, 18);
 	meshList[GEO_TOILETFLOOD]->textureID = LoadTGA("Image/shltwater.tga");
 
+	meshList[GEO_SPAGHETTO] = MeshBuilder::GenerateOBJ("spaghetto", "OBJ/spaghetto.obj");
+	meshList[GEO_SPAGHETTO]->textureID = LoadTGA("Image/spaghetto.tga");
+	meshList[GEO_SPAGHETTO]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_SPAGHETTO]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_SPAGHETTO]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_SPAGHETTO]->material.kShininess = 1.f;
+
     viewOptions = true;
 
     objx = objy = 1;
@@ -475,7 +482,6 @@ void SP2::Init()
 	interactions->bound1.Set(780, -5, -612);     interactions->bound2.Set(800, 5, -616);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
-    playerHung = SharedData::GetInstance()->player->getHunger();
     rotating = 0;
     ptxt2 = ptxt3 = ptxtexit = 0;
     ptxt1 = 40;
@@ -514,6 +520,7 @@ void SP2::Update(double dt)
 	if (((int)daynighttime % 100) > 60)
 	{
 		daynighttime += 40;
+		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 3);
 	}
 	if (daynighttime > 2400)
 	{
@@ -570,15 +577,15 @@ void SP2::Update(double dt)
     
     if (Application::IsKeyPressed('O'))
     {
-        playerHung -= 1;
-        if (playerHung <= 0)
-            playerHung = 0;
+		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 1);
+		if (SharedData::GetInstance()->player->getHunger() <= 0)
+			SharedData::GetInstance()->player->setHunger(0);
     }
     if (Application::IsKeyPressed('P'))
     {
-        playerHung += 1;
-        if (playerHung >= 100)
-            playerHung = 100;
+		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 1);
+		if (SharedData::GetInstance()->player->getHunger() >= 100)
+			SharedData::GetInstance()->player->setHunger(100);
     }
 
     rotating += 30 * dt;
@@ -703,6 +710,13 @@ void SP2::loadFree()
     modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
     RenderPlayer();
     modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 15, 0);
+	modelStack.Scale(2, 2, 2);
+	RenderMesh(meshList[GEO_SPAGHETTO], true);
+	modelStack.PopMatrix();
+
 
     //RenderPuzzle();
 
@@ -1736,7 +1750,7 @@ void SP2::RenderUI()
         s << "objpos:(" << objx << " , " << objy << ")";
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 17);
 
-        RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1+(playerHung / 3), 1);
+		RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
     }
 }
 
