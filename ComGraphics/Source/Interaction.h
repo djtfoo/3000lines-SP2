@@ -46,4 +46,12 @@ public:
     ~ManureInteraction();
     virtual void DoInteraction();
 };
+
+class SpaghettoInteraction : public Interaction
+{
+public:
+	SpaghettoInteraction();
+	~SpaghettoInteraction();
+	virtual void DoInteraction();
+};
 #endif

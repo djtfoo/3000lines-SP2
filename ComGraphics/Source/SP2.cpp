@@ -475,12 +475,62 @@ void SP2::Init()
     
     Interaction* interactions;
 
+	//spaghetti random spawns
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(755.976, 14, -378.31); interactions->bound2.Set(765.976, 15, -368.31);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(755.976, 14, -391.7); interactions->bound2.Set(765.976, 15, -381.7);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(755.976, 14, -437.6); interactions->bound2.Set(765.976, 15, -427.6);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(755.976, 14, -452.9); interactions->bound2.Set(765.976, 15, -442.9);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(755.976, 14, -498.8); interactions->bound2.Set(765.976, 15, -488.8);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(755.976, 14, -510.7); interactions->bound2.Set(765.976, 15, -500.7);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872 - 5, 14, -373.31 - 5); interactions->bound2.Set(721.872 + 5, 15, -373.31 + 5);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872 - 5, 14, -386.7 - 5); interactions->bound2.Set(721.872 + 5, 15, -386.7 + 5);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872 - 5, 14, -432.6 - 5); interactions->bound2.Set(721.872 + 5, 15, -432.6 + 5);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872 - 5, 14, -447.9 - 5); interactions->bound2.Set(721.872 + 5, 15, -447.9 + 5);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872 - 5, 14, -493.8 - 5); interactions->bound2.Set(721.872 + 5, 15, -493.8 + 5);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872 - 5, 14, -505.7 - 5); interactions->bound2.Set(721.872 + 5, 15, -505.7 + 5);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	//spaghetto random spawns
+
     interactions = new ShopInteraction();
     interactions->bound1.Set(890, -15, -35);     interactions->bound2.Set(900, 20, -25);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new ManureInteraction();
-	interactions->bound1.Set(780, -5, -612);     interactions->bound2.Set(800, 5, -616);
+	interactions->bound1.Set(780, -5, -616);     interactions->bound2.Set(800, 5, -612);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     rotating = 0;
@@ -592,13 +642,13 @@ void SP2::Update(double dt)
     rotating += 30 * dt;
 
     if (Application::IsKeyPressed('I'))
-        objy += 1 * dt;
+        objy += 100 * dt;
     if (Application::IsKeyPressed('K'))
-        objy -= 1 * dt;
+        objy -= 100 * dt;
     if (Application::IsKeyPressed('J'))
-        objx -= 1 * dt;
+        objx -= 100 * dt;
     if (Application::IsKeyPressed('L'))
-        objx += 1 * dt;
+        objx += 100 * dt;
 
     if (Application::IsKeyPressed('N'))
     {
@@ -643,7 +693,7 @@ void SP2::Update(double dt)
         lightpos += 0.85;
         light[0].position.Set(0, 1000, lightpos);
     }
-    std::cout << lightpos << std::endl;
+    //std::cout << lightpos << std::endl;
 }
 
 void SP2::Render()
@@ -725,11 +775,22 @@ void SP2::loadFree()
     RenderPlayer();
     modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 15, 0);
-	modelStack.Scale(2, 2, 2);
-	RenderMesh(meshList[GEO_SPAGHETTO], true);
-	modelStack.PopMatrix();
+	for (int i = 0; i < 12; i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i]->bound1.x, SharedData::GetInstance()->interactionItems[i]->bound1.y, SharedData::GetInstance()->interactionItems[i]->bound1.z);
+		modelStack.Scale(2, 2, 2);
+		RenderMesh(meshList[GEO_SPAGHETTO], true);
+		modelStack.PopMatrix();
+	}
+	for (int i = 0; i < 12; i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i]->bound2.x, SharedData::GetInstance()->interactionItems[i]->bound2.y, SharedData::GetInstance()->interactionItems[i]->bound2.z);
+		modelStack.Scale(2, 2, 2);
+		RenderMesh(meshList[GEO_SPAGHETTO], true);
+		modelStack.PopMatrix();
+	}
 
 
     //RenderPuzzle();

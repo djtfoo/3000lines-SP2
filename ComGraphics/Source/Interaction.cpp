@@ -50,3 +50,17 @@ void ManureInteraction::DoInteraction()
 {
 	SharedData::GetInstance()->toiletflood = true;
 }
+
+//MOM'S SPAGHETTI
+SpaghettoInteraction::SpaghettoInteraction() : Interaction()
+{
+}
+
+SpaghettoInteraction::~SpaghettoInteraction()
+{
+}
+
+void SpaghettoInteraction::DoInteraction()
+{
+	SharedData::GetInstance()->toiletflood = true;
+}
