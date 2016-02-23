@@ -97,8 +97,8 @@ void MainMenu::Update(double dt)
     {
     case MENU_MAIN:
         elapsedTime += dt;
-        if (SharedData::GetInstance()->cursor_newxpos >= 746 && SharedData::GetInstance()->cursor_newxpos <= 1076
-            && SharedData::GetInstance()->cursor_newypos >= 470 && SharedData::GetInstance()->cursor_newypos <= 715) {
+        if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width / 2.52) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 1.75)
+            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.3) && (SharedData::GetInstance()->height / 1.5)) {
             if (!selected && Application::IsKeyPressed(VK_LBUTTON)) {
                 isClicked = true;
                 btncheck = 1;
@@ -111,8 +111,8 @@ void MainMenu::Update(double dt)
         }
 
         //HELP BUTTON
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-            && SharedData::GetInstance()->cursor_newypos >= 380 && SharedData::GetInstance()->cursor_newypos <= 475) {
+        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.85) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 2.25)) {
             if (!selected && Application::IsKeyPressed(VK_LBUTTON))
             {
                 isClicked = true;
@@ -126,8 +126,8 @@ void MainMenu::Update(double dt)
         }
 
         //OPTION BUTTON
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-            && SharedData::GetInstance()->cursor_newypos >= 510 && SharedData::GetInstance()->cursor_newypos <= 600) {
+        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.1) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.8)) {
             if (!selected && Application::IsKeyPressed(VK_LBUTTON)) {
                 isClicked = true;
                 btncheck = 4;
@@ -140,8 +140,8 @@ void MainMenu::Update(double dt)
         }
 
         //CREDITS BUTTON
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-            && SharedData::GetInstance()->cursor_newypos >= 635 && SharedData::GetInstance()->cursor_newypos <= 730) {
+        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.7) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.47)) {
             if (!selected && Application::IsKeyPressed(VK_LBUTTON))
             {
                 isClicked = true;
@@ -155,8 +155,8 @@ void MainMenu::Update(double dt)
         }
 
         //EXIT BUTTON
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-            && SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910) {
+        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
             if (!selected && Application::IsKeyPressed(VK_LBUTTON) && elapsedTime >= bufferTime)
             {
                 isClicked = true;
@@ -172,8 +172,8 @@ void MainMenu::Update(double dt)
         break;
 
     case MENU_INSTRUCTIONS:
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-            && SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910) {
+        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
             if (Application::IsKeyPressed(VK_LBUTTON)) {
                 state = MENU_MAIN;
                 elapsedTime = 0;
@@ -183,8 +183,8 @@ void MainMenu::Update(double dt)
         break;
 
     case MENU_OPTIONS:
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-            && SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910) {
+        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
             if (Application::IsKeyPressed(VK_LBUTTON))
             {
                 state = MENU_MAIN;
@@ -194,8 +194,8 @@ void MainMenu::Update(double dt)
         break;
 
     case MENU_CREDITS:
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-            && SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910) {
+        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
             if (Application::IsKeyPressed(VK_LBUTTON)) {
                 state = MENU_MAIN;
                 elapsedTime = 0;
@@ -446,8 +446,8 @@ void MainMenu::MainMenuPage()
 {
 	/*Each individual buttons for menu here. Seperated by comment line*/
     //PLAY BUTTON
-    if (SharedData::GetInstance()->cursor_newxpos >= 746 && SharedData::GetInstance()->cursor_newxpos <= 1076
-        && SharedData::GetInstance()->cursor_newypos >= 470 && SharedData::GetInstance()->cursor_newypos <= 715){
+    if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width / 2.52) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 1.75)
+        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.3) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.5)){
         if (isClicked)
         {
             RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONSELECTED], "Play", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
@@ -461,8 +461,8 @@ void MainMenu::MainMenuPage()
         RenderButtonsOnScreen(meshList[GEO_PLAYBUTTON], "Play", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //HELP BUTTON
-    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-        && SharedData::GetInstance()->cursor_newypos >= 380 && SharedData::GetInstance()->cursor_newypos <= 475) {
+    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.85) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 2.25)) {
         if (isClicked)
         {
             RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Help!", Color(0, 0, 0), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
@@ -476,8 +476,8 @@ void MainMenu::MainMenuPage()
         RenderButtonsOnScreen(meshList[GEO_BUTTON], "Help!", Color(0, 0, 0), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //OPTION BUTTON
-    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-        && SharedData::GetInstance()->cursor_newypos >= 510 && SharedData::GetInstance()->cursor_newypos <= 600) {
+    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.1) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.8)) {
         if (isClicked)
         {
             RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Option", Color(0, 0, 0), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
@@ -491,8 +491,8 @@ void MainMenu::MainMenuPage()
         RenderButtonsOnScreen(meshList[GEO_BUTTON], "Option", Color(0, 0, 0), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //CREDITS BUTTON
-    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-        && SharedData::GetInstance()->cursor_newypos >= 635 && SharedData::GetInstance()->cursor_newypos <= 730) {
+    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.7) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.47)) {
         if (isClicked)
         {
             RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Credit", Color(0, 0, 0), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
@@ -506,8 +506,8 @@ void MainMenu::MainMenuPage()
         RenderButtonsOnScreen(meshList[GEO_BUTTON], "Credit", Color(0, 0, 0), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //EXIT BUTTON
-    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-        && SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910) {
+    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
         if (isClicked)
         {
             RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
@@ -541,8 +541,8 @@ void MainMenu::HelpPage()
 
 	RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONSELECTED], "INSTRUCTIONS", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
 
-	if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-		&& SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910)
+    if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18))
 	{
         RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
 	}
@@ -563,8 +563,8 @@ void MainMenu::OptionsPage()
 	btncheck = 0;
 
 	RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONSELECTED], "OPTIONS", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
-	if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-		&& SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910)
+    if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18))
 	{
         RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
 	}
@@ -585,8 +585,8 @@ void MainMenu::CreditsPage()
 	btncheck = 0;
 
 	RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONSELECTED], "CREDITS", Color(0, 0, 0), 3, 38, 27, 10.9, 8.5);
-	if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= 290
-		&& SharedData::GetInstance()->cursor_newypos >= 815 && SharedData::GetInstance()->cursor_newypos <= 910)
+    if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18))
 	{
         RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Return", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
 	}

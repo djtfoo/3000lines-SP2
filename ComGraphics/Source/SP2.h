@@ -204,6 +204,9 @@ public:
     //reset
     void Reset();
 
+    std::string locations[LOCATION_TOTAL];
+    void CheckCharacterLocation();
+
     void RenderMesh(Mesh* mesh, bool enableLight);
     void RenderText(Mesh* mesh, std::string text, Color color);
     void RenderObjectOnScreen(Mesh* mesh, float x, float y, float scalex = 1, float scaley = 1);

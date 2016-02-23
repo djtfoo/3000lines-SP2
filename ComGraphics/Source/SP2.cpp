@@ -391,6 +391,25 @@ SP2::SP2()
     viewOptions = true;
 
     objx = objy = 1;
+
+    std::string temp[LOCATION_TOTAL] = {
+        "OUTSIDE",
+        "HANGAR",
+        "CORRIDOR",
+        "SHOP",
+        "LABORATORY",
+        "CONTROLROOM",
+        "CANTEEN",
+        "TOILET",
+        "ROOM1",
+        "ROOM2",
+        "ROOM3",
+        "ROOM4"
+    };
+    
+    for (LOCATION i = OUTSIDE; i < LOCATION_TOTAL; i = static_cast<LOCATION>(i+1)) {
+        locations[i] = temp[i];
+    }
 }
 
 SP2::~SP2()
@@ -562,6 +581,8 @@ void SP2::Update(double dt)
     FramePerSecond = 1 / dt;
     
     SharedData::GetInstance()->player->Walk(dt);
+
+    CheckCharacterLocation();
 
     SharedData::GetInstance()->camera->Update(dt);
     
@@ -1824,7 +1845,7 @@ void SP2::RenderTime()
 	std::stringstream timey;
 	timey << "TIME: " << ((int)daynighttime / 1000) << (((int)daynighttime / 100) % 10) << (((int)daynighttime / 10) % 10) << ((int)daynighttime % 10);
 	timey.str();
-	RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(1, 0, 0), 3, 0, 16);
+	RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(1, 0, 0), 3, 0, 15);
 	RenderTimeOnScreen(meshList[GEO_DAYNIGHTICON], 80, 60);
 }
 
@@ -1832,17 +1853,27 @@ void SP2::RenderUI()
 {
     if (viewOptions) {
         std::stringstream s;
+
+        //FPS
         s << "FPS:" << FramePerSecond;
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 19);
+        
+        //player position coordinates
         s.str("");
         s << "COORD:(" << (int)(SharedData::GetInstance()->player->position_.x) << "," << (int)(SharedData::GetInstance()->player->position_.y) << "," << (int)(SharedData::GetInstance()->player->position_.z) << ")";
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 18);
 
+        //player's location
         s.str("");
-        s << "objpos:(" << objx << " , " << objy << ")";
+        s << "LOCATION:" << locations[SharedData::GetInstance()->location];
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 17);
 
 		RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
+
+        //practical purposes: check position of object
+        s.str("");
+        s << "objpos:(" << objx << " , " << objy << ")";
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 16);
     }
 }
 
@@ -1939,4 +1970,60 @@ void SP2::Reset()
 {
     SharedData::GetInstance()->camera->Reset();
     Init();
+}
+
+void SP2::CheckCharacterLocation()
+{
+    Vector3 playerPos = SharedData::GetInstance()->player->position_;
+
+    if (playerPos.x >= 25 && playerPos.x <= 252 && playerPos.z >= -200 && playerPos.z <= 191) {
+        SharedData::GetInstance()->location = HANGAR;
+    }
+    else if (playerPos.x >= 425 && playerPos.x <= 552 && playerPos.z >= -158 && playerPos.z <= 22) {
+        SharedData::GetInstance()->location = ROOM1;
+    }
+    else if (playerPos.x >= 425 && playerPos.x <= 552 && playerPos.z >= 25 && playerPos.z <= 202) {
+        SharedData::GetInstance()->location = ROOM2;
+    }
+    else if (playerPos.x >= 625 && playerPos.x <= 750 && playerPos.z >= -158 && playerPos.z <= 22) {
+        SharedData::GetInstance()->location = ROOM3;
+    }
+    else if (playerPos.x >= 625 && playerPos.x <= 750 && playerPos.z >= 25 && playerPos.z <= 202) {
+        SharedData::GetInstance()->location = ROOM4;
+    }
+    else if (playerPos.x >= 835 && playerPos.x <= 940 && playerPos.z >= -80 && playerPos.z <= 85) {
+        SharedData::GetInstance()->location = SHOP;
+    }
+    else if (playerPos.x >= 306 && playerPos.x <= 510 && playerPos.z >= -470 && playerPos.z <= -334) {
+        SharedData::GetInstance()->location = LABORATORY;
+    }
+    else if (playerPos.x >= 473 && playerPos.x <= 682 && playerPos.z >= 384 && playerPos.z <= 498) {
+        SharedData::GetInstance()->location = CONTROLROOM;
+    }
+    else if ((playerPos.x >= 670 && playerPos.x <= 822 && playerPos.z >= -525 && playerPos.z <= -345) ||
+        (playerPos.x >= 675 && playerPos.x <= 695 && playerPos.z >= -555 && playerPos.z <= -525)) {
+        SharedData::GetInstance()->location = CANTEEN;
+    }
+    else if (playerPos.x >= 672 && playerPos.x <= 790 && playerPos.z >= -628 && playerPos.z <= -555) {
+        SharedData::GetInstance()->location = TOILET;
+    }
+
+    else if (playerPos.x >= 252 && playerPos.x <= 352 && playerPos.z >= -40 && playerPos.z <= 45) {
+        SharedData::GetInstance()->location = CORRIDOR;     //corridor to hangar
+    }
+    else if (playerPos.x >= 442 && playerPos.x <= 478 && playerPos.z >= -335 && playerPos.z <= -245) {
+        SharedData::GetInstance()->location = CORRIDOR;     //corridor to laboratory
+    }
+    else if (playerPos.x >= 538 && playerPos.x <= 618 && playerPos.z >= 275 && playerPos.z <= 382) {
+        SharedData::GetInstance()->location = CORRIDOR;     //corridor to control room
+    }
+    else if (playerPos.x >= 770 && playerPos.x <= 820 && playerPos.z >= -345 && playerPos.z <= -245) {
+        SharedData::GetInstance()->location = CORRIDOR;     //corridor to canteen
+    }
+    else if (playerPos.x >= 352 && playerPos.x <= 835 && playerPos.z >= -245 && playerPos.z <= 275) {
+        SharedData::GetInstance()->location = CORRIDOR;     //square corridor
+    }
+    else {
+        SharedData::GetInstance()->location = OUTSIDE;
+    }
 }

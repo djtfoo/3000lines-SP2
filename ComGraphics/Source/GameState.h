@@ -17,18 +17,18 @@ enum GAME_STATE
 
 enum LOCATION
 {
-    OUTSIDE,
-    HANGAR,
-    CORRIDOR,   //can split corridor into different segments
-    SHOP,
-    LABORATORY,
-    CONTROLROOM,
-    CANTEEN,
-    TOILET,
-    ROOM1,
-    ROOM2,
-    ROOM3,
-    ROOM4,
+    OUTSIDE,    //0
+    HANGAR,     //1
+    CORRIDOR,   //2
+    SHOP,       //3
+    LABORATORY, //4
+    CONTROLROOM,    //5
+    CANTEEN,    //6
+    TOILET,     //7
+    ROOM1,      //8
+    ROOM2,      //9
+    ROOM3,      //10
+    ROOM4,      //11
 
     LOCATION_TOTAL
 };
