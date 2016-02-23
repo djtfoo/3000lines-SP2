@@ -172,7 +172,6 @@ public:
 
     float vibrateY, vibrateX;
     float chonFloaty;
-    float lightpower;
     bool chonFloat;
 
     MS modelStack, viewStack, projectionStack;
@@ -180,7 +179,9 @@ public:
 	int delayer;
 	int rotator;
 	float floodlevel;
-	float daynighttime;
+    float daynighttime;
+    float lightpower;
+    float lightpos;
 
     //Testing Minimap
     MS minimappp;

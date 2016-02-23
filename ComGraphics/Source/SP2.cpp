@@ -18,7 +18,8 @@
 
 SP2::SP2()
 {
-    lightpower = 0.5;
+    lightpower = 0.3;
+    lightpos = 1000;
     chonFloat = false;
     chonFloaty = vibrateX = vibrateY = 0;
     // Set background color to dark blue
@@ -443,7 +444,7 @@ void SP2::Init()
 {
     //light 0
     light[0].type = Light::LIGHT_DIRECTIONAL;
-    light[0].position.Set(0, 1000, 100);
+    light[0].position.Set(0, 1000, lightpos);
     light[0].color.Set(1, 1, 1);
     light[0].power = lightpower;
     light[0].kC = 1.f;
@@ -605,15 +606,16 @@ void SP2::Update(double dt)
     }
 
         //Lighting
-    if (daynighttime >= 0700 && daynighttime <= 1859 && lightpower <= 5)
+    if (daynighttime >= 0700 && daynighttime <= 1850 && lightpower <= 1.3)
     {
         lightpower += 0.001;
         light[0].power = lightpower;
         glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
     }
-    if (daynighttime >= 1900 && lightpower >= 0)
+    if (daynighttime >= 1900 && lightpower >= 0.3 && lightpos <= 1000)
     {
         lightpower -= 0.001;
+        lightpos += 1;
         light[0].power = lightpower;
         glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
     }
@@ -623,6 +625,18 @@ void SP2::Update(double dt)
 		floodlevel += dt;
 	}
 
+    //Position of Light
+    if (daynighttime >= 0700 && daynighttime <= 1850 && lightpos >= -1000)
+    {
+        lightpos -= 0.4;
+        light[0].position.Set(0, 1000, lightpos);
+    }
+    if (daynighttime >= 1900 || daynighttime <= 0650 && lightpos <= 1000)
+    {
+        lightpos += 0.85;
+        light[0].position.Set(0, 1000, lightpos);
+    }
+    std::cout << lightpos << std::endl;
 }
 
 void SP2::Render()
