@@ -176,8 +176,7 @@ public:
     bool chonFloat;
 
     MS modelStack, viewStack, projectionStack;
-	
-	PipePuzzle controlpuzzle;
+
 	int delayer;
 	int rotator;
 	float floodlevel;

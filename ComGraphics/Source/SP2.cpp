@@ -464,22 +464,8 @@ void SP2::Init()
     glUniform1i(m_parameters[U_NUMLIGHTS], 1);
 	
 	srand(time(0));
-	controlpuzzle.setpuzzle();
-    ItemCollision walltest;
     
     Interaction* interactions;
-    interactions = new PipePuzzleInteraction();
-    //interactions->middlePoint = Vector3(446, 15, 378);
-    //interactions->distX = 50;   interactions->distY = 15;   interactions->distZ = 5.f;
-    interactions->bound1.Set(396, -15, 373);     interactions->bound2.Set(486, 55, 383);
-    //interactions->x1 = 396; interactions->x2 = 496; interactions->y1 = 0;   interactions->y2 = 30;  interactions->z1 = 373; interactions->z2 = 383;
-    SharedData::GetInstance()->interactionItems.push_back(interactions);
-    
-    interactions = new Dialogue();
-    //Vee
-    interactions->bound1.Set(425, -15, 285);     interactions->bound2.Set(455, 15, 315);
-    //interactions->bound1.Set(410, -15, 270);     interactions->bound2.Set(470, 15, 330);
-    SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     interactions = new ShopInteraction();
     interactions->bound1.Set(890, -15, -35);     interactions->bound2.Set(900, 20, -25);
@@ -491,8 +477,8 @@ void SP2::Init()
 
     playerHung = SharedData::GetInstance()->player->getHunger();
     rotating = 0;
-     ptxt2 = ptxt3 = ptxtexit = 0;
-     ptxt1 = 40;
+    ptxt2 = ptxt3 = ptxtexit = 0;
+    ptxt1 = 40;
     rotator = 0;
 	daynighttime = 0000;
 	floodlevel = -1;
@@ -509,9 +495,6 @@ static double FramePerSecond;
 
 void SP2::Update(double dt)
 {
-    //Temmie vibration
-    srand(dt);
-
     FramePerSecond = 1 / dt;
     
     SharedData::GetInstance()->player->Walk(dt);
@@ -721,7 +704,15 @@ void SP2::loadFree()
     RenderPlayer();
     modelStack.PopMatrix();
 
-    RenderPuzzle();
+    //RenderPuzzle();
+
+    RenderNPC();
+    stemmieShop();
+    chonLab();
+    veeControlroom();
+    jasimCanteen();
+    loadHangar();
+
     RenderUI();
 
 	RenderInventory();
@@ -730,17 +721,6 @@ void SP2::loadFree()
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
     RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30,1,1);
-    
-    //shoptemp();
-    
-    RenderUI();
-
-    RenderNPC();
-    stemmieShop();
-    chonLab();
-    veeControlroom();
-    jasimCanteen();
-    loadHangar();
 
     //RenderMinimap();
     
@@ -1498,7 +1478,7 @@ void SP2::loadHangar()
     modelStack.PopMatrix();
 }
 
-void SP2::RenderPuzzle()
+/*void SP2::RenderPuzzle()
 {
 	for (int i = 0; i < 9; i++)
 	{
@@ -1569,7 +1549,7 @@ void SP2::RenderPuzzle()
 			modelStack.PopMatrix();
 		}
 	}
-}
+}*/
 
 void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y)
 {
