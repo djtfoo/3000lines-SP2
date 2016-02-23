@@ -7,7 +7,7 @@
 
 #include "Collision.h"
 
-#include "PipePuzzle.h"
+#include "LightPuzzle.h"
 #include "GameState.h"
 #include "Item.h"
 
@@ -135,6 +135,12 @@ class SP2 : public Scene
 
         GEO_CROSSHAIRS,
 		GEO_INVENTORY,
+
+        //Switches
+        GEO_SWITCH_1,
+        GEO_SWITCH_2,
+        GEO_SWITCH_3,
+        GEO_SWITCH_4,
         NUM_GEOMETRY,
     };
 
@@ -202,6 +208,8 @@ public:
     MS minimappp;
 
     Minimapcamera minimappy;
+    LightPuzzle lightpuzz;
+    float one, two, three, four;
 
     Light light[1];
 
@@ -237,6 +245,7 @@ public:
 	void RenderTime();
     bool viewOptions;
     void RenderUI();
+    void renderPuzzle();
 
     void RenderMinimap();
 

@@ -78,3 +78,14 @@ void SpaghettoInteraction::DoInteraction()
 {
 	SharedData::GetInstance()->toiletflood = true;
 }
+VeePuzzleInteraction::VeePuzzleInteraction() : Interaction()
+{
+}
+
+VeePuzzleInteraction::~VeePuzzleInteraction()
+{
+}
+
+void VeePuzzleInteraction::DoInteraction()
+{
+}

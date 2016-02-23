@@ -63,4 +63,11 @@ public:
 	~SpaghettoInteraction();
 	virtual void DoInteraction();
 };
+class VeePuzzleInteraction : public Interaction
+{
+public:
+    VeePuzzleInteraction();
+    ~VeePuzzleInteraction();
+    virtual void DoInteraction();
+};
 #endif

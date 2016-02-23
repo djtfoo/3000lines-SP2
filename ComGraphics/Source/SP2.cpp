@@ -18,6 +18,7 @@
 
 SP2::SP2()
 {
+    one= two= three= four = 1;
     lightpower = 0.3;
     lightpos = 1000;
     chonFloat = false;
@@ -174,9 +175,9 @@ SP2::SP2()
 
     meshList[GEO_JASIM] = MeshBuilder::GenerateOBJ("jasim", "OBJ/sans.obj");
     meshList[GEO_JASIM]->textureID = LoadTGA("Image/sans.tga");
-    meshList[GEO_JASIM]->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
-    meshList[GEO_JASIM]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
-    meshList[GEO_JASIM]->material.kSpecular.Set(0.9f, 0.9f, 0.9f);
+    meshList[GEO_JASIM]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_JASIM]->material.kDiffuse.Set(0.6f, 0.6f, 0.6f);
+    meshList[GEO_JASIM]->material.kSpecular.Set(0.5f, 0.5f, 0.5f);
     meshList[GEO_JASIM]->material.kShininess = 1.f;
 
     meshList[GEO_CHON] = MeshBuilder::GenerateOBJ("chon", "OBJ/chon.obj");
@@ -191,6 +192,10 @@ SP2::SP2()
     
     meshList[GEO_LAYOUT] = MeshBuilder::GenerateOBJ("big map", "OBJ/bigarea.obj");
     meshList[GEO_LAYOUT]->textureID = LoadTGA("Image/layout/bigareatxture.tga");
+    meshList[GEO_LAYOUT]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_LAYOUT]->material.kDiffuse.Set(0.5f, 0.5f, 0.5f);
+    meshList[GEO_LAYOUT]->material.kSpecular.Set(0.1f, 0.1f, 0.1f);
+    meshList[GEO_LAYOUT]->material.kShininess = 1.f;
 
     //Objects
     meshList[GEO_BENCH] = MeshBuilder::GenerateOBJ("bench", "OBJ/bench.obj");
@@ -274,7 +279,7 @@ SP2::SP2()
     meshList[GEO_SHELF] = MeshBuilder::GenerateOBJ("shelf", "OBJ/shelf.obj");
     meshList[GEO_SHELF]->textureID = LoadTGA("Image/shelf.tga");
     meshList[GEO_SHELF]->material.kAmbient.Set(0.9f, 0.9f, 0.9f);
-    meshList[GEO_SHELF]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_SHELF]->material.kDiffuse.Set(0.4f, 0.4f, 0.4f);
     meshList[GEO_SHELF]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SHELF]->material.kShininess = 1.f;
 
@@ -441,6 +446,12 @@ SP2::SP2()
 	meshList[GEO_BED]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
 	meshList[GEO_BED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
 	meshList[GEO_BED]->material.kShininess = 1.f;
+
+	    //GEO_SWITCH
+    meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
+    meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
+    meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 0, 0), 1, 15, 4);
+    meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 0, 0), 1, 15, 4);
 
     viewOptions = true;
 
@@ -613,6 +624,10 @@ void SP2::Init()
 	interactions->bound1.Set(780, -5, -616);     interactions->bound2.Set(800, 5, -612);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
+    interactions = new VeePuzzleInteraction();
+    interactions->bound1.Set(597, -10, 490);    interactions->bound2.Set(607, 5, 500);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+
     rotating = 0;
     ptxt1 = 70;
     ptxt2 = 78;
@@ -624,6 +639,8 @@ void SP2::Init()
 
 	loadInv();
     loadCollisions();
+
+    lightpuzz.generatePuzzle();
 }
 
 static float ROT_LIMIT = 45.f;
@@ -782,7 +799,57 @@ void SP2::Update(double dt)
         lightpos += 0.85;
         light[0].position.Set(0, 1000, lightpos);
     }
-    //std::cout << lightpos << std::endl;
+
+    if (Application::IsKeyPressed('0'))
+    {
+        one += 1;
+        if (one > 5)
+            one = 0;
+    }
+
+    if (one == 1)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
+    if (one == 2)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 0, 1), 1, 15, 4);
+    if (one == 3)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 1, 0), 1, 15, 4);
+    if (one == 4)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 1, 0), 1, 15, 4);
+    if (one == 5)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 1, 1), 1, 15, 4);
+
+    if (two == 1)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
+    if (two == 2)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 0, 1), 1, 15, 4);
+    if (two == 3)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 1, 0), 1, 15, 4);
+    if (two == 4)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 1, 0), 1, 15, 4);
+    if (two == 5)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 1, 1), 1, 15, 4);
+
+    if (three == 1)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 0, 0), 1, 15, 4);
+    if (three == 2)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 0, 1), 1, 15, 4);
+    if (three == 3)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 1, 0), 1, 15, 4);
+    if (three == 4)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 1, 0), 1, 15, 4);
+    if (three == 5)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 1, 1), 1, 15, 4);
+
+    if (four == 1)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 0, 0), 1, 15, 4);
+    if (four == 2)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 0, 1), 1, 15, 4);
+    if (four == 3)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 1, 0), 1, 15, 4);
+    if (four == 4)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 1, 0), 1, 15, 4);
+    if (four == 5)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 1, 1), 1, 15, 4);
 }
 
 void SP2::Render()
@@ -840,7 +907,7 @@ void SP2::Render()
     modelStack.PushMatrix();
     modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
     modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_STEMMIE_FACE], true);
+    RenderMesh(meshList[GEO_STEMMIE_FACE], false);
     modelStack.PopMatrix();
 }
 
@@ -891,6 +958,7 @@ void SP2::loadFree()
     veeControlroom();
     jasimCanteen();
     loadHangar();
+    renderPuzzle();
 
     RenderUI();
 
@@ -2097,6 +2165,37 @@ void SP2::RotateDisplay()
             viewStack.PopMatrix();
         modelStack.PopMatrix();
         glEnable(GL_DEPTH_TEST);
+    modelStack.PopMatrix();
+}
+
+void SP2::renderPuzzle()
+{
+    modelStack.PushMatrix();
+    modelStack.Translate(600, 0, 500);
+    modelStack.Rotate(-90, 0, 1, 0);
+
+    modelStack.PushMatrix();
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_1], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 0, 15);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_2], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 0, 30);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_3], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 0, 45);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_4], true);
+    modelStack.PopMatrix();
     modelStack.PopMatrix();
 }
     
