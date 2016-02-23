@@ -51,6 +51,7 @@ public:
     bool canInteract;
     Interaction* interactptr;
 	bool toiletflood;
+    bool chonGamebool;
 
     static SharedData* GetInstance()
     {
@@ -76,6 +77,7 @@ private:
         cursor_newypos = 300;
 
 		toiletflood = false;
+        chonGamebool = false;
     }
     ~SharedData() {
         delete player;

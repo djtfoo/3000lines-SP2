@@ -51,6 +51,20 @@ void ManureInteraction::DoInteraction()
 	SharedData::GetInstance()->toiletflood = true;
 }
 
+//Lab Game. ChOncHon time
+ChonGame::ChonGame() :Interaction()
+{
+}
+
+ChonGame::~ChonGame()
+{
+}
+
+void ChonGame::DoInteraction()
+{
+    SharedData::GetInstance()->chonGamebool = true;
+}
+
 //MOM'S SPAGHETTI
 SpaghettoInteraction::SpaghettoInteraction() : Interaction()
 {

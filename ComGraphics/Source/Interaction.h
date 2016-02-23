@@ -47,6 +47,15 @@ public:
     virtual void DoInteraction();
 };
 
+class ChonGame : public Interaction
+{
+public:
+    ChonGame();
+    ~ChonGame();
+    virtual void DoInteraction();
+};
+
+
 class SpaghettoInteraction : public Interaction
 {
 public:
