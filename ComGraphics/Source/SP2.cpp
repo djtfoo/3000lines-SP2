@@ -190,7 +190,7 @@ SP2::SP2()
     //GEO_MAP
     meshList[GEO_MAP] = MeshBuilder::GenerateQuad("minimap", Color(1, 1, 1), 10, 10);
     
-    meshList[GEO_LAYOUT] = MeshBuilder::GenerateOBJ("big map", "OBJ/bigarea.obj");
+    meshList[GEO_LAYOUT] = MeshBuilder::GenerateOBJ("big map", "OBJ/bigareaFixed.obj");
     meshList[GEO_LAYOUT]->textureID = LoadTGA("Image/layout/bigareatxture.tga");
     meshList[GEO_LAYOUT]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
     meshList[GEO_LAYOUT]->material.kDiffuse.Set(0.5f, 0.5f, 0.5f);

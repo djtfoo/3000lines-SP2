@@ -10,6 +10,7 @@
 #include "LightPuzzle.h"
 #include "GameState.h"
 #include "Item.h"
+#include "DialogueProcessor.h"
 
 #include <cstdlib>
 
@@ -52,8 +53,8 @@ class SP2 : public Scene
         GEO_VEE,
         GEO_JASIM,
         GEO_CHON,
-        GEO_AARON,
-        GEO_MERCHANT,
+        //GEO_AARON,
+        //GEO_MERCHANT,
         
         //text
         GEO_TEXT,
@@ -276,6 +277,8 @@ public:
 
 	std::map<int, Gift>invmap;
 	std::map<int, GEOMETRY_TYPE>modelmap;
+
+    DialogueProcessor dialogueProcessor;
 };
 
 #endif

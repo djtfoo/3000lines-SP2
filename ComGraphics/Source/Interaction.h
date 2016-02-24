@@ -26,9 +26,9 @@ public:
 class Dialogue : public Interaction
 {
 public:
-    Dialogue() : Interaction() {}
-    virtual ~Dialogue() {}
-    virtual void DoInteraction() {}
+    Dialogue();
+    virtual ~Dialogue();
+    virtual void DoInteraction();
 };
 
 class ShopInteraction : public Interaction

@@ -23,6 +23,20 @@ void PipePuzzleInteraction::DoInteraction()
 {
 }
 
+//Dialogue Interaction class
+Dialogue::Dialogue() : Interaction()
+{
+}
+
+Dialogue::~Dialogue()
+{
+}
+
+void Dialogue::DoInteraction()
+{
+
+}
+
 //shop interaction (enter shop state)
 ShopInteraction::ShopInteraction() : Interaction()
 {
