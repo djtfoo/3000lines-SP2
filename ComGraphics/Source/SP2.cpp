@@ -670,6 +670,19 @@ void SP2::Init()
     loadCollisions();
 
     lightpuzz.generatePuzzle();
+	loadWeedGame();
+}
+
+void SP2::loadWeedGame()
+{
+	for (int i = 0; i < weedgame.size(); i++)
+	{
+		weedgame.pop_back();
+	}
+	for (int i = 0; i < rand() % 10; i++)
+	{
+		weedgame.push_back(Vector3(rand() % 140 + 865, 1, rand() % 100 - 400));
+	}
 }
 
 static float ROT_LIMIT = 45.f;
@@ -1944,14 +1957,14 @@ void SP2::renderFarm()
 	RenderMesh(meshList[GEO_SHED], true);
 	modelStack.PopMatrix();
 
-	for (int i = 0; i < rand() % 10; i++)
+	for (int i = 0; i < weedgame.size(); i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(rand() % 140 + 850, 1, rand() % 100 - 400);
+		modelStack.Translate(weedgame[i].x, 2, weedgame[i].z);
 		modelStack.Rotate(90, 0, 1, 0);
 		modelStack.Rotate(-90, 1, 0, 0);
 		RenderMesh(meshList[GEO_WEED], false);
-		modelStack.PopMatrix();
+		modelStack.PopMatrix(); // teleporter
 	}
 	
 }

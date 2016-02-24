@@ -197,6 +197,7 @@ public:
     bool chonFloat;
 
     MS modelStack, viewStack, projectionStack;
+	std::vector<Vector3> weedgame;
 
 	int delayer;
 	int rotator;
@@ -259,6 +260,7 @@ public:
     void loadVeeGame();
     void pauseGame();
     void loadRabbitGame();
+	void loadWeedGame();
 
     //initialise collisions
     void loadCollisions();
