@@ -18,6 +18,7 @@
 
 SP2::SP2()
 {
+    delayBuffer = 0;
     lightpower = 0.3;
     lightpos = 1000;
     chonFloat = false;
@@ -174,9 +175,9 @@ SP2::SP2()
 
     meshList[GEO_JASIM] = MeshBuilder::GenerateOBJ("jasim", "OBJ/sans.obj");
     meshList[GEO_JASIM]->textureID = LoadTGA("Image/sans.tga");
-    meshList[GEO_JASIM]->material.kAmbient.Set(0.2f, 0.2f, 0.2f);
-    meshList[GEO_JASIM]->material.kDiffuse.Set(0.8f, 0.8f, 0.8f);
-    meshList[GEO_JASIM]->material.kSpecular.Set(0.9f, 0.9f, 0.9f);
+    meshList[GEO_JASIM]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_JASIM]->material.kDiffuse.Set(0.6f, 0.6f, 0.6f);
+    meshList[GEO_JASIM]->material.kSpecular.Set(0.5f, 0.5f, 0.5f);
     meshList[GEO_JASIM]->material.kShininess = 1.f;
 
     meshList[GEO_CHON] = MeshBuilder::GenerateOBJ("chon", "OBJ/chon.obj");
@@ -191,6 +192,10 @@ SP2::SP2()
     
     meshList[GEO_LAYOUT] = MeshBuilder::GenerateOBJ("big map", "OBJ/bigareaFixed.obj");
     meshList[GEO_LAYOUT]->textureID = LoadTGA("Image/layout/bigareatxture.tga");
+    meshList[GEO_LAYOUT]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
+    meshList[GEO_LAYOUT]->material.kDiffuse.Set(0.5f, 0.5f, 0.5f);
+    meshList[GEO_LAYOUT]->material.kSpecular.Set(0.1f, 0.1f, 0.1f);
+    meshList[GEO_LAYOUT]->material.kShininess = 1.f;
 
     //Objects
     meshList[GEO_BENCH] = MeshBuilder::GenerateOBJ("bench", "OBJ/bench.obj");
@@ -274,7 +279,7 @@ SP2::SP2()
     meshList[GEO_SHELF] = MeshBuilder::GenerateOBJ("shelf", "OBJ/shelf.obj");
     meshList[GEO_SHELF]->textureID = LoadTGA("Image/shelf.tga");
     meshList[GEO_SHELF]->material.kAmbient.Set(0.9f, 0.9f, 0.9f);
-    meshList[GEO_SHELF]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_SHELF]->material.kDiffuse.Set(0.4f, 0.4f, 0.4f);
     meshList[GEO_SHELF]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SHELF]->material.kShininess = 1.f;
 
@@ -442,7 +447,36 @@ SP2::SP2()
 	meshList[GEO_BED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
 	meshList[GEO_BED]->material.kShininess = 1.f;
 
+	meshList[GEO_FENCE] = MeshBuilder::GenerateOBJ("fence", "OBJ/fence.obj");
+	meshList[GEO_FENCE]->textureID = LoadTGA("Image/fence.tga");
+	meshList[GEO_FENCE]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_FENCE]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_FENCE]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_FENCE]->material.kShininess = 1.f;
 
+	meshList[GEO_SHED] = MeshBuilder::GenerateOBJ("shed", "OBJ/shed.obj");
+	meshList[GEO_SHED]->textureID = LoadTGA("Image/shed.tga");
+	meshList[GEO_SHED]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_SHED]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_SHED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_SHED]->material.kShininess = 1.f;
+
+	    //GEO_SWITCH
+    meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
+    meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
+    meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 0, 0), 1, 15, 4);
+    meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 0, 0), 1, 15, 4);
+
+	meshList[GEO_FARM] = MeshBuilder::GenerateQuad("farm", Color(0, 0, 0), 20, 20);
+	meshList[GEO_FARM]->textureID = LoadTGA("Image/farm.tga");
+
+	meshList[GEO_WEED] = MeshBuilder::GenerateQuad("weed", Color(1, 1, 1), 10, 10);
+	meshList[GEO_WEED]->textureID = LoadTGA("Image/weed.tga");
+
+    meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("switch1", Color(0, 0, 0), 1, 15, 4);
+    meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("switch2", Color(0, 0, 0), 1, 15, 4);
+    meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("switch3", Color(0, 0, 0), 1, 15, 4);
+    meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("switch4", Color(0, 0, 0), 1, 15, 4);
 
     viewOptions = true;
 
@@ -559,51 +593,51 @@ void SP2::Init()
 
 	//spaghetti random spawns
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -378.31); interactions->bound2.Set(765.976, 15, -368.31);
+	interactions->bound1.Set(755.976, -14, -378.31); interactions->bound2.Set(765.976, 1, -368.31);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -391.7); interactions->bound2.Set(765.976, 15, -381.7);
+	interactions->bound1.Set(755.976, -14, -391.7); interactions->bound2.Set(765.976, 1, -381.7);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -437.6); interactions->bound2.Set(765.976, 15, -427.6);
+	interactions->bound1.Set(755.976, -14, -437.6); interactions->bound2.Set(765.976, 1, -427.6);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -452.9); interactions->bound2.Set(765.976, 15, -442.9);
+	interactions->bound1.Set(755.976, -14, -452.9); interactions->bound2.Set(765.976, 1, -442.9);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -498.8); interactions->bound2.Set(765.976, 15, -488.8);
+	interactions->bound1.Set(755.976, -14, -498.8); interactions->bound2.Set(765.976, 1, -488.8);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -510.7); interactions->bound2.Set(765.976, 15, -500.7);
+	interactions->bound1.Set(755.976, -14, -510.7); interactions->bound2.Set(765.976, 1, -500.7);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -373.31 - 5); interactions->bound2.Set(721.872 + 5, 15, -373.31 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -373.31 - 5); interactions->bound2.Set(721.872 + 5, 1, -373.31 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -386.7 - 5); interactions->bound2.Set(721.872 + 5, 15, -386.7 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -386.7 - 5); interactions->bound2.Set(721.872 + 5, 1, -386.7 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -432.6 - 5); interactions->bound2.Set(721.872 + 5, 15, -432.6 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -432.6 - 5); interactions->bound2.Set(721.872 + 5, 1, -432.6 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -447.9 - 5); interactions->bound2.Set(721.872 + 5, 15, -447.9 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -447.9 - 5); interactions->bound2.Set(721.872 + 5, 1, -447.9 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -493.8 - 5); interactions->bound2.Set(721.872 + 5, 15, -493.8 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -493.8 - 5); interactions->bound2.Set(721.872 + 5, 1, -493.8 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -505.7 - 5); interactions->bound2.Set(721.872 + 5, 15, -505.7 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -505.7 - 5); interactions->bound2.Set(721.872 + 5, 1, -505.7 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	//spaghetto random spawns
 
@@ -626,6 +660,29 @@ void SP2::Init()
     ballboundfunct();
 
 
+    //Vee Puzzle Interaction
+    interactions = new VeePuzzleSwitchOneInteraction();
+    interactions->bound1.Set(597, -10, 490);    interactions->bound2.Set(607, 5, 500);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    interactions = new VeePuzzleSwitchTwoInteraction();
+    interactions->bound1.Set(580, -10, 490);    interactions->bound2.Set(587, 5, 500);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    interactions = new VeePuzzleSwitchThreeInteraction();
+    interactions->bound1.Set(564, -10, 490);    interactions->bound2.Set(575, 5, 500);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    interactions = new VeePuzzleSwitchFourInteraction();
+    interactions->bound1.Set(549, -10, 490);    interactions->bound2.Set(558, 5, 500);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+    interactions = new VeePuzzleCheckerSwitchInteraction();
+    interactions->bound1.Set(608, -10, 490);    interactions->bound2.Set(617, 5, 500);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+	interactions = new BedTime();
+	interactions->bound1.Set(518, -5, 176); interactions->bound2.Set(548, 15, 185);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+
     rotating = 0;
     ptxt1 = 70;     //pause textbox
     ptxt2 = 78;
@@ -646,6 +703,21 @@ void SP2::Init()
 
 	loadInv();
     loadCollisions();
+
+    lightpuzz.generatePuzzle();
+	loadWeedGame();
+}
+
+void SP2::loadWeedGame()
+{
+	for (int i = 0; i < weedgame.size(); i++)
+	{
+		weedgame.pop_back();
+	}
+	for (int i = 0; i < rand() % 10 + 1; i++)
+	{
+		weedgame.push_back(Vector3(rand() % 140 + 865, 1, rand() % 100 - 400));
+	}
 }
 
 static float ROT_LIMIT = 45.f;
@@ -666,10 +738,18 @@ void SP2::Update(double dt)
     
     SharedData::GetInstance()->player->CheckInteraction();
 
-    if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract) 
-    {
+    if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) {
+        delayBuffer = 0;
         SharedData::GetInstance()->interactptr->DoInteraction();
 
+    }
+    else
+    {
+        delayBuffer += 0.1;
+        if (delayBuffer >= 2)
+        {
+            delayBuffer = 2;
+        }
     }
 
 	if (delayer > 0)
@@ -818,7 +898,95 @@ void SP2::Update(double dt)
         lightpos += 0.85;
         light[0].position.Set(0, 1000, lightpos);
     }
-    //std::cout << lightpos << std::endl;
+
+    if (SharedData::GetInstance()->one == 1)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->one == 2)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 0, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->one == 3)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->one == 4)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->one == 5)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 1, 1), 1, 15, 4);
+
+    if (SharedData::GetInstance()->two == 1)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->two == 2)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 0, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->two == 3)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->two == 4)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->two == 5)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 1, 1), 1, 15, 4);
+
+    if (SharedData::GetInstance()->three == 1)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 0, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->three == 2)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 0, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->three == 3)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->three == 4)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->three == 5)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 1, 1), 1, 15, 4);
+
+    if (SharedData::GetInstance()->four == 1)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 0, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->four == 2)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 0, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->four == 3)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->four == 4)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->four == 5)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 1, 1), 1, 15, 4);
+
+    //Lights
+    if (SharedData::GetInstance()->switch1 == false)
+        meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(0, 0, 0), 2);
+    if (SharedData::GetInstance()->switch1 == true)
+        meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(1, 1, 1), 2);
+    if (SharedData::GetInstance()->switch2 == false)
+        meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(0, 0, 0), 2);
+    if (SharedData::GetInstance()->switch2 == true)
+        meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(1, 1, 1), 2);
+    if (SharedData::GetInstance()->switch3 == false)
+        meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(0, 0, 0), 2);
+    if (SharedData::GetInstance()->switch3 == true)
+        meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(1, 1, 1), 2);
+    if (SharedData::GetInstance()->switch4 == false)
+        meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(0, 0, 0), 2);
+    if (SharedData::GetInstance()->switch4 == true)
+        meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
+
+	if (lightpuzz.checkPuzzleAns(SharedData::GetInstance()->one, SharedData::GetInstance()->two, SharedData::GetInstance()->three, SharedData::GetInstance()->four) == true)
+    {
+        if (SharedData::GetInstance()->switch1 == true)
+        {
+            meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(1, 1, 1), 2);
+        }
+        if (SharedData::GetInstance()->switch2 == true)
+        {
+            meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(1, 1, 1), 2);
+        }
+        if (SharedData::GetInstance()->switch3 == true)
+        {
+            meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(1, 1, 1), 2);
+        }
+        if (SharedData::GetInstance()->switch4 == true)
+        {
+            meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
+        }
+        SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
+        std::cout << "You win!" << std::endl;
+        lightpuzz.generatePuzzle();
+        //std::cout << SharedData::GetInstance()->one << " " << SharedData::GetInstance()->two << " " << SharedData::GetInstance()->three << " " << SharedData::GetInstance()->four << std::endl;
+        //std::cout << "You win!" <<  std::endl;
+        //SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
+        //lightpuzz.generatePuzzle();
+    }
 }
 
 void SP2::Render()
@@ -876,7 +1044,7 @@ void SP2::Render()
     modelStack.PushMatrix();
     modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
     modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_STEMMIE_FACE], true);
+    RenderMesh(meshList[GEO_STEMMIE_FACE], false);
     modelStack.PopMatrix();
 
     
@@ -930,6 +1098,8 @@ void SP2::loadFree()
     veeControlroom();
     jasimCanteen();
     loadHangar();
+	renderFarm();
+    renderPuzzle();
 
     RenderUI();
 
@@ -1903,6 +2073,96 @@ void SP2::loadHangar()
     modelStack.PopMatrix();
 }
 
+void SP2::renderFarm()
+{
+	for (int i = 0; i < 11; i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(835.5 + (i * 19), 0, -530);
+		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(845 + (i * 19), 0, -530);
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+	}
+
+	for (int i = 0; i < 13; i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(1039.75, 0, -525.25 + (i * 19));
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(1039.75, 0, -515.75 + (i * 19));
+		modelStack.Rotate(180, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+	}
+
+	modelStack.PushMatrix();
+	modelStack.Translate(1039.75, 0, -525.25 + (13 * 19));
+	modelStack.Scale(5, 5, 5);
+	RenderMesh(meshList[GEO_FENCE], true);
+	modelStack.PopMatrix();
+
+
+	for (int i = 0; i < 11; i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(835.5 + (i * 19), 0, -273.5);
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(845 + (i * 19), 0, -273.5);
+		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+	}
+
+	for (int j = 0; j < 5; j++)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(875 + (i * 20), 1, -310 - (j * 20));
+			modelStack.Rotate(90, 0, 1, 0);
+			modelStack.Rotate(-90, 1, 0, 0);
+			RenderMesh(meshList[GEO_FARM], true);
+			modelStack.PopMatrix();
+		}
+	}
+
+	modelStack.PushMatrix();
+	modelStack.Translate(1000, 1, -480);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Scale(8, 8, 8);
+	RenderMesh(meshList[GEO_SHED], true);
+	modelStack.PopMatrix();
+
+	for (int i = 0; i < weedgame.size(); i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(weedgame[i].x, 2, weedgame[i].z);
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Rotate(-90, 1, 0, 0);
+		RenderMesh(meshList[GEO_WEED], false);
+		modelStack.PopMatrix(); // teleporter
+	}
+}
+
 /*void SP2::RenderPuzzle()
 {
 	for (int i = 0; i < 9; i++)
@@ -2261,6 +2521,67 @@ void SP2::RotateDisplay()
             viewStack.PopMatrix();
         modelStack.PopMatrix();
         glEnable(GL_DEPTH_TEST);
+    modelStack.PopMatrix();
+}
+
+void SP2::renderPuzzle()
+{
+    modelStack.PushMatrix();
+    modelStack.Translate(600, 0, 500);
+    modelStack.Rotate(-90, 0, 1, 0);
+
+    modelStack.PushMatrix();
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_1], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 0, 15);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_2], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 0, 30);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_3], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 0, 45);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_4], true);
+    modelStack.PopMatrix();
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(600, 0, 503);
+    modelStack.Rotate(-90, 0, 1, 0);
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 30, 0);
+    modelStack.Rotate(90, 0, 0, 1);
+    RenderMesh(meshList[GEO_CHECK_1], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 30, 15);
+    modelStack.Rotate(90, 0, 0, 1);
+    RenderMesh(meshList[GEO_CHECK_2], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 30, 30);
+    modelStack.Rotate(90, 0, 0, 1);
+    RenderMesh(meshList[GEO_CHECK_3], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 30, 45);
+    modelStack.Rotate(90, 0, 0, 1);
+    RenderMesh(meshList[GEO_CHECK_4], true);
+    modelStack.PopMatrix();
+
     modelStack.PopMatrix();
 }
     

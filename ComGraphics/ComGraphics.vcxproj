@@ -85,8 +85,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\DialogueProcessor.cpp" />
     <ClCompile Include="Source\Interaction.cpp" />
     <ClCompile Include="Source\Item.cpp" />
+    <ClCompile Include="Source\LightPuzzle.cpp" />
     <ClCompile Include="Source\MainMenu.cpp" />
     <ClCompile Include="Source\MiniMapCamera.cpp" />
     <ClCompile Include="Source\Outfit.cpp" />
@@ -108,7 +110,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\DialogueProcessor.h" />
     <ClInclude Include="Source\GameState.h" />
+    <ClInclude Include="Source\LightPuzzle.h" />
     <ClInclude Include="Source\Outfit.h" />
     <ClInclude Include="Source\PipePuzzle.h" />
     <ClInclude Include="Source\Interaction.h" />

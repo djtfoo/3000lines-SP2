@@ -6,8 +6,10 @@ using std::endl;
 
 PipePuzzle::PipePuzzle()
 {
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 0; j < 6; ++j) {
+    for (int i = 0; i < 9; ++i) 
+    {
+        for (int j = 0; j < 6; ++j) 
+        {
             puzzlerotation[i][j] = 0.f;
         }
     }

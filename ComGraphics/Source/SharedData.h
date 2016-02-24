@@ -54,6 +54,11 @@ public:
     bool chonGamebool;
     bool ballpickup;    //chon ballgame
 
+    //Puzzle Interaction
+    float one, two, three, four;
+    bool switch1, switch2, switch3, switch4;
+    bool switchFlip;
+
     static SharedData* GetInstance()
     {
         static SharedData data;
@@ -76,6 +81,9 @@ private:
         cursor_ypos = 300;
         cursor_newxpos = 400;
         cursor_newypos = 300;
+        one = two = three = four = 1;
+        switch1 = switch2 = switch3 = switch4 = false;
+        switchFlip = false;
 
 		toiletflood = false;
         chonGamebool = false;

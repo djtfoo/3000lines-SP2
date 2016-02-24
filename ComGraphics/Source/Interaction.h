@@ -26,9 +26,9 @@ public:
 class Dialogue : public Interaction
 {
 public:
-    Dialogue() : Interaction() {}
-    virtual ~Dialogue() {}
-    virtual void DoInteraction() {}
+    Dialogue();
+    virtual ~Dialogue();
+    virtual void DoInteraction();
 };
 
 class ShopInteraction : public Interaction
@@ -69,6 +69,49 @@ class SpaghettoInteraction : public Interaction
 public:
 	SpaghettoInteraction();
 	~SpaghettoInteraction();
+	virtual void DoInteraction();
+};
+class VeePuzzleSwitchOneInteraction : public Interaction
+{
+public:
+    VeePuzzleSwitchOneInteraction();
+    ~VeePuzzleSwitchOneInteraction();
+    virtual void DoInteraction();
+};
+class VeePuzzleSwitchTwoInteraction : public Interaction
+{
+public:
+    VeePuzzleSwitchTwoInteraction();
+    ~VeePuzzleSwitchTwoInteraction();
+    virtual void DoInteraction();
+};
+class VeePuzzleSwitchThreeInteraction : public Interaction
+{
+public:
+    VeePuzzleSwitchThreeInteraction();
+    ~VeePuzzleSwitchThreeInteraction();
+    virtual void DoInteraction();
+};
+class VeePuzzleSwitchFourInteraction : public Interaction
+{
+public:
+    VeePuzzleSwitchFourInteraction();
+    ~VeePuzzleSwitchFourInteraction();
+    virtual void DoInteraction();
+};
+class VeePuzzleCheckerSwitchInteraction : public Interaction
+{
+public:
+    VeePuzzleCheckerSwitchInteraction();
+    ~VeePuzzleCheckerSwitchInteraction();
+    virtual void DoInteraction();
+};
+
+class BedTime : public Interaction
+{
+public:
+	BedTime();
+	~BedTime();
 	virtual void DoInteraction();
 };
 #endif

@@ -7,9 +7,10 @@
 
 #include "Collision.h"
 
-#include "PipePuzzle.h"
+#include "LightPuzzle.h"
 #include "GameState.h"
 #include "Item.h"
+#include "DialogueProcessor.h"
 
 #include "Interaction.h"
 
@@ -54,8 +55,8 @@ class SP2 : public Scene
         GEO_VEE,
         GEO_JASIM,
         GEO_CHON,
-        GEO_AARON,
-        GEO_MERCHANT,
+        //GEO_AARON,
+        //GEO_MERCHANT,
         
         //text
         GEO_TEXT,
@@ -124,6 +125,10 @@ class SP2 : public Scene
 
 
 		GEO_SPAGHETTO,
+		GEO_FENCE,
+        GEO_FARM,
+        GEO_SHED,
+        GEO_WEED,
 
 		GEO_PIPETYPE1,
 		GEO_PIPETYPE2,
@@ -132,6 +137,16 @@ class SP2 : public Scene
 
         GEO_CROSSHAIRS,
 		GEO_INVENTORY,
+
+        //Switches
+        GEO_SWITCH_1,
+        GEO_SWITCH_2,
+        GEO_SWITCH_3,
+        GEO_SWITCH_4,
+        GEO_CHECK_1,
+        GEO_CHECK_2,
+        GEO_CHECK_3,
+        GEO_CHECK_4,
         NUM_GEOMETRY,
     };
 
@@ -187,6 +202,7 @@ public:
     bool chonFloat;
 
     MS modelStack, viewStack, projectionStack;
+	std::vector<Vector3> weedgame;
 
 	int delayer;
 	int rotator;
@@ -194,11 +210,14 @@ public:
     float daynighttime;
     float lightpower;
     float lightpos;
+    float delayBuffer;
 
     //Testing Minimap
     MS minimappp;
 
     Minimapcamera minimappy;
+    LightPuzzle lightpuzz;
+    //float one, two, three, four;
 
     Light light[1];
 
@@ -229,11 +248,13 @@ public:
     void veeControlroom();
     void jasimCanteen();
     void loadHangar();
+	void renderFarm();
 	void RenderNPC();
 	void RenderInventory();
 	void RenderTime();
     bool viewOptions;
     void RenderUI();
+    void renderPuzzle();
 
     void RenderMinimap();
 
@@ -245,6 +266,7 @@ public:
     void loadVeeGame();
     void pauseGame();
     void loadRabbitGame();
+	void loadWeedGame();
 
     //initialise collisions
     void loadCollisions();
@@ -278,6 +300,8 @@ public:
 
 	std::map<int, Gift>invmap;
 	std::map<int, GEOMETRY_TYPE>modelmap;
+
+    DialogueProcessor dialogueProcessor;
 };
 
 #endif
