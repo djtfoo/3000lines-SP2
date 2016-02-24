@@ -125,7 +125,7 @@ class SP2 : public Scene
 		GEO_SPAGHETTO,
 		GEO_FENCE,
         GEO_FARM,
-        
+        GEO_SHED,
        
 
 

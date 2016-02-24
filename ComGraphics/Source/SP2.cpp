@@ -454,6 +454,13 @@ SP2::SP2()
 	meshList[GEO_FENCE]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
 	meshList[GEO_FENCE]->material.kShininess = 1.f;
 
+	meshList[GEO_SHED] = MeshBuilder::GenerateOBJ("shed", "OBJ/shed.obj");
+	meshList[GEO_SHED]->textureID = LoadTGA("Image/shed.tga");
+	meshList[GEO_SHED]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_SHED]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_SHED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_SHED]->material.kShininess = 1.f;
+
 	    //GEO_SWITCH
     meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
     meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
@@ -1926,6 +1933,13 @@ void SP2::renderFarm()
 			modelStack.PopMatrix();
 		}
 	}
+
+	modelStack.PushMatrix();
+	modelStack.Translate(1000, 1, -480);
+	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Scale(8, 8, 8);
+	RenderMesh(meshList[GEO_SHED], true);
+	modelStack.PopMatrix();
 }
 
 /*void SP2::RenderPuzzle()
