@@ -142,6 +142,10 @@ class SP2 : public Scene
         GEO_SWITCH_2,
         GEO_SWITCH_3,
         GEO_SWITCH_4,
+        GEO_CHECK_1,
+        GEO_CHECK_2,
+        GEO_CHECK_3,
+        GEO_CHECK_4,
         NUM_GEOMETRY,
     };
 
@@ -205,13 +209,14 @@ public:
     float daynighttime;
     float lightpower;
     float lightpos;
+    float delayBuffer;
 
     //Testing Minimap
     MS minimappp;
 
     Minimapcamera minimappy;
     LightPuzzle lightpuzz;
-    float one, two, three, four;
+    //float one, two, three, four;
 
     Light light[1];
 
