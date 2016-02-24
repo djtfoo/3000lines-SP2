@@ -447,11 +447,21 @@ SP2::SP2()
 	meshList[GEO_BED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
 	meshList[GEO_BED]->material.kShininess = 1.f;
 
+	meshList[GEO_FENCE] = MeshBuilder::GenerateOBJ("fence", "OBJ/fence.obj");
+	meshList[GEO_FENCE]->textureID = LoadTGA("Image/fence.tga");
+	meshList[GEO_FENCE]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_FENCE]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_FENCE]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_FENCE]->material.kShininess = 1.f;
+
 	    //GEO_SWITCH
     meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
     meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
     meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 0, 0), 1, 15, 4);
     meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 0, 0), 1, 15, 4);
+
+	meshList[GEO_FARM] = MeshBuilder::GenerateQuad("farm", Color(0, 0, 0), 20, 20);
+	meshList[GEO_FARM]->textureID = LoadTGA("Image/farm.tga");
 
     viewOptions = true;
 
@@ -995,6 +1005,7 @@ void SP2::loadFree()
     veeControlroom();
     jasimCanteen();
     loadHangar();
+	renderFarm();
     renderPuzzle();
 
     RenderUI();
@@ -1842,6 +1853,79 @@ void SP2::loadHangar()
     modelStack.Rotate(-90, 0, 1, 0);
     RenderMesh(meshList[GEO_HAMMER], true);
     modelStack.PopMatrix();
+}
+
+void SP2::renderFarm()
+{
+	for (int i = 0; i < 11; i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(835.5 + (i * 19), 0, -530);
+		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(845 + (i * 19), 0, -530);
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+	}
+
+	for (int i = 0; i < 13; i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(1039.75, 0, -525.25 + (i * 19));
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(1039.75, 0, -515.75 + (i * 19));
+		modelStack.Rotate(180, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+	}
+
+	modelStack.PushMatrix();
+	modelStack.Translate(1039.75, 0, -525.25 + (13 * 19));
+	modelStack.Scale(5, 5, 5);
+	RenderMesh(meshList[GEO_FENCE], true);
+	modelStack.PopMatrix();
+
+
+	for (int i = 0; i < 11; i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(835.5 + (i * 19), 0, -273.5);
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(845 + (i * 19), 0, -273.5);
+		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Scale(5, 5, 5);
+		RenderMesh(meshList[GEO_FENCE], true);
+		modelStack.PopMatrix();
+	}
+
+	for (int j = 0; j < 5; j++)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(875 + (i * 20), 1, -310 - (j * 20));
+			modelStack.Rotate(90, 0, 1, 0);
+			modelStack.Rotate(-90, 1, 0, 0);
+			RenderMesh(meshList[GEO_FARM], true);
+			modelStack.PopMatrix();
+		}
+	}
 }
 
 /*void SP2::RenderPuzzle()

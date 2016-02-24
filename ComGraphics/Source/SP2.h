@@ -123,8 +123,8 @@ class SP2 : public Scene
 
 
 		GEO_SPAGHETTO,
-
-       
+		GEO_FENCE,
+        GEO_FARM,
         
        
 
@@ -241,6 +241,7 @@ public:
     void veeControlroom();
     void jasimCanteen();
     void loadHangar();
+	void renderFarm();
 	void RenderNPC();
 	void RenderInventory();
 	void RenderTime();
