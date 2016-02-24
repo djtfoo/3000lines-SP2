@@ -593,51 +593,51 @@ void SP2::Init()
 
 	//spaghetti random spawns
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -378.31); interactions->bound2.Set(765.976, 15, -368.31);
+	interactions->bound1.Set(755.976, -14, -378.31); interactions->bound2.Set(765.976, 1, -368.31);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -391.7); interactions->bound2.Set(765.976, 15, -381.7);
+	interactions->bound1.Set(755.976, -14, -391.7); interactions->bound2.Set(765.976, 1, -381.7);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -437.6); interactions->bound2.Set(765.976, 15, -427.6);
+	interactions->bound1.Set(755.976, -14, -437.6); interactions->bound2.Set(765.976, 1, -427.6);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -452.9); interactions->bound2.Set(765.976, 15, -442.9);
+	interactions->bound1.Set(755.976, -14, -452.9); interactions->bound2.Set(765.976, 1, -442.9);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -498.8); interactions->bound2.Set(765.976, 15, -488.8);
+	interactions->bound1.Set(755.976, -14, -498.8); interactions->bound2.Set(765.976, 1, -488.8);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, 14, -510.7); interactions->bound2.Set(765.976, 15, -500.7);
+	interactions->bound1.Set(755.976, -14, -510.7); interactions->bound2.Set(765.976, 1, -500.7);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -373.31 - 5); interactions->bound2.Set(721.872 + 5, 15, -373.31 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -373.31 - 5); interactions->bound2.Set(721.872 + 5, 1, -373.31 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -386.7 - 5); interactions->bound2.Set(721.872 + 5, 15, -386.7 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -386.7 - 5); interactions->bound2.Set(721.872 + 5, 1, -386.7 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -432.6 - 5); interactions->bound2.Set(721.872 + 5, 15, -432.6 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -432.6 - 5); interactions->bound2.Set(721.872 + 5, 1, -432.6 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -447.9 - 5); interactions->bound2.Set(721.872 + 5, 15, -447.9 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -447.9 - 5); interactions->bound2.Set(721.872 + 5, 1, -447.9 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -493.8 - 5); interactions->bound2.Set(721.872 + 5, 15, -493.8 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -493.8 - 5); interactions->bound2.Set(721.872 + 5, 1, -493.8 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, 14, -505.7 - 5); interactions->bound2.Set(721.872 + 5, 15, -505.7 + 5);
+	interactions->bound1.Set(721.872 - 5, -14, -505.7 - 5); interactions->bound2.Set(721.872 + 5, 1, -505.7 + 5);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	//spaghetto random spawns
 
@@ -667,6 +667,10 @@ void SP2::Init()
     interactions->bound1.Set(608, -10, 490);    interactions->bound2.Set(617, 5, 500);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
+	interactions = new BedTime();
+	interactions->bound1.Set(518, -5, 176); interactions->bound2.Set(548, 15, 185);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+
     rotating = 0;
     ptxt1 = 70;
     ptxt2 = 78;
@@ -689,7 +693,7 @@ void SP2::loadWeedGame()
 	{
 		weedgame.pop_back();
 	}
-	for (int i = 0; i < rand() % 10; i++)
+	for (int i = 0; i < rand() % 10 + 1; i++)
 	{
 		weedgame.push_back(Vector3(rand() % 140 + 865, 1, rand() % 100 - 400));
 	}
@@ -923,7 +927,7 @@ void SP2::Update(double dt)
     if (SharedData::GetInstance()->switch4 == true)
         meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
 
-    if (lightpuzz.checkPuzzleAns(SharedData::GetInstance()->one, SharedData::GetInstance()->two, SharedData::GetInstance()->three, SharedData::GetInstance()->four) == true)
+	if (lightpuzz.checkPuzzleAns(SharedData::GetInstance()->one, SharedData::GetInstance()->two, SharedData::GetInstance()->three, SharedData::GetInstance()->four) == true)
     {
         if (SharedData::GetInstance()->switch1 == true)
         {
@@ -1995,7 +1999,6 @@ void SP2::renderFarm()
 		RenderMesh(meshList[GEO_WEED], false);
 		modelStack.PopMatrix(); // teleporter
 	}
-	
 }
 
 /*void SP2::RenderPuzzle()

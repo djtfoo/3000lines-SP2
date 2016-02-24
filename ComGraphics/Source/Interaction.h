@@ -98,4 +98,12 @@ public:
     ~VeePuzzleCheckerSwitchInteraction();
     virtual void DoInteraction();
 };
+
+class BedTime : public Interaction
+{
+public:
+	BedTime();
+	~BedTime();
+	virtual void DoInteraction();
+};
 #endif

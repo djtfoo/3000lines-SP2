@@ -160,3 +160,15 @@ void VeePuzzleCheckerSwitchInteraction::DoInteraction()
 {
     SharedData::GetInstance()->switchFlip = true;
 }
+
+BedTime::BedTime() : Interaction()
+{
+}
+
+BedTime::~BedTime()
+{
+}
+
+void BedTime::DoInteraction()
+{
+}

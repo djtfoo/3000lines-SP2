@@ -128,7 +128,6 @@ class SP2 : public Scene
         GEO_SHED,
         GEO_WEED,
 
-
 		GEO_PIPETYPE1,
 		GEO_PIPETYPE2,
 		GEO_PIPETYPE3,
