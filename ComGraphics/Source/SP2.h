@@ -126,7 +126,7 @@ class SP2 : public Scene
 		GEO_FENCE,
         GEO_FARM,
         GEO_SHED,
-       
+        GEO_WEED,
 
 
 		GEO_PIPETYPE1,

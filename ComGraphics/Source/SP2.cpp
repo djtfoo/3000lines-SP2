@@ -470,6 +470,9 @@ SP2::SP2()
 	meshList[GEO_FARM] = MeshBuilder::GenerateQuad("farm", Color(0, 0, 0), 20, 20);
 	meshList[GEO_FARM]->textureID = LoadTGA("Image/farm.tga");
 
+	meshList[GEO_WEED] = MeshBuilder::GenerateQuad("weed", Color(1, 1, 1), 10, 10);
+	meshList[GEO_WEED]->textureID = LoadTGA("Image/weed.tga");
+
     viewOptions = true;
 
     objx = objy = 1;
@@ -1940,6 +1943,17 @@ void SP2::renderFarm()
 	modelStack.Scale(8, 8, 8);
 	RenderMesh(meshList[GEO_SHED], true);
 	modelStack.PopMatrix();
+
+	for (int i = 0; i < rand() % 10; i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(rand() % 140 + 850, 1, rand() % 100 - 400);
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Rotate(-90, 1, 0, 0);
+		RenderMesh(meshList[GEO_WEED], false);
+		modelStack.PopMatrix();
+	}
+	
 }
 
 /*void SP2::RenderPuzzle()
