@@ -1,4 +1,5 @@
 #include "LightPuzzle.h"
+#include "SharedData.h"
 #include <iostream>
 
 using std::cout;
@@ -58,37 +59,63 @@ void LightPuzzle::generatePuzzle()
         cout << endl;
     }
 }
-bool LightPuzzle::checkPuzzle(int first, int second, int third, int forth)
+bool LightPuzzle::checkPuzzleAns(int first, int second, int third, int forth)
 {
     puzzleAns[0][0] = first;
     puzzleAns[0][1] = second;
     puzzleAns[0][2] = third;
     puzzleAns[0][3] = forth;
-    if (puzzleAns[0][0] == puzzleSize[0][0])
+
+    if (SharedData::GetInstance()->switchFlip == true)
     {
-        one = true;
-    }
-    if (puzzleAns[0][1] == puzzleSize[0][1])
-    {
-        two = true;
-    }
-    if (puzzleAns[0][2] == puzzleSize[0][2])
-    {
-        three = true;
-    }
-    if (puzzleAns[0][3] == puzzleSize[0][3])
-    {
-        four = true;
-    }
-    if (one == true && two == true && three == true && four == true)
-    {
-        one = two = three = four = false;
-        return true;
+        if (puzzleAns[0][0] == puzzleSize[0][0])
+        {
+            one = true;
+            SharedData::GetInstance()->switch1 = true;
+        }
+        else
+        {
+            one = false;
+            SharedData::GetInstance()->switch1 = false;
+        }
+        if (puzzleAns[0][1] == puzzleSize[0][1])
+        {
+            two = true;
+            SharedData::GetInstance()->switch2 = true;
+        }
+        else
+        {
+            two = false;
+            SharedData::GetInstance()->switch2 = false;
+        }
+        if (puzzleAns[0][2] == puzzleSize[0][2])
+        {
+            three = true;
+            SharedData::GetInstance()->switch3 = true;
+        }
+        else
+        {
+            three = false;
+            SharedData::GetInstance()->switch3 = false;
+        }
+        if (puzzleAns[0][3] == puzzleSize[0][3])
+        {
+            four = true;
+            SharedData::GetInstance()->switch4 = true;
+        }
+        else
+        {
+            four = false;
+            SharedData::GetInstance()->switch4 = false;
+        }
+        if (one == true && two == true && three == true && four == true)
+        {
+            one = two = three = four = false;
+            SharedData::GetInstance()->switch1 = SharedData::GetInstance()->switch2 = SharedData::GetInstance()->switch3 = SharedData::GetInstance()->switch4 = false;
+            return true;
+        }
+        SharedData::GetInstance()->switchFlip = false;
     }
 
 return false;
-}
-void LightPuzzle::setPuzzle(float posX, float posY, float posZ)
-{
-    puzzlePos.Set(posX, posY, posZ);
 }

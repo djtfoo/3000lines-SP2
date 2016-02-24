@@ -63,11 +63,39 @@ public:
 	~SpaghettoInteraction();
 	virtual void DoInteraction();
 };
-class VeePuzzleInteraction : public Interaction
+class VeePuzzleSwitchOneInteraction : public Interaction
 {
 public:
-    VeePuzzleInteraction();
-    ~VeePuzzleInteraction();
+    VeePuzzleSwitchOneInteraction();
+    ~VeePuzzleSwitchOneInteraction();
+    virtual void DoInteraction();
+};
+class VeePuzzleSwitchTwoInteraction : public Interaction
+{
+public:
+    VeePuzzleSwitchTwoInteraction();
+    ~VeePuzzleSwitchTwoInteraction();
+    virtual void DoInteraction();
+};
+class VeePuzzleSwitchThreeInteraction : public Interaction
+{
+public:
+    VeePuzzleSwitchThreeInteraction();
+    ~VeePuzzleSwitchThreeInteraction();
+    virtual void DoInteraction();
+};
+class VeePuzzleSwitchFourInteraction : public Interaction
+{
+public:
+    VeePuzzleSwitchFourInteraction();
+    ~VeePuzzleSwitchFourInteraction();
+    virtual void DoInteraction();
+};
+class VeePuzzleCheckerSwitchInteraction : public Interaction
+{
+public:
+    VeePuzzleCheckerSwitchInteraction();
+    ~VeePuzzleCheckerSwitchInteraction();
     virtual void DoInteraction();
 };
 #endif

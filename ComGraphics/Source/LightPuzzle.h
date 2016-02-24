@@ -11,8 +11,8 @@ public:
     ~LightPuzzle();
 
     void generatePuzzle();
-    void setPuzzle(float posX, float posY, float posZ);
-    bool checkPuzzle(int first, int second, int third, int forth);
+    bool checkPuzzleAns(int first, int second, int third, int forth);
+    //void puzzleChecker(int first, int second, int third, int forth);
     float puzzleSize[4][4];
     float puzzleAns[4][4];
 
