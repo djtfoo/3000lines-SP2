@@ -189,7 +189,7 @@ SP2::SP2()
     //GEO_MAP
     meshList[GEO_MAP] = MeshBuilder::GenerateQuad("minimap", Color(1, 1, 1), 10, 10);
     
-    meshList[GEO_LAYOUT] = MeshBuilder::GenerateOBJ("big map", "OBJ/bigarea.obj");
+    meshList[GEO_LAYOUT] = MeshBuilder::GenerateOBJ("big map", "OBJ/bigareaFixed.obj");
     meshList[GEO_LAYOUT]->textureID = LoadTGA("Image/layout/bigareatxture.tga");
 
     //Objects
@@ -442,6 +442,8 @@ SP2::SP2()
 	meshList[GEO_BED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
 	meshList[GEO_BED]->material.kShininess = 1.f;
 
+
+
     viewOptions = true;
 
     objx = objy = 1;
@@ -605,6 +607,8 @@ void SP2::Init()
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	//spaghetto random spawns
 
+
+
     interactions = new ShopInteraction();
     interactions->bound1.Set(890, -15, -35);     interactions->bound2.Set(900, 20, -25);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
@@ -613,14 +617,32 @@ void SP2::Init()
 	interactions->bound1.Set(780, -5, -616);     interactions->bound2.Set(800, 5, -612);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
+    interactions = new ChonGame();
+    interactions->bound1.Set(400,-15,-430); interactions->bound2.Set(425,-5,-440);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+
+
+    ballboundfunct();
+
+
     rotating = 0;
-    ptxt1 = 70;
+    ptxt1 = 70;     //pause textbox
     ptxt2 = 78;
     ptxt3 = 86;
     ptxtexit = 94;
     rotator = 0;
 	daynighttime = 0000;
 	floodlevel = -1;
+
+    //Init chon game variables
+    for (int i = 0; i < 5; i++)
+    {
+        ball[i] = false;
+    }
+    ballfloat= ballfloat1= ballfloat2= ballfloat3= ballfloat4 = 0;
+    pickupcheck = false;
+
 
 	loadInv();
     loadCollisions();
@@ -644,8 +666,10 @@ void SP2::Update(double dt)
     
     SharedData::GetInstance()->player->CheckInteraction();
 
-    if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract) {
+    if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract) 
+    {
         SharedData::GetInstance()->interactptr->DoInteraction();
+
     }
 
 	if (delayer > 0)
@@ -764,10 +788,22 @@ void SP2::Update(double dt)
     {
         floodlevel += dt;
     }
-
     if (SharedData::GetInstance()->chonGamebool == true)
     {
         SharedData::GetInstance()->gamestate = GAME_STATE_CHONGAME;
+    }
+    if (SharedData::GetInstance()->ballpickup == true)
+    {
+        if (ball[0])
+            ballfloat += 40 * dt;
+        if (ball[1])
+            ballfloat1 += 40 * dt;
+        if (ball[2])
+            ballfloat2 += 40 * dt;
+        if (ball[3])
+            ballfloat3 += 40 * dt;
+        if (ball[4])
+            ballfloat4 += 40 * dt;
     }
 
 
@@ -842,6 +878,9 @@ void SP2::Render()
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_STEMMIE_FACE], true);
     modelStack.PopMatrix();
+
+    
+
 }
 
 void SP2::loadFree()
@@ -929,8 +968,163 @@ void SP2::loadWSGame()
 
 void SP2::loadChonGame()
 {    
-     
+    loadFree();
+
+    //Chon's Lab Balls
+    if (SharedData::GetInstance()->ballpickup) 
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if (SharedData::GetInstance()->interactptr->bound1 == ballbounds[i].bound1 && SharedData::GetInstance()->interactptr->bound2 == ballbounds[i].bound2)
+                ball[i] = true;
+        }
+
+       // SharedData::GetInstance()->ballpickup = false;
+    }
+    else
+    {
+        ballfloat = ballfloat1 = ballfloat2 = ballfloat3 = ballfloat4 = 0;
+    }
+
+    if (ball[0] == true)
+    {
+        modelStack.PushMatrix();
+        modelStack.Translate(483, 15 + ballfloat, -469);
+        modelStack.Scale(0.5, 0.5, 0.5);
+        RenderMesh(meshList[GEO_SPHEREYELLOW], true);
+        modelStack.PopMatrix();
+
+        if (ballfloat >= 15)
+        {
+            ball[0] = false;
+            ballfloat = 9999;
+            SharedData::GetInstance()->ballpickup = false;
+        }
+        
+    }
+    else if (ball[1] == true)
+    {
+        modelStack.PushMatrix();
+        modelStack.Translate(410, 15 + ballfloat1, -396);
+        modelStack.Scale(0.5, 0.5, 0.5);
+        RenderMesh(meshList[GEO_SPHEREBLACK], true);
+        modelStack.PopMatrix();
+
+        if (ballfloat1 >= 15)
+        {
+            ball[1] = false;
+            ballfloat1 = 9999;
+            SharedData::GetInstance()->ballpickup = false;
+        }
+    }
+    else if (ball[2] == true)
+    {
+        modelStack.PushMatrix();
+        modelStack.Translate(425, 15 + ballfloat2, -380);
+        modelStack.Scale(0.5, 0.5, 0.5);
+        RenderMesh(meshList[GEO_SPHEREWHITE], true);
+        modelStack.PopMatrix();
+
+        if (ballfloat2 >= 15)
+        {
+            ball[2] = false;
+            ballfloat2 = 9999;
+            SharedData::GetInstance()->ballpickup = false;
+        }
+    }
+    else if (ball[3] == true)
+    {
+        modelStack.PushMatrix();
+        modelStack.Translate(339, 15 + ballfloat3, -465);
+        modelStack.Scale(0.5, 0.5, 0.5);
+        RenderMesh(meshList[GEO_SPHEREBLUE], true);
+        modelStack.PopMatrix();
+
+        if (ballfloat3 >= 15)
+        {
+            ball[3] = false;
+            ballfloat3 = 9999;
+            SharedData::GetInstance()->ballpickup = false;
+        }
+    }
+    else if (ball[4] == true)
+    {
+        modelStack.PushMatrix();
+        modelStack.Translate(310, 15 + ballfloat4, -364);
+        modelStack.Scale(0.5, 0.5, 0.5);
+        RenderMesh(meshList[GEO_SPHERERED], true);
+        modelStack.PopMatrix();
+
+        if (ballfloat4 >= 15)
+        {
+            ball[4] = false;
+            ballfloat4 = 9999;
+            SharedData::GetInstance()->ballpickup = false;
+        }
+    }
+    else
+    {
+        modelStack.PushMatrix();
+        modelStack.Translate(483, 15, -469);
+        modelStack.Scale(0.5, 0.5, 0.5);
+        RenderMesh(meshList[GEO_SPHEREYELLOW], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(410, 15, -396);    //425
+        modelStack.Scale(0.5, 0.5, 0.5);
+        RenderMesh(meshList[GEO_SPHEREBLACK], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(425, 15, -380);    //
+        modelStack.Scale(0.5, 0.5, 0.5);
+        RenderMesh(meshList[GEO_SPHEREWHITE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(339, 15, -465);
+        modelStack.Scale(0.5, 0.5, 0.5);
+        RenderMesh(meshList[GEO_SPHEREBLUE], true);
+        modelStack.PopMatrix();
+
+        modelStack.PushMatrix();
+        modelStack.Translate(310, 15, -364);
+        modelStack.Scale(0.5, 0.5, 0.5);
+        RenderMesh(meshList[GEO_SPHERERED], true);
+        modelStack.PopMatrix();
+    }
 }    
+void SP2::ballboundfunct()
+{
+    Interaction* ballinteraction;
+    //check sp2.h for arraylist of colors
+    ballinteraction = new chonBallInteraction();   //ball 0 (1)
+    ballinteraction->bound1.Set(480, -15, -469); ballinteraction->bound2.Set(485, -5, -460);
+    SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
+    ballbounds[0].bound1 = ballinteraction->bound1;     ballbounds[0].bound2 = ballinteraction->bound2;
+
+    ballinteraction = new chonBallInteraction();   //ball 1 (2)
+    ballinteraction->bound1.Set(405, -15, -400); ballinteraction->bound2.Set(410, -5, -390);
+    SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
+    ballbounds[1].bound1 = ballinteraction->bound1;    ballbounds[1].bound2 = ballinteraction->bound2;
+
+    ballinteraction = new chonBallInteraction();   //ball 2 (3)
+    ballinteraction->bound1.Set(420, -15, -385); ballinteraction->bound2.Set(427, -5, -375);
+    SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
+    ballbounds[2].bound1 = ballinteraction->bound1;    ballbounds[2].bound2 = ballinteraction->bound2;
+
+    ballinteraction = new chonBallInteraction();   //ball 3 (4)
+    ballinteraction->bound1.Set(334, -15, -469); ballinteraction->bound2.Set(343, -5, -460);
+    SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
+    ballbounds[3].bound1 = ballinteraction->bound1;    ballbounds[3].bound2 = ballinteraction->bound2;
+
+    ballinteraction = new chonBallInteraction();   //ball 4 (5)
+    ballinteraction->bound1.Set(300, -15, -367); ballinteraction->bound2.Set(309, -5, -360);
+    SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
+    ballbounds[4].bound1 = ballinteraction->bound1;    ballbounds[4].bound2 = ballinteraction->bound2;
+
+}
 
 void SP2::loadVeeGame()
 {    
@@ -1442,42 +1636,12 @@ void SP2::chonLab()
     RenderMesh(meshList[GEO_LABCOUNTER1], true);    //faceright
     modelStack.PopMatrix();
 
-    //Chon's Lab
     modelStack.PushMatrix();
     modelStack.Translate(459.2, 12, -466);
     modelStack.Scale(9, 8, 6);
     RenderMesh(meshList[GEO_TOOLBOX], true);
     modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(483, 15, -469);
-    modelStack.Scale(0.5, 0.5, 0.5);
-    RenderMesh(meshList[GEO_SPHEREYELLOW], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(410, 15, -396);    //425
-    modelStack.Scale(0.5, 0.5, 0.5);
-    RenderMesh(meshList[GEO_SPHEREBLACK], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(425, 15, -380);    //
-    modelStack.Scale(0.5, 0.5, 0.5);
-    RenderMesh(meshList[GEO_SPHEREWHITE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(339, 15, -465);
-    modelStack.Scale(0.5, 0.5, 0.5);
-    RenderMesh(meshList[GEO_SPHEREBLUE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(310, 15, -364);
-    modelStack.Scale(0.5, 0.5, 0.5);
-    RenderMesh(meshList[GEO_SPHERERED], true);
-    modelStack.PopMatrix();
+   
 }
 
 void SP2::veeControlroom()

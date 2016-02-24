@@ -11,6 +11,8 @@
 #include "GameState.h"
 #include "Item.h"
 
+#include "Interaction.h"
+
 #include <cstdlib>
 
 #include <vector>
@@ -122,11 +124,6 @@ class SP2 : public Scene
 
 
 		GEO_SPAGHETTO,
-
-       
-        
-       
-
 
 		GEO_PIPETYPE1,
 		GEO_PIPETYPE2,
@@ -264,6 +261,20 @@ public:
     float ptxt2;
     float ptxt3;
     float ptxtexit;
+    
+    //Chon game variables
+    bool ball[5];   
+    /*0 = yellow, 
+    1 = black, 
+    2 = white, 
+    3 = blue, 
+    4 = red*/
+    bool pickupcheck;
+    float ballfloat, ballfloat1, ballfloat2, ballfloat3, ballfloat4;
+    void ballboundfunct();
+    chonBallInteraction ballbounds[5];
+
+   
 
 	std::map<int, Gift>invmap;
 	std::map<int, GEOMETRY_TYPE>modelmap;

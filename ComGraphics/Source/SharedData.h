@@ -52,6 +52,7 @@ public:
     Interaction* interactptr;
 	bool toiletflood;
     bool chonGamebool;
+    bool ballpickup;    //chon ballgame
 
     static SharedData* GetInstance()
     {
@@ -78,6 +79,7 @@ private:
 
 		toiletflood = false;
         chonGamebool = false;
+        ballpickup = false;     //chon ballgame
     }
     ~SharedData() {
         delete player;

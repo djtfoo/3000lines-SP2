@@ -37,6 +37,8 @@ void ShopInteraction::DoInteraction()
     SharedData::GetInstance()->gamestate = GAME_STATE_SHOP;
 }
 
+
+
 //flush away~! (get rid of manure)
 ManureInteraction::ManureInteraction() : Interaction()
 {
@@ -63,6 +65,19 @@ ChonGame::~ChonGame()
 void ChonGame::DoInteraction()
 {
     SharedData::GetInstance()->chonGamebool = true;
+}
+
+chonBallInteraction::chonBallInteraction() : Interaction()
+{
+}
+
+chonBallInteraction::~chonBallInteraction()
+{
+}
+
+void chonBallInteraction::DoInteraction()
+{
+    SharedData::GetInstance()->ballpickup = true;
 }
 
 //MOM'S SPAGHETTI
