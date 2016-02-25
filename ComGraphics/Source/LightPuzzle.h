@@ -12,7 +12,6 @@ public:
 
     void generatePuzzle();
     bool checkPuzzleAns(int first, int second, int third, int forth);
-    //void puzzleChecker(int first, int second, int third, int forth);
     float puzzleSize[4][4];
     float puzzleAns[4][4];
 
