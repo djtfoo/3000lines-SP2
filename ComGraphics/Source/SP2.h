@@ -141,6 +141,9 @@ class SP2 : public Scene
         GEO_CROSSHAIRS,
 		GEO_INVENTORY,
 
+        GEO_CURSOR,
+        GEO_DIALOGUEOPTION,
+
         //Switches
         GEO_SWITCH_1,
         GEO_SWITCH_2,
@@ -272,7 +275,10 @@ public:
     void loadRabbitGame();
 	void loadWeedGame();
 
-    //initialize collisions
+    //cursor for dialogue, pause, shop
+    void RenderCursor();
+
+    //initialise collisions
     void loadCollisions();
 
     void shoptemp();

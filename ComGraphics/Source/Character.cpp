@@ -4,6 +4,7 @@
 #include "SharedData.h"
 
 #include <sstream>
+#include <fstream>
 
 Character::Character(std::string name, Vector3 position, float direction) : name_(name), position_(position), direction_(0)
 {
@@ -308,6 +309,7 @@ NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Char
     
     //TESTING EXAMPLE
     dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_INTRO, "Eyyy sup"));
+    dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_NEUTRAL, "Anything you wanna do?"));
     dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_GIFT, "Aww ty"));
     dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_COMPLIMENT, "I shy"));
     dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_STARTMINIGAME, "Play mini-game"));

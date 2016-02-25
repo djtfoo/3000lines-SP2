@@ -66,6 +66,19 @@ public:
 
     DialogueProcessor dialogueProcessor;
 
+    void CheckCursor()  //applicable when in dialogue, pause, shop, menu
+    {
+        if (SharedData::GetInstance()->cursor_newxpos != SharedData::GetInstance()->cursor_xpos) {
+            double diff_xpos = SharedData::GetInstance()->cursor_xpos - SharedData::GetInstance()->cursor_newxpos;
+            SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
+        }
+
+        if (SharedData::GetInstance()->cursor_newypos != SharedData::GetInstance()->cursor_ypos) {
+            double diff_ypos = SharedData::GetInstance()->cursor_ypos - SharedData::GetInstance()->cursor_newypos;
+            SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
+        }
+    }
+
     static SharedData* GetInstance()
     {
         static SharedData data;

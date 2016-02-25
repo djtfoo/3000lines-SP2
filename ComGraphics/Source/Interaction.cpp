@@ -56,6 +56,12 @@ void Dialogue::DoInteraction()
             (*it)->position_.z >= b1.z && (*it)->position_.z <= b2.z) {
             SharedData::GetInstance()->dialogueProcessor.npc = *it;
             SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
+
+            //set cursor
+            SharedData::GetInstance()->cursor_xpos = 400;
+            SharedData::GetInstance()->cursor_ypos = 400;
+            SharedData::GetInstance()->cursor_newxpos = 400;
+            SharedData::GetInstance()->cursor_newypos = 400;
             break;
         }
     }

@@ -1,8 +1,5 @@
 #include "Vector3.h"
 
-#include "Character.h"
-#include "Collision.h"
-
 #include <vector>
 
 #ifndef CAMERA_3_H

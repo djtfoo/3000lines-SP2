@@ -79,8 +79,8 @@ void Application::Init()
     get_resolution();
 
 	//Create a window and create its OpenGL context
-    m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
-    //m_window = glfwCreateWindow(SharedData::GetInstance()->width, SharedData::GetInstance()->height, "Romantic Room", glfwGetPrimaryMonitor(), NULL);
+    //m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
+    m_window = glfwCreateWindow(SharedData::GetInstance()->width, SharedData::GetInstance()->height, "Romantic Room", glfwGetPrimaryMonitor(), NULL);
     //glfwSetWindowSize(m_window, SharedData::GetInstance()->width, SharedData::GetInstance()->height);
 
     glfwSetWindowSizeCallback(m_window, resize_callback);
@@ -134,26 +134,11 @@ void Application::Run()
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...
 		glfwPollEvents();
         //setting cursor
-        if (SharedData::GetInstance()->program_state == SharedData::PROGRAM_MENU)
+        if (SharedData::GetInstance()->program_state == SharedData::PROGRAM_MENU || SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE)
             glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
         else
             glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwGetCursorPos(m_window, &SharedData::GetInstance()->cursor_newxpos, &SharedData::GetInstance()->cursor_newypos);
-
-        /*//limit cursor to the resolution of the window
-        if (SharedData::GetInstance()->program_state == SharedData::PROGRAM_MENU) {
-            if (SharedData::GetInstance()->cursor_newxpos <= 0)
-                glfwSetCursorPos(m_window, 0, SharedData::GetInstance()->cursor_newypos);
-
-            if (SharedData::GetInstance()->cursor_newxpos >= width)
-                glfwSetCursorPos(m_window, width, SharedData::GetInstance()->cursor_newypos);
-
-            if (SharedData::GetInstance()->cursor_newypos <= 0)
-                glfwSetCursorPos(m_window, SharedData::GetInstance()->cursor_newxpos, 0);
-
-            if (SharedData::GetInstance()->cursor_newypos >= height)
-                glfwSetCursorPos(m_window, SharedData::GetInstance()->cursor_newxpos, height);
-        }*/
 
         m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.
 

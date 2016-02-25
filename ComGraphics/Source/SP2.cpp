@@ -496,6 +496,11 @@ SP2::SP2()
     meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("switch3", Color(0, 0, 0), 1, 15, 4);
     meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("switch4", Color(0, 0, 0), 1, 15, 4);
 
+    meshList[GEO_CURSOR] = MeshBuilder::GenerateQuad("mouse_custom", Color(0, 0, 0), 3, 4);
+    meshList[GEO_CURSOR]->textureID = LoadTGA("Image/mouse.tga");
+
+    meshList[GEO_DIALOGUEOPTION] = MeshBuilder::GenerateQuad("selection button", Color(0, 0, 0), 10, 5);
+
     viewOptions = true;
 
     objx = objy = 1;
@@ -718,21 +723,21 @@ void SP2::Init()
 	interactions->bound1.Set(518, -5, 176); interactions->bound2.Set(548, -15, 185);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
-	loadWeedGame();
-
-	for (int i = 0; i < 10; i++)
-	{
-
-		interactions = new WeedInteraction();
-		interactions->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, -19, weedgame[i].z + 3);
-		SharedData::GetInstance()->interactionItems.push_back(interactions);
-	}
-
     //TESTING DIALOGUES - Jasim
     interactions = new Dialogue();
-    interactions->bound1.Set(685 - 50, 0 - 5, -430 - 50); interactions->bound2.Set(685 + 50, 0 + 5, -430 + 50);
+    interactions->bound1.Set(685 - 50, -15, -430 - 50); interactions->bound2.Set(685 + 50, 100, -430 + 50);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
+
+    loadWeedGame();
+
+    for (int i = 0; i < 10; i++)
+    {
+
+        interactions = new WeedInteraction();
+        interactions->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, -19, weedgame[i].z + 3);
+        SharedData::GetInstance()->interactionItems.push_back(interactions);
+    }
 
     rotating = 0;
     ptxt1 = 70;     //pause textbox
@@ -821,12 +826,15 @@ void SP2::Update(double dt)
 
     CheckCharacterLocation();
 
-    SharedData::GetInstance()->camera->Update(dt);
+    //temporary check
+    if (SharedData::GetInstance()->gamestate != GAME_STATE_DIALOGUE) {
+        SharedData::GetInstance()->camera->Update(dt);
+    }
     
     SharedData::GetInstance()->player->CheckInteraction();
 
 	if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) {
-		if (SharedData::GetInstance()->interactnumber != 25)
+		if (SharedData::GetInstance()->interactnumber != 32)
 		{
 			delayBuffer = 0;
 		}
@@ -854,7 +862,7 @@ void SP2::Update(double dt)
 	if (((int)SharedData::GetInstance()->daynighttime % 100) > 60)
 	{
 		SharedData::GetInstance()->daynighttime += 40;
-		if (SharedData::GetInstance()->interactnumber != 25)
+		if (SharedData::GetInstance()->interactnumber != 32)
 		{
 			SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 5);
 		}
@@ -1151,9 +1159,33 @@ void SP2::Render()
         break;
     case GAME_STATE_DIALOGUE: loadFree();
         RenderDialogueOnScreen(SharedData::GetInstance()->dialogueProcessor.npc->Speech(), Color(1, 1, 1), 3);
+        
+        //options
+        switch (SharedData::GetInstance()->dialogueProcessor.convostate)
+        {
+        case CONVO_INTRO:
+        case CONVO_NEUTRAL:
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 60, 25, 1, 1);
+            break;
+        case CONVO_GIFT:
+            break;
+        case CONVO_COMPLIMENT:
+            break;
+        }
+        RenderCursor();
         break;
     }
     //RenderMinimap();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(685 - 50, -5, -430 - 50);
+    RenderMesh(meshList[GEO_JASIM], true);
+    modelStack.PopMatrix();
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(685 + 50, 15, -430 + 50);
+    RenderMesh(meshList[GEO_JASIM], true);
+    modelStack.PopMatrix();
 }
 
 void SP2::loadFree()
@@ -3002,4 +3034,9 @@ void SP2::CheckCharacterLocation()
     else {
         SharedData::GetInstance()->location = OUTSIDE;
     }
+}
+
+void SP2::RenderCursor()
+{
+    RenderObjectOnScreen(meshList[GEO_CURSOR], SharedData::GetInstance()->cursor_newxpos / (SharedData::GetInstance()->width / 80), 60 - SharedData::GetInstance()->cursor_newypos / (SharedData::GetInstance()->height / 60), 1, 1);
 }

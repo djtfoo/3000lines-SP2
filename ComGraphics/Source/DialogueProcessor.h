@@ -26,6 +26,8 @@ public:
     ~DialogueProcessor();
     CONVO_STATE convostate;
     NPC* npc;
+
+    void CheckCursor();
 };
 
 #endif
