@@ -272,18 +272,23 @@ public:
     void loadRabbitGame();
 	void loadWeedGame();
 
-    //initialise collisions
+    //initialize collisions
     void loadCollisions();
 
     void shoptemp();
     void RotateDisplay();
     void pauseAnimation(double dt);
 
-
     float objx, objy;
 
-    float gate1pos, gate2pos, gatemove;
+    float gateobjs[14];
+    /*0,1 = hang 1,2            10, 11, 12, 13 = room 1, 2, 3, 4
+    2, 3 = lab
+    4, 5, = canteen
+    6, 7, 8, 9 = control*/
+
     void gateOpenInteractions();
+    void gateUpdate();
 
     float rotating;
     float ptxt1;    //pause text 1

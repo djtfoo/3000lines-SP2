@@ -733,10 +733,6 @@ void SP2::Init()
     interactions->bound1.Set(685 - 50, 0 - 5, -430 - 50); interactions->bound2.Set(685 + 50, 0 + 5, -430 + 50);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
-    gate1pos = 49;
-    gate2pos = 143;
-    gatemove = 0;
-
 
     rotating = 0;
     ptxt1 = 70;     //pause textbox
@@ -992,15 +988,7 @@ void SP2::Update(double dt)
             ballfloat4 += 40 * dt;
     }
 
-    if (SharedData::GetInstance()->gateopen)
-    {
-        //gatemove -= 5 * dt;
-        gate1pos -= 0.5;
-        gate2pos -= 0.5;
-
-       
-    }
-
+    gateUpdate();
 
     //Position of Light
     if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpos >= -1000)
@@ -1231,11 +1219,102 @@ void SP2::loadFree()
 
 void SP2::gateOpenInteractions()
 {
-    Interaction* interactions;
+    gateobjs[0] = 49;
+    gateobjs[1] = 143;
 
+    //Check out sp2.h for array list reference
+    for (int i = 0; i < 13; i++)
+    {
+        if (i >= 2 && i <= 9)
+        {
+            if (i % 2 == 0)
+            {
+                gateobjs[i] = 25;
+            }
+            else
+            {
+                gateobjs[i] = 70;
+            }
+        }
+        if (i > 9)
+        {
+            gateobjs[i] = 18;
+        }
+    }
+
+    Interaction* interactions;
+    //hangar
     interactions = new GateInteraction();
     interactions->bound1.Set(220, -15, -45); interactions->bound2.Set(360, -5, 50);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
+    //lab
+    interactions = new GateInteraction();
+    interactions->bound1.Set(440, -15, -340); interactions->bound2.Set(480, -5, -230);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    //canteen
+    interactions = new GateInteraction();
+    interactions->bound1.Set(770, -15, -350); interactions->bound2.Set(820, -5, -230);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    //control 
+    interactions = new GateInteraction();
+    interactions->bound1.Set(570, -15, 270); interactions->bound2.Set(617, -5, 370);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    //rm1
+    interactions = new GateInteraction();
+    interactions->bound1.Set(545, -15, -135); interactions->bound2.Set(555, -5, -100);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    //rm3
+    interactions = new GateInteraction();
+    interactions->bound1.Set(619, -15, -135); interactions->bound2.Set(630, -5, -100);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    //rm2
+    interactions = new GateInteraction();
+    interactions->bound1.Set(545, -15, 50); interactions->bound2.Set(555, -5, 85);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    //rm4
+    interactions = new GateInteraction();
+    interactions->bound1.Set(619, -15, 50); interactions->bound2.Set(630, -5, 85);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+
+}
+void SP2::gateUpdate()
+{
+    if (SharedData::GetInstance()->gateopen)
+    {
+        gateobjs[0] += 1;
+        gateobjs[1] += 1;
+
+        if (gateobjs[0] >= 243)
+        {
+            gateobjs[0] = 143;
+            gateobjs[1] = 143;
+        }
+    }
+    else
+    {
+        for (int i = 0; i < 13; i++)
+        {
+            if (i >= 10)
+            {//room pos, (room does not animate!)
+                gateobjs[i] = 18;
+            }
+            else
+                gateobjs[i] -= 0.5;
+
+            if (i >= 2 && i <= 9)
+            {//other gates animation
+                if (gateobjs[i] <= -20)
+                    gateobjs[i] = 70;
+            }
+        }
+
+        //hangar gate loop
+        if (gateobjs[0] <= -45)
+            gateobjs[0] = 143;
+        if (gateobjs[1] <= -45)
+            gateobjs[1] = 143;
+    }
 }
 
 void SP2::loadShop()
@@ -2626,7 +2705,7 @@ void SP2::RenderUI()
 
         //practical purposes: check position of object
         s.str("");
-        s << "objpos:(" << gate1pos << " , " << gate2pos << ")";
+        s << "objpos:(" << objx << " , " << objy << ")";
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 16);
     }
 }
@@ -2664,27 +2743,85 @@ void SP2::RenderMinimap()
 void SP2::RenderGates()
 {
 
-    if (gate1pos <= -45)
-    {
-        gate1pos = 143;
-    }
-    if (gate2pos <= -45)
-    {
-        gate2pos = 143;
-    }
-
-
+    //hangar
     modelStack.PushMatrix();
-    modelStack.Translate(290, gate1pos, 3);
+    modelStack.Translate(290, gateobjs[0], 3);
     modelStack.Scale(3, 95, 95);
     RenderMesh(meshList[GEO_GATE1], false);
     modelStack.PopMatrix();
+        modelStack.PushMatrix();
+        modelStack.Translate(290, gateobjs[1], 3);
+        modelStack.Scale(3, 95, 95);
+        RenderMesh(meshList[GEO_GATE2], false);
+        modelStack.PopMatrix();
 
+    //lab
     modelStack.PushMatrix();
-    modelStack.Translate(290, gate2pos, 3);
-    modelStack.Scale(3, 95, 95);
-    RenderMesh(meshList[GEO_GATE2], false);
+    modelStack.Translate(462, gateobjs[2], -287);
+    modelStack.Scale(45, 45, 3);
+    RenderMesh(meshList[GEO_GATE1], false);
     modelStack.PopMatrix();
+        modelStack.PushMatrix();
+        modelStack.Translate(462, gateobjs[3], -287);
+        modelStack.Scale(45, 45, 3);  
+        RenderMesh(meshList[GEO_GATE2], false);
+        modelStack.PopMatrix();
+
+        //canteen
+    modelStack.PushMatrix();
+    modelStack.Translate(797, gateobjs[4], -291);
+    modelStack.Scale(53, 45, 3);
+    RenderMesh(meshList[GEO_GATE1], false);
+    modelStack.PopMatrix();
+        modelStack.PushMatrix();
+        modelStack.Translate(797, gateobjs[5], -291);
+        modelStack.Scale(53, 45, 3);  
+        RenderMesh(meshList[GEO_GATE2], false);
+        modelStack.PopMatrix();
+
+        //control room
+    modelStack.PushMatrix();
+    modelStack.Translate(601, gateobjs[6], 319);
+    modelStack.Scale(45, 45, 3);
+    RenderMesh(meshList[GEO_GATE1], false);
+    modelStack.PopMatrix();
+        modelStack.PushMatrix();
+        modelStack.Translate(601, gateobjs[7], 319);
+        modelStack.Scale(45, 45, 3);  
+        RenderMesh(meshList[GEO_GATE2], false);
+        modelStack.PopMatrix();
+    modelStack.PushMatrix();
+    modelStack.Translate(555, gateobjs[8], 319);
+    modelStack.Scale(45, 45, 3);
+    RenderMesh(meshList[GEO_GATE1], false);
+    modelStack.PopMatrix();
+        modelStack.PushMatrix();
+        modelStack.Translate(555, gateobjs[9], 319);
+        modelStack.Scale(45, 45, 3);  
+        RenderMesh(meshList[GEO_GATE2], false);
+        modelStack.PopMatrix();
+
+        //Rooms
+    modelStack.PushMatrix();
+    modelStack.Translate(550, gateobjs[10], -119);
+    modelStack.Scale(1, 34, 34);
+    RenderMesh(meshList[GEO_GATE1], false);        //room1  (away from ctrl, closest to lab)
+    modelStack.PopMatrix();
+        modelStack.PushMatrix();
+        modelStack.Translate(626, gateobjs[11], -119);
+        modelStack.Scale(1, 34, 34);
+        RenderMesh(meshList[GEO_GATE2], false);     //room3 (across rm1)
+        modelStack.PopMatrix();                     //       4 - 2
+    modelStack.PushMatrix();                        //         /
+    modelStack.Translate(550, gateobjs[12], 67);    //       3 - 1
+    modelStack.Scale(1, 34, 34);
+    RenderMesh(meshList[GEO_GATE1], false);         //room2 (same lane as rm1, closer to ctrl)
+    modelStack.PopMatrix();
+        modelStack.PushMatrix();
+        modelStack.Translate(626, gateobjs[13], 67);
+        modelStack.Scale(1, 34, 34);
+        RenderMesh(meshList[GEO_GATE2], false);     //room4 (same lane as rm2, across rm3)
+        modelStack.PopMatrix();
 
 }
 
@@ -2701,9 +2838,6 @@ void SP2::shoptemp()
         RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 25, 25, 0.2, 0.2);
         
         RenderDialogueOnScreen("Buy this item?", Color(1, 1, 1), 3);
-
-
-        
 
         RotateDisplay();
 
