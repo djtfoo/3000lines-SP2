@@ -6,6 +6,7 @@
 #include "Collision.h"
 #include "Interaction.h"
 #include "GameState.h"
+#include "DialogueProcessor.h"
 
 using std::vector;
 using std::map;
@@ -36,6 +37,7 @@ public:
     Player *player;
     Camera3 *camera;
     map<LOCATION, vector<ItemCollision>> collisionMap;
+    vector<NPC*> NPCs;
     vector<Interaction*>interactionItems;
 
     //monitor
@@ -61,6 +63,8 @@ public:
     bool switch1, switch2, switch3, switch4;
     bool switchFlip;
 
+    DialogueProcessor dialogueProcessor;
+
     static SharedData* GetInstance()
     {
         static SharedData data;
@@ -76,18 +80,37 @@ private:
         camera = new Camera3();
         camera->Init(Vector3(0, -140, 100), Vector3(0, -140, 110), Vector3(0, 1, 0));
 
+        //NPCs
+        NPC* npc = new NPC("Chon", Vector3(412, 5, 459), "ChonDialogue.txt");
+        NPCs.push_back(npc);
+        npc = new NPC("Vee", Vector3(600, 0, 440), "VeeDialogue.txt");
+        NPCs.push_back(npc);
+        npc = new NPC("Jasim", Vector3(685, 0, -430), "JasimDialogue.txt");
+        NPCs.push_back(npc);
+        npc = new NPC("Wengstang", Vector3(950, 0, -460), "WengstangDialogue.txt");
+        NPCs.push_back(npc);
+
+        interactptr = 0;
+
+        //states
         gamestate = GAME_STATE_FREE;
         location = OUTSIDE;
 
+        //cursor for main menu
         cursor_xpos = 400;
         cursor_ypos = 300;
         cursor_newxpos = 400;
         cursor_newypos = 300;
+
+        //Vee mini-game (light puzzle)
         one = two = three = four = 1;
         switch1 = switch2 = switch3 = switch4 = false;
         switchFlip = false;
 
+        //toilet
 		toiletflood = false;
+        
+        //Chon mini-game (lab)
         chonGamebool = false;
         ballpickup = false;     //chon ballgame
     }

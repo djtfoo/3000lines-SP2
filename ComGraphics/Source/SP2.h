@@ -299,8 +299,6 @@ public:
 
 	std::map<int, Gift>invmap;
 	std::map<int, GEOMETRY_TYPE>modelmap;
-
-    DialogueProcessor dialogueProcessor;
 };
 
 #endif

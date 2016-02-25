@@ -1,7 +1,12 @@
-#include <string>
 #include "Vector3.h"
 #include "Item.h"
 #include "Outfit.h"
+#include "GameState.h"
+
+#include <string>
+#include <map>
+
+using std::map;
 
 #ifndef CHARACTER_H
 #define CHARACTER_H
@@ -35,11 +40,11 @@ private:
 
 public:
     Player(std::string name);
-    ~Player();
+    virtual ~Player();
     void Walk(double dt);
     void CheckCollision(float newX, float newZ, bool& zMovement, bool& xMovement);
     void CheckInteraction();
-    
+
     int getHunger();
     unsigned int getHealth();
     unsigned int getGold();
@@ -70,9 +75,11 @@ private:
     unsigned int loveMeter_;
 
 public:
-    NPC(std::string name) : Character(name, Vector3(0, 0, 0), 0) {}
-    ~NPC();
+    NPC(std::string name, const Vector3& pos, std::string textDirectory);
+    virtual ~NPC();
     unsigned int getLoveMeter();
+    map<CONVO_STATE, std::string> dialogues;    //map for dialogues
+    std::string Speech();
 };
 
 #endif

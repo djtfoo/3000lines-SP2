@@ -651,9 +651,9 @@ void SP2::Init()
 	interactions->bound1.Set(780, -5, -616);     interactions->bound2.Set(800, 5, -612);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
-    interactions = new ChonGame();
-    interactions->bound1.Set(400,-15,-430); interactions->bound2.Set(425,-5,-440);
-    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    //interactions = new ChonGame();
+    //interactions->bound1.Set(400,-15,-430); interactions->bound2.Set(425,-5,-440);
+    //SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 
 
@@ -682,6 +682,10 @@ void SP2::Init()
 	interactions->bound1.Set(518, -20, 176); interactions->bound2.Set(548, -10, 185);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
+    //TESTING DIALOGUES - Jasim
+    interactions = new Dialogue();
+    interactions->bound1.Set(685 - 50, 0 - 5, -430 - 50); interactions->bound2.Set(685 + 50, 0 + 5, -430 + 50);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     rotating = 0;
     ptxt1 = 70;     //pause textbox
@@ -739,7 +743,7 @@ void SP2::Update(double dt)
     SharedData::GetInstance()->player->CheckInteraction();
 
 	if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) {
-		if (SharedData::GetInstance()->interactnumber != 25)
+		if (SharedData::GetInstance()->interactnumber != 24)
 		{
 			delayBuffer = 0;
 		}
@@ -763,9 +767,10 @@ void SP2::Update(double dt)
 	if (((int)SharedData::GetInstance()->daynighttime % 100) > 60)
 	{
 		SharedData::GetInstance()->daynighttime += 40;
-		if (SharedData::GetInstance()->interactnumber != 25)
+		if (SharedData::GetInstance()->interactnumber != 24)
 		{
 			SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 5);
+			std::cout << "not interacting";
 		}
 		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 1);
 	}
@@ -822,6 +827,8 @@ void SP2::Update(double dt)
     //meshList[GEO_MAP] = MeshBuilder::GenerateMinimap("map", 10, 10);
     //meshList[GEO_MAP]->textureID = LoadTGA("Image/Donna.tga");
     
+
+    //debugging code
     if (Application::IsKeyPressed('O'))
     {
 		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 1);
@@ -846,6 +853,7 @@ void SP2::Update(double dt)
     if (Application::IsKeyPressed('L'))
         objx += 100 * dt;
 
+    //pause game
     if (Application::IsKeyPressed('N'))
     {
         SharedData::GetInstance()->gamestate = GAME_STATE_PAUSED;
@@ -971,30 +979,32 @@ void SP2::Update(double dt)
 
 	if (lightpuzz.checkPuzzleAns(SharedData::GetInstance()->one, SharedData::GetInstance()->two, SharedData::GetInstance()->three, SharedData::GetInstance()->four) == true)
     {
-        if (SharedData::GetInstance()->switch1 == true)
-        {
-            meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(1, 1, 1), 2);
-        }
-        if (SharedData::GetInstance()->switch2 == true)
-        {
-            meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(1, 1, 1), 2);
-        }
-        if (SharedData::GetInstance()->switch3 == true)
-        {
-            meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(1, 1, 1), 2);
-        }
-        if (SharedData::GetInstance()->switch4 == true)
-        {
-            meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
-        }
+        //if (SharedData::GetInstance()->switch1 == true)
+        //{
+        //    meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(1, 1, 1), 2);
+        //}
+        //if (SharedData::GetInstance()->switch2 == true)
+        //{
+        //    meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(1, 1, 1), 2);
+        //}
+        //if (SharedData::GetInstance()->switch3 == true)
+        //{
+        //    meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(1, 1, 1), 2);
+        //}
+        //if (SharedData::GetInstance()->switch4 == true)
+        //{
+        //    meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
+        //}
         SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
         std::cout << "You win!" << std::endl;
         lightpuzz.generatePuzzle();
-        //std::cout << SharedData::GetInstance()->one << " " << SharedData::GetInstance()->two << " " << SharedData::GetInstance()->three << " " << SharedData::GetInstance()->four << std::endl;
-        //std::cout << "You win!" <<  std::endl;
-        //SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
-        //lightpuzz.generatePuzzle();
     }
+
+    if (Application::IsKeyPressed('P'))
+    {
+        SharedData::GetInstance()->gamestate = GAME_STATE_RABBIT;
+    }
+	SharedData::GetInstance()->interactnumber = 99;
 }
 
 void SP2::Render()
@@ -1030,6 +1040,12 @@ void SP2::Render()
         glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
     }
 
+    modelStack.PushMatrix();
+    modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_STEMMIE_FACE], false);
+    modelStack.PopMatrix();
+
     switch (SharedData::GetInstance()->gamestate)
     {
     case GAME_STATE_FREE: loadFree();
@@ -1046,17 +1062,11 @@ void SP2::Render()
         break;
     case GAME_STATE_RABBIT: loadRabbitGame();
         break;
+    case GAME_STATE_DIALOGUE: loadFree();
+        RenderDialogueOnScreen(SharedData::GetInstance()->dialogueProcessor.npc->Speech(), Color(1, 1, 1), 3);
+        break;
     }
     //RenderMinimap();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_STEMMIE_FACE], false);
-    modelStack.PopMatrix();
-
-    
-
 }
 
 void SP2::loadFree()
@@ -1350,7 +1360,29 @@ void SP2::pauseAnimation(double dt)
 
 void SP2::loadRabbitGame()
 {
+    if (light[0].type == Light::LIGHT_DIRECTIONAL)
+    {
+        Vector3 lightDir(light[0].position.x, light[0].position.y, light[0].position.z);
+        Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+        glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
+    }
 
+    //RenderSkybox();
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 12, 0);
+    modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
+    modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
+    RenderPlayer();
+    modelStack.PopMatrix();
+
+    RenderUI();
+
+    RenderInventory();
+    RenderTime();
+
+    RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
+    RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
+    RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30, 1, 1);
 }
 
 void SP2::Exit()
@@ -1525,7 +1557,10 @@ void SP2::RenderDialogueOnScreen(std::string text, Color color, float size)
     RenderMesh(meshList[GEO_DIALOGUEBOX], false);
     modelStack.PopMatrix();
 
-    RenderTextOnScreen(meshList[GEO_TEXT], text, color, size, 1.5f, 4.5f);
+    //name
+    RenderTextOnScreen(meshList[GEO_TEXT], SharedData::GetInstance()->dialogueProcessor.npc->getName(), color, size, 1.5f, 5.3f);
+    //message
+    RenderTextOnScreen(meshList[GEO_TEXT], text, color, size, 1.5f, 3.7f);
 
     projectionStack.PopMatrix();
     viewStack.PopMatrix();
@@ -1725,7 +1760,7 @@ void SP2::stemmieShop()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(830, 3, 100);
+    modelStack.Translate(830, 6, 100);
     modelStack.Scale(3, 3, 3);
     RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
     modelStack.PopMatrix();
@@ -2162,79 +2197,6 @@ void SP2::renderFarm()
 		modelStack.PopMatrix(); // teleporter
 	}
 }
-
-/*void SP2::RenderPuzzle()
-{
-	for (int i = 0; i < 9; i++)
-	{
-		for (int j = 0; j < 6; j++)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(481 - (i * 10), 65 - (j * 10), 374);
-            modelStack.Rotate(controlpuzzle.puzzlerotation[i][j], 0, 0, 1);
-			modelStack.Rotate(180, 0, 1, 0);
-			modelStack.Scale(10, 10, 10);
-			//RenderMesh(meshList[GEO_PIPETYPE1], true);
-			
-			if (controlpuzzle.puzzlemap[i][j] == 0)
-			{
-				RenderMesh(meshList[GEO_PIPETYPE1], true);
-			}
-			else if (controlpuzzle.puzzlemap[i][j] == 1)
-			{
-				modelStack.Rotate(90, 0, 0, 1);
-				RenderMesh(meshList[GEO_PIPETYPE1], true);
-			}
-			else if (controlpuzzle.puzzlemap[i][j] == 2)
-			{
-				
-				RenderMesh(meshList[GEO_PIPETYPE2], true);
-			}
-			else if (controlpuzzle.puzzlemap[i][j] == 3)
-			{
-				modelStack.Rotate(180, 0, 0, 1);
-				RenderMesh(meshList[GEO_PIPETYPE2], true);
-			}
-			else if (controlpuzzle.puzzlemap[i][j] == 4)
-			{
-				modelStack.Rotate(-90, 0, 0, 1);
-				
-				RenderMesh(meshList[GEO_PIPETYPE2], true);
-			}
-			else if (controlpuzzle.puzzlemap[i][j] == 5)
-			{
-				modelStack.Rotate(90, 0, 0, 1);
-				RenderMesh(meshList[GEO_PIPETYPE2], true);
-			}
-			else if (controlpuzzle.puzzlemap[i][j] == 6)
-			{
-				RenderMesh(meshList[GEO_PIPETYPE3], true);
-			}
-			else if (controlpuzzle.puzzlemap[i][j] == 7)
-			{
-				modelStack.Rotate(180, 0, 0, 1);
-				
-				RenderMesh(meshList[GEO_PIPETYPE3], true);
-			}
-			else if (controlpuzzle.puzzlemap[i][j] == 8)
-			{
-				modelStack.Rotate(-90, 0, 0, 1);
-				
-				RenderMesh(meshList[GEO_PIPETYPE3], true);
-			}
-			else if (controlpuzzle.puzzlemap[i][j] == 9)
-			{
-				modelStack.Rotate(90, 0, 0, 1);
-				RenderMesh(meshList[GEO_PIPETYPE3], true);
-			}
-			else if (controlpuzzle.puzzlemap[i][j] == 10)
-			{
-				RenderMesh(meshList[GEO_PIPETYPE4], true);
-			}
-			modelStack.PopMatrix();
-		}
-	}
-}*/
 
 void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y)
 {

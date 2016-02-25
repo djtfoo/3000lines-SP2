@@ -5,7 +5,7 @@
 
 #include <sstream>
 
-Character::Character(std::string name, Vector3 position, float direction) : name_(name), position_(Vector3(0, 0, 0)), direction_(0)
+Character::Character(std::string name, Vector3 position, float direction) : name_(name), position_(position), direction_(0)
 {
 }
 
@@ -280,4 +280,26 @@ bool Player::itemHave(int itemID)
 		}
 	}
 	return false;
+}
+
+NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0)
+{
+    //initialise map with the text file's directory
+    
+    //TESTING EXAMPLE
+    dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_INTRO, "Eyyy sup"));
+    dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_GIFT, "Aww ty"));
+    dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_COMPLIMENT, "I shy"));
+    dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_STARTMINIGAME, "Play mini-game"));
+}
+
+NPC::~NPC()
+{
+}
+
+std::string NPC::Speech()
+{
+    //go through map to find the dialogue
+    map<CONVO_STATE, std::string>::iterator it = dialogues.find(SharedData::GetInstance()->dialogueProcessor.convostate);
+    return it->second;
 }
