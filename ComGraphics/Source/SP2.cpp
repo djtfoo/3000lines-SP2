@@ -578,6 +578,8 @@ void SP2::loadCollisions()
     inData.close();
 }
 
+vector<Interaction*>spaghettilocation;
+
 void SP2::Init()
 {
     //light 0
@@ -603,57 +605,69 @@ void SP2::Init()
     glUniform1i(m_parameters[U_NUMLIGHTS], 1);
 	
 	srand(time(0));
-    
+
     Interaction* interactions;
 
 	//spaghetti random spawns
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(757.976, -12, -378.31 + 2); interactions->bound2.Set(763.976, -10, -368.31 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(757.976, -12, -391.7 + 2); interactions->bound2.Set(763.976, -10, -381.7 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(757.976, -12, -437.6 + 2); interactions->bound2.Set(763.976, -10, -427.6 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(757.976, -12, -452.9 + 2); interactions->bound2.Set(763.976, -10, -442.9 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(757.976, -12, -498.8 + 2); interactions->bound2.Set(763.976, -10, -488.8 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(757.976, -12, -510.7 + 2); interactions->bound2.Set(763.976, -10, -500.7 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(721.872 - 3, -12, -373.31 - 3); interactions->bound2.Set(721.872 + 3, -10, -373.31 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(721.872 - 3, -12, -386.7 - 3); interactions->bound2.Set(721.872 + 3, -10, -386.7 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(721.872 - 3, -12, -432.6 - 3); interactions->bound2.Set(721.872 + 3, -10, -432.6 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(721.872 - 3, -12, -447.9 - 3); interactions->bound2.Set(721.872 + 3, -10, -447.9 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(721.872 - 3, -12, -493.8 - 3); interactions->bound2.Set(721.872 + 3, -10, -493.8 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(721.872 - 3, -12, -505.7 - 3); interactions->bound2.Set(721.872 + 3, -10, -505.7 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
 	//spaghetto random spawns
 
     //Gate interaction bounds Inits
@@ -731,6 +745,18 @@ void SP2::Init()
 
     lightpuzz.generatePuzzle();
 	loadWeedGame();
+
+	for (int i = 0; i < 12; i++)
+	{
+		if ((rand() % 12) > 9)
+		{
+		}
+		else
+		{
+			interactions->bound1.Set(9999, 99, 9999); interactions->bound2.Set(9999, 99, 9999);
+			SharedData::GetInstance()->interactionItems[i] = interactions;
+		}
+	}
 }
 
 void SP2::loadWeedGame()
@@ -750,6 +776,23 @@ static float SCALE_LIMIT = 5.f;
 static float LSPEED = 10.f;
 static double FramePerSecond;
 
+void SP2::loadSpaghetti()
+{
+	Interaction* remover;
+	remover = new SpaghettoInteraction();
+	for (int i = 0; i < 12; i++)
+	{
+		if ((rand() % 12) > 3)
+		{
+			remover->bound1.Set(9999, 99, 9999); remover->bound2.Set(9999, 99, 9999);
+			SharedData::GetInstance()->interactionItems[i] = remover;
+		}
+		else
+		{
+			SharedData::GetInstance()->interactionItems[i] = spaghettilocation[i];
+		}
+	}
+}
 
 void SP2::Update(double dt)
 {
@@ -764,9 +807,14 @@ void SP2::Update(double dt)
     SharedData::GetInstance()->player->CheckInteraction();
 
 	if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) {
-		if (SharedData::GetInstance()->interactnumber != 24)
+		if (SharedData::GetInstance()->interactnumber != 25)
 		{
 			delayBuffer = 0;
+			std::cout << SharedData::GetInstance()->interactnumber;
+		}
+		else
+		{
+			loadSpaghetti();
 		}
         
 
@@ -788,10 +836,9 @@ void SP2::Update(double dt)
 	if (((int)SharedData::GetInstance()->daynighttime % 100) > 60)
 	{
 		SharedData::GetInstance()->daynighttime += 40;
-		if (SharedData::GetInstance()->interactnumber != 24)
+		if (SharedData::GetInstance()->interactnumber != 25)
 		{
 			SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 5);
-			std::cout << "not interacting";
 		}
 		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 1);
 	}
