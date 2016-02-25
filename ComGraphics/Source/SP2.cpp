@@ -488,6 +488,9 @@ SP2::SP2()
 	meshList[GEO_WEED] = MeshBuilder::GenerateQuad("weed", Color(1, 1, 1), 10, 10);
 	meshList[GEO_WEED]->textureID = LoadTGA("Image/weed.tga");
 
+	meshList[GEO_WEEDICON] = MeshBuilder::GenerateQuad("weed", Color(1, 1, 1), 3, 3);
+	meshList[GEO_WEEDICON]->textureID = LoadTGA("Image/weed.tga");
+
     meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("switch1", Color(0, 0, 0), 1, 15, 4);
     meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("switch2", Color(0, 0, 0), 1, 15, 4);
     meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("switch3", Color(0, 0, 0), 1, 15, 4);
@@ -527,6 +530,8 @@ void SP2::loadInv()
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(1, GEO_HAMMER));
 	invmap.insert(std::pair<int, Gift>(2, Gift("tEmmEh")));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(2, GEO_STEMMIE));
+	invmap.insert(std::pair<int, Gift>(3, Gift("weed")));
+	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(3, GEO_WEEDICON));
 }
 
 void SP2::loadCollisions()
@@ -711,6 +716,15 @@ void SP2::Init()
 	interactions->bound1.Set(518, -5, 176); interactions->bound2.Set(548, -15, 185);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
+	loadWeedGame();
+
+	for (int i = 0; i < 10; i++)
+	{
+
+		interactions = new WeedInteraction();
+		interactions->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, -19, weedgame[i].z + 3);
+		SharedData::GetInstance()->interactionItems.push_back(interactions);
+	}
 
     //TESTING DIALOGUES - Jasim
     interactions = new Dialogue();
@@ -744,7 +758,6 @@ void SP2::Init()
     loadCollisions();
 
     lightpuzz.generatePuzzle();
-	loadWeedGame();
 
 	for (int i = 0; i < 12; i++)
 	{
@@ -761,14 +774,22 @@ void SP2::Init()
 
 void SP2::loadWeedGame()
 {
-	for (int i = 0; i < weedgame.size(); i++)
+	if (weedgame.size() != 0)
 	{
-		weedgame.pop_back();
+		for (int i = 0; i < 10; i++)
+		{
+			weedgame[i] = (Vector3(rand() % 140 + 865, 1, rand() % 100 - 400));
+		}
+
 	}
-	for (int i = 0; i < rand() % 10 + 1; i++)
+	else
 	{
-		weedgame.push_back(Vector3(rand() % 140 + 865, 1, rand() % 100 - 400));
+		for (int i = 0; i < 10; i++)
+		{
+			weedgame.push_back(Vector3(rand() % 140 + 865, 1, rand() % 100 - 400));
+		}
 	}
+	
 }
 
 static float ROT_LIMIT = 45.f;
@@ -810,7 +831,6 @@ void SP2::Update(double dt)
 		if (SharedData::GetInstance()->interactnumber != 25)
 		{
 			delayBuffer = 0;
-			std::cout << SharedData::GetInstance()->interactnumber;
 		}
 		else
 		{
@@ -2398,7 +2418,7 @@ void SP2::renderFarm()
 	for (int i = 0; i < weedgame.size(); i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(weedgame[i].x, 2, weedgame[i].z);
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 26]->bound1.x + 3, 2, SharedData::GetInstance()->interactionItems[i + 26]->bound1.z + 3);
 		modelStack.Rotate(90, 0, 1, 0);
 		modelStack.Rotate(-90, 1, 0, 0);
 		RenderMesh(meshList[GEO_WEED], false);
@@ -2412,6 +2432,7 @@ void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y)
 		return;
 
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
 	Mtx44 ortho;
 	ortho.SetToOrtho(0, 80, 0, 60, -1000, 1000);    //size of screen UI
 	projectionStack.PushMatrix();
@@ -2432,6 +2453,7 @@ void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y)
 	projectionStack.PopMatrix();
 	viewStack.PopMatrix();
 	modelStack.PopMatrix();
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 }
 
@@ -2441,6 +2463,7 @@ void SP2::RenderInventoryOnScreenRotating(Mesh* mesh, float x, float y)
 		return;
 
 	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
 	Mtx44 ortho;
 	ortho.SetToOrtho(0, 80, 0, 60, -1000, 1000);    //size of screen UI
 	projectionStack.PushMatrix();
@@ -2461,6 +2484,7 @@ void SP2::RenderInventoryOnScreenRotating(Mesh* mesh, float x, float y)
 	projectionStack.PopMatrix();
 	viewStack.PopMatrix();
 	modelStack.PopMatrix();
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 }
 

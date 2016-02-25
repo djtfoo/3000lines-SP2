@@ -122,4 +122,13 @@ public:
 	~BedTime();
 	virtual void DoInteraction();
 };
+
+class WeedInteraction : public Interaction
+{
+public:
+	WeedInteraction();
+	~WeedInteraction();
+	virtual void DoInteraction();
+};
+
 #endif

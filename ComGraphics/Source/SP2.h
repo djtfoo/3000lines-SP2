@@ -131,6 +131,7 @@ class SP2 : public Scene
         GEO_FARM,
         GEO_SHED,
         GEO_WEED,
+		GEO_WEEDICON,
 
 		GEO_PIPETYPE1,
 		GEO_PIPETYPE2,
@@ -260,6 +261,7 @@ public:
     void RenderMinimap();
     void RenderGates();
 
+	void loadSpaghetti();
 	void loadInv();
     void loadFree();
     void loadShop();

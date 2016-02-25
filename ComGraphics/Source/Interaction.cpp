@@ -220,3 +220,22 @@ void BedTime::DoInteraction()
 	}
 	
 }
+
+WeedInteraction::WeedInteraction() : Interaction()
+{
+}
+
+WeedInteraction::~WeedInteraction()
+{
+}
+
+void WeedInteraction::DoInteraction()
+{
+	Interaction* remover;
+	remover = new WeedInteraction();
+	remover->bound1.Set(-999, 98, 9998); remover->bound2.Set(-998, 99, 9999);
+	std::cout << " " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x << std::endl;
+	SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
+	SharedData::GetInstance()->player->addItem(3);
+	SharedData::GetInstance()->interactnumber = 99;
+}
