@@ -224,31 +224,26 @@ bool Player::isDead()
     }
 }
 
-std::string Player::addItem(int itemID)
+int Player::addItem(int itemID)
 {
 	for (int i = 0; i < 8; i++)
 	{
 		if (inventory[i] == 0)
 		{
 			inventory[i] = itemID;
-			std::stringstream feedbackreport;
-			feedbackreport << "The item " << itemID << " has been added to inventory.";
-			std::string returner = feedbackreport.str();
-			return returner;
+			return i;
 		}
 	}
-	return "Inventory is full";
+	return -1;
 }
 
-std::string Player::removeItem(int itemPos)
+int Player::removeItem(int itemPos)
 {
 	bool removed = false;
-	std::stringstream feedbackreport;
 	for (int i = 0; i < 8; i++)
 	{
 		if ((i == itemPos) && (removed == false))
 		{
-			feedbackreport << "The item at " << itemPos << " has been removed from inventory.";
 			useItem(inventory[i]);
 			inventory[i] = 0;
 			removed = true;
@@ -265,10 +260,9 @@ std::string Player::removeItem(int itemPos)
 	}
 	if (removed == false)
 	{
-		feedbackreport << "Error.";
+		return -1;
 	}
-	std::string returner = feedbackreport.str();
-	return returner;
+	return 1;
 }
 
 void Player::useItem(int itemID)

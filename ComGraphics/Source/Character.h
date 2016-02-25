@@ -64,8 +64,8 @@ public:
     //inventory
     int invselect;
     int inventory[8];
-    std::string addItem(int itemID);
-    std::string removeItem(int itemPos);
+    int addItem(int itemID);
+    int removeItem(int itemPos);
 	void useItem(int itemID);
     bool itemHave(int itemID);
 	bool invfull();
