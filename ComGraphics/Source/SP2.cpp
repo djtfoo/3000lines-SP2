@@ -651,9 +651,9 @@ void SP2::Init()
 	interactions->bound1.Set(780, -5, -616);     interactions->bound2.Set(800, 5, -612);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
-    interactions = new ChonGame();
-    interactions->bound1.Set(400,-15,-430); interactions->bound2.Set(425,-5,-440);
-    SharedData::GetInstance()->interactionItems.push_back(interactions);
+    //interactions = new ChonGame();
+    //interactions->bound1.Set(400,-15,-430); interactions->bound2.Set(425,-5,-440);
+    //SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 
 
@@ -682,6 +682,10 @@ void SP2::Init()
 	interactions->bound1.Set(518, -5, 176); interactions->bound2.Set(548, 15, 185);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
+    //TESTING DIALOGUES - Jasim
+    interactions = new Dialogue();
+    interactions->bound1.Set(685 - 50, 0 - 5, -430 - 50); interactions->bound2.Set(685 + 50, 0 + 5, -430 + 50);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     rotating = 0;
     ptxt1 = 70;     //pause textbox
@@ -759,7 +763,9 @@ void SP2::Update(double dt)
 	if (((int)daynighttime % 100) > 60)
 	{
 		daynighttime += 40;
-		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 3);
+        if (SharedData::GetInstance()->player->getHunger() <= 100) {
+            SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 3);
+        }
 	}
 	if (daynighttime > 2400)
 	{
@@ -814,6 +820,8 @@ void SP2::Update(double dt)
     //meshList[GEO_MAP] = MeshBuilder::GenerateMinimap("map", 10, 10);
     //meshList[GEO_MAP]->textureID = LoadTGA("Image/Donna.tga");
     
+
+    //debugging code
     if (Application::IsKeyPressed('O'))
     {
 		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 1);
@@ -838,6 +846,7 @@ void SP2::Update(double dt)
     if (Application::IsKeyPressed('L'))
         objx += 100 * dt;
 
+    //pause game
     if (Application::IsKeyPressed('N'))
     {
         SharedData::GetInstance()->gamestate = GAME_STATE_PAUSED;
@@ -1023,6 +1032,12 @@ void SP2::Render()
         glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
     }
 
+    modelStack.PushMatrix();
+    modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_STEMMIE_FACE], false);
+    modelStack.PopMatrix();
+
     switch (SharedData::GetInstance()->gamestate)
     {
     case GAME_STATE_FREE: loadFree();
@@ -1039,17 +1054,11 @@ void SP2::Render()
         break;
     case GAME_STATE_RABBIT: loadRabbitGame();
         break;
+    case GAME_STATE_DIALOGUE: loadFree();
+        RenderDialogueOnScreen(SharedData::GetInstance()->dialogueProcessor.npc->Speech(), Color(1, 1, 1), 3);
+        break;
     }
     //RenderMinimap();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_STEMMIE_FACE], false);
-    modelStack.PopMatrix();
-
-    
-
 }
 
 void SP2::loadFree()
@@ -1548,7 +1557,10 @@ void SP2::RenderDialogueOnScreen(std::string text, Color color, float size)
     RenderMesh(meshList[GEO_DIALOGUEBOX], false);
     modelStack.PopMatrix();
 
-    RenderTextOnScreen(meshList[GEO_TEXT], text, color, size, 1.5f, 4.5f);
+    //name
+    RenderTextOnScreen(meshList[GEO_TEXT], SharedData::GetInstance()->dialogueProcessor.npc->getName(), color, size, 1.5f, 5.3f);
+    //message
+    RenderTextOnScreen(meshList[GEO_TEXT], text, color, size, 1.5f, 3.7f);
 
     projectionStack.PopMatrix();
     viewStack.PopMatrix();

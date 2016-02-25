@@ -34,7 +34,17 @@ Dialogue::~Dialogue()
 
 void Dialogue::DoInteraction()
 {
-
+    for (vector<NPC*>::iterator it = SharedData::GetInstance()->NPCs.begin(); it != SharedData::GetInstance()->NPCs.end(); ++it) {
+        Vector3 b1 = SharedData::GetInstance()->interactptr->bound1;
+        Vector3 b2 = SharedData::GetInstance()->interactptr->bound2;
+        if ((*it)->position_.x >= b1.x && (*it)->position_.x <= b2.x &&
+            (*it)->position_.y >= b1.y && (*it)->position_.y <= b2.y &&
+            (*it)->position_.z >= b1.z && (*it)->position_.z <= b2.z) {
+            SharedData::GetInstance()->dialogueProcessor.npc = *it;
+            SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
+            break;
+        }
+    }
 }
 
 //shop interaction (enter shop state)

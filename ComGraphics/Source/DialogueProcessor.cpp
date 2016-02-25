@@ -1,14 +1,11 @@
 #include "DialogueProcessor.h"
 
-DialogueProcessor::DialogueProcessor()
+#include <fstream>
+
+DialogueProcessor::DialogueProcessor() : npc(0), convostate(CONVO_INTRO)
 {
 }
 
 DialogueProcessor::~DialogueProcessor()
 {
-}
-
-std::string DialogueProcessor::getDialogue()
-{
-    return "";
 }
