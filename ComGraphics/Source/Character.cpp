@@ -249,6 +249,7 @@ std::string Player::removeItem(int itemPos)
 		if ((i == itemPos) && (removed == false))
 		{
 			feedbackreport << "The item at " << itemPos << " has been removed from inventory.";
+			useItem(inventory[i]);
 			inventory[i] = 0;
 			removed = true;
 		}
@@ -270,6 +271,22 @@ std::string Player::removeItem(int itemPos)
 	return returner;
 }
 
+void Player::useItem(int itemID)
+{
+	switch (itemID)
+	{
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 9);
+		break;
+	}
+}
+
 bool Player::itemHave(int itemID)
 {
 	for (int i = 0; i < 8; i++)
@@ -280,6 +297,15 @@ bool Player::itemHave(int itemID)
 		}
 	}
 	return false;
+}
+
+bool Player::invfull()
+{
+	if (inventory[7] != 0)
+	{
+		return false;
+	}
+	return true;
 }
 
 NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0)

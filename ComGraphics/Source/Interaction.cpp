@@ -129,11 +129,15 @@ SpaghettoInteraction::~SpaghettoInteraction()
 
 void SpaghettoInteraction::DoInteraction()
 {
-	SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 9);
+	if (SharedData::GetInstance()->player->invfull() == false)
+	{
+		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 9);
+	}
 	Interaction* remover;
 	remover = new SpaghettoInteraction();
 	remover->bound1.Set(9999, 99, 9999); remover->bound2.Set(9999, 99, 9999);
 	SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
+	SharedData::GetInstance()->player->addItem(4);
 }
 VeePuzzleSwitchOneInteraction::VeePuzzleSwitchOneInteraction() : Interaction()
 {
@@ -233,9 +237,8 @@ void WeedInteraction::DoInteraction()
 {
 	Interaction* remover;
 	remover = new WeedInteraction();
-	remover->bound1.Set(-999, 98, 9998); remover->bound2.Set(-998, 99, 9999);
-	std::cout << " " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x << std::endl;
+	remover->bound1.Set(9999, 99, 9999); remover->bound2.Set(9999, 99, 9999);
+	std::cout << " " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.z << std::endl;
 	SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
 	SharedData::GetInstance()->player->addItem(3);
-	SharedData::GetInstance()->interactnumber = 99;
 }

@@ -530,8 +530,10 @@ void SP2::loadInv()
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(1, GEO_HAMMER));
 	invmap.insert(std::pair<int, Gift>(2, Gift("tEmmEh")));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(2, GEO_STEMMIE));
-	invmap.insert(std::pair<int, Gift>(3, Gift("weed")));
+	invmap.insert(std::pair<int, Gift>(3, Gift(" weed")));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(3, GEO_WEEDICON));
+	invmap.insert(std::pair<int, Gift>(4, Gift("spaghetti")));
+	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(4, GEO_SPAGHETTO));
 }
 
 void SP2::loadCollisions()

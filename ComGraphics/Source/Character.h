@@ -66,7 +66,9 @@ public:
     int inventory[8];
     std::string addItem(int itemID);
     std::string removeItem(int itemPos);
+	void useItem(int itemID);
     bool itemHave(int itemID);
+	bool invfull();
 };
 
 class NPC : public Character
