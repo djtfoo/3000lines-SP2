@@ -207,7 +207,6 @@ public:
 	int delayer;
 	int rotator;
 	float floodlevel;
-    float daynighttime;
     float lightpower;
     float lightpos;
     float delayBuffer;

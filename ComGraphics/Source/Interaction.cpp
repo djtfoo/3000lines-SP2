@@ -105,7 +105,11 @@ SpaghettoInteraction::~SpaghettoInteraction()
 
 void SpaghettoInteraction::DoInteraction()
 {
-	SharedData::GetInstance()->toiletflood = true;
+	SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 9);
+	Interaction* remover;
+	remover = new SpaghettoInteraction();
+	remover->bound1.Set(9999, 99, 9999); remover->bound2.Set(9999, 99, 9999);
+	SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
 }
 VeePuzzleSwitchOneInteraction::VeePuzzleSwitchOneInteraction() : Interaction()
 {
@@ -186,4 +190,9 @@ BedTime::~BedTime()
 
 void BedTime::DoInteraction()
 {
+	if(SharedData::GetInstance()->player->getHunger() < 100)
+	{
+		SharedData::GetInstance()->daynighttime += 10;
+	}
+	
 }

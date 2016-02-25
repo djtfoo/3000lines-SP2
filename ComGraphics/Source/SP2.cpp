@@ -593,51 +593,51 @@ void SP2::Init()
 
 	//spaghetti random spawns
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, -14, -378.31); interactions->bound2.Set(765.976, 1, -368.31);
+	interactions->bound1.Set(757.976, -12, -378.31 + 2); interactions->bound2.Set(763.976, -10, -368.31 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, -14, -391.7); interactions->bound2.Set(765.976, 1, -381.7);
+	interactions->bound1.Set(757.976, -12, -391.7 + 2); interactions->bound2.Set(763.976, -10, -381.7 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, -14, -437.6); interactions->bound2.Set(765.976, 1, -427.6);
+	interactions->bound1.Set(757.976, -12, -437.6 + 2); interactions->bound2.Set(763.976, -10, -427.6 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, -14, -452.9); interactions->bound2.Set(765.976, 1, -442.9);
+	interactions->bound1.Set(757.976, -12, -452.9 + 2); interactions->bound2.Set(763.976, -10, -442.9 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, -14, -498.8); interactions->bound2.Set(765.976, 1, -488.8);
+	interactions->bound1.Set(757.976, -12, -498.8 + 2); interactions->bound2.Set(763.976, -10, -488.8 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(755.976, -14, -510.7); interactions->bound2.Set(765.976, 1, -500.7);
+	interactions->bound1.Set(757.976, -12, -510.7 + 2); interactions->bound2.Set(763.976, -10, -500.7 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, -14, -373.31 - 5); interactions->bound2.Set(721.872 + 5, 1, -373.31 + 5);
+	interactions->bound1.Set(721.872 - 3, -12, -373.31 - 3); interactions->bound2.Set(721.872 + 3, -10, -373.31 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, -14, -386.7 - 5); interactions->bound2.Set(721.872 + 5, 1, -386.7 + 5);
+	interactions->bound1.Set(721.872 - 3, -12, -386.7 - 3); interactions->bound2.Set(721.872 + 3, -10, -386.7 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, -14, -432.6 - 5); interactions->bound2.Set(721.872 + 5, 1, -432.6 + 5);
+	interactions->bound1.Set(721.872 - 3, -12, -432.6 - 3); interactions->bound2.Set(721.872 + 3, -10, -432.6 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, -14, -447.9 - 5); interactions->bound2.Set(721.872 + 5, 1, -447.9 + 5);
+	interactions->bound1.Set(721.872 - 3, -12, -447.9 - 3); interactions->bound2.Set(721.872 + 3, -10, -447.9 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, -14, -493.8 - 5); interactions->bound2.Set(721.872 + 5, 1, -493.8 + 5);
+	interactions->bound1.Set(721.872 - 3, -12, -493.8 - 3); interactions->bound2.Set(721.872 + 3, -10, -493.8 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 5, -14, -505.7 - 5); interactions->bound2.Set(721.872 + 5, 1, -505.7 + 5);
+	interactions->bound1.Set(721.872 - 3, -12, -505.7 - 3); interactions->bound2.Set(721.872 + 3, -10, -505.7 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	//spaghetto random spawns
 
@@ -679,7 +679,7 @@ void SP2::Init()
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new BedTime();
-	interactions->bound1.Set(518, -5, 176); interactions->bound2.Set(548, 15, 185);
+	interactions->bound1.Set(518, -20, 176); interactions->bound2.Set(548, -10, 185);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 
@@ -689,7 +689,7 @@ void SP2::Init()
     ptxt3 = 86;
     ptxtexit = 94;
     rotator = 0;
-	daynighttime = 0000;
+	SharedData::GetInstance()->daynighttime = 0000;
 	floodlevel = -1;
 
     //Init chon game variables
@@ -738,10 +738,14 @@ void SP2::Update(double dt)
     
     SharedData::GetInstance()->player->CheckInteraction();
 
-    if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) {
-        delayBuffer = 0;
-        SharedData::GetInstance()->interactptr->DoInteraction();
+	if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) {
+		if (SharedData::GetInstance()->interactnumber != 25)
+		{
+			delayBuffer = 0;
+		}
+        
 
+        SharedData::GetInstance()->interactptr->DoInteraction();
     }
     else
     {
@@ -755,15 +759,19 @@ void SP2::Update(double dt)
 	if (delayer > 0)
 		delayer -= 1;
 	rotator++;
-	daynighttime+= (dt * 10);
-	if (((int)daynighttime % 100) > 60)
+	SharedData::GetInstance()->daynighttime+= (dt * 10);
+	if (((int)SharedData::GetInstance()->daynighttime % 100) > 60)
 	{
-		daynighttime += 40;
-		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 3);
+		SharedData::GetInstance()->daynighttime += 40;
+		if (SharedData::GetInstance()->interactnumber != 25)
+		{
+			SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 5);
+		}
+		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 1);
 	}
-	if (daynighttime > 2400)
+	if (SharedData::GetInstance()->daynighttime > 2400)
 	{
-		daynighttime = 0;
+		SharedData::GetInstance()->daynighttime = 0;
 	}
     //options
     if (Application::IsKeyPressed('1')) //enable back face culling
@@ -817,15 +825,15 @@ void SP2::Update(double dt)
     if (Application::IsKeyPressed('O'))
     {
 		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 1);
-		if (SharedData::GetInstance()->player->getHunger() <= 0)
-			SharedData::GetInstance()->player->setHunger(0);
     }
     if (Application::IsKeyPressed('P'))
     {
 		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 1);
-		if (SharedData::GetInstance()->player->getHunger() >= 100)
-			SharedData::GetInstance()->player->setHunger(100);
     }
+	if (SharedData::GetInstance()->player->getHunger() <= 0)
+		SharedData::GetInstance()->player->setHunger(0);
+	if (SharedData::GetInstance()->player->getHunger() >= 100)
+		SharedData::GetInstance()->player->setHunger(100);
 
     rotating += 30 * dt;
 
@@ -849,13 +857,13 @@ void SP2::Update(double dt)
     }
 
         //Lighting
-    if (daynighttime >= 0700 && daynighttime <= 1850 && lightpower <= 1.3)
+    if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpower <= 1.3)
     {
         lightpower += 0.001;
         light[0].power = lightpower;
         glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
     }
-    if (daynighttime >= 1900 && lightpower >= 0.3 && lightpos <= 1000)
+    if (SharedData::GetInstance()->daynighttime >= 1900 && lightpower >= 0.3 && lightpos <= 1000)
     {
         lightpower -= 0.001;
         lightpos += 1;
@@ -888,12 +896,12 @@ void SP2::Update(double dt)
 
 
     //Position of Light
-    if (daynighttime >= 0700 && daynighttime <= 1850 && lightpos >= -1000)
+    if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpos >= -1000)
     {
         lightpos -= 0.4;
         light[0].position.Set(0, 1000, lightpos);
     }
-    if (daynighttime >= 1900 || daynighttime <= 0650 && lightpos <= 1000)
+    if (SharedData::GetInstance()->daynighttime >= 1900 || SharedData::GetInstance()->daynighttime <= 0650 && lightpos <= 1000)
     {
         lightpos += 0.85;
         light[0].position.Set(0, 1000, lightpos);
@@ -1075,15 +1083,7 @@ void SP2::loadFree()
 	for (int i = 0; i < 12; i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(SharedData::GetInstance()->interactionItems[i]->bound1.x, SharedData::GetInstance()->interactionItems[i]->bound1.y, SharedData::GetInstance()->interactionItems[i]->bound1.z);
-		modelStack.Scale(2, 2, 2);
-		RenderMesh(meshList[GEO_SPAGHETTO], true);
-		modelStack.PopMatrix();
-	}
-	for (int i = 0; i < 12; i++)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(SharedData::GetInstance()->interactionItems[i]->bound2.x, SharedData::GetInstance()->interactionItems[i]->bound2.y, SharedData::GetInstance()->interactionItems[i]->bound2.z);
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i]->bound1.x + 3, 14, SharedData::GetInstance()->interactionItems[i]->bound1.z + 3);
 		modelStack.Scale(2, 2, 2);
 		RenderMesh(meshList[GEO_SPAGHETTO], true);
 		modelStack.PopMatrix();
@@ -2310,8 +2310,8 @@ void SP2::RenderTimeOnScreen(Mesh* mesh, float x, float y)
 	modelStack.LoadIdentity();  //reset modelStack
 
 	float timerotator = 0;
-	timerotator += ((int)daynighttime / 100) * 60;
-	timerotator += ((int)daynighttime % 100);
+	timerotator += ((int)SharedData::GetInstance()->daynighttime / 100) * 60;
+	timerotator += ((int)SharedData::GetInstance()->daynighttime % 100);
 	timerotator /= 1440;
 	timerotator *= 360;
 
@@ -2401,7 +2401,7 @@ void SP2::RenderInventory()
 void SP2::RenderTime()
 {
 	std::stringstream timey;
-	timey << "TIME: " << ((int)daynighttime / 1000) << (((int)daynighttime / 100) % 10) << (((int)daynighttime / 10) % 10) << ((int)daynighttime % 10);
+	timey << "TIME: " << ((int)SharedData::GetInstance()->daynighttime / 1000) << (((int)SharedData::GetInstance()->daynighttime / 100) % 10) << (((int)SharedData::GetInstance()->daynighttime / 10) % 10) << ((int)SharedData::GetInstance()->daynighttime % 10);
 	timey.str();
 	RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(1, 0, 0), 3, 0, 15);
 	RenderTimeOnScreen(meshList[GEO_DAYNIGHTICON], 80, 60);

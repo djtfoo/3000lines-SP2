@@ -156,15 +156,16 @@ void Player::CheckInteraction()
     vector<Interaction*> temp = SharedData::GetInstance()->interactionItems;
     Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
     Vector3 maxView = position_ + 75 * view;
+	int i = 0;
     for (vector<Interaction*>::iterator it = temp.begin(); it != temp.end(); ++it) {
         
         //if the view is totally outside the box, then don't do calculations because confirm no interaction
-        if (position_.x < (*it)->bound1.x && maxView.x < (*it)->bound1.x) { continue; }
-        if (position_.x > (*it)->bound2.x && maxView.x > (*it)->bound2.x) { continue; }
-        if (position_.y < (*it)->bound1.y && maxView.y < (*it)->bound1.y) { continue; }
-        if (position_.y > (*it)->bound2.y && maxView.y > (*it)->bound2.y) { continue; }
-        if (position_.z < (*it)->bound1.z && maxView.z < (*it)->bound1.z) { continue; }
-        if (position_.z > (*it)->bound2.z && maxView.z > (*it)->bound2.z) { continue; }
+		if (position_.x < (*it)->bound1.x && maxView.x < (*it)->bound1.x) { i++; continue; }
+        if (position_.x > (*it)->bound2.x && maxView.x > (*it)->bound2.x) { i++; continue; }
+		if (position_.y < (*it)->bound1.y && maxView.y < (*it)->bound1.y) { i++; continue; }
+		if (position_.y > (*it)->bound2.y && maxView.y > (*it)->bound2.y) { i++; continue; }
+		if (position_.z < (*it)->bound1.z && maxView.z < (*it)->bound1.z) { i++; continue; }
+        if (position_.z > (*it)->bound2.z && maxView.z > (*it)->bound2.z) { i++; continue; }
         
         //if end of range of view is within box, there is intersection
         if (maxView.x > (*it)->bound1.x && maxView.x < (*it)->bound2.x &&
@@ -172,6 +173,7 @@ void Player::CheckInteraction()
             maxView.z > (*it)->bound1.z && maxView.z < (*it)->bound2.z) {
             SharedData::GetInstance()->canInteract = true;
             SharedData::GetInstance()->interactptr = *it;
+			SharedData::GetInstance()->interactnumber = i;
             break;
         }
 
@@ -184,9 +186,10 @@ void Player::CheckInteraction()
             (GetIntersection(maxView.z - (*it)->bound2.z, position_.z - (*it)->bound2.z, maxView, position_, intersect) && InBox(intersect, (*it)->bound1, (*it)->bound2, 3))) {
             SharedData::GetInstance()->canInteract = true;
             SharedData::GetInstance()->interactptr = *it;
+			SharedData::GetInstance()->interactnumber = i;
             break;
         }
-
+		
     }
 
 }

@@ -27,6 +27,7 @@ public:
 
     PROGRAM_STATE program_state;
     bool programstate_change;
+	float daynighttime;
 
     //Dem Gamestates
     GAME_STATE gamestate;
@@ -49,6 +50,7 @@ public:
 
     //interaction
     bool canInteract;
+	int interactnumber;
     Interaction* interactptr;
 	bool toiletflood;
     bool chonGamebool;
