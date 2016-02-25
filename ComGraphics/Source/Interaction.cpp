@@ -10,6 +10,20 @@ Interaction::~Interaction()
 {
 }
 
+//Gate interaction open/close
+GateInteraction::GateInteraction()
+{
+}
+GateInteraction::~GateInteraction()
+{
+}
+
+void GateInteraction::DoInteraction()
+{
+    SharedData::GetInstance()->gateopen = true;
+}
+
+
 //pipe puzzle interaction (rotation)
 PipePuzzleInteraction::PipePuzzleInteraction() : Interaction()
 {

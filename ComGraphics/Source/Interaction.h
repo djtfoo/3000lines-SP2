@@ -15,6 +15,14 @@ public:
     virtual void DoInteraction() = 0;   //simple do-interactions
 };
 
+class GateInteraction : public Interaction
+{
+public:
+    GateInteraction();
+    ~GateInteraction();
+    virtual void DoInteraction();
+};
+
 class PipePuzzleInteraction : public Interaction
 {
 public:

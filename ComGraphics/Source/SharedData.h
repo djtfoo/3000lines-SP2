@@ -54,6 +54,7 @@ public:
     bool canInteract;
 	int interactnumber;
     Interaction* interactptr;
+    bool gateopen;
 	bool toiletflood;
     bool chonGamebool;
     bool ballpickup;    //chon ballgame
@@ -95,6 +96,7 @@ private:
         //states
         gamestate = GAME_STATE_FREE;
         location = OUTSIDE;
+        gateopen = false;
 
         //cursor for main menu
         cursor_xpos = 400;

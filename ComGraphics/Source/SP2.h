@@ -39,6 +39,8 @@ class SP2 : public Scene
         GEO_MAP,
 
         GEO_LAYOUT,
+        GEO_GATE1,
+        GEO_GATE2,
 
         //player character
         GEO_PLAYER_HEAD,
@@ -256,6 +258,7 @@ public:
     void renderPuzzle();
 
     void RenderMinimap();
+    void RenderGates();
 
 	void loadInv();
     void loadFree();
@@ -276,6 +279,9 @@ public:
 
 
     float objx, objy;
+
+    float gate1pos, gate2pos, gatemove;
+    void gateOpenInteractions();
 
     float rotating;
     float ptxt1;    //pause text 1
