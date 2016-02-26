@@ -154,6 +154,7 @@ class SP2 : public Scene
         GEO_CHECK_2,
         GEO_CHECK_3,
         GEO_CHECK_4,
+        GEO_CHECKER_BUTTON,
 
         //rabbit bullet
         GEO_BULLET,

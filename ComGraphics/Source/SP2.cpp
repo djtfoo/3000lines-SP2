@@ -496,10 +496,12 @@ SP2::SP2()
     meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("switch3", Color(0, 0, 0), 1, 15, 4);
     meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("switch4", Color(0, 0, 0), 1, 15, 4);
 
+    meshList[GEO_CHECKER_BUTTON] = MeshBuilder::GenerateCube("checker switch", Color(1, 1, 1), 10, 10, 10);
+
     meshList[GEO_CURSOR] = MeshBuilder::GenerateQuad("mouse_custom", Color(0, 0, 0), 3, 4);
     meshList[GEO_CURSOR]->textureID = LoadTGA("Image/mouse.tga");
 
-    meshList[GEO_DIALOGUEOPTION] = MeshBuilder::GenerateQuad("selection button", Color(0, 0, 0), 10, 5);
+    meshList[GEO_DIALOGUEOPTION] = MeshBuilder::GenerateQuad("selection button", Color(0, 0, 0), 30, 5);
 
     viewOptions = true;
 
@@ -733,6 +735,11 @@ void SP2::Init()
     interactions->bound1.Set(685 - 50, -15, -430 - 50); interactions->bound2.Set(685 + 50, 100, -430 + 50);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
+    //TESTING DIALOGUES & MINI-GAME - Chon
+    interactions = new Dialogue();
+    interactions->bound1.Set(400, -5, -479); interactions->bound2.Set(425, 15, -439);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+
 
     loadWeedGame();
 
@@ -826,15 +833,17 @@ void SP2::loadSpaghetti()
 void SP2::Update(double dt)
 {
     FramePerSecond = 1 / dt;
-    
-    SharedData::GetInstance()->player->Walk(dt);
-
-    CheckCharacterLocation();
 
     //temporary check
     if (SharedData::GetInstance()->gamestate != GAME_STATE_DIALOGUE) {
+        SharedData::GetInstance()->player->Walk(dt);
         SharedData::GetInstance()->camera->Update(dt);
     }
+    else {
+        SharedData::GetInstance()->dialogueProcessor.CheckCursor(dt);
+    }
+
+    CheckCharacterLocation();
     
     SharedData::GetInstance()->player->CheckInteraction();
 
@@ -1127,12 +1136,6 @@ void SP2::Render()
         glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
     }
 
-    modelStack.PushMatrix();
-    modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_STEMMIE_FACE], false);
-    modelStack.PopMatrix();
-
     switch (SharedData::GetInstance()->gamestate)
     {
     case GAME_STATE_FREE: loadFree();
@@ -1156,18 +1159,51 @@ void SP2::Render()
         switch (SharedData::GetInstance()->dialogueProcessor.convostate)
         {
         case CONVO_INTRO:
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 29, 1, 1);
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 36, 1, 1);
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 43, 1, 1);
+
+            RenderTextOnScreen(meshList[GEO_TEXT], "[Give a gift]", Color(1, 1, 1), 2, 26, 21);
+            RenderTextOnScreen(meshList[GEO_TEXT], "[Compliment]", Color(1, 1, 1), 2, 26, 17.5f);
+            RenderTextOnScreen(meshList[GEO_TEXT], "[Mini-game]", Color(1, 1, 1), 2, 26, 14);
+            RenderTextOnScreen(meshList[GEO_TEXT], "\"Bye\"", Color(1, 1, 1), 2, 26, 10.5f);
+            break;
         case CONVO_NEUTRAL:
-            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 60, 25, 1, 1);
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 29, 1, 1);
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 36, 1, 1);
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 43, 1, 1);
+
+            RenderTextOnScreen(meshList[GEO_TEXT], "[Give a gift]", Color(1, 1, 1), 2, 26, 21);
+            RenderTextOnScreen(meshList[GEO_TEXT], "[Compliment]", Color(1, 1, 1), 2, 26, 17.5f);
+            RenderTextOnScreen(meshList[GEO_TEXT], "[Mini-game]", Color(1, 1, 1), 2, 26, 14);
+            RenderTextOnScreen(meshList[GEO_TEXT], "\"Bye\"", Color(1, 1, 1), 2, 26, 10.5f);
             break;
         case CONVO_GIFT:
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+            RenderTextOnScreen(meshList[GEO_TEXT], "\"Welcome\"", Color(1, 1, 1), 2, 26, 10.5f);
             break;
         case CONVO_COMPLIMENT:
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+            RenderTextOnScreen(meshList[GEO_TEXT], "\":D\"", Color(1, 1, 1), 2, 26, 10.5f);
+            break;
+        case CONVO_STARTMINIGAME:
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+            RenderTextOnScreen(meshList[GEO_TEXT], "\"Let's go\"", Color(1, 1, 1), 2, 26, 10.5f);
             break;
         }
         RenderCursor();
         break;
     }
     //RenderMinimap();
+
+    std::stringstream ss;
+    ss << SharedData::GetInstance()->cursor_newxpos;
+    RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 0, 1), 3, 2, 12);
+    ss.str("");
+    ss << SharedData::GetInstance()->cursor_newypos;
+    RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 0, 1), 3, 2, 11);
 
     modelStack.PushMatrix();
     modelStack.Translate(685 - 50, -5, -430 - 50);
@@ -1215,6 +1251,11 @@ void SP2::loadFree()
 
     RenderNPC();
     stemmieShop();
+    modelStack.PushMatrix();
+    modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_STEMMIE_FACE], false);
+    modelStack.PopMatrix();
     chonLab();
     veeControlroom();
     jasimCanteen();
@@ -2971,6 +3012,11 @@ void SP2::renderPuzzle()
     modelStack.Translate(0, 30, 45);
     modelStack.Rotate(90, 0, 0, 1);
     RenderMesh(meshList[GEO_CHECK_4], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 15, -15);
+    RenderMesh(meshList[GEO_CHECKER_BUTTON], true);
     modelStack.PopMatrix();
 
     modelStack.PopMatrix();

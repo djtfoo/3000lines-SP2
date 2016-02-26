@@ -27,7 +27,9 @@ public:
     CONVO_STATE convostate;
     NPC* npc;
 
-    void CheckCursor();
+    double elapsedTime, bufferTime;
+
+    void CheckCursor(double dt);
 };
 
 #endif

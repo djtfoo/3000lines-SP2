@@ -55,6 +55,7 @@ void Dialogue::DoInteraction()
             (*it)->position_.y >= b1.y && (*it)->position_.y <= b2.y &&
             (*it)->position_.z >= b1.z && (*it)->position_.z <= b2.z) {
             SharedData::GetInstance()->dialogueProcessor.npc = *it;
+            SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_INTRO;
             SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
 
             //set cursor

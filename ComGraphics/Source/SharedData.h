@@ -95,7 +95,7 @@ private:
         camera->Init(Vector3(0, -140, 100), Vector3(0, -140, 110), Vector3(0, 1, 0));
 
         //NPCs
-        NPC* npc = new NPC("Chon", Vector3(412, 5, 459), "ChonDialogue.txt");
+        NPC* npc = new NPC("Chon", Vector3(412, 5, -459), "ChonDialogue.txt");
         NPCs.push_back(npc);
         npc = new NPC("Vee", Vector3(600, 0, 440), "VeeDialogue.txt");
         NPCs.push_back(npc);
