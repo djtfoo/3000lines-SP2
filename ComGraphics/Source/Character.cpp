@@ -153,6 +153,7 @@ bool inline InBox(Vector3 intersect, Vector3 bound1, Vector3 bound2, const int a
 void Player::CheckInteraction()
 {
     SharedData::GetInstance()->canInteract = false;
+    SharedData::GetInstance()->gatelookat = false;
 
     vector<Interaction*> temp = SharedData::GetInstance()->interactionItems;
     Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();

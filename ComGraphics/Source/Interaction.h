@@ -13,6 +13,7 @@ public:
     Vector3 bound1, bound2;
     virtual ~Interaction();
     virtual void DoInteraction() = 0;   //simple do-interactions
+
 };
 
 class GateInteraction : public Interaction

@@ -702,7 +702,7 @@ void SP2::Init()
 	//spaghetto random spawns
 
     //Gate interaction bounds Inits
-    gateOpenInteractions();
+    gateOpenInteractions(); //interaction number = 12 ~ 19 (16~19 = rooms)
 
     //Other Interaction Bounds
     interactions = new ShopInteraction();
@@ -874,7 +874,13 @@ void SP2::Update(double dt)
     
     SharedData::GetInstance()->player->CheckInteraction();
 
-	if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) {
+    if (SharedData::GetInstance()->canInteract && SharedData::GetInstance()->interactnumber >= 12 && SharedData::GetInstance()->interactnumber <= 15)
+    {
+        SharedData::GetInstance()->interactptr->DoInteraction();
+    }
+
+	if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) 
+    {
 		if (SharedData::GetInstance()->interactnumber != 32)
 		{
 			delayBuffer = 0;
@@ -883,7 +889,6 @@ void SP2::Update(double dt)
 		{
 			loadSpaghetti();
 		}
-		std::cout << std::endl << "Player pos: " << SharedData::GetInstance()->player->position_ << " interact item: " << SharedData::GetInstance()->interactnumber << std::endl;
         SharedData::GetInstance()->interactptr->DoInteraction();
     }
     else
@@ -1313,8 +1318,14 @@ void SP2::gateOpenInteractions()
     gateobjs[0] = 49;
     gateobjs[1] = 143;
 
+    gateobjs[10] = -119;
+    gateobjs[11] = -119;
+
+    gateobjs[12] = 67;
+    gateobjs[13] = 67;
+
     //Check out sp2.h for array list reference
-    for (int i = 0; i < 13; i++)
+    for (int i = 0; i <= 9; i++)
     {
         if (i >= 2 && i <= 9)
         {
@@ -1327,51 +1338,47 @@ void SP2::gateOpenInteractions()
                 gateobjs[i] = 70;
             }
         }
-        if (i > 9)
-        {
-            gateobjs[i] = 18;
-        }
     }
 
     Interaction* gateInterInit;
     //hangar
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(220, -15, -45); gateInterInit->bound2.Set(360, -5, 50);
+    gateInterInit->bound1.Set(220, -15, -45); gateInterInit->bound2.Set(360, 5, 50);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[0].bound1 = gateInterInit->bound1; gatebounds[0].bound2 = gateInterInit->bound2;
     //lab
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(440, -15, -340); gateInterInit->bound2.Set(480, -5, -230);
+    gateInterInit->bound1.Set(440, -15, -340); gateInterInit->bound2.Set(480, 5, -230);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[1].bound1 = gateInterInit->bound1; gatebounds[1].bound2 = gateInterInit->bound2;
     //canteen
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(770, -15, -350); gateInterInit->bound2.Set(820, -5, -230);
+    gateInterInit->bound1.Set(770, -15, -350); gateInterInit->bound2.Set(820, 5, -230);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[2].bound1 = gateInterInit->bound1; gatebounds[2].bound2 = gateInterInit->bound2;
     //control 
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(570, -15, 270); gateInterInit->bound2.Set(617, -5, 370);
+    gateInterInit->bound1.Set(570, -15, 270); gateInterInit->bound2.Set(617, 5, 370);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[3].bound1 = gateInterInit->bound1; gatebounds[3].bound2 = gateInterInit->bound2;
     //rm1
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(545, -15, -135); gateInterInit->bound2.Set(555, -5, -100);
+    gateInterInit->bound1.Set(545, -15, -135); gateInterInit->bound2.Set(555, 5, -100);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[4].bound1 = gateInterInit->bound1; gatebounds[4].bound2 = gateInterInit->bound2;
     //rm3
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(619, -15, -135); gateInterInit->bound2.Set(630, -5, -100);
+    gateInterInit->bound1.Set(619, -15, -135); gateInterInit->bound2.Set(630, 5, -100);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[5].bound1 = gateInterInit->bound1; gatebounds[5].bound2 = gateInterInit->bound2;
     //rm2
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(545, -15, 50); gateInterInit->bound2.Set(555, -5, 85);
+    gateInterInit->bound1.Set(545, -15, 50); gateInterInit->bound2.Set(555, 5, 85);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[6].bound1 = gateInterInit->bound1; gatebounds[6].bound2 = gateInterInit->bound2;
     //rm4
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(619, -15, 50); gateInterInit->bound2.Set(630, -5, 85);
+    gateInterInit->bound1.Set(619, -15, 50); gateInterInit->bound2.Set(630, 5, 85);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[7].bound1 = gateInterInit->bound1; gatebounds[7].bound2 = gateInterInit->bound2;
 }
@@ -1381,112 +1388,125 @@ void SP2::gateUpdate()
     {
         for (int i = 0; i < 8; i++)
         {
+            gateopenBool[i] = false;
             if (SharedData::GetInstance()->interactptr->bound1 == gatebounds[i].bound1 && SharedData::GetInstance()->interactptr->bound2 == gatebounds[i].bound2)
+            {
                 gateopenBool[i] = true;
 
-            if (gateopenBool[0] = true)
-            {//Hangar
-                gateobjs[0] += 1;
-                gateobjs[1] += 1;
+                if (gateopenBool[0] == true)
+                {//Hangar
+                    gateobjs[0] += 1;
+                    gateobjs[1] += 1;
 
-                if (gateobjs[0] >= 243)
-                {//btm, top
-                    gateobjs[0] = 143;
-                    gateobjs[1] = 143;
+                    if (gateobjs[0] >= 143)
+                    {//btm, top
+                        gateobjs[0] = 143;
+                        gateobjs[1] = 237;
+                        SharedData::GetInstance()->gateopen = false;
+                    }
+                    return;
                 }
-                return;
-            }
-            if (gateopenBool[1] = true)
-            {//lab
-                gateobjs[2] += 1;
-                gateobjs[3] += 1;
+                if (gateopenBool[1] == true)
+                {//lab
+                    gateobjs[2] += 1;
+                    gateobjs[3] += 1;
 
-                if (gateobjs[2] >= 70)
-                {//btm, top
-                    gateobjs[2] = 70;
-                    gateobjs[3] = 70;
+                    if (gateobjs[2] >= 70)
+                    {//btm, top
+                        gateobjs[2] = 70;
+                        gateobjs[3] = 115;
+                        SharedData::GetInstance()->gateopen = false;
+                    }
+                    return;
                 }
-                return;
-            }
-            if (gateopenBool[2] = true)
-            {//canteen 
-                gateobjs[4] += 1;
-                gateobjs[5] += 1;
+                if (gateopenBool[2] == true)
+                {//canteen 
+                    gateobjs[4] += 1;
+                    gateobjs[5] += 1;
 
-                if (gateobjs[4] >= 70)
-                {//btm, top
-                    gateobjs[4] = 70;
-                    gateobjs[5] = 70;
+                    if (gateobjs[4] >= 70)
+                    {//btm, top
+                        gateobjs[4] = 70;
+                        gateobjs[5] = 115;
+                        SharedData::GetInstance()->gateopen = false;
+                    }
+                    return;
                 }
-                return;
-            }
-            if (gateopenBool[3] = true)
-            {//control
-                gateobjs[6] += 1;
-                gateobjs[7] += 1;
-                gateobjs[8] += 1;
-                gateobjs[9] += 1;
+                if (gateopenBool[3] == true)
+                {//control
+                    gateobjs[6] += 1;
+                    gateobjs[7] += 1;
+                    gateobjs[8] += 1;
+                    gateobjs[9] += 1;
 
-                if (gateobjs[6] >= 70)
-                {
-                    gateobjs[6] = 70;
-                    gateobjs[7] = 70;
-                    gateobjs[8] = 70;
-                    gateobjs[9] = 70;
+                    if (gateobjs[6] >= 70)
+                    {
+                        gateobjs[6] = 70;
+                        gateobjs[7] = 115;
+                        gateobjs[8] = 70;
+                        gateobjs[9] = 115;
+                        SharedData::GetInstance()->gateopen = false;
+                    }
+                    return;
                 }
-                return;
-            }
-            if (gateopenBool[4] = true)
-            {//room 1
-                gateobjs[10] += 1;
+                if (gateopenBool[4] == true)
+                {//room 1
+                    gateobjs[10] += 1;
 
-                if (gateobjs[10] >= 70)
-                    gateobjs[10] = 70;
-                return;
-            }
-            if (gateopenBool[5] = true)
-            {//r3
-                gateobjs[11] += 1;
+                    if (gateobjs[10] >= 70)
+                        gateobjs[10] = 70;
+                    return;
+                }
+                if (gateopenBool[5] == true)
+                {//r3
+                    gateobjs[11] += 1;
 
-                if (gateobjs[11] >= 243)
-                    gateobjs[11] = 143;
-                return;
-            }
-            if (gateopenBool[6] = true)
-            {//r2
-                gateobjs[12] += 1;
+                    if (gateobjs[11] >= 243)
+                        gateobjs[11] = 143;
+                    return;
+                }
+                if (gateopenBool[6] == true)
+                {//r2
+                    gateobjs[12] += 1;
 
-                if (gateobjs[12] >= 243)
-                    gateobjs[12] = 143;
-                return;
-            }
-            if (gateopenBool[7] = true)
-            {//r4
-                gateobjs[13] += 1;
+                    if (gateobjs[12] >= 243)
+                        gateobjs[12] = 143;
+                    return;
+                }
+                if (gateopenBool[7] == true)
+                {//r4
+                    gateobjs[13] += 1;
 
-                if (gateobjs[13] >= 243)
-                    gateobjs[13] = 143;
-                return;
+                    if (gateobjs[13] >= 243)
+                        gateobjs[13] = 143;
+                    return;
+                }
+            }
+            else
+            {
+                gateopenBool[i] = false;
+                //SharedData::GetInstance()->gateopen = false;
             }
         }
         
     }
-    else
+    if (SharedData::GetInstance()->gateopen == false)
     {
-        for (int i = 0; i < 13; i++)
+        /*for (int j = 0; j < 8; j++)
         {
-            if (i >= 10)
-            {//room pos, (room does not animate!)
-                gateobjs[i] = 18;
-            }
-            else
-                gateobjs[i] -= 0.5;
+            gateopenBool[j] = false;
+        }*/
 
-            if (i >= 2 && i <= 9)
-            {//other gates animation
-                if (gateobjs[i] <= -20)
-                    gateobjs[i] = 70;
-            }
+        for (int i = 0; i < 10; i++)
+        {
+            gateobjs[i] -= 0.5;
+
+        }
+
+        for (int i = 2; i <= 9; i++)
+        {
+            if (gateobjs[i] <= -20)     //other gates animation loop
+                gateobjs[i] = 70;
         }
 
         //hangar gate loop
@@ -2903,7 +2923,7 @@ void SP2::RenderUI()
 
         //practical purposes: check position of object
         s.str("");
-        s << "objpos:(" << objx << " , " << objy << ")";
+        s << "objpos:(" << objx << " , " << gateobjs[13] << ")";
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 16);
     }
 }
@@ -3001,24 +3021,24 @@ void SP2::RenderGates()
 
         //Rooms
     modelStack.PushMatrix();
-    modelStack.Translate(550, gateobjs[10], -119);
+    modelStack.Translate(550, 18, gateobjs[10]);
     modelStack.Scale(1, 34, 34);
     RenderMesh(meshList[GEO_GATE1], false);        //room1  (away from ctrl, closest to lab)
     modelStack.PopMatrix();
         modelStack.PushMatrix();
-        modelStack.Translate(626, gateobjs[11], -119);
+        modelStack.Translate(626, 18, gateobjs[11]);
         modelStack.Scale(1, 34, 34);
         RenderMesh(meshList[GEO_GATE2], false);     //room3 (across rm1)
         modelStack.PopMatrix();                     //       4 - 2
     modelStack.PushMatrix();                        //         /
-    modelStack.Translate(550, gateobjs[12], 67);    //       3 - 1
+    modelStack.Translate(550, 18, gateobjs[12]);    //       3 - 1
     modelStack.Scale(1, 34, 34);
     RenderMesh(meshList[GEO_GATE1], false);         //room2 (same lane as rm1, closer to ctrl)
     modelStack.PopMatrix();
         modelStack.PushMatrix();
-        modelStack.Translate(626, gateobjs[13], 67);
+        modelStack.Translate(626, 18, gateobjs[13]);
         modelStack.Scale(1, 34, 34);
-        RenderMesh(meshList[GEO_GATE2], false);     //room4 (same lane as rm2, across rm3)
+        RenderMesh(meshList[GEO_GATE2], false);     //room4 (same lane as rm3, across rm2)
         modelStack.PopMatrix();
 
 }

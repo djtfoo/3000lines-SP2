@@ -54,6 +54,7 @@ public:
     bool canInteract;
 	int interactnumber;
     Interaction* interactptr;
+    bool gatelookat;
     bool gateopen;
 	bool toiletflood;
     bool chonGamebool;

@@ -20,7 +20,14 @@ GateInteraction::~GateInteraction()
 
 void GateInteraction::DoInteraction()
 {
-    SharedData::GetInstance()->gateopen = true;
+    if (SharedData::GetInstance()->canInteract)
+    {
+        SharedData::GetInstance()->gateopen = true;
+    }
+    else
+    {
+        SharedData::GetInstance()->gateopen = false;
+    }
 }
 
 

@@ -162,7 +162,6 @@ class SP2 : public Scene
         GEO_BULLET,
         NUM_GEOMETRY,
     };
-
     enum UNIFORM_TYPE
     {
         U_MVP = 0,
