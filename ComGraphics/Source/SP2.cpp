@@ -523,6 +523,11 @@ SP2::SP2()
     for (LOCATION i = OUTSIDE; i < LOCATION_TOTAL; i = static_cast<LOCATION>(i+1)) {
         locations[i] = temp[i];
     }
+
+    meshList[GEO_RABBIT_SKYBOX] = MeshBuilder::GenerateQuad("rabbitskybox", Color(1, 1, 1), 1500, 1500);
+    meshList[GEO_RABBIT_SKYBOX]->textureID = LoadTGA("Image/Skybox/rabbitsky.tga");
+
+    meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("bullet", Color(0, 0, 1), 20);
 }
 
 SP2::~SP2()
@@ -1074,22 +1079,6 @@ void SP2::Update(double dt)
 
 	if (lightpuzz.checkPuzzleAns(SharedData::GetInstance()->one, SharedData::GetInstance()->two, SharedData::GetInstance()->three, SharedData::GetInstance()->four) == true)
     {
-        //if (SharedData::GetInstance()->switch1 == true)
-        //{
-        //    meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(1, 1, 1), 2);
-        //}
-        //if (SharedData::GetInstance()->switch2 == true)
-        //{
-        //    meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(1, 1, 1), 2);
-        //}
-        //if (SharedData::GetInstance()->switch3 == true)
-        //{
-        //    meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(1, 1, 1), 2);
-        //}
-        //if (SharedData::GetInstance()->switch4 == true)
-        //{
-        //    meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
-        //}
         SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
         std::cout << "You win!" << std::endl;
         lightpuzz.generatePuzzle();
@@ -1097,6 +1086,9 @@ void SP2::Update(double dt)
 
     if (Application::IsKeyPressed('P'))
     {
+        SharedData::GetInstance()->player->position_.x = 1000;
+        SharedData::GetInstance()->player->position_.y = 0;
+        SharedData::GetInstance()->player->position_.z = 1000;
         SharedData::GetInstance()->gamestate = GAME_STATE_RABBIT;
     }
 	SharedData::GetInstance()->interactnumber = 99;
@@ -1615,7 +1607,8 @@ void SP2::loadChonGame()
         RenderMesh(meshList[GEO_SPHERERED], true);
         modelStack.PopMatrix();
     }
-}    
+}   
+
 void SP2::ballboundfunct()
 {
     Interaction* ballinteraction;
@@ -1679,6 +1672,7 @@ void SP2::pauseGame()
     }
     
 }
+
 void SP2::pauseAnimation(double dt)
 {
     
@@ -1708,7 +1702,14 @@ void SP2::loadRabbitGame()
         glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
     }
 
-    //RenderSkybox();
+    RenderFightSkybox();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(1000, 0, 1000);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_ADOLPH], true);
+    modelStack.PopMatrix();
+
     modelStack.PushMatrix();
     modelStack.Translate(0, 12, 0);
     modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
@@ -3040,4 +3041,103 @@ void SP2::CheckCharacterLocation()
 void SP2::RenderCursor()
 {
     RenderObjectOnScreen(meshList[GEO_CURSOR], SharedData::GetInstance()->cursor_newxpos / (SharedData::GetInstance()->width / 80), 60 - SharedData::GetInstance()->cursor_newypos / (SharedData::GetInstance()->height / 60), 1, 1);
+}
+
+void SP2::RenderFightSkybox()
+{
+    modelStack.PushMatrix();
+
+    //follow player
+
+    modelStack.Translate(SharedData::GetInstance()->player->position_.x, -600, SharedData::GetInstance()->player->position_.z);
+
+    //left
+    modelStack.PushMatrix();
+    modelStack.Translate(-745, 745, 0);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_RABBIT_SKYBOX], false);
+    modelStack.PopMatrix();
+
+    //right
+    modelStack.PushMatrix();
+    modelStack.Translate(745, 745, 0);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_RABBIT_SKYBOX], false);
+    modelStack.PopMatrix();
+
+    //back
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 745, 745);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_RABBIT_SKYBOX], false);
+    modelStack.PopMatrix();
+
+    //front
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 745, -745);
+    RenderMesh(meshList[GEO_RABBIT_SKYBOX], false);
+    modelStack.PopMatrix();
+
+    //top
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 1490, 0);
+    modelStack.Rotate(-90, 0, 1, 0);
+    modelStack.Rotate(90, 1, 0, 0);
+    RenderMesh(meshList[GEO_RABBIT_SKYBOX], false);
+    modelStack.PopMatrix();
+
+    //bottom
+    modelStack.PushMatrix();
+    modelStack.Rotate(-90, 0, 1, 0);
+    modelStack.Rotate(-90, 1, 0, 0);
+    RenderMesh(meshList[GEO_RABBIT_SKYBOX], false);
+    modelStack.PopMatrix();
+    
+    modelStack.PopMatrix();
+}
+
+void SP2::rabbitBullet()
+{
+    bool bulletTime = false;
+    bool bulletTarget = false;
+    Vector3 rabbitPos;
+    Vector3 playerPos;
+    Vector3 bulletPos;
+    Camera3 bullettarg;
+    rabbitPos = (1000, 0, 1000);
+    bulletPos = (1000, 0, 1000);
+
+    float randombulletshoot = rand() % 4 + 1; //1 to 4
+
+    if (randombulletshoot == 1)
+        bulletTime = true;
+
+    //= SharedData::GetInstance()->player->position_;
+
+    if (bulletTarget == true)
+    {
+        bulletTime = true;
+        if (bulletTime == true)
+        {
+            playerPos = SharedData::GetInstance()->player->position_;
+            bullettarg.position = (rabbitPos.x, 50, rabbitPos.y);               //Initialize bullet position to be above the rabbit.
+            bullettarg.target = SharedData::GetInstance()->player->position_;   //Initialize the bullet target towards the player.  
+            Vector3 view = (bullettarg.target - bullettarg.position).Normalized();
+
+            //bullettarg.target.x += view.x * 10;
+            //bullettarg.target.y += view.y * 10;
+            //bullettarg.target.z += view.z * 10;
+            bullettarg.target += view * 10;     //Bullet Flies
+
+            modelStack.PushMatrix();
+            modelStack.Translate(bullettarg.target.x, bullettarg.target.y, bullettarg.target.z);
+            RenderMesh(meshList[GEO_BULLET], false);
+            modelStack.PopMatrix();
+            //bullet.push_back(bullettarg.target);
+            bulletTime = false;     
+        }
+
+        playerPos;
+        //bullettarg.target = (1400, 0, 1200);
+    }
 }

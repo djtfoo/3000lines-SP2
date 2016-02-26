@@ -33,6 +33,7 @@ class SP2 : public Scene
         GEO_SKYBOX_BOTTOM,
         GEO_SKYBOX_BACK,
         GEO_SKYBOX_FRONT,
+        GEO_RABBIT_SKYBOX,
 
         GEO_GROUND,
         //Minimap
@@ -153,6 +154,9 @@ class SP2 : public Scene
         GEO_CHECK_2,
         GEO_CHECK_3,
         GEO_CHECK_4,
+
+        //rabbit bullet
+        GEO_BULLET,
         NUM_GEOMETRY,
     };
 
@@ -209,6 +213,7 @@ public:
 
     MS modelStack, viewStack, projectionStack;
 	std::vector<Vector3> weedgame;
+    std::vector<Vector3> bullet;
 
 	int delayer;
 	int rotator;
@@ -274,6 +279,8 @@ public:
     void pauseGame();
     void loadRabbitGame();
 	void loadWeedGame();
+    void RenderFightSkybox();
+    void rabbitBullet();
 
     //cursor for dialogue, pause, shop
     void RenderCursor();
