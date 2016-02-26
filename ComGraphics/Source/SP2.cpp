@@ -2531,12 +2531,13 @@ void SP2::renderFarm()
 	for (int i = 0; i < weedgame.size(); i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 26]->bound1.x + 3, 2, SharedData::GetInstance()->interactionItems[i + 26]->bound1.z + 3);
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 34]->bound1.x + 3, 2, SharedData::GetInstance()->interactionItems[i + 34]->bound1.z + 3);
 		modelStack.Rotate(90, 0, 1, 0);
 		modelStack.Rotate(-90, 1, 0, 0);
 		RenderMesh(meshList[GEO_WEED], false);
 		modelStack.PopMatrix(); // teleporter
 	}
+	std::cout << SharedData::GetInstance()->interactionItems[43]->bound1.x;
 }
 
 void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y)
