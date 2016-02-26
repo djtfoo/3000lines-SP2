@@ -279,19 +279,35 @@ void Player::useItem(int itemID)
 	case 4:
 		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 9);
 		break;
+	case 5:
+		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 3);
+		break;
 	}
 }
 
-bool Player::itemHave(int itemID)
+void Player::convertItem(int itemID1, int itemID2)
 {
+	for (int i = 0; i < 8; i++)
+	{
+		if (inventory[i] == itemID1)
+		{
+			inventory[i] = itemID2;
+			return;
+		}
+	}
+}
+
+int Player::itemHave(int itemID)
+{
+	int count = 0;
 	for (int i = 0; i < 8; i++)
 	{
 		if (inventory[i] == itemID)
 		{
-			return true;
+			count++;
 		}
 	}
-	return false;
+	return count;
 }
 
 bool Player::invfull()

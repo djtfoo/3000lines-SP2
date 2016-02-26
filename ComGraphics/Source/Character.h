@@ -67,7 +67,8 @@ public:
     int addItem(int itemID);
     int removeItem(int itemPos);
 	void useItem(int itemID);
-    bool itemHave(int itemID);
+	void convertItem(int itemID1, int itemID2);
+    int itemHave(int itemID);
 	bool invfull();
 };
 

@@ -131,4 +131,12 @@ public:
 	virtual void DoInteraction();
 };
 
+class FarmPlantInteraction : public Interaction
+{
+public:
+	FarmPlantInteraction();
+	~FarmPlantInteraction();
+	virtual void DoInteraction();
+};
+
 #endif

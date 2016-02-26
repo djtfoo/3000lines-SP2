@@ -242,10 +242,31 @@ WeedInteraction::~WeedInteraction()
 
 void WeedInteraction::DoInteraction()
 {
+	if (SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x != 9999)
+	{
+		Interaction* remover;
+		remover = new WeedInteraction();
+		remover->bound1.Set(9999, 99, 9999); remover->bound2.Set(9999, 99, 9999);
+		std::cout << " " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1 << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound2 << std::endl;
+		SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
+		SharedData::GetInstance()->player->addItem(3);
+	}
+}
+
+FarmPlantInteraction::FarmPlantInteraction() : Interaction()
+{
+}
+
+FarmPlantInteraction::~FarmPlantInteraction()
+{
+}
+
+void FarmPlantInteraction::DoInteraction()
+{
 	Interaction* remover;
-	remover = new WeedInteraction();
+	remover = new FarmPlantInteraction();
 	remover->bound1.Set(9999, 99, 9999); remover->bound2.Set(9999, 99, 9999);
 	std::cout << " " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.z << std::endl;
 	SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
-	SharedData::GetInstance()->player->addItem(3);
+	SharedData::GetInstance()->player->addItem(2);
 }

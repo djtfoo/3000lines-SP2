@@ -455,6 +455,13 @@ SP2::SP2()
 	meshList[GEO_SPAGHETTO]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
 	meshList[GEO_SPAGHETTO]->material.kShininess = 1.f;
 
+	meshList[GEO_SPAGHETTOROTTEN] = MeshBuilder::GenerateOBJ("spaghettorotten", "OBJ/spaghetto.obj");
+	meshList[GEO_SPAGHETTOROTTEN]->textureID = LoadTGA("Image/spaghettorotten.tga");
+	meshList[GEO_SPAGHETTOROTTEN]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_SPAGHETTOROTTEN]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_SPAGHETTOROTTEN]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_SPAGHETTOROTTEN]->material.kShininess = 1.f;
+
 	meshList[GEO_BED] = MeshBuilder::GenerateOBJ("bed", "OBJ/bed.obj");
 	meshList[GEO_BED]->textureID = LoadTGA("Image/bed.tga");
 	meshList[GEO_BED]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
@@ -490,6 +497,9 @@ SP2::SP2()
 
 	meshList[GEO_WEEDICON] = MeshBuilder::GenerateQuad("weed", Color(1, 1, 1), 3, 3);
 	meshList[GEO_WEEDICON]->textureID = LoadTGA("Image/weed.tga");
+
+	meshList[GEO_FARMPLANT] = MeshBuilder::GenerateQuad("farmplant", Color(1, 1, 1), 20, 20);
+	meshList[GEO_FARMPLANT]->textureID = LoadTGA("Image/farmplant.tga");
 
     meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("switch1", Color(0, 0, 0), 1, 15, 4);
     meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("switch2", Color(0, 0, 0), 1, 15, 4);
@@ -546,6 +556,8 @@ void SP2::loadInv()
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(3, GEO_WEEDICON));
 	invmap.insert(std::pair<int, Gift>(4, Gift("spaghetti")));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(4, GEO_SPAGHETTO));
+	invmap.insert(std::pair<int, Gift>(5, Gift("\"spaghetti\"")));
+	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(5, GEO_SPAGHETTOROTTEN));
 }
 
 void SP2::loadCollisions()
@@ -740,28 +752,37 @@ void SP2::Init()
     interactions->bound1.Set(400, -5, -479); interactions->bound2.Set(425, 15, -439);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
-    for (int i = 0; i < 12; i++)
-    {
-        if ((rand() % 12) > 9)
-        {
-        }
-        else
-        {
-            interactions->bound1.Set(9999, 99, 9999); interactions->bound2.Set(9999, 99, 9999);
-            SharedData::GetInstance()->interactionItems[i] = interactions;
-        }
-    }
+	interactions = new SpaghettoInteraction();
+	for (int i = 0; i < 12; i++)
+	{
+		if ((rand() % 12) > 9)
+		{
+		}
+		else
+		{
+			interactions->bound1.Set(9999, 99, 9999); interactions->bound2.Set(9999, 99, 9999);
+			SharedData::GetInstance()->interactionItems[i] = interactions;
+		}
+	}
 
     loadWeedGame();
 
+	Interaction* interactions2;
     for (int i = 0; i < 10; i++)
     {
-
-        interactions = new WeedInteraction();
-        interactions->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, -19, weedgame[i].z + 3);
-        SharedData::GetInstance()->interactionItems.push_back(interactions);
+        interactions2 = new WeedInteraction();
+        interactions2->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions2->bound2.Set(weedgame[i].x + 3, -19, weedgame[i].z + 3);
+        SharedData::GetInstance()->interactionItems.push_back(interactions2);
     }
 
+	//for (int i = 10; i < weedgame.size(); i++)
+	//{
+	//
+	//	interactions = new FarmPlantInteraction();
+	//	interactions->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, -18, weedgame[i].z + 3);
+	//	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	//}
+	
     rotating = 0;
     ptxt1 = 70;     //pause textbox
     ptxt2 = 78;
@@ -802,7 +823,12 @@ void SP2::loadWeedGame()
 	{
 		for (int i = 0; i < 10; i++)
 		{
-			weedgame.push_back(Vector3(rand() % 140 + 865, 1, rand() % 100 - 400));
+			weedgame.push_back(Vector3(rand() % 140 + 865, 1 + (0.1 * i), rand() % 100 - 400));
+			std::cout << weedgame[i] << std::endl;
+		}
+		for (int i = 0; i < 30; i++)
+		{
+			weedgame.push_back(Vector3(rand() % 140 + 865, 10 + (0.1 * i), rand() % 100 - 400));
 		}
 	}
 	
@@ -857,8 +883,7 @@ void SP2::Update(double dt)
 		{
 			loadSpaghetti();
 		}
-        
-
+		std::cout << std::endl << "Player pos: " << SharedData::GetInstance()->player->position_ << " interact item: " << SharedData::GetInstance()->interactnumber << std::endl;
         SharedData::GetInstance()->interactptr->DoInteraction();
     }
     else
@@ -886,6 +911,13 @@ void SP2::Update(double dt)
 	if (SharedData::GetInstance()->daynighttime > 2400)
 	{
 		SharedData::GetInstance()->daynighttime = 0;
+		for (int i = 0; i < SharedData::GetInstance()->player->itemHave(4); i++)
+		{
+			if (rand() % 2)
+			{
+				SharedData::GetInstance()->player->convertItem(4, 5);
+			}
+		}
 	}
     //options
     if (Application::IsKeyPressed('1')) //enable back face culling
@@ -2653,15 +2685,24 @@ void SP2::renderFarm()
 	RenderMesh(meshList[GEO_SHED], true);
 	modelStack.PopMatrix();
 
-	for (int i = 0; i < weedgame.size(); i++)
+	for (int i = 0; i < 10; i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 34]->bound1.x + 3, 2, SharedData::GetInstance()->interactionItems[i + 34]->bound1.z + 3);
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 35]->bound1.x + 3, 1.1 + (i * 0.1), SharedData::GetInstance()->interactionItems[i + 35]->bound1.z + 3);
 		modelStack.Rotate(90, 0, 1, 0);
 		modelStack.Rotate(-90, 1, 0, 0);
 		RenderMesh(meshList[GEO_WEED], false);
-		modelStack.PopMatrix(); // teleporter
+		modelStack.PopMatrix(); 
 	}
+	//for (int i = 10; i < weedgame.size(); i++)
+	//{
+	//	modelStack.PushMatrix();
+	//	modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 35]->bound1.x + 3, 2.3 + (i * 0.01), SharedData::GetInstance()->interactionItems[i + 35]->bound1.z + 3);
+	//	modelStack.Rotate(90, 0, 1, 0);
+	//	modelStack.Rotate(-90, 1, 0, 0);
+	//	RenderMesh(meshList[GEO_FARMPLANT], false);
+	//	modelStack.PopMatrix(); // teleporter
+	//}
 }
 
 void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y)
@@ -2827,7 +2868,7 @@ void SP2::RenderInventory()
 
 	RenderObjectOnScreen(meshList[GEO_ITEMSELECT], 22.5 + (SharedData::GetInstance()->player->invselect * 5), 2.5);
 	if (SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect] != 0)
-	RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 10, 2);
+	RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 9, 2);
 }
 
 void SP2::RenderTime()
