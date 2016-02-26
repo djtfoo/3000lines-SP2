@@ -303,6 +303,8 @@ public:
 
     void gateOpenInteractions();
     void gateUpdate();
+    bool gateopenBool[8];
+    GateInteraction gatebounds[8];
 
     float rotating;
     float ptxt1;    //pause text 1
