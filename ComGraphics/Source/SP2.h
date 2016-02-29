@@ -215,7 +215,9 @@ public:
 
     MS modelStack, viewStack, projectionStack;
 	std::vector<Vector3> weedgame;
-    std::vector<Vector3> bullet;
+    //std::vector<Camera3> bullet;
+
+    //PlayerBullet bullet[100];
 
 	int delayer;
 	int rotator;

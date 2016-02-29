@@ -6,7 +6,9 @@
 #include <sstream>
 #include <fstream>
 
-Character::Character(std::string name, Vector3 position, float direction) : name_(name), position_(position), direction_(0)
+Character::Character(std::string name, Vector3 position, float 
+    
+    ) : name_(name), position_(position), direction_(0)
 {
 }
 

@@ -13,6 +13,8 @@
 
 #include "Application.h"
 #include "SharedData.h"
+#include "Bullet.h"
+#include "Enemy.h"
 
 #include <iostream>
 
@@ -1672,6 +1674,11 @@ void SP2::loadChonGame()
     {
         ballfloat = ballfloat1 = ballfloat2 = ballfloat3 = ballfloat4 = 0;
     }
+
+    //for (i < 5
+    //ball[i]
+    //ball[i] = rand % 
+    //ball[i] = 
 
     if (ball[0] == true)
     {
@@ -3425,54 +3432,135 @@ void SP2::RenderFightSkybox()
     modelStack.PopMatrix();
 }
 
+float BULLETSPEED = 200.f;
+
 void SP2::rabbitBullet()
 {
-    bool bulletTime = false;
-    bool bulletTarget = false;
-    Vector3 rabbitPos;
-    Vector3 playerPos;
-    Vector3 bulletPos;
-    Camera3 bullettarg;
-    rabbitPos = (1000, 0, 1000);
-    bulletPos = (1000, 0, 1000);
+    int i = 0;
+    int test = 0;
+    //EnemyBullet* enemyBullet = new EnemyBullet;
+    //enemyBullet->e_bulletPos = (1000, 100, 1000);
+    //enemyBullet->e_bulletDir = BULLETSPEED * (float)(10) * (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->player->position_);
 
-    Vector3 view = (bullettarg.target - bullettarg.position);
+    //enemyBullet->e_phi = SharedData::GetInstance()->camera->phi;
 
     if (Application::IsKeyPressed('0'))
     {
-        bulletTarget = true;
+        test += 1;
     }
-    //float randombulletshoot = rand() % 4 + 1; //1 to 4
 
-    //if (randombulletshoot == 1)
-    //    bulletTarget = true;
+    //bullet collide false;
 
-    //= SharedData::GetInstance()->player->position_;
-
-    if (bulletTarget == true)
+    if (/*meshoot pewpew == true*/test == 1)
     {
-        bulletTime = true;
-        if (bulletTime == true)
+        for (i = 0; i < 100; i++)
         {
-            playerPos = SharedData::GetInstance()->player->position_;
-            bullettarg.position = (rabbitPos.x, 50, rabbitPos.y);               //Initialize bullet position to be above the rabbit.
-            bullettarg.target = SharedData::GetInstance()->player->position_;   //Initialize the bullet target towards the player.  
-            
-
-            //bullettarg.target.x += view.x * 10;
-            //bullettarg.target.y += view.y * 10;
-            //bullettarg.target.z += view.z * 10;
-            //bullet.push_back(bullettarg.target);
-            bulletTime = false;     
+            bullet[i].active = 1;
+            bullet[i].x  = SharedData::GetInstance()->player->position_.x;
+            bullet[i].y = SharedData::GetInstance()->player->position_.y;
+            bullet[i].z = SharedData::GetInstance()->player->position_.z;
+            bullet[i].bullet_phi = SharedData::GetInstance()->camera->phi;
+            bullet[i].dx = -100 * cos(Math::DegreeToRadian(SharedData::GetInstance()->camera->theta));
+            bullet[i].dy = 100 * sin(Math::DegreeToRadian(SharedData::GetInstance()->camera->phi));
+            bullet[i].dz = 100 * cos(Math::DegreeToRadian(SharedData::GetInstance()->camera->phi)) * sin(Math::DegreeToRadian(SharedData::GetInstance()->camera->theta));
         }
-        bullettarg.target += view * 10;     //Bullet Flies
-
-        modelStack.PushMatrix();
-        modelStack.Translate(bullettarg.target.x, bullettarg.target.y, bullettarg.target.z);
-        RenderMesh(meshList[GEO_BULLET], true);
-        modelStack.PopMatrix();
-        bulletTarget = false;
-        //playerPos;
-        //bullettarg.target = (1400, 0, 1200);
+        test = 0;
     }
+
+    for (i = 0; i < 90; i++)
+    {
+        if (bullet[i].active == 1)
+        {
+            bullet[i].x = bullet[i].x + bullet[i].dx;
+            bullet[i].y = bullet[i].y + bullet[i].dy;
+            bullet[i].z = bullet[i].z + bullet[i].dz;
+        }
+        if (bullet[i].active == 1 && bullet[i].x > 1500)
+        {
+            bullet[i].active = 0;
+        }
+    }
+
+    modelStack.PushMatrix();
+    modelStack.Translate(bullet[i].x, bullet[i].y, bullet[i].z);
+    modelStack.Rotate(bullet->bullet_phi, 0, 1, 0);
+    RenderMesh(meshList[GEO_BULLET], false);
+    modelStack.PopMatrix();
+
+    //enemyBullet->e_ifCollide = false;
+
+    //float randombulletshoot = 0;// = rand() % 4 + 1; //1 to 4
+    //if (Application::IsKeyPressed('0'))
+    //{
+    //    randombulletshoot += 0.1;
+    //}
+
+    //if (randombulletshoot >= 0.5)
+    //{
+    //    enemyBullet->e_bulletPos += enemyBullet->e_bulletPos + enemyBullet->e_bulletDir;
+
+    //    modelStack.PushMatrix();
+    //    modelStack.Translate(enemyBullet->e_bulletPos.x, enemyBullet->e_bulletPos.y, enemyBullet->e_bulletPos.z);
+    //    RenderMesh(meshList[GEO_BULLET], true);
+    //    modelStack.PopMatrix();
+
+    //    randombulletshoot = 0;  //Reset
+    //}
+    //pos + dir; bullet move
+
+    float pitch, yaw;
+    bool ifCollide;
 }
+
+
+//bool bulletTime = false;
+//bool bulletTarget = false;
+//float flyfly = 0;
+//Vector3 rabbitPos;
+//Vector3 playerPos;
+//Vector3 bulletPos;
+//Camera3 bullettarg;
+//rabbitPos = (1000, 0, 1000);
+//bulletPos = (1000, 0, 1000);
+
+//Vector3 view = (bullettarg.target - bullettarg.position);
+
+//if (Application::IsKeyPressed('0'))
+//{
+//    flyfly += 0.01;
+//    bulletTarget = true;
+//}
+////
+
+////if (randombulletshoot == 1)
+////    bulletTarget = true;
+
+////= SharedData::GetInstance()->player->position_;
+
+//if (bulletTarget == true)
+//{
+//    bulletTime = true;
+//    if (bulletTime == true)
+//    {
+//        playerPos = SharedData::GetInstance()->player->position_;
+//        bullettarg.position = (rabbitPos.x, 50, rabbitPos.y);               //Initialize bullet position to be above the rabbit.
+//        bullettarg.target = SharedData::GetInstance()->player->position_;   //Initialize the bullet target towards the player.  
+//        
+
+//        bullettarg.target.x += view.x * flyfly;
+//        bullettarg.target.y += view.y * flyfly;
+//        bullettarg.target.z += view.z * flyfly;
+//        //bullet.push_back(bullettarg.target);
+//        bulletTime = false;     
+//    }
+//    bullettarg.target += view * 10;     //Bullet Flies
+
+//    modelStack.PushMatrix();
+//    modelStack.Translate(bullettarg.target.x, bullettarg.target.y, bullettarg.target.z);
+//    RenderMesh(meshList[GEO_BULLET], true);
+//    modelStack.PopMatrix();
+//    bulletTarget = false;
+//    //playerPos;
+//    //bullettarg.target = (1400, 0, 1200);
+//}
+//flyfly = 0;
