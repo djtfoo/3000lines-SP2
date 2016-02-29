@@ -79,9 +79,9 @@ void DialogueProcessor::CheckCursor(double dt)
                     SharedData::GetInstance()->gamestate = GAME_STATE_JASIMGAME;
                     SharedData::GetInstance()->chonGamebool = true;
                 }
-                else if (npc->getName() == "Chon") {
+                else if (npc->getName() == "Wengstang") {
                     SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
-                    SharedData::GetInstance()->chonGamebool = true;
+                    SharedData::GetInstance()->weedGamebool = true;
                 }
                 else {  //temp
                     SharedData::GetInstance()->gamestate = GAME_STATE_FREE;

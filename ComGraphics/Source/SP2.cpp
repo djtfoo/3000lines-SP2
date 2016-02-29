@@ -780,13 +780,6 @@ void SP2::Init()
 
     loadWeedGame();
 
-    for (int i = 10; i < weedgame.size(); i++)
-    {
-        interactions = new FarmPlantInteraction();
-        interactions->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, -18, weedgame[i].z + 3);
-        SharedData::GetInstance()->interactionItems.push_back(interactions);
-    }
-
 	Interaction* interactions2;
     for (int i = 0; i < 10; i++)
     {
@@ -794,6 +787,13 @@ void SP2::Init()
         interactions2->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions2->bound2.Set(weedgame[i].x + 3, -19, weedgame[i].z + 3);
         SharedData::GetInstance()->interactionItems.push_back(interactions2);
     }
+
+	for (int i = 10; i < weedgame.size(); i++)
+	{
+		interactions = new FarmPlantInteraction();
+		interactions->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, -18, weedgame[i].z + 3);
+		SharedData::GetInstance()->interactionItems.push_back(interactions);
+	}
 	
     rotating = 0;
     ptxt1 = 70;     //pause textbox
@@ -827,7 +827,11 @@ void SP2::loadWeedGame()
 	{
 		for (int i = 0; i < 10; i++)
 		{
-			weedgame[i] = (Vector3(rand() % 140 + 865, 1, rand() % 100 - 400));
+			weedgame[i] = (Vector3(rand() % 140 + 865, 1 + (0.1 * i), rand() % 100 - 400));
+		}
+		for (int i = 10; i < 30; i++)
+		{
+			weedgame[i] = (Vector3(rand() % 140 + 865, 10 + (0.1 * i), rand() % 100 - 400));
 		}
 
 	}
@@ -836,9 +840,9 @@ void SP2::loadWeedGame()
 		for (int i = 0; i < 10; i++)
 		{
 			weedgame.push_back(Vector3(rand() % 140 + 865, 1 + (0.1 * i), rand() % 100 - 400));
-			std::cout << weedgame[i] << std::endl;
+			std::cout << " load game: " << weedgame[i] << std::endl;
 		}
-		for (int i = 0; i < 30; i++)
+		for (int i = 10; i < 30; i++)
 		{
 			weedgame.push_back(Vector3(rand() % 140 + 865, 10 + (0.1 * i), rand() % 100 - 400));
 		}
@@ -1046,6 +1050,10 @@ void SP2::Update(double dt)
     {
         SharedData::GetInstance()->gamestate = GAME_STATE_CHONGAME;
     }
+	else if (SharedData::GetInstance()->weedGamebool == true)
+	{
+		SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
+	}
     if (SharedData::GetInstance()->ballpickup == true)
     {
         if (ball[0])
@@ -1150,6 +1158,10 @@ void SP2::Update(double dt)
         SharedData::GetInstance()->player->position_.z = 1000;
         SharedData::GetInstance()->gamestate = GAME_STATE_RABBIT;
     }
+	if (Application::IsKeyPressed('0'))
+	{
+		SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
+	}
 	SharedData::GetInstance()->interactnumber = 99;
 }
 
@@ -1541,7 +1553,71 @@ void SP2::loadShop()
 
 void SP2::loadWSGame()
 {  
-   
+	RenderSkybox();
+	RenderGround();
+	//RenderRoom();
+
+	//The House
+	modelStack.PushMatrix();
+	modelStack.Translate(420, -1, -23);
+	modelStack.Scale(50, 50, 50);
+	modelStack.Rotate(180, 0, 1, 0);
+	RenderMesh(meshList[GEO_LAYOUT], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 12, 0);
+	modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
+	modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
+	RenderPlayer();
+	modelStack.PopMatrix();
+
+	for (int i = 0; i < 12; i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i]->bound1.x + 3, 14, SharedData::GetInstance()->interactionItems[i]->bound1.z + 3);
+		modelStack.Scale(2, 2, 2);
+		RenderMesh(meshList[GEO_SPAGHETTO], true);
+		modelStack.PopMatrix();
+	}
+
+
+	//RenderPuzzle();
+
+	RenderNPC();
+	//stemmieShop();
+	//modelStack.PushMatrix();
+	//modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
+	//modelStack.Scale(10, 10, 10);
+	//RenderMesh(meshList[GEO_STEMMIE_FACE], false);
+	//modelStack.PopMatrix();
+	//chonLab();
+	//veeControlroom();
+	jasimCanteen();
+	//loadHangar();
+	renderFarm();
+	//renderPuzzle();
+
+	//RenderGates(); //gates b4 ui, aft others to hide contents of the room
+
+	RenderUI();
+
+	RenderInventory();
+	RenderTime();
+
+	RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
+	RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
+	RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30, 1, 1);
+
+	//RenderMinimap();
+	std::stringstream s;
+	s << "Points: " << SharedData::GetInstance()->pointscounter;
+	RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 5, 5, 9);
+
+	//interaction
+	if (SharedData::GetInstance()->canInteract) {
+		RenderTextOnScreen(meshList[GEO_TEXT], "Press U", Color(1, 0, 0), 3, 2, 2);
+	}
 }  
 
 void SP2::loadChonGame()
@@ -2723,21 +2799,21 @@ void SP2::renderFarm()
 	for (int i = 0; i < 10; i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 35]->bound1.x + 3, 1.1 + (i * 0.1), SharedData::GetInstance()->interactionItems[i + 35]->bound1.z + 3);
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 37]->bound1.x + 3, 1.1 + (i * 0.1), SharedData::GetInstance()->interactionItems[i + 37]->bound1.z + 3);
 		modelStack.Rotate(90, 0, 1, 0);
 		modelStack.Rotate(-90, 1, 0, 0);
 		RenderMesh(meshList[GEO_WEED], false);
 		modelStack.PopMatrix(); 
 	}
-	//for (int i = 10; i < weedgame.size(); i++)
-	//{
-	//	modelStack.PushMatrix();
-	//	modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 35]->bound1.x + 3, 2.3 + (i * 0.01), SharedData::GetInstance()->interactionItems[i + 35]->bound1.z + 3);
-	//	modelStack.Rotate(90, 0, 1, 0);
-	//	modelStack.Rotate(-90, 1, 0, 0);
-	//	RenderMesh(meshList[GEO_FARMPLANT], false);
-	//	modelStack.PopMatrix(); // teleporter
-	//}
+	for (int i = 10; i < weedgame.size(); i++)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 37]->bound1.x + 3, 2.3 + (i * 0.02), SharedData::GetInstance()->interactionItems[i + 37]->bound1.z + 3);
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Rotate(-90, 1, 0, 0);
+		RenderMesh(meshList[GEO_FARMPLANT], false);
+		modelStack.PopMatrix(); // teleporter
+	}
 }
 
 void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y)
