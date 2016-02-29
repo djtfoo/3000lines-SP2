@@ -825,13 +825,20 @@ void SP2::loadWeedGame()
 {
 	if (weedgame.size() != 0)
 	{
+		Interaction* interactions4;
 		for (int i = 0; i < 10; i++)
 		{
 			weedgame[i] = (Vector3(rand() % 140 + 865, 1 + (0.1 * i), rand() % 100 - 400));
+			interactions4 = new WeedInteraction();
+			interactions4->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions4->bound2.Set(weedgame[i].x + 3, -19, weedgame[i].z + 3);
+			SharedData::GetInstance()->interactionItems[i + 37] = interactions4;
 		}
-		for (int i = 10; i < 30; i++)
+		for (int i = 10; i < weedgame.size(); i++)
 		{
 			weedgame[i] = (Vector3(rand() % 140 + 865, 10 + (0.1 * i), rand() % 100 - 400));
+			interactions4 = new FarmPlantInteraction();
+			interactions4->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions4->bound2.Set(weedgame[i].x + 3, -19, weedgame[i].z + 3);
+			SharedData::GetInstance()->interactionItems[i + 37] = interactions4;
 		}
 
 	}
@@ -1091,7 +1098,7 @@ void SP2::Update(double dt)
     }
 	if (Application::IsKeyPressed('0'))
 	{
-		SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
+		loadWeedGame();
 	}
 	SharedData::GetInstance()->interactnumber = 99;
 
@@ -1246,7 +1253,7 @@ void SP2::loadFree()
     jasimCanteen();
     loadHangar();
 	renderFarm();
-    loadWSGame();
+    //loadWSGame();
 
     RenderGates(); //gates b4 ui, aft others to hide contents of the room
 
