@@ -270,10 +270,6 @@ void WeedInteraction::DoInteraction()
 			SharedData::GetInstance()->player->setGold(SharedData::GetInstance()->player->getGold() + SharedData::GetInstance()->pointscounter);
 			SharedData::GetInstance()->pointscounter = 0;
 			SharedData::GetInstance()->weedGamebool = false;
-			if (SharedData::GetInstance()->player->getGold() < 0)
-			{
-				SharedData::GetInstance()->player->setGold(0);
-			}
 		}
 	}
 }
