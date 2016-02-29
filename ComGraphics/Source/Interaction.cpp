@@ -219,7 +219,7 @@ VeePuzzleCheckerSwitchInteraction::~VeePuzzleCheckerSwitchInteraction()
 
 void VeePuzzleCheckerSwitchInteraction::DoInteraction()
 {
-    if (SharedData::GetInstance()->switchCount < 8)
+    if (SharedData::GetInstance()->switchCount < 10)
     {
         std::cout << "test" << std::endl;
         SharedData::GetInstance()->switchFlip = true;

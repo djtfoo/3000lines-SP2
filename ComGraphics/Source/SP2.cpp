@@ -891,7 +891,7 @@ void SP2::Update(double dt)
         SharedData::GetInstance()->interactptr->DoInteraction();
     }
 
-	if (Application::IsKeyPressed('U') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) 
+	if (Application::IsKeyPressed('E') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) 
     {
 		if (SharedData::GetInstance()->interactnumber != 32)
 		{
@@ -1251,7 +1251,7 @@ void SP2::loadFree()
     
     //interaction
     if (SharedData::GetInstance()->canInteract) {
-        RenderTextOnScreen(meshList[GEO_TEXT], "Press U", Color(1, 0, 0), 3, 2, 2);
+        RenderTextOnScreen(meshList[GEO_TEXT], "Press E", Color(1, 0, 0), 3, 2, 2);
     }
 }  
 
