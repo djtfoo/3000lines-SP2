@@ -54,7 +54,7 @@ public:
     bool ballpickup;    //chon ballgame
 
     //Puzzle Interaction
-    float one, two, three, four;
+    float one, two, three, four, switchCount;
     bool switch1, switch2, switch3, switch4;
     bool switchFlip;
 
@@ -113,6 +113,7 @@ private:
 
         //Vee mini-game (light puzzle)
         one = two = three = four = 1;
+        switchCount = 0;
         switch1 = switch2 = switch3 = switch4 = false;
         switchFlip = false;
 
