@@ -52,6 +52,7 @@ public:
 	bool toiletflood;
     bool chonGamebool;
 	bool weedGamebool;
+    int firstball;
     bool ballpickup;    //chon ballgame
 
     //Puzzle Interaction
@@ -129,6 +130,8 @@ private:
 		weedGamebool = false;
 		pointscounter = 0;
 		weedcounter = 10;
+		
+        firstball = 0;
     }
     ~SharedData() {
         delete player;

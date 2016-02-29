@@ -258,6 +258,7 @@ public:
 	void RenderPuzzle();
     void stemmieShop();
 	void RenderRoom();
+    void compactBallrender();
     void chonLab();
     void veeControlroom();
     void jasimCanteen();
@@ -325,8 +326,11 @@ public:
     3 = blue, 
     4 = red*/
     bool pickupcheck;
-    float ballfloat, ballfloat1, ballfloat2, ballfloat3, ballfloat4;
+    int pickupCounter;
+    float ballyellX, ballyellZ, ballbluX, ballbluZ, ballredX, ballredZ;
     void ballboundfunct();
+    void ballmoveCheck();
+    void compactMovement(bool first, bool second, bool third, int i);
     chonBallInteraction ballbounds[5];
 
    

@@ -48,6 +48,8 @@ void LightPuzzle::generatePuzzle()
             cout << "pink ";
         }
     }
+
+    SharedData::GetInstance()->firstball = puzzleSize[0];   //Chon ball game here XD stealing rand variable
 }
 bool LightPuzzle::checkPuzzleAns(int first, int second, int third, int forth)
 {

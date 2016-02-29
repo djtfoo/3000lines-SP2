@@ -811,8 +811,11 @@ void SP2::Init()
     {
         ball[i] = false;
     }
-    ballfloat= ballfloat1= ballfloat2= ballfloat3= ballfloat4 = 0;
+    ballyellX = 483; ballyellZ = -469;
+    ballbluX = 339; ballbluZ = -465; 
+    ballredX = 310; ballredZ = -364;
     pickupcheck = false;
+    pickupCounter = 0;
 
 
 	loadInv();
@@ -1061,12 +1064,14 @@ void SP2::Update(double dt)
     {
         SharedData::GetInstance()->gamestate = GAME_STATE_CHONGAME;
     }
+
 	else if (SharedData::GetInstance()->weedGamebool == true)
 	{
 		SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
 	}
-    if (SharedData::GetInstance()->ballpickup == true)
-    {
+
+    /*if (SharedData::GetInstance()->ballpickup == true)
+    {                           T.T
         if (ball[0])
             ballfloat += 40 * dt;
         if (ball[1])
@@ -1077,7 +1082,7 @@ void SP2::Update(double dt)
             ballfloat3 += 40 * dt;
         if (ball[4])
             ballfloat4 += 40 * dt;
-    }
+    }*/
 
     gateUpdate(dt);
 
@@ -1655,6 +1660,174 @@ void SP2::puzzleLogic()
     }
 }
 
+void SP2::compactBallrender()
+{
+
+
+    modelStack.PushMatrix();
+    modelStack.Translate(ballyellX, 15, ballyellZ);
+    modelStack.Scale(0.5, 0.5, 0.5);
+    RenderMesh(meshList[GEO_SPHEREYELLOW], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(410, 15, -396);    //425
+    modelStack.Scale(0.5, 0.5, 0.5);
+    RenderMesh(meshList[GEO_SPHEREBLACK], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(425, 15, -380);    //
+    modelStack.Scale(0.5, 0.5, 0.5);
+    RenderMesh(meshList[GEO_SPHEREWHITE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(ballbluX, 15, ballbluZ);
+    modelStack.Scale(0.5, 0.5, 0.5);
+    RenderMesh(meshList[GEO_SPHEREBLUE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(ballredX, 15, ballredZ);
+    modelStack.Scale(0.5, 0.5, 0.5);
+    RenderMesh(meshList[GEO_SPHERERED], true);
+    modelStack.PopMatrix();
+
+}
+
+void SP2::compactMovement(bool first, bool second, bool third, int i)
+{
+    bool ballpoint1 = false;
+    bool ballpoint2 = false;
+    bool ballpoint3 = false;
+
+    if (first)
+    {
+        //yellow move to blue
+        if (ballyellX >= 339)
+        {
+            ballyellX -= 1;
+            if (ballyellZ <= -465)
+            {
+                ballyellZ += 1;
+
+                ballpoint1 = true;
+            }
+        }
+
+
+        //blue move to red
+        if (ballbluX >= 310)
+        {
+            ballbluX -= 1;
+            if (ballbluZ <= -364)
+            {
+                ballbluZ += 1;
+
+                ballpoint2 = true;
+            }
+        }
+
+        //red moves to yellow
+        if (ballredX <= 483)
+        {
+            ballredX += 1;
+            if (ballredZ >= -469)
+            {
+                ballredZ -= 1;
+
+                ballpoint3 = true;
+            }
+        }
+
+        if (ballpoint1 && ballpoint2 && ballpoint3)
+        {
+            SharedData::GetInstance()->ballpickup = false;
+            ball[i] = false;
+            ballpoint1 = false;
+            ballpoint2 = false;
+            ballpoint3 = false;
+        }
+
+        return;
+    }
+
+    else if (second)
+    {
+        //yellow move to red
+        if (ballyellX >= 310)
+        {
+            ballyellX -= 0.5;
+        }
+        if (ballyellZ <= -364)
+        {
+            ballyellZ += 1;
+        }
+
+        //blue move to yellow
+        if (ballbluX <= 483)
+        {
+            ballbluX += 1;
+        }
+        if (ballbluZ >= -469)
+        {
+            ballbluZ -= 1;
+        }
+        //red move to blue
+        if (ballredX <= 339)
+        {
+            ballredX += 1;
+        }
+        if (ballredZ >= -465)
+        {
+            ballredZ -= 1;
+        }
+
+
+    }
+
+
+    /*else if (third)
+    {
+
+    }*/
+
+}
+
+void SP2::ballmoveCheck()
+{
+    if (ball[0] == true)
+    {
+        if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)
+        {
+            compactMovement(true, false, false, 0);
+
+        }
+    }
+    else if (ball[1] == true)
+    {
+        
+    }
+    else if (ball[2] == true)
+    {
+        
+    }
+    else if (ball[3] == true)
+    {
+        if (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
+        {
+            compactMovement(true, false, false, 3);
+        }
+    }
+    else if (ball[4] == true)
+    {
+        if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
+        {
+            compactMovement(true, false, false, 4);
+        }
+    }
+}
 void SP2::loadChonGame()
 {    
     loadFree();
@@ -1666,93 +1839,45 @@ void SP2::loadChonGame()
         {
             if (SharedData::GetInstance()->interactptr->bound1 == ballbounds[i].bound1 && SharedData::GetInstance()->interactptr->bound2 == ballbounds[i].bound2)
                 ball[i] = true;
+            else
+                ball[i] = false;
+           
         }
-
-       // SharedData::GetInstance()->ballpickup = false;
+        
     }
-    else
+    
+    ballmoveCheck();
+
+    compactBallrender();    //yel, black, white, blue, red
+
+    
+
+    /*if (ballyellX >= ballbluX)
     {
-        ballfloat = ballfloat1 = ballfloat2 = ballfloat3 = ballfloat4 = 0;
-    }
-
-    //for (i < 5
-    //ball[i]
-    //ball[i] = rand % 
-    //ball[i] = 
-
-    if (ball[0] == true)
-    {
-        modelStack.PushMatrix();
-        modelStack.Translate(483, 15 + ballfloat, -469);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREYELLOW], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(410, 15, -396);    //425
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLACK], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(425, 15, -380);    //
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREWHITE], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(339, 15, -465);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLUE], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(310, 15, -364);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHERERED], true);
-        modelStack.PopMatrix();
-
-        if (ballfloat >= 15)
+        if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)
+        {
+            ball[0] = false;
+            ballyellX = ballbluX;
+        }
+        else
         {
             ball[0] = false;
             SharedData::GetInstance()->ballpickup = false;
         }
-        
     }
+        
+    
     else if (ball[1] == true)
     {
         modelStack.PushMatrix();
-        modelStack.Translate(410, 15 + ballfloat1, -396);
+        modelStack.Translate(410, 15, -396);
         modelStack.Scale(0.5, 0.5, 0.5);
         RenderMesh(meshList[GEO_SPHEREBLACK], true);
         modelStack.PopMatrix();
 
-        modelStack.PushMatrix();
-        modelStack.Translate(483, 15, -469);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREYELLOW], true);
-        modelStack.PopMatrix();
+        compactBallrender();
 
-
-        modelStack.PushMatrix();
-        modelStack.Translate(425, 15, -380);    //
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREWHITE], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(339, 15, -465);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLUE], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(310, 15, -364);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHERERED], true);
-        modelStack.PopMatrix();
-
-        if (ballfloat1 >= 15)
+        if (ballredX >= 15)
         {
             ball[1] = false;
             SharedData::GetInstance()->ballpickup = false;
@@ -1761,37 +1886,14 @@ void SP2::loadChonGame()
     else if (ball[2] == true)
     {
         modelStack.PushMatrix();
-        modelStack.Translate(425, 15 + ballfloat2, -380);
+        modelStack.Translate(425, 15, -380);
         modelStack.Scale(0.5, 0.5, 0.5);
         RenderMesh(meshList[GEO_SPHEREWHITE], true);
         modelStack.PopMatrix();
 
-        modelStack.PushMatrix();
-        modelStack.Translate(483, 15, -469);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREYELLOW], true);
-        modelStack.PopMatrix();
+        compactBallrender();
 
-        modelStack.PushMatrix();
-        modelStack.Translate(410, 15, -396);    //425
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLACK], true);
-        modelStack.PopMatrix();
-
-
-        modelStack.PushMatrix();
-        modelStack.Translate(339, 15, -465);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLUE], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(310, 15, -364);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHERERED], true);
-        modelStack.PopMatrix();
-
-        if (ballfloat2 >= 15)
+        if (ballredX >= 15)
         {
             ball[2] = false;
             SharedData::GetInstance()->ballpickup = false;
@@ -1800,114 +1902,55 @@ void SP2::loadChonGame()
     else if (ball[3] == true)
     {
         modelStack.PushMatrix();
-        modelStack.Translate(339, 15 + ballfloat3, -465);
+        modelStack.Translate(339, 15, -465);
         modelStack.Scale(0.5, 0.5, 0.5);
         RenderMesh(meshList[GEO_SPHEREBLUE], true);
         modelStack.PopMatrix();
 
-        modelStack.PushMatrix();
-        modelStack.Translate(483, 15, -469);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREYELLOW], true);
-        modelStack.PopMatrix();
+        compactBallrender();
 
-        modelStack.PushMatrix();
-        modelStack.Translate(410, 15, -396);    //425
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLACK], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(425, 15, -380);    //
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREWHITE], true);
-        modelStack.PopMatrix();
-
-
-        modelStack.PushMatrix();
-        modelStack.Translate(310, 15, -364);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHERERED], true);
-        modelStack.PopMatrix();
-
-        if (ballfloat3 >= 15)
+        if (ballredX >= 15)
         {
-            ball[3] = false;
-            SharedData::GetInstance()->ballpickup = false;
+            if(SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
+            {
+                ball[3] = false;
+                ballredX = 999;
+            }
+            else
+            {
+                ball[3] = false;
+                SharedData::GetInstance()->ballpickup = false;
+            }
         }
     }
     else if (ball[4] == true)
     {
         modelStack.PushMatrix();
-        modelStack.Translate(310, 15 + ballfloat4, -364);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHERERED], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(483, 15, -469);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREYELLOW], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(410, 15, -396);    //425
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLACK], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(425, 15, -380);    //
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREWHITE], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(339, 15, -465);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLUE], true);
-        modelStack.PopMatrix();
-
-     
-
-        if (ballfloat4 >= 15)
-        {
-            ball[4] = false;
-            SharedData::GetInstance()->ballpickup = false;
-        }
-    }
-    else
-    {
-        modelStack.PushMatrix();
-        modelStack.Translate(483, 15, -469);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREYELLOW], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(410, 15, -396);    //425
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLACK], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(425, 15, -380);    //
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREWHITE], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
-        modelStack.Translate(339, 15, -465);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLUE], true);
-        modelStack.PopMatrix();
-
-        modelStack.PushMatrix();
         modelStack.Translate(310, 15, -364);
         modelStack.Scale(0.5, 0.5, 0.5);
         RenderMesh(meshList[GEO_SPHERERED], true);
         modelStack.PopMatrix();
+
+        compactBallrender();
+
+        if (ballredX >= 15)
+        {
+            if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
+            {
+                ball[4] = false;
+                ballredX = 999;
+            }
+            else
+            {
+                ball[4] = false;
+                SharedData::GetInstance()->ballpickup = false;
+            }
+        }
     }
+    else
+    {
+        compactBallrender();
+    }*/
 }   
 
 void SP2::ballboundfunct()
@@ -3136,7 +3179,7 @@ void SP2::RenderUI()
 
         //practical purposes: check position of object
         s.str("");
-        s << "objpos:(" << objx << " , " << gateobjs[13] << ")";
+        s << "objpos:(" << objx << " , " << ballbluZ << ")";
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 16);
     }
 }
@@ -3511,56 +3554,3 @@ void SP2::rabbitBullet()
     float pitch, yaw;
     bool ifCollide;
 }
-
-
-//bool bulletTime = false;
-//bool bulletTarget = false;
-//float flyfly = 0;
-//Vector3 rabbitPos;
-//Vector3 playerPos;
-//Vector3 bulletPos;
-//Camera3 bullettarg;
-//rabbitPos = (1000, 0, 1000);
-//bulletPos = (1000, 0, 1000);
-
-//Vector3 view = (bullettarg.target - bullettarg.position);
-
-//if (Application::IsKeyPressed('0'))
-//{
-//    flyfly += 0.01;
-//    bulletTarget = true;
-//}
-////
-
-////if (randombulletshoot == 1)
-////    bulletTarget = true;
-
-////= SharedData::GetInstance()->player->position_;
-
-//if (bulletTarget == true)
-//{
-//    bulletTime = true;
-//    if (bulletTime == true)
-//    {
-//        playerPos = SharedData::GetInstance()->player->position_;
-//        bullettarg.position = (rabbitPos.x, 50, rabbitPos.y);               //Initialize bullet position to be above the rabbit.
-//        bullettarg.target = SharedData::GetInstance()->player->position_;   //Initialize the bullet target towards the player.  
-//        
-
-//        bullettarg.target.x += view.x * flyfly;
-//        bullettarg.target.y += view.y * flyfly;
-//        bullettarg.target.z += view.z * flyfly;
-//        //bullet.push_back(bullettarg.target);
-//        bulletTime = false;     
-//    }
-//    bullettarg.target += view * 10;     //Bullet Flies
-
-//    modelStack.PushMatrix();
-//    modelStack.Translate(bullettarg.target.x, bullettarg.target.y, bullettarg.target.z);
-//    RenderMesh(meshList[GEO_BULLET], true);
-//    modelStack.PopMatrix();
-//    bulletTarget = false;
-//    //playerPos;
-//    //bullettarg.target = (1400, 0, 1200);
-//}
-//flyfly = 0;
