@@ -262,7 +262,7 @@ void WeedInteraction::DoInteraction()
 		std::cout << " doInteraction: " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1 << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound2 << std::endl;
 		SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover2;
 		SharedData::GetInstance()->player->addItem(3);
-		SharedData::GetInstance()->pointscounter += 3;
+		SharedData::GetInstance()->pointscounter += 2;
 		SharedData::GetInstance()->weedcounter -= 1;
 		if (SharedData::GetInstance()->weedcounter == 0)
 		{
@@ -270,6 +270,10 @@ void WeedInteraction::DoInteraction()
 			SharedData::GetInstance()->player->setGold(SharedData::GetInstance()->player->getGold() + SharedData::GetInstance()->pointscounter);
 			SharedData::GetInstance()->pointscounter = 0;
 			SharedData::GetInstance()->weedGamebool = false;
+			if (SharedData::GetInstance()->player->getGold() < 0)
+			{
+				SharedData::GetInstance()->player->setGold(0);
+			}
 		}
 	}
 }

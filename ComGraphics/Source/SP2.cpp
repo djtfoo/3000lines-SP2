@@ -911,6 +911,8 @@ void SP2::Update(double dt)
 		else
 		{
 			loadSpaghetti();
+			loadWeedGame();
+			SharedData::GetInstance()->weedcounter = 10;
 		}
         SharedData::GetInstance()->interactptr->DoInteraction();
     }
