@@ -266,6 +266,7 @@ void MainMenu::Update(double dt)
             }
             else {
                 if (isClicked && !selected) {
+                    isClicked = false;
                     btncheck = 0;
                 }
             }

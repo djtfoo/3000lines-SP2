@@ -305,7 +305,7 @@ public:
     6, 7, 8, 9 = control*/
 
     void gateOpenInteractions();
-    void gateUpdate();
+    void gateUpdate(double dt);
     bool gateopenBool[8];
     GateInteraction gatebounds[8];
 

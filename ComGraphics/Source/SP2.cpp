@@ -1077,7 +1077,7 @@ void SP2::Update(double dt)
             ballfloat4 += 40 * dt;
     }
 
-    gateUpdate();
+    gateUpdate(dt);
 
     //Position of Light
     if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpos >= -1000)
@@ -1345,7 +1345,7 @@ void SP2::gateOpenInteractions()
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[7].bound1 = gateInterInit->bound1; gatebounds[7].bound2 = gateInterInit->bound2;
 }
-void SP2::gateUpdate()
+void SP2::gateUpdate(double dt)
 {
     if (SharedData::GetInstance()->gateopen)
     {
@@ -1358,8 +1358,8 @@ void SP2::gateUpdate()
 
                 if (gateopenBool[0] == true)
                 {//Hangar
-                    gateobjs[0] += 1;
-                    gateobjs[1] += 1;
+                    gateobjs[0] += 100 * dt;
+                    gateobjs[1] += 100 * dt;
 
                     if (gateobjs[0] >= 143)
                     {//btm, top
@@ -1371,8 +1371,8 @@ void SP2::gateUpdate()
                 }
                 if (gateopenBool[1] == true)
                 {//lab
-                    gateobjs[2] += 1;
-                    gateobjs[3] += 1;
+                    gateobjs[2] += 100 * dt;
+                    gateobjs[3] += 100 * dt;
 
                     if (gateobjs[2] >= 70)
                     {//btm, top
@@ -1384,8 +1384,8 @@ void SP2::gateUpdate()
                 }
                 if (gateopenBool[2] == true)
                 {//canteen 
-                    gateobjs[4] += 1;
-                    gateobjs[5] += 1;
+                    gateobjs[4] += 100 * dt;
+                    gateobjs[5] += 100 * dt;
 
                     if (gateobjs[4] >= 70)
                     {//btm, top
@@ -1397,10 +1397,10 @@ void SP2::gateUpdate()
                 }
                 if (gateopenBool[3] == true)
                 {//control
-                    gateobjs[6] += 1;
-                    gateobjs[7] += 1;
-                    gateobjs[8] += 1;
-                    gateobjs[9] += 1;
+                    gateobjs[6] += 100 * dt;
+                    gateobjs[7] += 100 * dt;
+                    gateobjs[8] += 100 * dt;
+                    gateobjs[9] += 100 * dt;
 
                     if (gateobjs[6] >= 70)
                     {
@@ -1414,7 +1414,7 @@ void SP2::gateUpdate()
                 }
                 if (gateopenBool[4] == true)
                 {//room 1
-                    gateobjs[10] += 1;
+                    gateobjs[10] += 100 * dt;
 
                     if (gateobjs[10] >= 70)
                         gateobjs[10] = 70;
@@ -1422,7 +1422,7 @@ void SP2::gateUpdate()
                 }
                 if (gateopenBool[5] == true)
                 {//r3
-                    gateobjs[11] += 1;
+                    gateobjs[11] += 100 * dt;
 
                     if (gateobjs[11] >= 243)
                         gateobjs[11] = 143;
@@ -1430,7 +1430,7 @@ void SP2::gateUpdate()
                 }
                 if (gateopenBool[6] == true)
                 {//r2
-                    gateobjs[12] += 1;
+                    gateobjs[12] += 100 * dt;
 
                     if (gateobjs[12] >= 243)
                         gateobjs[12] = 143;
@@ -1438,7 +1438,7 @@ void SP2::gateUpdate()
                 }
                 if (gateopenBool[7] == true)
                 {//r4
-                    gateobjs[13] += 1;
+                    gateobjs[13] += 100 * dt;
 
                     if (gateobjs[13] >= 243)
                         gateobjs[13] = 143;
@@ -1491,7 +1491,7 @@ void SP2::loadShop()
     {
         SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
     }
-}  
+}
 
 void SP2::loadWSGame()
 {  
@@ -2271,7 +2271,12 @@ void SP2::RenderDialogueOnScreen(std::string text, Color color, float size)
     modelStack.PopMatrix();
 
     //name
-    RenderTextOnScreen(meshList[GEO_TEXT], SharedData::GetInstance()->dialogueProcessor.npc->getName(), color, size, 1.5f, 5.3f);
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_SHOP) {
+        RenderTextOnScreen(meshList[GEO_TEXT], "StEMMIE", color, size, 1.5f, 5.3f);
+    }
+    else {
+        RenderTextOnScreen(meshList[GEO_TEXT], SharedData::GetInstance()->dialogueProcessor.npc->getName(), color, size, 1.5f, 5.3f);
+    }
     //message
     RenderTextOnScreen(meshList[GEO_TEXT], text, color, size, 1.5f, 3.7f);
 
