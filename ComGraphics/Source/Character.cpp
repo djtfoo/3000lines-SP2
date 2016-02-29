@@ -220,6 +220,11 @@ unsigned int Player::getGold()
     return gold_;
 }
 
+void Player::setGold(int moneh)
+{
+	gold_ = moneh;
+}
+
 void Player::setHunger(int hungee)
 {
 	hunger_ = hungee;

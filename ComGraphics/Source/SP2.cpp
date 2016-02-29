@@ -1544,10 +1544,16 @@ void SP2::loadWSGame()
 	RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30, 1, 1);
 
 	//RenderMinimap();
-	std::stringstream s;
-	s << "Points: " << SharedData::GetInstance()->pointscounter;
 	if (SharedData::GetInstance()->gamestate == GAME_STATE_WSGAME)
-	RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 5, 5, 9);
+	{
+		std::stringstream s;
+		s << "Points: " << SharedData::GetInstance()->pointscounter;
+		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
+		s.str("");
+		s << "Weeds: " << SharedData::GetInstance()->weedcounter;
+		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0.1), 3, 0, 12);
+	}
+	
 
 	//interaction
 	if (SharedData::GetInstance()->canInteract) {
@@ -3081,6 +3087,11 @@ void SP2::RenderUI()
         //FPS
         s << "FPS:" << FramePerSecond;
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 19);
+
+		//moneh
+		s.str("");
+		s << "Gold: " << SharedData::GetInstance()->player->getGold();
+		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9, 0.9, 0), 3, 0, 14);
         
         //player position coordinates
         s.str("");

@@ -80,8 +80,11 @@ void DialogueProcessor::CheckCursor(double dt)
                     SharedData::GetInstance()->chonGamebool = true;
                 }
                 else if (npc->getName() == "Wengstang") {
-                    SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
-                    SharedData::GetInstance()->weedGamebool = true;
+					if (SharedData::GetInstance()->weedcounter != 0)
+					{
+						SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
+						SharedData::GetInstance()->weedGamebool = true;
+					}
                 }
                 else {  //temp
                     SharedData::GetInstance()->gamestate = GAME_STATE_FREE;

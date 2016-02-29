@@ -21,6 +21,7 @@ public:
     bool programstate_change;
 	float daynighttime;
 	int pointscounter;
+	int weedcounter;
 
     //Dem Gamestates
     GAME_STATE gamestate;
@@ -127,6 +128,7 @@ private:
 		//weed mini-game
 		weedGamebool = false;
 		pointscounter = 0;
+		weedcounter = 10;
     }
     ~SharedData() {
         delete player;

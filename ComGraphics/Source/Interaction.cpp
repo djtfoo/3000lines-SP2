@@ -263,6 +263,14 @@ void WeedInteraction::DoInteraction()
 		SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover2;
 		SharedData::GetInstance()->player->addItem(3);
 		SharedData::GetInstance()->pointscounter += 3;
+		SharedData::GetInstance()->weedcounter -= 1;
+		if (SharedData::GetInstance()->weedcounter == 0)
+		{
+			SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
+			SharedData::GetInstance()->player->setGold(SharedData::GetInstance()->player->getGold() + SharedData::GetInstance()->pointscounter);
+			SharedData::GetInstance()->pointscounter = 0;
+			SharedData::GetInstance()->weedGamebool = false;
+		}
 	}
 }
 

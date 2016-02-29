@@ -53,7 +53,7 @@ public:
 
     void setHunger(int hungee);
     void setHealth();
-    void setGold();
+    void setGold(int moneh);
 
     bool isDead();
 
