@@ -111,6 +111,11 @@ SP2::SP2()
     meshList[GEO_SHOPUI] = MeshBuilder::GenerateQuad("shop_ui", Color(1, 0.8, 0.8),1,1);
     meshList[GEO_SHOPUI]->textureID = LoadTGA("Image/layout/canteen_walls.tga");
 
+    meshList[GEO_HEART] = MeshBuilder::GenerateQuad("love meter heart", Color(1, 0, 0), 3, 3);
+    meshList[GEO_HEART]->textureID = LoadTGA("Image/heart.tga");
+
+    meshList[GEO_LOVEMETER_BAR] = MeshBuilder::GenerateOBJ("hunger_bar", "OBJ/bar_bar.obj");
+    meshList[GEO_LOVEMETER_BAR]->textureID = LoadTGA("Image/lovemeter.tga");
 
     //skybox
     meshList[GEO_SKYBOX_LEFT] = MeshBuilder::GenerateQuad("skybox_left", Color(1, 1, 1), 1500, 1500);
@@ -3666,6 +3671,11 @@ void SP2::UpdateInventory(double dt)
 
 void SP2::RenderLoveMeter()
 {
-    RenderObjectOnScreen();
-    SharedData::GetInstance()->dialogueProcessor.npc;
+    RenderObjectOnScreen(meshList[GEO_HEART], 1.5f, 40, 1, 1);
+    int loveMeter = SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter();
+    RenderObjectOnScreen(meshList[GEO_LOVEMETER_BAR], 1.5f, 18, (0.5f + loveMeter / 5), 1, 90);
+    
+    std::stringstream ss;
+    ss << loveMeter << "%";
+    RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 2, 2.f, 18);
 }

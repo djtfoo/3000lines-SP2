@@ -497,6 +497,22 @@ NPC::~NPC()
 {
 }
 
+int NPC::getLoveMeter()
+{
+    return loveMeter_;
+}
+
+void NPC::setLoveMeter(const int newLoveMeter)
+{
+    loveMeter_ = newLoveMeter;
+    if (loveMeter_ > 100) {
+        loveMeter_ = 100;
+    }
+    else if (loveMeter_ < 0) {
+        loveMeter_ = 0;
+    }
+}
+
 std::string NPC::Speech()
 {
     //go through map to find the dialogue

@@ -77,12 +77,13 @@ public:
 class NPC : public Character
 {
 private:
-    unsigned int loveMeter_;
+    int loveMeter_;
 
 public:
     NPC(std::string name, const Vector3& pos, std::string textDirectory);
     virtual ~NPC();
-    unsigned int getLoveMeter();
+    int getLoveMeter();
+    void setLoveMeter(const int newLoveMeter);
     map<CONVO_STATE, std::string> dialogues;    //map for dialogues
     std::string Speech();
 };

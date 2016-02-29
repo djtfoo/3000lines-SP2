@@ -154,7 +154,7 @@ class SP2 : public Scene
         GEO_DIALOGUEOPTION,
 
         GEO_HEART,
-        GEO_LOVEMETER,
+        GEO_LOVEMETER_BAR,
 
         //Switches
         GEO_SWITCH_1,

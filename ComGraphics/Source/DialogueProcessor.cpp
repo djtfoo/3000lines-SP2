@@ -46,6 +46,9 @@ void DialogueProcessor::CheckCursor(double dt)
             }
             if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 38.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 33.5f))) {
                 convostate = CONVO_COMPLIMENT;
+                if (npc->getLoveMeter() < 20) {     //compliments can only increase love meter until 20%
+                    npc->setLoveMeter(npc->getLoveMeter() + 1);
+                }
                 elapsedTime = 0;
             }
             if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 45.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 40.5f))) {
@@ -80,7 +83,7 @@ void DialogueProcessor::CheckCursor(double dt)
                     SharedData::GetInstance()->chonGamebool = true;
                 }
                 else if (npc->getName() == "Wengstang") {
-					if (SharedData::GetInstance()->weedcounter != 0)
+					if (SharedData::GetInstance()->weedcounter != 0)    //weeds must reset
 					{
 						SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
 						SharedData::GetInstance()->weedGamebool = true;
