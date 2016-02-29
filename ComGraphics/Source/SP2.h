@@ -87,6 +87,11 @@ class SP2 : public Scene
         GEO_UMBRELLASTAND,
         GEO_TOILBOWL,
 		GEO_BED,
+		GEO_DETERMINATION,
+		GEO_MEWMEWKISSYCUTIE,
+		GEO_DOGFOOD,
+		GEO_TRASH,
+		GEO_BOOK,
         GEO_LMAO,   //a sh*tty joke
         //^^^
 

@@ -485,6 +485,41 @@ SP2::SP2()
 	meshList[GEO_SHED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
 	meshList[GEO_SHED]->material.kShininess = 1.f;
 
+	meshList[GEO_DETERMINATION] = MeshBuilder::GenerateOBJ("determination", "OBJ/determination.obj");
+	meshList[GEO_DETERMINATION]->textureID = LoadTGA("Image/determination.tga");
+	meshList[GEO_DETERMINATION]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_DETERMINATION]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_DETERMINATION]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_DETERMINATION]->material.kShininess = 1.f;
+
+	meshList[GEO_MEWMEWKISSYCUTIE] = MeshBuilder::GenerateOBJ("mewmewkissycutie", "OBJ/mewmewkissycutie.obj");
+	meshList[GEO_MEWMEWKISSYCUTIE]->textureID = LoadTGA("Image/mewmewkissycutie.tga");
+	meshList[GEO_MEWMEWKISSYCUTIE]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_MEWMEWKISSYCUTIE]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_MEWMEWKISSYCUTIE]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_MEWMEWKISSYCUTIE]->material.kShininess = 1.f;
+
+	meshList[GEO_DOGFOOD] = MeshBuilder::GenerateOBJ("dogfood", "OBJ/dogfood.obj");
+	meshList[GEO_DOGFOOD]->textureID = LoadTGA("Image/dogfood.tga");
+	meshList[GEO_DOGFOOD]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_DOGFOOD]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_DOGFOOD]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_DOGFOOD]->material.kShininess = 1.f;
+
+	meshList[GEO_TRASH] = MeshBuilder::GenerateOBJ("trash", "OBJ/trash.obj");
+	meshList[GEO_TRASH]->textureID = LoadTGA("Image/trash.tga");
+	meshList[GEO_TRASH]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_TRASH]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_TRASH]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_TRASH]->material.kShininess = 1.f;
+
+	meshList[GEO_BOOK] = MeshBuilder::GenerateOBJ("book", "OBJ/book.obj");
+	meshList[GEO_BOOK]->textureID = LoadTGA("Image/book.tga");
+	meshList[GEO_BOOK]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+	meshList[GEO_BOOK]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+	meshList[GEO_BOOK]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+	meshList[GEO_BOOK]->material.kShininess = 1.f;
+
 	    //GEO_SWITCH
     meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
     meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
@@ -2547,6 +2582,39 @@ void SP2::RenderRoom()
 	modelStack.Translate(533, 4, 188);
 	modelStack.Scale(3, 5, 4);
 	RenderMesh(meshList[GEO_BED], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(429, 2, -110);
+	modelStack.Scale(5, 6, 5);
+	RenderMesh(meshList[GEO_MEWMEWKISSYCUTIE], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(430, 2, -75);
+	modelStack.Scale(3, 6, 3);
+	RenderMesh(meshList[GEO_TRASH], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(465, 2, -151);
+	modelStack.Rotate(-90, 0, 1, 0);
+	modelStack.Scale(4, 6, 4);
+	RenderMesh(meshList[GEO_DOGFOOD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(500, 2, -151);
+	modelStack.Rotate(-90, 0, 1, 0);
+	modelStack.Scale(4, 6, 4);
+	RenderMesh(meshList[GEO_TABLE], true);
+	modelStack.PopMatrix();
+
+	// other room
+	modelStack.PushMatrix();
+	modelStack.Translate(740, 2, -140);
+	modelStack.Scale(4, 6, 4);
+	RenderMesh(meshList[GEO_TABLE], true);
 	modelStack.PopMatrix();
 }
 
