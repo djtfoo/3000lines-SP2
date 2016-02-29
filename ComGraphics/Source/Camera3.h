@@ -13,9 +13,6 @@ private:
     Vector3 defaultUp;
 
 public:
-    float phi;          //this is the angle of elevation
-    float theta;        //this is the angle of azimuth
-    float distance;     //this is the distance between camera and the origin
     float active;       //To check if bullet active;
     float dy, dx;       //Speed of Bullet
 

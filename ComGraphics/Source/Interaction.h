@@ -7,11 +7,12 @@
 class Interaction
 {
 protected:
-    Interaction();
+    Interaction(bool pressbutton);
 
 public:
     Vector3 bound1, bound2;
     virtual ~Interaction();
+    const bool pressButton;     //whether this interaction requires a key press
     virtual void DoInteraction() = 0;   //simple do-interactions
 
 };

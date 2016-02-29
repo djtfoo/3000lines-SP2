@@ -2,7 +2,7 @@
 #include "SharedData.h"
 
 //abstract class of interaction
-Interaction::Interaction()
+Interaction::Interaction(bool pressbutton) : pressButton(pressbutton)
 {
 }
 
@@ -11,7 +11,7 @@ Interaction::~Interaction()
 }
 
 //Gate interaction open/close
-GateInteraction::GateInteraction()
+GateInteraction::GateInteraction() : Interaction(false)
 {
 }
 GateInteraction::~GateInteraction()
@@ -32,7 +32,7 @@ void GateInteraction::DoInteraction()
 
 
 //pipe puzzle interaction (rotation)
-PipePuzzleInteraction::PipePuzzleInteraction() : Interaction()
+PipePuzzleInteraction::PipePuzzleInteraction() : Interaction(true)
 {
 }
 
@@ -45,7 +45,7 @@ void PipePuzzleInteraction::DoInteraction()
 }
 
 //Dialogue Interaction class
-Dialogue::Dialogue() : Interaction()
+Dialogue::Dialogue() : Interaction(true)
 {
 }
 
@@ -76,7 +76,7 @@ void Dialogue::DoInteraction()
 }
 
 //shop interaction (enter shop state)
-ShopInteraction::ShopInteraction() : Interaction()
+ShopInteraction::ShopInteraction() : Interaction(true)
 {
 }
 
@@ -92,7 +92,7 @@ void ShopInteraction::DoInteraction()
 
 
 //flush away~! (get rid of manure)
-ManureInteraction::ManureInteraction() : Interaction()
+ManureInteraction::ManureInteraction() : Interaction(true)
 {
 }
 
@@ -106,7 +106,7 @@ void ManureInteraction::DoInteraction()
 }
 
 //Lab Game. ChOncHon time
-ChonGame::ChonGame() :Interaction()
+ChonGame::ChonGame() :Interaction(true)
 {
 }
 
@@ -119,7 +119,7 @@ void ChonGame::DoInteraction()
     SharedData::GetInstance()->chonGamebool = true;
 }
 
-chonBallInteraction::chonBallInteraction() : Interaction()
+chonBallInteraction::chonBallInteraction() : Interaction(true)
 {
 }
 
@@ -133,7 +133,7 @@ void chonBallInteraction::DoInteraction()
 }
 
 //MOM'S SPAGHETTI
-SpaghettoInteraction::SpaghettoInteraction() : Interaction()
+SpaghettoInteraction::SpaghettoInteraction() : Interaction(true)
 {
 }
 
@@ -153,7 +153,7 @@ void SpaghettoInteraction::DoInteraction()
 	SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
 	SharedData::GetInstance()->player->addItem(4);
 }
-VeePuzzleSwitchOneInteraction::VeePuzzleSwitchOneInteraction() : Interaction()
+VeePuzzleSwitchOneInteraction::VeePuzzleSwitchOneInteraction() : Interaction(true)
 {
 }
 
@@ -167,7 +167,7 @@ void VeePuzzleSwitchOneInteraction::DoInteraction()
     if (SharedData::GetInstance()->one > 6)
         SharedData::GetInstance()->one = 1;
 }
-VeePuzzleSwitchTwoInteraction::VeePuzzleSwitchTwoInteraction() : Interaction()
+VeePuzzleSwitchTwoInteraction::VeePuzzleSwitchTwoInteraction() : Interaction(true)
 {
 }
 
@@ -181,7 +181,7 @@ void VeePuzzleSwitchTwoInteraction::DoInteraction()
     if (SharedData::GetInstance()->two > 6)
         SharedData::GetInstance()->two = 1;
 }
-VeePuzzleSwitchThreeInteraction::VeePuzzleSwitchThreeInteraction() : Interaction()
+VeePuzzleSwitchThreeInteraction::VeePuzzleSwitchThreeInteraction() : Interaction(true)
 {
 }
 
@@ -195,7 +195,7 @@ void VeePuzzleSwitchThreeInteraction::DoInteraction()
     if (SharedData::GetInstance()->three > 6)
         SharedData::GetInstance()->three = 1;
 }
-VeePuzzleSwitchFourInteraction::VeePuzzleSwitchFourInteraction() : Interaction()
+VeePuzzleSwitchFourInteraction::VeePuzzleSwitchFourInteraction() : Interaction(true)
 {
 }
 
@@ -209,7 +209,7 @@ void VeePuzzleSwitchFourInteraction::DoInteraction()
     if (SharedData::GetInstance()->four > 6)
         SharedData::GetInstance()->four = 1;
 }
-VeePuzzleCheckerSwitchInteraction::VeePuzzleCheckerSwitchInteraction() : Interaction()
+VeePuzzleCheckerSwitchInteraction::VeePuzzleCheckerSwitchInteraction() : Interaction(true)
 {
 }
 
@@ -228,7 +228,7 @@ void VeePuzzleCheckerSwitchInteraction::DoInteraction()
     //Trigger fail.
 }
 
-BedTime::BedTime() : Interaction()
+BedTime::BedTime() : Interaction(true)
 {
 }
 
@@ -244,7 +244,7 @@ void BedTime::DoInteraction()
 	}
 }
 
-WeedInteraction::WeedInteraction() : Interaction()
+WeedInteraction::WeedInteraction() : Interaction(true)
 {
 }
 
@@ -274,7 +274,7 @@ void WeedInteraction::DoInteraction()
 	}
 }
 
-FarmPlantInteraction::FarmPlantInteraction() : Interaction()
+FarmPlantInteraction::FarmPlantInteraction() : Interaction(true)
 {
 }
 

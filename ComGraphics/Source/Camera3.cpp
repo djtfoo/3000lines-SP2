@@ -13,9 +13,6 @@ Default constructor
 /******************************************************************************/
 Camera3::Camera3()
 {
-    phi = 15;
-    theta = 20;
-    distance = 30;
     active = 0;
 }
 
@@ -90,32 +87,36 @@ void Camera3::MoveCamera(double dt)
         double diff_xpos = SharedData::GetInstance()->cursor_xpos - SharedData::GetInstance()->cursor_newxpos;
         SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
 
-        theta -= diff_xpos * ROTSPEED * dt;
+        Mtx44 rotation;
+        rotation.SetToIdentity();
+        rotation.SetToRotation((float)(diff_xpos * ROTSPEED * dt), 0, 1, 0);
+        Vector3 view = target - position;
+        view = rotation * view;
+        target = position + view;
+
+        view = view.Normalized();
+        Vector3 right = view.Cross(up);
+        right.y = 0;
+        right.Normalize();
+        up = right.Cross(view).Normalized();
     }
 
     if (SharedData::GetInstance()->cursor_newypos != SharedData::GetInstance()->cursor_ypos) {
         double diff_ypos = SharedData::GetInstance()->cursor_ypos - SharedData::GetInstance()->cursor_newypos;
         SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
 
-        phi -= diff_ypos * ROTSPEED * dt;
-        if (phi > 50) {
-            phi = 50;
-        }
-        else if (phi < -30) {
-            phi = -30;
+        Vector3 view = (target - position).Normalized();
+        Vector3 right = view.Cross(up);
+        right.y = 0;
+        right.Normalize();
+        up = right.Cross(view).Normalized();
+        Mtx44 rotation;
+        rotation.SetToIdentity();
+        rotation.SetToRotation((float)(diff_ypos * ROTSPEED * dt), right.x, right.y, right.z);
+        view = rotation * view;
+        if (view.y < 0.8f && view.y > -0.9f) {
+            target = position + view;
         }
     }
 
-    target = SharedData::GetInstance()->player->position_;
-    target.y += 25.0f;
-
-    position.x = distance * cos(Math::DegreeToRadian(phi)) * cos(Math::DegreeToRadian(theta)) + target.x;
-    position.y = distance * sin(Math::DegreeToRadian(phi)) + target.y;
-    position.z = distance * cos(Math::DegreeToRadian(phi)) * sin(Math::DegreeToRadian(theta)) + target.z;
-
-    Vector3 view = (target - position).Normalized();
-    Vector3 right = view.Cross(up);
-    right.y = 0;
-    right.Normalize();
-    up = right.Cross(view).Normalized();
 }

@@ -444,7 +444,7 @@ SP2::SP2()
     meshList[GEO_MAP] = MeshBuilder::GenerateMinimap("map", 10, 10);
     meshList[GEO_MAP]->textureID = LoadTGA("Image/Donna.tga");
 
-	meshList[GEO_DAYNIGHTICON] = MeshBuilder::GenerateQuad("daynight", Color(1, 1, 1), 18, 18);
+	meshList[GEO_DAYNIGHTICON] = MeshBuilder::GenerateQuad("daynight", Color(1, 1, 1), 12, 12);
 	meshList[GEO_DAYNIGHTICON]->textureID = LoadTGA("Image/daynighticon.tga");
 
 	meshList[GEO_TOILETFLOOD] = MeshBuilder::GenerateQuad("toiletflood", Color(1, 1, 1), 18, 18);
@@ -891,8 +891,8 @@ void SP2::Update(double dt)
 
     //temporary check
     if (SharedData::GetInstance()->gamestate != GAME_STATE_DIALOGUE) {
-        SharedData::GetInstance()->player->Walk(dt);
         SharedData::GetInstance()->camera->Update(dt);
+        SharedData::GetInstance()->player->Walk(dt);
     }
     else {
         SharedData::GetInstance()->dialogueProcessor.CheckCursor(dt);
@@ -1235,7 +1235,7 @@ void SP2::loadFree()
     modelStack.Translate(0, 12, 0);
     modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
     modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
-    RenderPlayer();
+    //RenderPlayer();
     modelStack.PopMatrix();
 
 	for (int i = 0; i < 12; i++)
@@ -1278,7 +1278,7 @@ void SP2::loadFree()
     //RenderMinimap();
     
     //interaction
-    if (SharedData::GetInstance()->canInteract) {
+    if (SharedData::GetInstance()->canInteract && SharedData::GetInstance()->interactptr->pressButton) {
         RenderTextOnScreen(meshList[GEO_TEXT], "Press E", Color(1, 0, 0), 3, 2, 2);
     }
 }  
@@ -1519,7 +1519,7 @@ void SP2::loadWSGame()
 	modelStack.Translate(0, 12, 0);
 	modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
 	modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
-	RenderPlayer();
+	//RenderPlayer();
 	modelStack.PopMatrix();
 
 	for (int i = 0; i < 12; i++)
@@ -1572,7 +1572,7 @@ void SP2::loadWSGame()
 	
 
 	//interaction
-	if (SharedData::GetInstance()->canInteract) {
+    if (SharedData::GetInstance()->canInteract && SharedData::GetInstance()->interactptr->pressButton) {
 		RenderTextOnScreen(meshList[GEO_TEXT], "Press E", Color(1, 0, 0), 3, 2, 2);
 	}
 
@@ -2125,7 +2125,7 @@ void SP2::loadRabbitGame()
     modelStack.Translate(0, 12, 0);
     modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
     modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
-    RenderPlayer();
+    //RenderPlayer();
     modelStack.PopMatrix();
 
     rabbitBullet();
@@ -3063,7 +3063,7 @@ void SP2::RenderTimeOnScreen(Mesh* mesh, float x, float y)
 	modelStack.Translate(x, y, 0);
 	modelStack.Rotate(-timerotator, 0, 0, 1);
 	modelStack.Rotate(-75, 0, 0, 1);
-	modelStack.Scale(1.3, 1.3, 1.3);
+	//modelStack.Scale(1.3, 1.3, 1.3);
 	RenderMesh(mesh, false);
 	modelStack.PopMatrix();
 
@@ -3502,10 +3502,10 @@ void SP2::rabbitBullet()
             bullet[i].x  = SharedData::GetInstance()->player->position_.x;
             bullet[i].y = SharedData::GetInstance()->player->position_.y;
             bullet[i].z = SharedData::GetInstance()->player->position_.z;
-            bullet[i].bullet_phi = SharedData::GetInstance()->camera->phi;
-            bullet[i].dx = -100 * cos(Math::DegreeToRadian(SharedData::GetInstance()->camera->theta));
-            bullet[i].dy = 100 * sin(Math::DegreeToRadian(SharedData::GetInstance()->camera->phi));
-            bullet[i].dz = 100 * cos(Math::DegreeToRadian(SharedData::GetInstance()->camera->phi)) * sin(Math::DegreeToRadian(SharedData::GetInstance()->camera->theta));
+            //bullet[i].bullet_phi = SharedData::GetInstance()->camera->phi;
+            //bullet[i].dx = -100 * cos(Math::DegreeToRadian(SharedData::GetInstance()->camera->theta));
+            //bullet[i].dy = 100 * sin(Math::DegreeToRadian(SharedData::GetInstance()->camera->phi));
+            //bullet[i].dz = 100 * cos(Math::DegreeToRadian(SharedData::GetInstance()->camera->phi)) * sin(Math::DegreeToRadian(SharedData::GetInstance()->camera->theta));
         }
         test = 0;
     }

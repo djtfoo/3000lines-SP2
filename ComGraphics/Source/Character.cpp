@@ -21,7 +21,7 @@ std::string Character::getName()
     return name_;
 }
 
-Player::Player(std::string name) : Character(name, Vector3(0, 0, 0), 0), hunger_(0), health_(100), gold_(0), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0)
+Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(0), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -35,18 +35,11 @@ Player::~Player()
 
 static float WALKSPEED = 40.f;
 
-void Player::Walk(double dt)
+/*void Player::Walk(double dt)
 {
     bool xMovement = true, zMovement = true;
     float newX = position_.x;
     float newZ = position_.z;
-
-    /*if (Application::IsKeyPressed('F')) {   //sped up moving forward
-        direction_ = 90 - SharedData::GetInstance()->camera->theta;
-
-        newX -= 130 * sin(Math::DegreeToRadian(direction_)) * dt;
-        newZ -= 130 * cos(Math::DegreeToRadian(direction_)) * dt;
-    }*/
 
     if (Application::IsKeyPressed(VK_SHIFT)) {   //sped up moving
         WALKSPEED = 100.f;
@@ -54,7 +47,7 @@ void Player::Walk(double dt)
     else {
         WALKSPEED = 40.f;
     }
-    
+
     if (Application::IsKeyPressed('W')) {   //player moves forward
         direction_ = 90 - SharedData::GetInstance()->camera->theta;
 
@@ -99,6 +92,75 @@ void Player::Walk(double dt)
     if (zMovement) {
         position_.z = newZ;
     }
+
+}*/
+
+void Player::Walk(double dt)
+{
+    bool xMovement = true, zMovement = true;
+    float newX = position_.x;
+    float newZ = position_.z;
+
+    if (Application::IsKeyPressed(VK_SHIFT)) {   //sped up moving
+        WALKSPEED = 130.f;
+    }
+    else {
+        WALKSPEED = 40.f;
+    }
+    
+    if (Application::IsKeyPressed('W')) {   //player moves forward
+        Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position);
+        view.y = 0;
+        view = view.Normalized();
+
+        newX = SharedData::GetInstance()->camera->target.x + view.x * dt * WALKSPEED;
+        newZ = SharedData::GetInstance()->camera->target.z + view.z * dt * WALKSPEED;
+    }
+
+    if (Application::IsKeyPressed('S')) {   //player moves backward
+        Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position);
+        view.y = 0;
+        view = view.Normalized();
+
+        newX = SharedData::GetInstance()->camera->target.x - view.x * dt * WALKSPEED;
+        newZ = SharedData::GetInstance()->camera->target.z - view.z * dt * WALKSPEED;
+    }
+
+    if (Application::IsKeyPressed('A')) {   //strafe left
+        Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
+        Vector3 right = view.Cross(SharedData::GetInstance()->camera->up);
+        right.y = 0;
+        right.Normalize();
+
+        newX = SharedData::GetInstance()->camera->target.x - right.x * dt * WALKSPEED;
+        newZ = SharedData::GetInstance()->camera->target.z - right.z * dt * WALKSPEED;
+    }
+
+    if (Application::IsKeyPressed('D')) {   //strafe right
+        Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
+        Vector3 right = view.Cross(SharedData::GetInstance()->camera->up);
+        right.y = 0;
+        right.Normalize();
+
+        newX = SharedData::GetInstance()->camera->target.x + right.x * dt * WALKSPEED;
+        newZ = SharedData::GetInstance()->camera->target.z + right.z * dt * WALKSPEED;
+    }
+
+    CheckCollision(newX, newZ, xMovement, zMovement);
+
+    Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
+
+    if (xMovement) {
+        position_.x = newX;
+        SharedData::GetInstance()->camera->target.x = newX;
+        //SharedData::GetInstance()->camera->position.x = newX - view.x;
+    }
+    if (zMovement) {
+        position_.z = newZ;
+        SharedData::GetInstance()->camera->target.z = newZ;
+        //SharedData::GetInstance()->camera->position.z = newZ - view.z;
+    }
+    SharedData::GetInstance()->camera->position = SharedData::GetInstance()->camera->target - view;
 
 }
 
