@@ -2223,9 +2223,17 @@ void SP2::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float si
     glBindTexture(GL_TEXTURE_2D, mesh->textureID);
     glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
 
+    float xTranslation = 0.5f, yTranslation = 0.5f;
     for (unsigned i = 0; i < text.length(); ++i) {
         Mtx44 characterSpacing;
-        characterSpacing.SetToTranslation(i * 1.0f + 0.5f, 0.5f, 0);  //1.f is the spacing of each character (can be changed)
+        if (i > 0) {
+            xTranslation += 0.8f;
+            if (xTranslation >= 22.9f) {
+                yTranslation -= 1.f;
+                xTranslation -= 22.9f;
+            }
+        }
+        characterSpacing.SetToTranslation(xTranslation, yTranslation, 0);  //0.8f is the spacing of each character (can be changed)
         Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
         glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
         mesh->Render((unsigned)text[i] * 6, 6);
