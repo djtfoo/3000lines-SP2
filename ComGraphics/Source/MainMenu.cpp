@@ -102,117 +102,178 @@ void MainMenu::Update(double dt)
     //objx,y is for testing purpose use to determine location of anything
     //can be applied on anything at will
 
-    switch (state)
-    {
-    case MENU_MAIN:
-        elapsedTime += dt;
-        if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width / 2.52) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 1.75)
-            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.3) && (SharedData::GetInstance()->height / 1.5)) {
-            if (!selected && Application::IsKeyPressed(VK_LBUTTON)) {
-                isClicked = true;
-                btncheck = 1;
-            }
-            else if (isClicked && btncheck == 1) {
-                clicked = true;
-                isClicked = false;
-                selected = true;
-            }
-        }
+    if (Application::IsKeyPressed(VK_LBUTTON)) {
 
-        //HELP BUTTON
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.85) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 2.25)) {
-            if (!selected && Application::IsKeyPressed(VK_LBUTTON))
-            {
-                isClicked = true;
-                btncheck = 3;
+        switch (state)
+        {
+        case MENU_MAIN:
+            elapsedTime += dt;
+            if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width / 2.52) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 1.75)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.3) && (SharedData::GetInstance()->height / 1.5)) {
+                if (!selected) {
+                    isClicked = true;
+                    btncheck = 1;
+                }
+                else if (isClicked && btncheck == 1) {
+                    clicked = true;
+                    isClicked = false;
+                    selected = true;
+                }
             }
-            else if (isClicked && btncheck == 3) {
-                clicked = true;
-                isClicked = false;
-                selected = true;
-            }
-        }
 
-        //OPTION BUTTON
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.1) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.8)) {
-            if (!selected && Application::IsKeyPressed(VK_LBUTTON)) {
-                isClicked = true;
-                btncheck = 4;
+            //HELP BUTTON
+            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.85) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 2.25)) {
+                if (!selected)
+                {
+                    isClicked = true;
+                    btncheck = 3;
+                }
+                else if (isClicked && btncheck == 3) {
+                    clicked = true;
+                    isClicked = false;
+                    selected = true;
+                }
             }
-            else if (isClicked && btncheck == 4) {
-                clicked = true;
-                isClicked = false;
-                selected = true;
-            }
-        }
 
-        //CREDITS BUTTON
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.7) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.47)) {
-            if (!selected && Application::IsKeyPressed(VK_LBUTTON))
-            {
-                isClicked = true;
-                btncheck = 5;
+            //OPTION BUTTON
+            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.1) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.8)) {
+                if (!selected && Application::IsKeyPressed(VK_LBUTTON)) {
+                    isClicked = true;
+                    btncheck = 4;
+                }
+                else if (isClicked && btncheck == 4) {
+                    clicked = true;
+                    isClicked = false;
+                    selected = true;
+                }
             }
-            else if (isClicked && btncheck == 5) {
-                clicked = true;
-                isClicked = false;
-                selected = true;
-            }
-        }
 
-        //EXIT BUTTON
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
-            if (!selected && Application::IsKeyPressed(VK_LBUTTON) && elapsedTime >= bufferTime)
-            {
-                isClicked = true;
-                btncheck = 6;
+            //CREDITS BUTTON
+            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.7) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.47)) {
+                if (!selected && Application::IsKeyPressed(VK_LBUTTON))
+                {
+                    isClicked = true;
+                    btncheck = 5;
+                }
+                else if (isClicked && btncheck == 5) {
+                    clicked = true;
+                    isClicked = false;
+                    selected = true;
+                }
             }
-            else if (isClicked && btncheck == 6) {
-                clicked = true;
-                isClicked = false;
-                selected = true;
+
+            //EXIT BUTTON
+            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
+                if (!selected && Application::IsKeyPressed(VK_LBUTTON) && elapsedTime >= bufferTime)
+                {
+                    isClicked = true;
+                    btncheck = 6;
+                }
+                else if (isClicked && btncheck == 6) {
+                    clicked = true;
+                    isClicked = false;
+                    selected = true;
+                }
             }
-        }
 
-        break;
+            break;
 
-    case MENU_INSTRUCTIONS:
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
-            if (Application::IsKeyPressed(VK_LBUTTON)) {
+        case MENU_INSTRUCTIONS:
+            if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
+                if (Application::IsKeyPressed(VK_LBUTTON)) {
+                    state = MENU_MAIN;
+                    elapsedTime = 0;
+                }
+            }
+
+            break;
+
+        case MENU_OPTIONS:
+            if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
                 state = MENU_MAIN;
                 elapsedTime = 0;
             }
-        }
+            break;
 
-        break;
-
-    case MENU_OPTIONS:
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
-            if (Application::IsKeyPressed(VK_LBUTTON))
-            {
+        case MENU_CREDITS:
+            if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
                 state = MENU_MAIN;
                 elapsedTime = 0;
             }
-        }
-        break;
+            break;
 
-    case MENU_CREDITS:
-        if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
-            if (Application::IsKeyPressed(VK_LBUTTON)) {
-                state = MENU_MAIN;
-                elapsedTime = 0;
-            }
         }
-        break;
 
     }
+
+    else {
+        if (state == MENU_MAIN) {
+            elapsedTime += dt;
+            if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width / 2.52) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 1.75)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.3) && (SharedData::GetInstance()->height / 1.5)) {
+                if (isClicked && btncheck == 1) {
+                    clicked = true;
+                    isClicked = false;
+                    selected = true;
+                }
+            }
+
+            //HELP BUTTON
+            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.85) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 2.25)) {
+                if (isClicked && btncheck == 3) {
+                    clicked = true;
+                    isClicked = false;
+                    selected = true;
+                }
+            }
+
+            //OPTION BUTTON
+            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.1) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.8)) {
+                if (isClicked && btncheck == 4) {
+                    clicked = true;
+                    isClicked = false;
+                    selected = true;
+                }
+            }
+
+            //CREDITS BUTTON
+            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.7) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.47)) {
+                if (isClicked && btncheck == 5) {
+                    clicked = true;
+                    isClicked = false;
+                    selected = true;
+                }
+            }
+
+            //EXIT BUTTON
+            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
+                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
+                if (isClicked && btncheck == 6) {
+                    clicked = true;
+                    isClicked = false;
+                    selected = true;
+                }
+            }
+            else {
+                if (isClicked && !selected) {
+                    btncheck = 0;
+                }
+            }
+
+        }
+
+    }
+    
 
     ButtonUpdater(dt);
 
