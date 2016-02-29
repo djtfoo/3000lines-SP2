@@ -256,12 +256,21 @@ void WeedInteraction::DoInteraction()
 {
 	if (SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x != 9999)
 	{
-		Interaction* remover;
-		remover = new WeedInteraction();
-		remover->bound1.Set(9999, 99, 9999); remover->bound2.Set(9999, 99, 9999);
-		std::cout << " " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1 << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound2 << std::endl;
-		SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
+		Interaction* remover2;
+		remover2 = new WeedInteraction();
+		remover2->bound1.Set(9999, 99, 9999); remover2->bound2.Set(9999, 99, 9999);
+		std::cout << " doInteraction: " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1 << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound2 << std::endl;
+		SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover2;
 		SharedData::GetInstance()->player->addItem(3);
+		SharedData::GetInstance()->pointscounter += 2;
+		SharedData::GetInstance()->weedcounter -= 1;
+		if (SharedData::GetInstance()->weedcounter == 0)
+		{
+			SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
+			SharedData::GetInstance()->player->setGold(SharedData::GetInstance()->player->getGold() + SharedData::GetInstance()->pointscounter);
+			SharedData::GetInstance()->pointscounter = 0;
+			SharedData::GetInstance()->weedGamebool = false;
+		}
 	}
 }
 
@@ -275,10 +284,14 @@ FarmPlantInteraction::~FarmPlantInteraction()
 
 void FarmPlantInteraction::DoInteraction()
 {
-    Interaction* remover;
-    remover = new FarmPlantInteraction();
-    remover->bound1.Set(9999, 99, 9999); remover->bound2.Set(9999, 99, 9999);
-    std::cout << " " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.z << std::endl;
-    SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
-    SharedData::GetInstance()->player->addItem(2);
+	if (SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x != 9999)
+	{
+		Interaction* remover3;
+		remover3 = new FarmPlantInteraction();
+		remover3->bound1.Set(9999, 99, 9999); remover3->bound2.Set(9999, 99, 9999);
+		std::cout << " doInteraction: " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.z << std::endl;
+		SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover3;
+		SharedData::GetInstance()->player->addItem(2);
+		SharedData::GetInstance()->pointscounter -= 1;
+	}
 }

@@ -6,7 +6,9 @@
 #include <sstream>
 #include <fstream>
 
-Character::Character(std::string name, Vector3 position, float direction) : name_(name), position_(position), direction_(0)
+Character::Character(std::string name, Vector3 position, float 
+    
+    ) : name_(name), position_(position), direction_(0)
 {
 }
 
@@ -169,7 +171,7 @@ void Player::CheckInteraction()
     Vector3 maxView = position_ + 50 * view;
 	int i = 0;
     for (vector<Interaction*>::iterator it = temp.begin(); it != temp.end(); ++it) {
-        
+		SharedData::GetInstance()->interactnumber = i;
         //if the view is totally outside the box, then don't do calculations because confirm no interaction
 		if (position_.x < (*it)->bound1.x && maxView.x < (*it)->bound1.x) { i++; continue; }
         if (position_.x > (*it)->bound2.x && maxView.x > (*it)->bound2.x) { i++; continue; }
@@ -184,7 +186,7 @@ void Player::CheckInteraction()
             maxView.z > (*it)->bound1.z && maxView.z < (*it)->bound2.z) {
             SharedData::GetInstance()->canInteract = true;
             SharedData::GetInstance()->interactptr = *it;
-			SharedData::GetInstance()->interactnumber = i;
+			//SharedData::GetInstance()->interactnumber = i;
             break;
         }
 
@@ -197,7 +199,7 @@ void Player::CheckInteraction()
             (GetIntersection(maxView.z - (*it)->bound2.z, position_.z - (*it)->bound2.z, maxView, position_, intersect) && InBox(intersect, (*it)->bound1, (*it)->bound2, 3))) {
             SharedData::GetInstance()->canInteract = true;
             SharedData::GetInstance()->interactptr = *it;
-			SharedData::GetInstance()->interactnumber = i;
+			//SharedData::GetInstance()->interactnumber = i;
             break;
         }
 		
@@ -218,6 +220,11 @@ unsigned int Player::getHealth()
 unsigned int Player::getGold()
 {
     return gold_;
+}
+
+void Player::setGold(int moneh)
+{
+	gold_ = moneh;
 }
 
 void Player::setHunger(int hungee)

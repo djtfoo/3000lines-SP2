@@ -79,9 +79,12 @@ void DialogueProcessor::CheckCursor(double dt)
                     SharedData::GetInstance()->gamestate = GAME_STATE_JASIMGAME;
                     SharedData::GetInstance()->chonGamebool = true;
                 }
-                else if (npc->getName() == "Chon") {
-                    SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
-                    SharedData::GetInstance()->chonGamebool = true;
+                else if (npc->getName() == "Wengstang") {
+					if (SharedData::GetInstance()->weedcounter != 0)
+					{
+						SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
+						SharedData::GetInstance()->weedGamebool = true;
+					}
                 }
                 else {  //temp
                     SharedData::GetInstance()->gamestate = GAME_STATE_FREE;

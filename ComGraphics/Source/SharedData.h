@@ -20,6 +20,8 @@ public:
     PROGRAM_STATE program_state;
     bool programstate_change;
 	float daynighttime;
+	int pointscounter;
+	int weedcounter;
 
     //Dem Gamestates
     GAME_STATE gamestate;
@@ -49,6 +51,7 @@ public:
     bool gateopen;
 	bool toiletflood;
     bool chonGamebool;
+	bool weedGamebool;
     bool ballpickup;    //chon ballgame
 
     //Puzzle Interaction
@@ -121,6 +124,11 @@ private:
         //Chon mini-game (lab)
         chonGamebool = false;
         ballpickup = false;     //chon ballgame
+
+		//weed mini-game
+		weedGamebool = false;
+		pointscounter = 0;
+		weedcounter = 10;
     }
     ~SharedData() {
         delete player;

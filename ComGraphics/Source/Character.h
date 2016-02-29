@@ -17,7 +17,9 @@ private:
     std::string name_;
 
 protected:
-    Character(std::string name, Vector3 position, float direction);
+    Character(std::string name, Vector3 position, float 
+        
+        );
 
 public:
     virtual ~Character();
@@ -53,7 +55,7 @@ public:
 
     void setHunger(int hungee);
     void setHealth();
-    void setGold();
+    void setGold(int moneh);
 
     bool isDead();
 
