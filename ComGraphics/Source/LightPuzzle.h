@@ -12,17 +12,11 @@ public:
 
     void generatePuzzle();
     bool checkPuzzleAns(int first, int second, int third, int forth);
-    float puzzleSize[4][4];
-    float puzzleAns[4][4];
+    float puzzleSize[4];
+    float puzzleAns[4];
 
     bool one, two, three, four;
-
     int checker;
-
-    Vector3 puzzlePos;
-
-private:
-    int puzzlechecked[4][4];
 };
 
 #endif /* LIGHTPUZZLE_H */

@@ -752,7 +752,7 @@ void SP2::Init()
 
     //Interacting with Chon
     interactions = new Dialogue();
-    interactions->bound1.Set(400, -5, -479); interactions->bound2.Set(425, 15, -439);
+    interactions->bound1.Set(400, -10, -479); interactions->bound2.Set(425, 30, -439);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     //Interacting with Vee
@@ -1074,75 +1074,6 @@ void SP2::Update(double dt)
         light[0].position.Set(0, 1000, lightpos);
     }
 
-    if (SharedData::GetInstance()->one == 1)
-        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->one == 2)
-        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 0, 1), 1, 15, 4);
-    if (SharedData::GetInstance()->one == 3)
-        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 1, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->one == 4)
-        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 1, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->one == 5)
-        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 1, 1), 1, 15, 4);
-
-    if (SharedData::GetInstance()->two == 1)
-        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->two == 2)
-        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 0, 1), 1, 15, 4);
-    if (SharedData::GetInstance()->two == 3)
-        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 1, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->two == 4)
-        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 1, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->two == 5)
-        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 1, 1), 1, 15, 4);
-
-    if (SharedData::GetInstance()->three == 1)
-        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 0, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->three == 2)
-        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 0, 1), 1, 15, 4);
-    if (SharedData::GetInstance()->three == 3)
-        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 1, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->three == 4)
-        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 1, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->three == 5)
-        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 1, 1), 1, 15, 4);
-
-    if (SharedData::GetInstance()->four == 1)
-        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 0, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->four == 2)
-        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 0, 1), 1, 15, 4);
-    if (SharedData::GetInstance()->four == 3)
-        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 1, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->four == 4)
-        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 1, 0), 1, 15, 4);
-    if (SharedData::GetInstance()->four == 5)
-        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 1, 1), 1, 15, 4);
-
-    //Lights
-    if (SharedData::GetInstance()->switch1 == false)
-        meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(0, 0, 0), 2);
-    if (SharedData::GetInstance()->switch1 == true)
-        meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(1, 1, 1), 2);
-    if (SharedData::GetInstance()->switch2 == false)
-        meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(0, 0, 0), 2);
-    if (SharedData::GetInstance()->switch2 == true)
-        meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(1, 1, 1), 2);
-    if (SharedData::GetInstance()->switch3 == false)
-        meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(0, 0, 0), 2);
-    if (SharedData::GetInstance()->switch3 == true)
-        meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(1, 1, 1), 2);
-    if (SharedData::GetInstance()->switch4 == false)
-        meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(0, 0, 0), 2);
-    if (SharedData::GetInstance()->switch4 == true)
-        meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
-
-	if (lightpuzz.checkPuzzleAns(SharedData::GetInstance()->one, SharedData::GetInstance()->two, SharedData::GetInstance()->three, SharedData::GetInstance()->four) == true)
-    {
-        SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
-        std::cout << "You win!" << std::endl;
-        lightpuzz.generatePuzzle();
-    }
-
     if (Application::IsKeyPressed('P'))
     {
         SharedData::GetInstance()->player->position_.x = 1000;
@@ -1151,6 +1082,8 @@ void SP2::Update(double dt)
         SharedData::GetInstance()->gamestate = GAME_STATE_RABBIT;
     }
 	SharedData::GetInstance()->interactnumber = 99;
+
+    puzzleLogic();
 }
 
 void SP2::Render()
@@ -1301,7 +1234,7 @@ void SP2::loadFree()
     jasimCanteen();
     loadHangar();
 	renderFarm();
-    renderPuzzle();
+    loadWSGame();
 
     RenderGates(); //gates b4 ui, aft others to hide contents of the room
 
@@ -1541,8 +1474,152 @@ void SP2::loadShop()
 
 void SP2::loadWSGame()
 {  
-   
+
+
+    //Switches and Lightings
+    modelStack.PushMatrix();
+    modelStack.Translate(600, 0, 500);
+    modelStack.Rotate(-90, 0, 1, 0);
+    
+    modelStack.PushMatrix();
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_1], true);
+    modelStack.PopMatrix();
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 0, 15);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_2], true);
+    modelStack.PopMatrix();
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 0, 30);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_3], true);
+    modelStack.PopMatrix();
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 0, 45);
+    modelStack.Scale(3, 3, 3);
+    RenderMesh(meshList[GEO_SWITCH_4], true);
+    modelStack.PopMatrix();
+    modelStack.PopMatrix();
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(600, 0, 503);
+    modelStack.Rotate(-90, 0, 1, 0);
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 30, 0);
+    modelStack.Rotate(90, 0, 0, 1);
+    RenderMesh(meshList[GEO_CHECK_1], true);
+    modelStack.PopMatrix();
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 30, 15);
+    modelStack.Rotate(90, 0, 0, 1);
+    RenderMesh(meshList[GEO_CHECK_2], true);
+    modelStack.PopMatrix();
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 30, 30);
+    modelStack.Rotate(90, 0, 0, 1);
+    RenderMesh(meshList[GEO_CHECK_3], true);
+    modelStack.PopMatrix();
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 30, 45);
+    modelStack.Rotate(90, 0, 0, 1);
+    RenderMesh(meshList[GEO_CHECK_4], true);
+    modelStack.PopMatrix();
+    
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 15, -15);
+    RenderMesh(meshList[GEO_CHECKER_BUTTON], true);
+    modelStack.PopMatrix();
+    
+    modelStack.PopMatrix();
 }  
+
+void SP2::puzzleLogic()
+{
+    if (SharedData::GetInstance()->one == 1)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->one == 2)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 0, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->one == 3)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->one == 4)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->one == 5)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(0, 1, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->one == 6)
+        meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 1), 1, 15, 4);
+
+    if (SharedData::GetInstance()->two == 1)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->two == 2)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 0, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->two == 3)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->two == 4)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->two == 5)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(0, 1, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->two == 6)
+        meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 1), 1, 15, 4);
+
+    if (SharedData::GetInstance()->three == 1)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 0, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->three == 2)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 0, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->three == 3)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->three == 4)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->three == 5)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(0, 1, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->three == 6)
+        meshList[GEO_SWITCH_3] = MeshBuilder::GenerateCube("switch3", Color(1, 0, 1), 1, 15, 4);
+
+    if (SharedData::GetInstance()->four == 1)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 0, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->four == 2)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 0, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->four == 3)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->four == 4)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 1, 0), 1, 15, 4);
+    if (SharedData::GetInstance()->four == 5)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(0, 1, 1), 1, 15, 4);
+    if (SharedData::GetInstance()->four == 6)
+        meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 0, 1), 1, 15, 4);
+
+    //Lights
+    if (SharedData::GetInstance()->switch1 == false)
+        meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(0, 0, 0), 2);
+    if (SharedData::GetInstance()->switch1 == true)
+        meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(1, 1, 1), 2);
+    if (SharedData::GetInstance()->switch2 == false)
+        meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(0, 0, 0), 2);
+    if (SharedData::GetInstance()->switch2 == true)
+        meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(1, 1, 1), 2);
+    if (SharedData::GetInstance()->switch3 == false)
+        meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(0, 0, 0), 2);
+    if (SharedData::GetInstance()->switch3 == true)
+        meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(1, 1, 1), 2);
+    if (SharedData::GetInstance()->switch4 == false)
+        meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(0, 0, 0), 2);
+    if (SharedData::GetInstance()->switch4 == true)
+        meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
+
+    if (lightpuzz.checkPuzzleAns(SharedData::GetInstance()->one, SharedData::GetInstance()->two, SharedData::GetInstance()->three, SharedData::GetInstance()->four) == true)
+    {
+        SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
+        std::cout << "You win!" << std::endl;
+        lightpuzz.generatePuzzle();
+    }
+}
 
 void SP2::loadChonGame()
 {    
@@ -1906,6 +1983,8 @@ void SP2::loadRabbitGame()
     modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
     RenderPlayer();
     modelStack.PopMatrix();
+
+    rabbitBullet();
 
     RenderUI();
 
@@ -3113,72 +3192,6 @@ void SP2::RotateDisplay()
         glEnable(GL_DEPTH_TEST);
     modelStack.PopMatrix();
 }
-
-void SP2::renderPuzzle()
-{
-    modelStack.PushMatrix();
-    modelStack.Translate(600, 0, 500);
-    modelStack.Rotate(-90, 0, 1, 0);
-
-    modelStack.PushMatrix();
-    modelStack.Scale(3, 3, 3);
-    RenderMesh(meshList[GEO_SWITCH_1], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 0, 15);
-    modelStack.Scale(3, 3, 3);
-    RenderMesh(meshList[GEO_SWITCH_2], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 0, 30);
-    modelStack.Scale(3, 3, 3);
-    RenderMesh(meshList[GEO_SWITCH_3], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 0, 45);
-    modelStack.Scale(3, 3, 3);
-    RenderMesh(meshList[GEO_SWITCH_4], true);
-    modelStack.PopMatrix();
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(600, 0, 503);
-    modelStack.Rotate(-90, 0, 1, 0);
-
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 30, 0);
-    modelStack.Rotate(90, 0, 0, 1);
-    RenderMesh(meshList[GEO_CHECK_1], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 30, 15);
-    modelStack.Rotate(90, 0, 0, 1);
-    RenderMesh(meshList[GEO_CHECK_2], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 30, 30);
-    modelStack.Rotate(90, 0, 0, 1);
-    RenderMesh(meshList[GEO_CHECK_3], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 30, 45);
-    modelStack.Rotate(90, 0, 0, 1);
-    RenderMesh(meshList[GEO_CHECK_4], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 15, -15);
-    RenderMesh(meshList[GEO_CHECKER_BUTTON], true);
-    modelStack.PopMatrix();
-
-    modelStack.PopMatrix();
-}
     
 void SP2::Reset()
 {
@@ -3311,10 +3324,16 @@ void SP2::rabbitBullet()
     rabbitPos = (1000, 0, 1000);
     bulletPos = (1000, 0, 1000);
 
-    float randombulletshoot = rand() % 4 + 1; //1 to 4
+    Vector3 view = (bullettarg.target - bullettarg.position);
 
-    if (randombulletshoot == 1)
-        bulletTime = true;
+    if (Application::IsKeyPressed('0'))
+    {
+        bulletTarget = true;
+    }
+    //float randombulletshoot = rand() % 4 + 1; //1 to 4
+
+    //if (randombulletshoot == 1)
+    //    bulletTarget = true;
 
     //= SharedData::GetInstance()->player->position_;
 
@@ -3326,22 +3345,22 @@ void SP2::rabbitBullet()
             playerPos = SharedData::GetInstance()->player->position_;
             bullettarg.position = (rabbitPos.x, 50, rabbitPos.y);               //Initialize bullet position to be above the rabbit.
             bullettarg.target = SharedData::GetInstance()->player->position_;   //Initialize the bullet target towards the player.  
-            Vector3 view = (bullettarg.target - bullettarg.position).Normalized();
+            
 
             //bullettarg.target.x += view.x * 10;
             //bullettarg.target.y += view.y * 10;
             //bullettarg.target.z += view.z * 10;
-            bullettarg.target += view * 10;     //Bullet Flies
-
-            modelStack.PushMatrix();
-            modelStack.Translate(bullettarg.target.x, bullettarg.target.y, bullettarg.target.z);
-            RenderMesh(meshList[GEO_BULLET], false);
-            modelStack.PopMatrix();
             //bullet.push_back(bullettarg.target);
             bulletTime = false;     
         }
+        bullettarg.target += view * 10;     //Bullet Flies
 
-        playerPos;
+        modelStack.PushMatrix();
+        modelStack.Translate(bullettarg.target.x, bullettarg.target.y, bullettarg.target.z);
+        RenderMesh(meshList[GEO_BULLET], true);
+        modelStack.PopMatrix();
+        bulletTarget = false;
+        //playerPos;
         //bullettarg.target = (1400, 0, 1200);
     }
 }

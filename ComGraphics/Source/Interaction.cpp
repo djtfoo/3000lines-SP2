@@ -164,7 +164,7 @@ VeePuzzleSwitchOneInteraction::~VeePuzzleSwitchOneInteraction()
 void VeePuzzleSwitchOneInteraction::DoInteraction()
 {
     SharedData::GetInstance()->one += 1;
-    if (SharedData::GetInstance()->one > 5)
+    if (SharedData::GetInstance()->one > 6)
         SharedData::GetInstance()->one = 1;
 }
 VeePuzzleSwitchTwoInteraction::VeePuzzleSwitchTwoInteraction() : Interaction()
@@ -178,7 +178,7 @@ VeePuzzleSwitchTwoInteraction::~VeePuzzleSwitchTwoInteraction()
 void VeePuzzleSwitchTwoInteraction::DoInteraction()
 {
     SharedData::GetInstance()->two += 1;
-    if (SharedData::GetInstance()->two > 5)
+    if (SharedData::GetInstance()->two > 6)
         SharedData::GetInstance()->two = 1;
 }
 VeePuzzleSwitchThreeInteraction::VeePuzzleSwitchThreeInteraction() : Interaction()
@@ -192,7 +192,7 @@ VeePuzzleSwitchThreeInteraction::~VeePuzzleSwitchThreeInteraction()
 void VeePuzzleSwitchThreeInteraction::DoInteraction()
 {
     SharedData::GetInstance()->three += 1;
-    if (SharedData::GetInstance()->three > 5)
+    if (SharedData::GetInstance()->three > 6)
         SharedData::GetInstance()->three = 1;
 }
 VeePuzzleSwitchFourInteraction::VeePuzzleSwitchFourInteraction() : Interaction()
@@ -206,7 +206,7 @@ VeePuzzleSwitchFourInteraction::~VeePuzzleSwitchFourInteraction()
 void VeePuzzleSwitchFourInteraction::DoInteraction()
 {
     SharedData::GetInstance()->four += 1;
-    if (SharedData::GetInstance()->four > 5)
+    if (SharedData::GetInstance()->four > 6)
         SharedData::GetInstance()->four = 1;
 }
 VeePuzzleCheckerSwitchInteraction::VeePuzzleCheckerSwitchInteraction() : Interaction()
@@ -219,7 +219,13 @@ VeePuzzleCheckerSwitchInteraction::~VeePuzzleCheckerSwitchInteraction()
 
 void VeePuzzleCheckerSwitchInteraction::DoInteraction()
 {
-    SharedData::GetInstance()->switchFlip = true;
+    if (SharedData::GetInstance()->switchCount < 8)
+    {
+        std::cout << "test" << std::endl;
+        SharedData::GetInstance()->switchFlip = true;
+        SharedData::GetInstance()->switchCount += 1;
+    }
+    //Trigger fail.
 }
 
 BedTime::BedTime() : Interaction()
@@ -236,7 +242,6 @@ void BedTime::DoInteraction()
 	{
 		SharedData::GetInstance()->daynighttime += 10;
 	}
-	
 }
 
 WeedInteraction::WeedInteraction() : Interaction()

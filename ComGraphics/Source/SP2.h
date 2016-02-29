@@ -284,6 +284,7 @@ public:
 	void loadWeedGame();
     void RenderFightSkybox();
     void rabbitBullet();
+    void puzzleLogic();
 
     //cursor for dialogue, pause, shop
     void RenderCursor();
