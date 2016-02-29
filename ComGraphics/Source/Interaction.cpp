@@ -87,6 +87,12 @@ ShopInteraction::~ShopInteraction()
 void ShopInteraction::DoInteraction()
 {
     SharedData::GetInstance()->gamestate = GAME_STATE_SHOP;
+
+    //set cursor
+    SharedData::GetInstance()->cursor_xpos = 400;
+    SharedData::GetInstance()->cursor_ypos = 400;
+    SharedData::GetInstance()->cursor_newxpos = 400;
+    SharedData::GetInstance()->cursor_newypos = 400;
 }
 
 

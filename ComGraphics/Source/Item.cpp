@@ -19,12 +19,11 @@ std::string Item::getName()
 }
 
 //Gift item
-Gift::Gift() : Item(), value_(0)
+Gift::Gift() : Item()
 {
-
 }
 
-Gift::Gift(std::string name) : Item(name), value_(0)
+Gift::Gift(std::string name, int value) : Item(name), value_(value)
 {
 
 }

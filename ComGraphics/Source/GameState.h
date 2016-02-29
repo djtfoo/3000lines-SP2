@@ -51,6 +51,7 @@ enum LOCATION
     ROOM2,      //9
     ROOM3,      //10
     ROOM4,      //11
+    PLANTATION, //12
 
     LOCATION_TOTAL
 };

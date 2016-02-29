@@ -21,7 +21,7 @@ std::string Character::getName()
     return name_;
 }
 
-Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(0), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0)
+Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(1000), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -110,20 +110,50 @@ void Player::Walk(double dt)
     
     if (Application::IsKeyPressed('W')) {   //player moves forward
         Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position);
+        Vector3 view2 = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
         view.y = 0;
         view = view.Normalized();
 
         newX = SharedData::GetInstance()->camera->target.x + view.x * dt * WALKSPEED;
         newZ = SharedData::GetInstance()->camera->target.z + view.z * dt * WALKSPEED;
+
+        CheckCollision(newX, newZ, xMovement, zMovement);
+
+        if (xMovement) {
+            position_.x = newX;
+            SharedData::GetInstance()->camera->target.x = newX;
+            //SharedData::GetInstance()->camera->position.x = newX - view.x;
+        }
+        if (zMovement) {
+            position_.z = newZ;
+            SharedData::GetInstance()->camera->target.z = newZ;
+            //SharedData::GetInstance()->camera->position.z = newZ - view.z;
+        }
+        SharedData::GetInstance()->camera->position = SharedData::GetInstance()->camera->target - view2;
     }
 
     if (Application::IsKeyPressed('S')) {   //player moves backward
         Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position);
+        Vector3 view2 = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
         view.y = 0;
         view = view.Normalized();
 
         newX = SharedData::GetInstance()->camera->target.x - view.x * dt * WALKSPEED;
         newZ = SharedData::GetInstance()->camera->target.z - view.z * dt * WALKSPEED;
+
+        CheckCollision(newX, newZ, xMovement, zMovement);
+
+        if (xMovement) {
+            position_.x = newX;
+            SharedData::GetInstance()->camera->target.x = newX;
+            //SharedData::GetInstance()->camera->position.x = newX - view.x;
+        }
+        if (zMovement) {
+            position_.z = newZ;
+            SharedData::GetInstance()->camera->target.z = newZ;
+            //SharedData::GetInstance()->camera->position.z = newZ - view.z;
+        }
+        SharedData::GetInstance()->camera->position = SharedData::GetInstance()->camera->target - view2;
     }
 
     if (Application::IsKeyPressed('A')) {   //strafe left
@@ -134,6 +164,20 @@ void Player::Walk(double dt)
 
         newX = SharedData::GetInstance()->camera->target.x - right.x * dt * WALKSPEED;
         newZ = SharedData::GetInstance()->camera->target.z - right.z * dt * WALKSPEED;
+
+        CheckCollision(newX, newZ, xMovement, zMovement);
+
+        if (xMovement) {
+            position_.x = newX;
+            SharedData::GetInstance()->camera->target.x = newX;
+            //SharedData::GetInstance()->camera->position.x = newX - view.x;
+        }
+        if (zMovement) {
+            position_.z = newZ;
+            SharedData::GetInstance()->camera->target.z = newZ;
+            //SharedData::GetInstance()->camera->position.z = newZ - view.z;
+        }
+        SharedData::GetInstance()->camera->position = SharedData::GetInstance()->camera->target - view;
     }
 
     if (Application::IsKeyPressed('D')) {   //strafe right
@@ -144,23 +188,21 @@ void Player::Walk(double dt)
 
         newX = SharedData::GetInstance()->camera->target.x + right.x * dt * WALKSPEED;
         newZ = SharedData::GetInstance()->camera->target.z + right.z * dt * WALKSPEED;
-    }
 
-    CheckCollision(newX, newZ, xMovement, zMovement);
+        CheckCollision(newX, newZ, xMovement, zMovement);
 
-    Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
-
-    if (xMovement) {
-        position_.x = newX;
-        SharedData::GetInstance()->camera->target.x = newX;
-        //SharedData::GetInstance()->camera->position.x = newX - view.x;
+        if (xMovement) {
+            position_.x = newX;
+            SharedData::GetInstance()->camera->target.x = newX;
+            //SharedData::GetInstance()->camera->position.x = newX - view.x;
+        }
+        if (zMovement) {
+            position_.z = newZ;
+            SharedData::GetInstance()->camera->target.z = newZ;
+            //SharedData::GetInstance()->camera->position.z = newZ - view.z;
+        }
+        SharedData::GetInstance()->camera->position = SharedData::GetInstance()->camera->target - view;
     }
-    if (zMovement) {
-        position_.z = newZ;
-        SharedData::GetInstance()->camera->target.z = newZ;
-        //SharedData::GetInstance()->camera->position.z = newZ - view.z;
-    }
-    SharedData::GetInstance()->camera->position = SharedData::GetInstance()->camera->target - view;
 
 }
 
@@ -287,6 +329,16 @@ unsigned int Player::getGold()
 void Player::setGold(int moneh)
 {
 	gold_ = moneh;
+}
+
+void Player::changeGold(int change)
+{
+    if (gold_ + change <= 0) {
+        gold_ = 0;
+    }
+    else {
+        gold_ += change;
+    }
 }
 
 void Player::setHunger(int hungee)

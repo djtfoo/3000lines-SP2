@@ -20,10 +20,11 @@ public:
 class Gift : public Item
 {
 private:
-	float value_;
+	float value_;   //how much the item costs
+
 public:
 	Gift();
-	Gift(std::string name);
+    Gift(std::string name, int value);
 	~Gift();
 	float getValue();
 };

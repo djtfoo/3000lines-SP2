@@ -14,6 +14,8 @@
 
 #include "Interaction.h"
 
+#include "Shop.h"
+
 #include <cstdlib>
 
 #include <vector>
@@ -60,7 +62,7 @@ class SP2 : public Scene
         GEO_CHON,
         //GEO_AARON,
         //GEO_MERCHANT,
-        
+
         //text
         GEO_TEXT,
         GEO_DIALOGUEBOX,
@@ -86,27 +88,26 @@ class SP2 : public Scene
         GEO_TEMSHOP,
         GEO_UMBRELLASTAND,
         GEO_TOILBOWL,
-		GEO_BED,
-		GEO_DETERMINATION,
-		GEO_MEWMEWKISSYCUTIE,
-		GEO_DOGFOOD,
-		GEO_TRASH,
-		GEO_BOOK,
+        GEO_BED,
+        GEO_DETERMINATION,
+        GEO_MEWMEWKISSYCUTIE,
+        GEO_DOGFOOD,
+        GEO_TRASH,
+        GEO_BOOK,
         GEO_LMAO,   //a sh*tty joke
         //^^^
 
-		//Gifts
-		GEO_ITEMSELECT,
-		GEO_ITEM1,
-		GEO_ITEM2,
-
+        //Gifts
+        GEO_ITEMSELECT,
+        GEO_ITEM1,
+        GEO_ITEM2,
         GEO_SHOPDISPLAY,
 
-        //Light Source
-        GEO_LIGHTBALL,
+        //Shop
+        GEO_SHOP_ARROW,
 
 		//dev texture
-		GEO_DEVTEXTURE,
+		//GEO_DEVTEXTURE,
 		GEO_HANGAR,
 		GEO_CONNECTOR,
 		GEO_MAINWALLS,
@@ -131,7 +132,6 @@ class SP2 : public Scene
         GEO_SPHEREBLACK,
         GEO_SPHEREWHITE,
 
-
 		GEO_SPAGHETTO,
 		GEO_SPAGHETTOROTTEN,
 		GEO_FENCE,
@@ -146,11 +146,15 @@ class SP2 : public Scene
 		GEO_PIPETYPE3,
 		GEO_PIPETYPE4,
 
+        //UI stuff
         GEO_CROSSHAIRS,
 		GEO_INVENTORY,
 
         GEO_CURSOR,
         GEO_DIALOGUEOPTION,
+
+        GEO_HEART,
+        GEO_LOVEMETER,
 
         //Switches
         GEO_SWITCH_1,
@@ -224,7 +228,7 @@ public:
 
     //PlayerBullet bullet[100];
 
-	int delayer;
+	float delayer;
 	int rotator;
 	float floodlevel;
     float lightpower;
@@ -250,7 +254,7 @@ public:
 
     void RenderMesh(Mesh* mesh, bool enableLight);
     void RenderText(Mesh* mesh, std::string text, Color color);
-    void RenderObjectOnScreen(Mesh* mesh, float x, float y, float scalex = 1, float scaley = 1);
+    void RenderObjectOnScreen(Mesh* mesh, float x, float y, float scalex = 1, float scaley = 1, float rotate = 0);
     void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
     void RenderDialogueOnScreen(std::string text, Color color, float size);
 	void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y);
@@ -274,6 +278,7 @@ public:
 	void RenderTime();
     bool viewOptions;
     void RenderUI();
+    void RenderLoveMeter();
     void renderPuzzle();
 
     void RenderMinimap();
@@ -293,6 +298,7 @@ public:
     void RenderFightSkybox();
     void rabbitBullet();
     void puzzleLogic();
+    void UpdateInventory(double dt);
 
     //cursor for dialogue, pause, shop
     void RenderCursor();
@@ -338,7 +344,7 @@ public:
     void compactMovement(bool first, bool second, bool third, int i);
     chonBallInteraction ballbounds[5];
 
-   
+    Shop shop;
 
 	std::map<int, Gift>invmap;
 	std::map<int, GEOMETRY_TYPE>modelmap;

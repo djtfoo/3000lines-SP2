@@ -135,7 +135,7 @@ void Application::Run()
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...
 		glfwPollEvents();
         //setting cursor
-        if (SharedData::GetInstance()->program_state == PROGRAM_MENU || SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE)
+        if (SharedData::GetInstance()->program_state == PROGRAM_MENU || SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE || SharedData::GetInstance()->gamestate == GAME_STATE_SHOP)
             glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
         else
             glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

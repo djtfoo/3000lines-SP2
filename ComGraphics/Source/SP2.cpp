@@ -20,6 +20,7 @@
 
 SP2::SP2()
 {
+    delayer = 0;
     delayBuffer = 0;
     lightpower = 0.3;
     lightpos = 1000;
@@ -133,9 +134,9 @@ SP2::SP2()
     meshList[GEO_GROUND] = MeshBuilder::GenerateQuad("ground", Color(1, 1, 1), 2000, 2000);
     meshList[GEO_GROUND]->textureID = LoadTGA("Image/ground2.tga");
 
-	meshList[GEO_DEVTEXTURE] = MeshBuilder::GenerateQuad("devtexture", Color(1, 1, 1), 1, 1);
-	meshList[GEO_DEVTEXTURE]->textureID = LoadTGA("Image/devtexture.tga");
-
+	//meshList[GEO_DEVTEXTURE] = MeshBuilder::GenerateQuad("devtexture", Color(1, 1, 1), 1, 1);
+	//meshList[GEO_DEVTEXTURE]->textureID = LoadTGA("Image/devtexture.tga");
+    
     //player
     meshList[GEO_PLAYER_HEAD] = MeshBuilder::GenerateOBJ("player head", "OBJ/cube.obj");
     meshList[GEO_PLAYER_BODY] = MeshBuilder::GenerateOBJ("player body", "OBJ/cube.obj");
@@ -341,6 +342,9 @@ SP2::SP2()
     meshList[GEO_SHOPDISPLAY]->material.kSpecular.Set(0.7f, 0.7f, 0.7f);
     meshList[GEO_SHOPDISPLAY]->material.kShininess = 1.f;
 
+    meshList[GEO_SHOP_ARROW] = MeshBuilder::GenerateQuad("shop UI arrow", Color(0, 0, 0), 8, 8);
+    meshList[GEO_SHOP_ARROW]->textureID = LoadTGA("Image/shop arrow.tga");
+
     meshList[GEO_COUNTER] = MeshBuilder::GenerateCube("counter", Color(0, 0.7, 1), 5, 5, 5);
 
 
@@ -390,9 +394,6 @@ SP2::SP2()
     meshList[GEO_SPHERERED]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
     meshList[GEO_SPHERERED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SPHERERED]->material.kShininess = 1.f;
-
-    //Light
-    meshList[GEO_LIGHTBALL] = MeshBuilder::GenerateSphere("lightball", Color(1, 1, 1), 10, 20);
 
     	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	meshList[GEO_HANGAR] = MeshBuilder::GenerateQuad("hangar", Color(1, 1, 1), 1, 1);
@@ -566,7 +567,8 @@ SP2::SP2()
         "ROOM1",
         "ROOM2",
         "ROOM3",
-        "ROOM4"
+        "ROOM4",
+        "PLANTATION"
     };
     
     for (LOCATION i = OUTSIDE; i < LOCATION_TOTAL; i = static_cast<LOCATION>(i+1)) {
@@ -585,16 +587,33 @@ SP2::~SP2()
 
 void SP2::loadInv()
 {
-	invmap.insert(std::pair<int, Gift>(1, Gift("hammer")));
+	invmap.insert(std::pair<int, Gift>(1, Gift("Hammer", 100)));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(1, GEO_HAMMER));
-	invmap.insert(std::pair<int, Gift>(2, Gift("tEmmEh")));
+	invmap.insert(std::pair<int, Gift>(2, Gift("tEmmEh", 0)));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(2, GEO_STEMMIE));
-	invmap.insert(std::pair<int, Gift>(3, Gift(" weed")));
+	invmap.insert(std::pair<int, Gift>(3, Gift("Weed", 0)));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(3, GEO_WEEDICON));
-	invmap.insert(std::pair<int, Gift>(4, Gift("spaghetti")));
+	invmap.insert(std::pair<int, Gift>(4, Gift("Spaghetti", 0)));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(4, GEO_SPAGHETTO));
-	invmap.insert(std::pair<int, Gift>(5, Gift("\"spaghetti\"")));
+	invmap.insert(std::pair<int, Gift>(5, Gift("\"spaghetti\"", 0)));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(5, GEO_SPAGHETTOROTTEN));
+
+    invmap.insert(std::pair<int, Gift>(6, Gift("Cookbook", 350)));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(6, GEO_SHOPDISPLAY));
+    invmap.insert(std::pair<int, Gift>(7, Gift("Anime Poster", 300)));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(7, GEO_SHOPDISPLAY));
+    invmap.insert(std::pair<int, Gift>(8, Gift("Anime Keychain", 500)));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(8, GEO_SHOPDISPLAY));
+    invmap.insert(std::pair<int, Gift>(9, Gift("Shovel", 200)));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(9, GEO_SHOPDISPLAY));
+    invmap.insert(std::pair<int, Gift>(10, Gift("Butterscotch Pie", 650)));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(10, GEO_SHOPDISPLAY));
+    invmap.insert(std::pair<int, Gift>(11, Gift("Board Game", 550)));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(11, GEO_SHOPDISPLAY));
+    invmap.insert(std::pair<int, Gift>(12, Gift("Novel", 700)));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(12, GEO_SHOPDISPLAY));
+    invmap.insert(std::pair<int, Gift>(13, Gift("Jokebook", 700)));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(13, GEO_SHOPDISPLAY));
 }
 
 void SP2::loadCollisions()
@@ -681,62 +700,62 @@ void SP2::Init()
 
 	//spaghetti random spawns
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, -12, -378.31 + 2); interactions->bound2.Set(763.976, -10, -368.31 - 2);
+	interactions->bound1.Set(757.976, 12, -378.31 + 2); interactions->bound2.Set(763.976, 15, -368.31 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, -12, -391.7 + 2); interactions->bound2.Set(763.976, -10, -381.7 - 2);
+	interactions->bound1.Set(757.976, 12, -391.7 + 2); interactions->bound2.Set(763.976, 15, -381.7 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, -12, -437.6 + 2); interactions->bound2.Set(763.976, -10, -427.6 - 2);
+	interactions->bound1.Set(757.976, 12, -437.6 + 2); interactions->bound2.Set(763.976, 15, -427.6 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, -12, -452.9 + 2); interactions->bound2.Set(763.976, -10, -442.9 - 2);
+	interactions->bound1.Set(757.976, 12, -452.9 + 2); interactions->bound2.Set(763.976, 15, -442.9 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, -12, -498.8 + 2); interactions->bound2.Set(763.976, -10, -488.8 - 2);
+	interactions->bound1.Set(757.976, 12, -498.8 + 2); interactions->bound2.Set(763.976, 15, -488.8 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, -12, -510.7 + 2); interactions->bound2.Set(763.976, -10, -500.7 - 2);
+	interactions->bound1.Set(757.976, 12, -510.7 + 2); interactions->bound2.Set(763.976, 15, -500.7 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, -12, -373.31 - 3); interactions->bound2.Set(721.872 + 3, -10, -373.31 + 3);
+	interactions->bound1.Set(721.872 - 3, 12, -373.31 - 3); interactions->bound2.Set(721.872 + 3, 15, -373.31 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, -12, -386.7 - 3); interactions->bound2.Set(721.872 + 3, -10, -386.7 + 3);
+	interactions->bound1.Set(721.872 - 3, 12, -386.7 - 3); interactions->bound2.Set(721.872 + 3, 15, -386.7 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, -12, -432.6 - 3); interactions->bound2.Set(721.872 + 3, -10, -432.6 + 3);
+	interactions->bound1.Set(721.872 - 3, 12, -432.6 - 3); interactions->bound2.Set(721.872 + 3, 15, -432.6 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, -12, -447.9 - 3); interactions->bound2.Set(721.872 + 3, -10, -447.9 + 3);
+	interactions->bound1.Set(721.872 - 3, 12, -447.9 - 3); interactions->bound2.Set(721.872 + 3, 15, -447.9 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, -12, -493.8 - 3); interactions->bound2.Set(721.872 + 3, -10, -493.8 + 3);
+	interactions->bound1.Set(721.872 - 3, 12, -493.8 - 3); interactions->bound2.Set(721.872 + 3, 15, -493.8 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, -12, -505.7 - 3); interactions->bound2.Set(721.872 + 3, -10, -505.7 + 3);
+	interactions->bound1.Set(721.872 - 3, 12, -505.7 - 3); interactions->bound2.Set(721.872 + 3, 15, -505.7 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 	//spaghetto random spawns
@@ -746,11 +765,11 @@ void SP2::Init()
 
     //Other Interaction Bounds
     interactions = new ShopInteraction();
-    interactions->bound1.Set(890, -15, -35);     interactions->bound2.Set(900, 20, -25);
+    interactions->bound1.Set(890, 20, -35);     interactions->bound2.Set(900, 38, -25);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new ManureInteraction();
-	interactions->bound1.Set(780, -5, -616);     interactions->bound2.Set(800, 5, -612);
+	interactions->bound1.Set(780, 23, -616);     interactions->bound2.Set(800, 25, -612);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     //interactions = new ChonGame();
@@ -784,22 +803,22 @@ void SP2::Init()
 
     //Interacting with Jasim
     interactions = new Dialogue();
-    interactions->bound1.Set(685 - 20, -15, -430 - 20); interactions->bound2.Set(685 + 20, 30, -430 + 20);
+    interactions->bound1.Set(685 - 20, 5, -430 - 20); interactions->bound2.Set(685 + 20, 35, -430 + 20);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     //Interacting with Chon
     interactions = new Dialogue();
-    interactions->bound1.Set(400, -10, -479); interactions->bound2.Set(425, 30, -439);
+    interactions->bound1.Set(400, 10, -479); interactions->bound2.Set(425, 35, -439);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     //Interacting with Vee
     interactions = new Dialogue();
-    interactions->bound1.Set(600 - 10, 10 - 12, 440 - 10); interactions->bound2.Set(600 + 10, 10 + 5, 440 + 10);
+    interactions->bound1.Set(600 - 10, 8, 440 - 10); interactions->bound2.Set(600 + 10, 35, 440 + 10);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     //Interacting with Wengstang
     interactions = new Dialogue();
-    interactions->bound1.Set(950 -8, 0 - 15, -460 - 8); interactions->bound2.Set(950 + 8, 0 + 3, -460 + 8);
+    interactions->bound1.Set(950 -8, 5, -460 - 8); interactions->bound2.Set(950 + 8, 25, -460 + 8);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
@@ -821,14 +840,14 @@ void SP2::Init()
     for (int i = 0; i < 10; i++)
     {
         interactions2 = new WeedInteraction();
-        interactions2->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions2->bound2.Set(weedgame[i].x + 3, -19, weedgame[i].z + 3);
+        interactions2->bound1.Set(weedgame[i].x - 3, 0, weedgame[i].z - 3); interactions2->bound2.Set(weedgame[i].x + 3, 6, weedgame[i].z + 3);
         SharedData::GetInstance()->interactionItems.push_back(interactions2);
     }
 
 	for (int i = 10; i < weedgame.size(); i++)
 	{
 		interactions = new FarmPlantInteraction();
-		interactions->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, -18, weedgame[i].z + 3);
+		interactions->bound1.Set(weedgame[i].x - 3, 0, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, 7, weedgame[i].z + 3);
 		SharedData::GetInstance()->interactionItems.push_back(interactions);
 	}
 	
@@ -925,12 +944,15 @@ void SP2::Update(double dt)
     FramePerSecond = 1 / dt;
 
     //temporary check
-    if (SharedData::GetInstance()->gamestate != GAME_STATE_DIALOGUE) {
+    if (SharedData::GetInstance()->gamestate != GAME_STATE_DIALOGUE && SharedData::GetInstance()->gamestate != GAME_STATE_SHOP) {
         SharedData::GetInstance()->camera->Update(dt);
         SharedData::GetInstance()->player->Walk(dt);
     }
-    else {
+    else if (SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE) {
         SharedData::GetInstance()->dialogueProcessor.CheckCursor(dt);
+    }
+    else if (SharedData::GetInstance()->gamestate == GAME_STATE_SHOP) {
+        shop.CheckCursor(dt, invmap.find(*shop.shopIterator)->second.getValue());
     }
 
     CheckCharacterLocation();
@@ -965,8 +987,6 @@ void SP2::Update(double dt)
         }
     }
 
-	if (delayer > 0)
-		delayer -= 1;
 	rotator++;
 	SharedData::GetInstance()->daynighttime+= (dt * 10);
 	if (((int)SharedData::GetInstance()->daynighttime % 100) > 60)
@@ -1055,15 +1075,6 @@ void SP2::Update(double dt)
 
     rotating += 30 * dt;
 
-    if (Application::IsKeyPressed('I'))
-        objy += 40 * dt;
-    if (Application::IsKeyPressed('K'))
-        objy -= 40 * dt;
-    if (Application::IsKeyPressed('J'))
-        objx -= 40 * dt;
-    if (Application::IsKeyPressed('L'))
-        objx += 40 * dt;
-
     //pause game
     if (Application::IsKeyPressed('N'))
     {
@@ -1147,6 +1158,8 @@ void SP2::Update(double dt)
 	SharedData::GetInstance()->interactnumber = 99;
 
     puzzleLogic();
+
+    UpdateInventory(dt);
 }
 
 void SP2::Render()
@@ -1182,11 +1195,29 @@ void SP2::Render()
         glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
     }
 
+    std::stringstream s;
     switch (SharedData::GetInstance()->gamestate)
     {
     case GAME_STATE_FREE: loadFree();
         break;
     case GAME_STATE_SHOP: loadShop();
+        RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 75, 22, 1, 1);
+        RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 75, 43, 1, 1);
+
+        s.str("");
+        s << invmap.find(*shop.shopIterator)->second.getValue();
+        RenderTextOnScreen(meshList[GEO_TEXT], "Buy(   )", Color(1, 1, 1), 2, 32, 21);
+        if (SharedData::GetInstance()->player->getGold() < invmap.find(*shop.shopIterator)->second.getValue()) {    //player does not have enough gold
+            RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(1, 0, 0), 2, 35, 21);
+        }
+        else {
+            RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(1, 1, 0), 2, 35, 21);
+        }
+        RenderTextOnScreen(meshList[GEO_TEXT], "Bye", Color(1, 1, 1), 2, 32, 10.5f);
+        
+        RenderInventory();
+
+        RenderCursor();
         break;
     case GAME_STATE_WSGAME: loadWSGame();
         break;
@@ -1242,14 +1273,15 @@ void SP2::Render()
             break;
         }
         RenderCursor();
+
+        RenderLoveMeter();
         break;
     }
     //RenderMinimap();
 
-    modelStack.PushMatrix();
-    modelStack.Translate(735, 14.f, -380);
-    RenderMesh(meshList[GEO_JASIM], true);
-    modelStack.PopMatrix();
+    if (viewOptions) {
+        RenderUI();
+    }
 }
 
 void SP2::loadFree()
@@ -1301,13 +1333,13 @@ void SP2::loadFree()
 
     RenderGates(); //gates b4 ui, aft others to hide contents of the room
 
-    RenderUI();
+    //RenderUI();
 
 	RenderInventory();
-	RenderTime();
+	//RenderTime();
 
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
-    RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
+    //RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30,1,1);
 
     //RenderMinimap();
@@ -1585,13 +1617,13 @@ void SP2::loadWSGame()
 
 	//RenderGates(); //gates b4 ui, aft others to hide contents of the room
 
-	RenderUI();
+	//RenderUI();
 
 	RenderInventory();
-	RenderTime();
+	//RenderTime();
 
 	RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
-	RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
+	//RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
 	RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30, 1, 1);
 
 	//RenderMinimap();
@@ -1613,7 +1645,7 @@ void SP2::loadWSGame()
 
 
 
-}  
+}
 
 void SP2::puzzleLogic()
 {
@@ -2165,13 +2197,13 @@ void SP2::loadRabbitGame()
 
     rabbitBullet();
 
-    RenderUI();
+    //RenderUI();
 
     RenderInventory();
-    RenderTime();
+    //RenderTime();
 
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
-    RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
+    //RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30, 1, 1);
 }
 
@@ -2254,7 +2286,7 @@ void SP2::RenderText(Mesh* mesh, std::string text, Color color)
     glEnable(GL_DEPTH_TEST);
 }
 
-void SP2::RenderObjectOnScreen(Mesh* mesh, float x, float y,float scalex, float scaley)
+void SP2::RenderObjectOnScreen(Mesh* mesh, float x, float y, float scalex, float scaley, float rotate)
 {
     if (!mesh)  //error check
         return;
@@ -2272,6 +2304,7 @@ void SP2::RenderObjectOnScreen(Mesh* mesh, float x, float y,float scalex, float 
     
     modelStack.PushMatrix();
     modelStack.Translate(x, y, 0);
+    modelStack.Rotate(rotate, 0, 0, 1);
     modelStack.Scale(scalex, scaley, 1);
     RenderMesh(mesh, false);
     modelStack.PopMatrix();
@@ -2842,6 +2875,11 @@ void SP2::jasimCanteen()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
+    modelStack.Translate(735, 14.f, -380);
+    RenderMesh(meshList[GEO_JASIM], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
     modelStack.Translate(780, 0, -615);
     modelStack.Scale(30, 30, 30);
     modelStack.Rotate(180, 0, 1, 0);
@@ -3181,33 +3219,12 @@ void SP2::RenderInventory()
 		//	continue;
 		//}
 	}
-	if (delayer < 1)
-	{
-		if (Application::IsKeyPressed('V'))
-			SharedData::GetInstance()->player->addItem(1);
-		if (Application::IsKeyPressed('B'))
-			SharedData::GetInstance()->player->addItem(2);
-		if ((Application::IsKeyPressed('Z')) && (SharedData::GetInstance()->player->invselect > 0))
-		{
-			SharedData::GetInstance()->player->invselect -= 1;
-			rotator = 0;
-		}
-		if (Application::IsKeyPressed('X'))
-		{
-			SharedData::GetInstance()->player->removeItem(SharedData::GetInstance()->player->invselect);
-			rotator = 0;
-		}
-		if ((Application::IsKeyPressed('C')) && (SharedData::GetInstance()->player->invselect < 7))
-		{
-			SharedData::GetInstance()->player->invselect += 1;
-			rotator = 0;
-		}
-		delayer = 3;
-	}
 
 	RenderObjectOnScreen(meshList[GEO_ITEMSELECT], 22.5 + (SharedData::GetInstance()->player->invselect * 5), 2.5);
 	if (SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect] != 0)
-	RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 9, 2);
+        RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 14 - (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName().size() / 2, 2);
+
+    RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
 }
 
 void SP2::RenderTime()
@@ -3215,41 +3232,42 @@ void SP2::RenderTime()
 	std::stringstream timey;
 	timey << "TIME: " << ((int)SharedData::GetInstance()->daynighttime / 1000) << (((int)SharedData::GetInstance()->daynighttime / 100) % 10) << (((int)SharedData::GetInstance()->daynighttime / 10) % 10) << ((int)SharedData::GetInstance()->daynighttime % 10);
 	timey.str();
-	RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(1, 0, 0), 3, 0, 15);
+	RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(1, 0, 0), 3, 0, 16);
 	RenderTimeOnScreen(meshList[GEO_DAYNIGHTICON], 80, 60);
 }
 
 void SP2::RenderUI()
 {
-    if (viewOptions) {
-        std::stringstream s;
+    std::stringstream s;
 
-        //FPS
-        s << "FPS:" << FramePerSecond;
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 19);
+    //FPS
+    s << "FPS:" << FramePerSecond;
+    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 19);
 
-		//moneh
-		s.str("");
-		s << "Gold: " << SharedData::GetInstance()->player->getGold();
-		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9, 0.9, 0), 3, 0, 14);
-        
-        //player position coordinates
-        s.str("");
-        s << "COORD:(" << (int)(SharedData::GetInstance()->player->position_.x) << "," << (int)(SharedData::GetInstance()->player->position_.y) << "," << (int)(SharedData::GetInstance()->player->position_.z) << ")";
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 18);
+    //player position coordinates
+    s.str("");
+    s << "COORD:(" << (int)(SharedData::GetInstance()->player->position_.x) << "," << (int)(SharedData::GetInstance()->player->position_.y) << "," << (int)(SharedData::GetInstance()->player->position_.z) << ")";
+    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 18);
 
-        //player's location
-        s.str("");
-        s << "LOCATION:" << locations[SharedData::GetInstance()->location];
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 17);
+    //player's location
+    s.str("");
+    s << "LOCATION:" << locations[SharedData::GetInstance()->location];
+    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 17);
 
-		RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
+    //time
+    std::stringstream timey;
+    timey << "TIME: " << ((int)SharedData::GetInstance()->daynighttime / 1000) << (((int)SharedData::GetInstance()->daynighttime / 100) % 10) << (((int)SharedData::GetInstance()->daynighttime / 10) % 10) << ((int)SharedData::GetInstance()->daynighttime % 10);
+    timey.str();
+    RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(1, 0, 0), 3, 0, 16);
+    RenderTimeOnScreen(meshList[GEO_DAYNIGHTICON], 80, 60);
 
-        //practical purposes: check position of object
-        s.str("");
-        s << "objpos:(" << objx << " , " << ballbluZ << ")";
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 16);
-    }
+    //moneh
+    s.str("");
+    s << "Gold: " << SharedData::GetInstance()->player->getGold();
+    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9, 0.9, 0), 3, 0, 15);
+
+    //hunger bar
+    RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
 }
 
 void SP2::RenderMinimap()
@@ -3284,7 +3302,6 @@ void SP2::RenderMinimap()
 
 void SP2::RenderGates()
 {
-
     //hangar
     modelStack.PushMatrix();
     modelStack.Translate(290, gateobjs[0], 3);
@@ -3369,24 +3386,21 @@ void SP2::RenderGates()
 
 void SP2::shoptemp()
 {
-  //  if (Application::IsKeyPressed('H'))
-    //{
-        RenderObjectOnScreen(meshList[GEO_SHOPUI], 40, 30, 50, 50);
+    //background
+    RenderObjectOnScreen(meshList[GEO_SHOPUI], 40, 30, 50, 50);
 
-        RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 25, 45, 0.2, 0.2);
-        RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 25, 40, 0.2, 0.2);
-        RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 25, 35, 0.2, 0.2);
-        RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 25, 30, 0.2, 0.2);
-        RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 25, 25, 0.2, 0.2);
-        
-        RenderDialogueOnScreen("Buy this item?", Color(1, 1, 1), 3);
+    //right arrow
+    RenderObjectOnScreen(meshList[GEO_SHOP_ARROW], 55, 30, 1, 1);
+    //left arrow
+    RenderObjectOnScreen(meshList[GEO_SHOP_ARROW], 25, 30, 1, 1, 180);
 
-        RotateDisplay();
+    //name of item
+    RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(*shop.shopIterator)->second).getName(), Color(0, 0, 0), 3, 14 - ((invmap.find(*shop.shopIterator)->second).getName().size() / 2), 13);
 
-    //}
-       
-        //RenderObjectOnScreen(meshList[GEO_STEMMIE], objx,objy,2,2);
-  
+    //Temmie text
+    RenderDialogueOnScreen("Buy this item?", Color(1, 1, 1), 3);
+
+    RotateDisplay();
 }
 
 void SP2::RotateDisplay()
@@ -3403,18 +3417,11 @@ void SP2::RotateDisplay()
 	    modelStack.PushMatrix();
             modelStack.LoadIdentity();  //reset modelStack
             modelStack.PushMatrix();
-                modelStack.Translate(50, 30, 0);
+                modelStack.Translate(40, 30, 0);
                 modelStack.Scale(2, 2, 2);
                 modelStack.Rotate(20, 1, 0, 0);
                 modelStack.Rotate(rotating, 0, 1, 0);
-                RenderMesh(meshList[GEO_SHOPDISPLAY], true);
-            modelStack.PopMatrix();
-            modelStack.PushMatrix();
-                modelStack.Translate(5, 18, 0);
-                modelStack.Rotate(-90, 0, 1, 0);
-                modelStack.Rotate(0, 0, 0, 1);
-                modelStack.Scale(2, 2, 2);
-                RenderMesh(meshList[GEO_STEMMIE], true);
+                RenderMesh(meshList[modelmap.find(*shop.shopIterator)->second], true);
             modelStack.PopMatrix();
             projectionStack.PopMatrix();
             viewStack.PopMatrix();
@@ -3621,4 +3628,44 @@ void SP2::rabbitBullet()
 
     float pitch, yaw;
     bool ifCollide;
+}
+
+void SP2::UpdateInventory(double dt)
+{
+    delayer += dt;
+    if (delayer >= 0.125f)
+    {
+        if (Application::IsKeyPressed('V')) {
+            SharedData::GetInstance()->player->addItem(1);
+            delayer = 0;
+        }
+        if (Application::IsKeyPressed('B')) {
+            SharedData::GetInstance()->player->addItem(2);
+            delayer = 0;
+        }
+        if ((Application::IsKeyPressed('Z')) && (SharedData::GetInstance()->player->invselect > 0))
+        {
+            SharedData::GetInstance()->player->invselect -= 1;
+            rotator = 0;
+            delayer = 0;
+        }
+        if (Application::IsKeyPressed('X'))
+        {
+            SharedData::GetInstance()->player->removeItem(SharedData::GetInstance()->player->invselect);
+            rotator = 0;
+            delayer = 0;
+        }
+        if ((Application::IsKeyPressed('C')) && (SharedData::GetInstance()->player->invselect < 7))
+        {
+            SharedData::GetInstance()->player->invselect += 1;
+            rotator = 0;
+            delayer = 0;
+        }
+    }
+}
+
+void SP2::RenderLoveMeter()
+{
+    RenderObjectOnScreen();
+    SharedData::GetInstance()->dialogueProcessor.npc;
 }

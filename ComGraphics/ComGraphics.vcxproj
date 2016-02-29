@@ -95,6 +95,7 @@
     <ClCompile Include="Source\PipePuzzle.cpp" />
     <ClCompile Include="Source\RabbitFight.cpp" />
     <ClCompile Include="Source\Character.cpp" />
+    <ClCompile Include="Source\Shop.cpp" />
     <ClCompile Include="Source\SP2.cpp" />
     <ClCompile Include="Source\Camera3.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="Source\MiniMapCamera.h" />
     <ClInclude Include="Source\RabbitFight.h" />
     <ClInclude Include="Source\SharedData.h" />
+    <ClInclude Include="Source\Shop.h" />
     <ClInclude Include="Source\SP2.h" />
     <ClInclude Include="Source\Camera3.h" />
     <ClInclude Include="Source\Character.h" />

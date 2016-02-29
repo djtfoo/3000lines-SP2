@@ -91,13 +91,13 @@ private:
         camera->Init(Vector3(0, 25, 0), Vector3(0, 25, 1), Vector3(0, 1, 0));
 
         //NPCs
-        NPC* npc = new NPC("Chon", Vector3(412, 5, -459), "ChonDialogue.txt");
+        NPC* npc = new NPC("Chon", Vector3(412, 20, -459), "ChonDialogue.txt");
         NPCs.push_back(npc);
         npc = new NPC("Vee", Vector3(600, 10, 440), "VeeDialogue.txt");
         NPCs.push_back(npc);
-        npc = new NPC("Jasim", Vector3(685, 0, -430), "JasimDialogue.txt");
+        npc = new NPC("Jasim", Vector3(685, 10, -430), "JasimDialogue.txt");
         NPCs.push_back(npc);
-        npc = new NPC("Wengstang", Vector3(950, 0, -460), "WengstangDialogue.txt");
+        npc = new NPC("Wengstang", Vector3(950, 10, -460), "WengstangDialogue.txt");
         NPCs.push_back(npc);
 
         interactptr = 0;

@@ -34,7 +34,6 @@ private:
     int hunger_;
     unsigned int health_;
     unsigned int gold_;
-    //add inventory
     //add pointers for clothes - hats, top, bottoms, etc
     Hat* hat;
     Top* top;
@@ -56,6 +55,7 @@ public:
     void setHunger(int hungee);
     void setHealth();
     void setGold(int moneh);
+    void changeGold(int change);
 
     bool isDead();
 

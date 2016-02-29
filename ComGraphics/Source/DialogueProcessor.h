@@ -21,13 +21,13 @@ using std::map;
 
 class DialogueProcessor
 {
+    double elapsedTime, bufferTime;
+
 public:
     DialogueProcessor();
     ~DialogueProcessor();
     CONVO_STATE convostate;
     NPC* npc;
-
-    double elapsedTime, bufferTime;
 
     void CheckCursor(double dt);
 };
