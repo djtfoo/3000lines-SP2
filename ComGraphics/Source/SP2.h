@@ -278,6 +278,7 @@ public:
     void loadWSGame();
     void loadChonGame();
     void loadVeeGame();
+    void loadJasimGame();
     void pauseGame();
     void loadRabbitGame();
 	void loadWeedGame();

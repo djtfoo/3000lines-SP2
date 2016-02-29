@@ -1,0 +1,10 @@
+#; 0: CONVO_INTRO
+0;Hello there. Bone-appetit! ;D
+#; 1: CONVO_NEUTRAL
+1;Bone-appetit. ;)
+#; 2: CONVO_GIFT
+2;Aww thank you, I love this a skeleTON!
+#; 3: CONVO_COMPLIMENT
+3;Aww, that was really humerus ;)
+#; 4: CONVO_STARTMINIGAME
+4;I have no GUTS for this... Thanks for offering your help!

@@ -584,6 +584,9 @@ void SP2::loadCollisions()
 
             //1st data
             std::getline(dataStream, line, ',');
+            if (line == "#") {  //a comment
+                continue;
+            }
             loc = std::stoi(line);
 
             //2nd data
@@ -742,14 +745,24 @@ void SP2::Init()
 	interactions->bound1.Set(518, -5, 176); interactions->bound2.Set(548, -15, 185);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
-    //TESTING DIALOGUES - Jasim
+    //Interacting with Jasim
     interactions = new Dialogue();
-    interactions->bound1.Set(685 - 50, -15, -430 - 50); interactions->bound2.Set(685 + 50, 100, -430 + 50);
+    interactions->bound1.Set(685 - 20, -15, -430 - 20); interactions->bound2.Set(685 + 20, 30, -430 + 20);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
-    //TESTING DIALOGUES & MINI-GAME - Chon
+    //Interacting with Chon
     interactions = new Dialogue();
     interactions->bound1.Set(400, -5, -479); interactions->bound2.Set(425, 15, -439);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+    //Interacting with Vee
+    interactions = new Dialogue();
+    interactions->bound1.Set(600 - 10, 10 - 12, 440 - 10); interactions->bound2.Set(600 + 10, 10 + 5, 440 + 10);
+    SharedData::GetInstance()->interactionItems.push_back(interactions);
+
+    //Interacting with Wengstang
+    interactions = new Dialogue();
+    interactions->bound1.Set(950 -8, 0 - 15, -460 - 8); interactions->bound2.Set(950 + 8, 0 + 3, -460 + 8);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
@@ -767,6 +780,13 @@ void SP2::Init()
 
     loadWeedGame();
 
+    for (int i = 10; i < weedgame.size(); i++)
+    {
+        interactions = new FarmPlantInteraction();
+        interactions->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, -18, weedgame[i].z + 3);
+        SharedData::GetInstance()->interactionItems.push_back(interactions);
+    }
+
 	Interaction* interactions2;
     for (int i = 0; i < 10; i++)
     {
@@ -774,14 +794,6 @@ void SP2::Init()
         interactions2->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions2->bound2.Set(weedgame[i].x + 3, -19, weedgame[i].z + 3);
         SharedData::GetInstance()->interactionItems.push_back(interactions2);
     }
-
-	//for (int i = 10; i < weedgame.size(); i++)
-	//{
-	//
-	//	interactions = new FarmPlantInteraction();
-	//	interactions->bound1.Set(weedgame[i].x - 3, -25, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, -18, weedgame[i].z + 3);
-	//	SharedData::GetInstance()->interactionItems.push_back(interactions);
-	//}
 	
     rotating = 0;
     ptxt1 = 70;     //pause textbox
@@ -1186,6 +1198,8 @@ void SP2::Render()
         break;
     case GAME_STATE_VEEGAME: loadVeeGame();
         break;
+    case GAME_STATE_JASIMGAME: loadJasimGame();
+        break;
     case GAME_STATE_PAUSED: pauseGame();
         break;
     case GAME_STATE_RABBIT: loadRabbitGame();
@@ -1224,7 +1238,7 @@ void SP2::Render()
             break;
         case CONVO_COMPLIMENT:
             RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
-            RenderTextOnScreen(meshList[GEO_TEXT], "\":D\"", Color(1, 1, 1), 2, 26, 10.5f);
+            RenderTextOnScreen(meshList[GEO_TEXT], ":D", Color(1, 1, 1), 2, 26, 10.5f);
             break;
         case CONVO_STARTMINIGAME:
             RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
@@ -1237,12 +1251,7 @@ void SP2::Render()
     //RenderMinimap();
 
     modelStack.PushMatrix();
-    modelStack.Translate(685 - 50, -5, -430 - 50);
-    RenderMesh(meshList[GEO_JASIM], true);
-    modelStack.PopMatrix();
-    
-    modelStack.PushMatrix();
-    modelStack.Translate(685 + 50, 15, -430 + 50);
+    modelStack.Translate(735, 14.f, -380);
     RenderMesh(meshList[GEO_JASIM], true);
     modelStack.PopMatrix();
 }
@@ -1817,9 +1826,14 @@ void SP2::ballboundfunct()
 }
 
 void SP2::loadVeeGame()
-{    
-     
-}    
+{
+
+}
+
+void SP2::loadJasimGame()
+{
+
+}
 
 void SP2::pauseGame()
 {
@@ -2227,6 +2241,7 @@ void SP2::RenderNPC()
 
     modelStack.PushMatrix();
     modelStack.Translate(950, 0, -460);
+    modelStack.Rotate(180, 0, 1, 0);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_WENGSTANG], true);
     modelStack.PopMatrix();
@@ -2371,7 +2386,7 @@ void SP2::veeControlroom()
 {
     //Vee Model
     modelStack.PushMatrix();
-    modelStack.Translate(600, 0, 440);
+    modelStack.Translate(600, 10, 440);
     modelStack.Rotate(-90, 0, 1, 0);
     modelStack.Scale(7, 7, 7);
     RenderMesh(meshList[GEO_VEE], true);

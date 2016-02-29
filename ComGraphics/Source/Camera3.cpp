@@ -15,7 +15,7 @@ Camera3::Camera3()
 {
     phi = 15;
     theta = 20;
-    distance = 40;
+    distance = 30;
 }
 
 /******************************************************************************/
@@ -97,23 +97,11 @@ void Camera3::MoveCamera(double dt)
         SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
 
         phi -= diff_ypos * ROTSPEED * dt;
-        if (phi > 60) {
-            phi = 60;
+        if (phi > 50) {
+            phi = 50;
         }
-        else if (phi < -45) {
-            phi = -45;
-        }
-    }
-
-    if (Application::IsKeyPressed('Q')) {
-        if (distance < 60 - CAMSPEED * dt) {
-            distance += CAMSPEED * dt;
-        }
-    }
-
-    if (Application::IsKeyPressed('E')) {
-        if (distance > 15 + CAMSPEED * dt) {
-            distance -= CAMSPEED * dt;
+        else if (phi < -30) {
+            phi = -30;
         }
     }
 
@@ -123,4 +111,10 @@ void Camera3::MoveCamera(double dt)
     position.x = distance * cos(Math::DegreeToRadian(phi)) * cos(Math::DegreeToRadian(theta)) + target.x;
     position.y = distance * sin(Math::DegreeToRadian(phi)) + target.y;
     position.z = distance * cos(Math::DegreeToRadian(phi)) * sin(Math::DegreeToRadian(theta)) + target.z;
+
+    Vector3 view = (target - position).Normalized();
+    Vector3 right = view.Cross(up);
+    right.y = 0;
+    right.Normalize();
+    up = right.Cross(view).Normalized();
 }

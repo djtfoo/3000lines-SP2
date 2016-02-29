@@ -71,6 +71,18 @@ void DialogueProcessor::CheckCursor(double dt)
                     SharedData::GetInstance()->gamestate = GAME_STATE_CHONGAME;
                     SharedData::GetInstance()->chonGamebool = true;
                 }
+                else if (npc->getName() == "Vee") {
+                    SharedData::GetInstance()->gamestate = GAME_STATE_VEEGAME;
+                    SharedData::GetInstance()->chonGamebool = true;
+                }
+                else if (npc->getName() == "Jasim") {
+                    SharedData::GetInstance()->gamestate = GAME_STATE_JASIMGAME;
+                    SharedData::GetInstance()->chonGamebool = true;
+                }
+                else if (npc->getName() == "Chon") {
+                    SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
+                    SharedData::GetInstance()->chonGamebool = true;
+                }
                 else {  //temp
                     SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
                 }

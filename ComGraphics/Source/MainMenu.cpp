@@ -218,7 +218,7 @@ void MainMenu::ButtonUpdater(double dt)
         if (btncheck == 1)
         {
             SharedData::GetInstance()->programstate_change = true;
-            SharedData::GetInstance()->program_state = SharedData::PROGRAM_GAME;
+            SharedData::GetInstance()->program_state = PROGRAM_GAME;
             selected = false;
         }
 
@@ -242,7 +242,7 @@ void MainMenu::ButtonUpdater(double dt)
 		}
         else if (btncheck == 6)
         {
-            SharedData::GetInstance()->program_state = SharedData::PROGRAM_EXIT;
+            SharedData::GetInstance()->program_state = PROGRAM_EXIT;
         }
 
 	}

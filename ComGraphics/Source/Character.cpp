@@ -31,31 +31,40 @@ Player::~Player()
 {
 }
 
+static float WALKSPEED = 40.f;
+
 void Player::Walk(double dt)
 {
     bool xMovement = true, zMovement = true;
     float newX = position_.x;
     float newZ = position_.z;
 
-    if (Application::IsKeyPressed('W')) {   //player moves forward
-        direction_ = 90 - SharedData::GetInstance()->camera->theta;
-
-        newX -= 40 * sin(Math::DegreeToRadian(direction_)) * dt;
-        newZ -= 40 * cos(Math::DegreeToRadian(direction_)) * dt;
-    }
-
-    if (Application::IsKeyPressed('F')) {   //sped up moving forward
+    /*if (Application::IsKeyPressed('F')) {   //sped up moving forward
         direction_ = 90 - SharedData::GetInstance()->camera->theta;
 
         newX -= 130 * sin(Math::DegreeToRadian(direction_)) * dt;
         newZ -= 130 * cos(Math::DegreeToRadian(direction_)) * dt;
+    }*/
+
+    if (Application::IsKeyPressed(VK_SHIFT)) {   //sped up moving
+        WALKSPEED = 100.f;
+    }
+    else {
+        WALKSPEED = 40.f;
+    }
+    
+    if (Application::IsKeyPressed('W')) {   //player moves forward
+        direction_ = 90 - SharedData::GetInstance()->camera->theta;
+
+        newX -= (float)(1.5f * WALKSPEED * sin(Math::DegreeToRadian(direction_)) * dt);
+        newZ -= (float)(1.5f * WALKSPEED * cos(Math::DegreeToRadian(direction_)) * dt);
     }
 
     if (Application::IsKeyPressed('S')) {   //player moves backward
         direction_ = 90 - SharedData::GetInstance()->camera->theta;
 
-        newX += 40 * sin(Math::DegreeToRadian(direction_)) * dt;
-        newZ += 40 * cos(Math::DegreeToRadian(direction_)) * dt;
+        newX += (float)(1.5f * WALKSPEED * sin(Math::DegreeToRadian(direction_)) * dt);
+        newZ += (float)(1.5f * WALKSPEED * cos(Math::DegreeToRadian(direction_)) * dt);
     }
 
     if (Application::IsKeyPressed('A')) {   //strafe left
@@ -65,8 +74,8 @@ void Player::Walk(double dt)
         right.y = 0;
         right.Normalize();
 
-        newX -= 50 * right.x * dt;
-        newZ -= 50 * right.z * dt;
+        newX -= (float)(WALKSPEED * right.x * dt);
+        newZ -= (float)(WALKSPEED * right.z * dt);
     }
 
     if (Application::IsKeyPressed('D')) {   //strafe right
@@ -76,8 +85,8 @@ void Player::Walk(double dt)
         right.y = 0;
         right.Normalize();
 
-        newX += 50 * right.x * dt;
-        newZ += 50 * right.z * dt;
+        newX += (float)(WALKSPEED * right.x * dt);
+        newZ += (float)(WALKSPEED * right.z * dt);
     }
 
     CheckCollision(newX, newZ, xMovement, zMovement);
@@ -157,7 +166,7 @@ void Player::CheckInteraction()
 
     vector<Interaction*> temp = SharedData::GetInstance()->interactionItems;
     Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
-    Vector3 maxView = position_ + 75 * view;
+    Vector3 maxView = position_ + 50 * view;
 	int i = 0;
     for (vector<Interaction*>::iterator it = temp.begin(); it != temp.end(); ++it) {
         
@@ -320,16 +329,47 @@ bool Player::invfull()
 	return true;
 }
 
-NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0)
+NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0), loveMeter_(0)
 {
     //initialise map with the text file's directory
+
+    std::string dialogue;
+    int convo;
+
+    std::ifstream inData;
+    std::string data;
+    inData.open(textDirectory);
+
+    if (inData.is_open()) {
+        while (!inData.eof()) {
+            std::getline(inData, data);
+
+            std::stringstream dataStream(data);
+            std::string line;
+
+            //1st data
+            std::getline(dataStream, line, ';');
+
+            if (line == "#") {  //a comment
+                continue;
+            }
+            convo = std::stoi(line);
+
+            //2nd data
+            std::getline(dataStream, line);
+            dialogue = line;
+
+            dialogues.insert(std::pair<CONVO_STATE, std::string>(static_cast<CONVO_STATE>(convo), dialogue));
+        }
+    }
+    inData.close();
     
-    //TESTING EXAMPLE
-    dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_INTRO, "Eyyy sup"));
-    dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_NEUTRAL, "Anything you wanna do?"));
-    dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_GIFT, "Aww ty"));
-    dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_COMPLIMENT, "I shy"));
-    dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_STARTMINIGAME, "Play mini-game"));
+    ////TESTING EXAMPLE
+    //dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_INTRO, "Eyyy sup"));
+    //dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_NEUTRAL, "Anything you wanna do?"));
+    //dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_GIFT, "Aww ty"));
+    //dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_COMPLIMENT, "I shy"));
+    //dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_STARTMINIGAME, "Play mini-game"));
 }
 
 NPC::~NPC()

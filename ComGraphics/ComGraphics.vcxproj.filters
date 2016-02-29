@@ -10,12 +10,6 @@
     <ClCompile Include="Source\shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Camera2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,13 +75,7 @@
     <ClInclude Include="Source\shader.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Camera2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Light.h">

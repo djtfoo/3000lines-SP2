@@ -270,10 +270,10 @@ FarmPlantInteraction::~FarmPlantInteraction()
 
 void FarmPlantInteraction::DoInteraction()
 {
-	Interaction* remover;
-	remover = new FarmPlantInteraction();
-	remover->bound1.Set(9999, 99, 9999); remover->bound2.Set(9999, 99, 9999);
-	std::cout << " " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.z << std::endl;
-	SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
-	SharedData::GetInstance()->player->addItem(2);
+    Interaction* remover;
+    remover = new FarmPlantInteraction();
+    remover->bound1.Set(9999, 99, 9999); remover->bound2.Set(9999, 99, 9999);
+    std::cout << " " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.z << std::endl;
+    SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
+    SharedData::GetInstance()->player->addItem(2);
 }

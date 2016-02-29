@@ -79,7 +79,8 @@ void Application::Init()
     get_resolution();
 
 	//Create a window and create its OpenGL context
-    m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
+    //m_window = glfwCreateWindow(800, 600, "Computer Graphics", NULL, NULL);  //800 x 600
+    m_window = glfwCreateWindow(SharedData::GetInstance()->width, SharedData::GetInstance()->height, "Computer Graphics", NULL, NULL);  //800 x 600
     //m_window = glfwCreateWindow(SharedData::GetInstance()->width, SharedData::GetInstance()->height, "Romantic Room", glfwGetPrimaryMonitor(), NULL);
     //glfwSetWindowSize(m_window, SharedData::GetInstance()->width, SharedData::GetInstance()->height);
 
@@ -117,15 +118,15 @@ void Application::Run()
 	Scene *scene = 0;
     switch (SharedData::GetInstance()->program_state)
     {
-    case SharedData::PROGRAM_MENU: scene = new MainMenu();
+    case PROGRAM_MENU: scene = new MainMenu();
         break;
-    case SharedData::PROGRAM_GAME: scene = new SP2();
+    case PROGRAM_GAME: scene = new SP2();
         break;
     }
 	scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
-    while (!glfwWindowShouldClose(m_window) && SharedData::GetInstance()->program_state != SharedData::PROGRAM_EXIT && !IsKeyPressed(VK_ESCAPE))
+    while (!glfwWindowShouldClose(m_window) && SharedData::GetInstance()->program_state != PROGRAM_EXIT && !IsKeyPressed(VK_ESCAPE))
 	{
 		scene->Update(m_timer.getElapsedTime());
         scene->Render();
@@ -134,7 +135,7 @@ void Application::Run()
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...
 		glfwPollEvents();
         //setting cursor
-        if (SharedData::GetInstance()->program_state == SharedData::PROGRAM_MENU || SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE)
+        if (SharedData::GetInstance()->program_state == PROGRAM_MENU || SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE)
             glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
         else
             glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -147,9 +148,9 @@ void Application::Run()
             SharedData::GetInstance()->programstate_change = false;
             switch (SharedData::GetInstance()->program_state)
             {
-            case SharedData::PROGRAM_MENU: scene = new MainMenu();
+            case PROGRAM_MENU: scene = new MainMenu();
                 break;
-            case SharedData::PROGRAM_GAME: scene = new SP2();
+            case PROGRAM_GAME: scene = new SP2();
                 break;
             }
             scene->Init();

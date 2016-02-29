@@ -17,15 +17,6 @@ using std::map;
 class SharedData
 {
 public:
-    enum PROGRAM_STATE
-    {
-        PROGRAM_MENU,
-        PROGRAM_GAME,
-        PROGRAM_EXIT,
-
-        PROGRAM_TOTAL
-    };
-
     PROGRAM_STATE program_state;
     bool programstate_change;
 	float daynighttime;
@@ -98,7 +89,7 @@ private:
         //NPCs
         NPC* npc = new NPC("Chon", Vector3(412, 5, -459), "ChonDialogue.txt");
         NPCs.push_back(npc);
-        npc = new NPC("Vee", Vector3(600, 0, 440), "VeeDialogue.txt");
+        npc = new NPC("Vee", Vector3(600, 10, 440), "VeeDialogue.txt");
         NPCs.push_back(npc);
         npc = new NPC("Jasim", Vector3(685, 0, -430), "JasimDialogue.txt");
         NPCs.push_back(npc);
