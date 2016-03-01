@@ -973,10 +973,10 @@ void SP2::Update(double dt)
     loadDown += 30 * dt;
     loadUp -= 30 * dt;
 
-    if (loadDown >= 60 || loadUp <= 0)
+    if (loadDown >= 160 || loadUp <= -100)
     {
-        loadDown = 60;
-        loadUp = 0;
+        loadDown = 160;
+        loadUp = -100;
     }
 
     //temporary check
@@ -1303,6 +1303,12 @@ void SP2::Render()
         break;
     }
     //RenderMinimap();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(0, 10, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_BOOK], true);
+    modelStack.PopMatrix();
 
     RenderObjectOnScreen(meshList[GEO_LOADTOP], 40, loadDown, 1, 1, 0);
     RenderObjectOnScreen(meshList[GEO_LOADBTM], 40, loadUp, 1, 1, 0);
