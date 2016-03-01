@@ -12,6 +12,7 @@
 #include "Item.h"
 #include "DialogueProcessor.h"
 
+#include "Bullet.h"
 #include "Interaction.h"
 
 #include "Shop.h"
@@ -172,6 +173,7 @@ class SP2 : public Scene
 
         //rabbit bullet
         GEO_BULLET,
+        GEO_E_BULLET,
         NUM_GEOMETRY,
     };
     enum UNIFORM_TYPE
@@ -227,15 +229,19 @@ public:
 
     MS modelStack, viewStack, projectionStack;
 	std::vector<Vector3> weedgame;
-    //std::vector<Camera3> bullet;
+    std::vector<PlayerBullet> playerbullet;
+    std::vector<EnemyBullet> enemybullet;
 
     //PlayerBullet bullet[100];
+    float pitch, yaw;
+    double elapsedTime, e_elapsedTime;
 
-	float delayer;
-	int rotator;
+    int delayer;
+    float delayBuffer;
+    int rotator;
+    float floodlevel;
     float lightpower;
     float lightpos;
-    float delayBuffer;
     float loadDown;
     float loadUp;
 
@@ -300,9 +306,14 @@ public:
     void loadRabbitGame();
 	void loadWeedGame();
     void RenderFightSkybox();
-    void rabbitBullet();
     void puzzleLogic();
     void UpdateInventory(double dt);
+
+    //rabbit fight
+    void playerShoot(double dt);
+    void enemyShoot(double dt);
+    void bulletMove(double dt);
+    void RenderBullets();
 
     //cursor for dialogue, pause, shop
     void RenderCursor();
@@ -314,7 +325,7 @@ public:
     void RotateDisplay();
     void pauseAnimation(double dt);
 
-    float objx, objy;
+    //float objx, objy;
 
     float gateobjs[14];
     /*0,1 = hang 1,2            10, 11, 12, 13 = room 1, 2, 3, 4

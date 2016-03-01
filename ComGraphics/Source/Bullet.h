@@ -1,4 +1,6 @@
 #include "Vector3.h"
+#include "Character.h"
+
 #ifndef BULLET_H 
 #define BULLET_H 
 
@@ -8,11 +10,7 @@ struct PlayerBullet
     Vector3 p_bulletDir;        //Direction where bullet shoots from player
     float p_pitch, p_yaw;       //Rotation of Bullet
     bool p_ifCollide;           //Check if Bullet collide with enemy.
-
-    int active;
-    double x, y, z, dx, dy, dz, bullet_phi;
 };
-static PlayerBullet bullet[100];
 struct EnemyBullet
 {
     Vector3 e_bulletPos;        //Current bullet position
