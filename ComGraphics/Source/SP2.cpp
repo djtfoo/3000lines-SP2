@@ -540,6 +540,13 @@ SP2::SP2()
 	meshList[GEO_BOOK]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
 	meshList[GEO_BOOK]->material.kShininess = 1.f;
 
+    meshList[GEO_POSTER] = MeshBuilder::GenerateOBJ("trash", "OBJ/poster.obj");
+    meshList[GEO_POSTER]->textureID = LoadTGA("Image/testposter.tga");
+    meshList[GEO_POSTER]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
+    meshList[GEO_POSTER]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
+    meshList[GEO_POSTER]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
+    meshList[GEO_POSTER]->material.kShininess = 1.f;
+
 	    //GEO_SWITCH
     meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
     meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
@@ -572,7 +579,7 @@ SP2::SP2()
 
     viewOptions = true;
 
-    //objx = objy = 1;
+    objx = objy = 1;
 
     loadDown = -115;
     loadUp = 175;
@@ -978,7 +985,22 @@ void SP2::Update(double dt)
         loadDown = 160;
         loadUp = -100;
     }
-
+    if (Application::IsKeyPressed('I'))
+    {
+        objy += 30 * dt;
+    }
+    if (Application::IsKeyPressed('K'))
+    {
+        objy -= 30 * dt;
+    }
+    if (Application::IsKeyPressed('J'))
+    {
+        objx -= 30 * dt;
+    }
+    if (Application::IsKeyPressed('L'))
+    {
+        objx += 30 * dt;
+    }
     //temporary check
     if (SharedData::GetInstance()->gamestate != GAME_STATE_DIALOGUE && SharedData::GetInstance()->gamestate != GAME_STATE_SHOP) {
         SharedData::GetInstance()->camera->Update(dt);
@@ -1316,6 +1338,10 @@ void SP2::Render()
     if (viewOptions) {
         RenderUI();
     }
+
+    RenderTextOnScreen(meshList[GEO_TEXT], "objx : " + std::to_string(objx), Color(1, 1, 1), 2, 1, 2);
+    RenderTextOnScreen(meshList[GEO_TEXT], "objy : " + std::to_string(objy), Color(1, 1, 1), 2, 1, 1);
+
 }
 
 void SP2::loadFree()
@@ -2809,8 +2835,54 @@ void SP2::chonLab()
     RenderMesh(meshList[GEO_TOOLBOX], true);
     modelStack.PopMatrix();
    
+    chonSecret();
 }
 
+void SP2::chonSecret()
+{
+    modelStack.PushMatrix();
+    modelStack.Translate(490, 20, -475);
+    modelStack.Scale(15, 15, 5);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(470, 20, -475);
+    modelStack.Scale(15, 15, 5);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(440, 20, -475);
+    modelStack.Scale(15, 15, 5);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(410, 20, -475);
+    modelStack.Scale(15, 15, 5);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(360, 20, -475);
+    modelStack.Scale(15, 15, 5);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(330, 20, -475);
+    modelStack.Scale(15, 15, 5);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(300, 20, -475);
+    modelStack.Scale(15, 15, 5);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+    
+}
 void SP2::veeControlroom()
 {
     //Vee Model

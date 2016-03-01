@@ -99,6 +99,7 @@ class SP2 : public Scene
         GEO_TRASH,
         GEO_BOOK,
         GEO_LMAO,   //a sh*tty joke
+        GEO_POSTER,
         //^^^
 
         //Gifts
@@ -300,6 +301,7 @@ public:
     void loadShop();
     void loadWSGame();
     void loadChonGame();
+    void chonSecret();
     void loadVeeGame();
     void loadJasimGame();
     void pauseGame();
@@ -325,7 +327,7 @@ public:
     void RotateDisplay();
     void pauseAnimation(double dt);
 
-    //float objx, objy;
+    float objx, objy;
 
     float gateobjs[14];
     /*0,1 = hang 1,2            10, 11, 12, 13 = room 1, 2, 3, 4
