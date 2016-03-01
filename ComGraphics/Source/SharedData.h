@@ -49,7 +49,9 @@ public:
     Interaction* interactptr;
     bool gatelookat;
     bool gateopen;
-	bool toiletflood;
+    bool shitintoilet;
+    float floodlevel;
+    char interactbutton;    //changes for toilet game only
     bool chonGamebool;
 	bool veegamebool;
 	bool weedGamebool;
@@ -122,7 +124,9 @@ private:
 		veegamebool = false;
 
         //toilet
-		toiletflood = false;
+        shitintoilet = false;
+        floodlevel = -2;
+        interactbutton = 'E';
         
         //Chon mini-game (lab)
         chonGamebool = false;

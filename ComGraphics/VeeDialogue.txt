@@ -1,9 +1,9 @@
 #; 0: CONVO_INTRO
-0;Hello there. Bone-appetit! ;D
+0;Hello there!
 #; 1: CONVO_NEUTRAL
-1;Bone-appetit. ;)
+1;Hii~
 #; 2: CONVO_GIFT
-2;Aww thank you, I love this a skeleTON!
+2;Aww thank you!
 #; 3: CONVO_COMPLIMENT
 3;Aww, that was really humerus ;)
 #; 4: CONVO_STARTMINIGAME

@@ -80,7 +80,8 @@ void DialogueProcessor::CheckCursor(double dt)
                 }
                 else if (npc->getName() == "Jasim") {
                     SharedData::GetInstance()->gamestate = GAME_STATE_JASIMGAME;
-                    SharedData::GetInstance()->chonGamebool = true;
+                    SharedData::GetInstance()->shitintoilet = true;
+                    SharedData::GetInstance()->floodlevel = 0;
                 }
                 else if (npc->getName() == "Wengstang") {
 					if (SharedData::GetInstance()->weedcounter != 0)    //weeds must reset

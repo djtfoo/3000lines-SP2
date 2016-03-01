@@ -7,4 +7,4 @@
 #; 3: CONVO_COMPLIMENT
 3;Aww, that was really humerus ;)
 #; 4: CONVO_STARTMINIGAME
-4;I have no GUTS for this... Thanks for offering your help!
+4;Could you help me flush the  shit down the toilet? I have no GUTS to do it ;)

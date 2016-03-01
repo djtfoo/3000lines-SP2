@@ -774,7 +774,7 @@ void SP2::Init()
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new ManureInteraction();
-	interactions->bound1.Set(780, 23, -616);     interactions->bound2.Set(800, 25, -612);
+	interactions->bound1.Set(780, 5, -616);     interactions->bound2.Set(800, 15, -612);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     //interactions = new ChonGame();
@@ -803,7 +803,7 @@ void SP2::Init()
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new BedTime();
-	interactions->bound1.Set(518, -5, 176); interactions->bound2.Set(548, -15, 185);
+	interactions->bound1.Set(518, 5, 176); interactions->bound2.Set(548, 20, 185);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     //Interacting with Jasim
@@ -863,7 +863,6 @@ void SP2::Init()
     ptxtexit = 94;
     rotator = 0;
 	SharedData::GetInstance()->daynighttime = 0000;
-	floodlevel = -1;
 
     //Init chon game variables
     for (int i = 0; i < 5; i++)
@@ -969,7 +968,7 @@ void SP2::Update(double dt)
         SharedData::GetInstance()->interactptr->DoInteraction();
     }
 
-	if (Application::IsKeyPressed('E') && SharedData::GetInstance()->canInteract && delayBuffer >= 2) 
+	if (Application::IsKeyPressed(SharedData::GetInstance()->interactbutton) && SharedData::GetInstance()->canInteract && delayBuffer >= 2) 
     {
 		if (SharedData::GetInstance()->interactnumber != 32)
 		{
@@ -1027,9 +1026,9 @@ void SP2::Update(double dt)
         viewOptions = true;     //switch on info
     if (Application::IsKeyPressed('6'))
         viewOptions = false;    //switch off info
-    if (Application::IsKeyPressed('R')) {       //reset
+    /*if (Application::IsKeyPressed('R')) {       //reset
         Reset();
-    }
+    }*/
 
     if (vibrateX < 0.6 && vibrateY < 0.6)
     {
@@ -1107,10 +1106,6 @@ void SP2::Update(double dt)
     }
 
     //Interactions?
-    if ((SharedData::GetInstance()->toiletflood == true) && (floodlevel < 3))
-    {
-        floodlevel += dt;
-    }
     if (SharedData::GetInstance()->chonGamebool == true)
     {
         SharedData::GetInstance()->gamestate = GAME_STATE_CHONGAME;
@@ -1354,7 +1349,9 @@ void SP2::loadFree()
     
     //interaction
     if (SharedData::GetInstance()->canInteract && SharedData::GetInstance()->interactptr->pressButton) {
-        RenderTextOnScreen(meshList[GEO_TEXT], "Press E", Color(1, 0, 0), 3, 2, 2);
+        std::stringstream ss;
+        ss << "Press " << SharedData::GetInstance()->interactbutton;
+        RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 3, 2, 2);
     }
 }  
 
@@ -1388,42 +1385,42 @@ void SP2::gateOpenInteractions()
     Interaction* gateInterInit;
     //hangar
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(220, -15, -45); gateInterInit->bound2.Set(360, 5, 50);
+    gateInterInit->bound1.Set(220, -15, -45); gateInterInit->bound2.Set(360, 45, 50);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[0].bound1 = gateInterInit->bound1; gatebounds[0].bound2 = gateInterInit->bound2;
     //lab
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(440, -15, -340); gateInterInit->bound2.Set(480, 5, -230);
+    gateInterInit->bound1.Set(440, -15, -340); gateInterInit->bound2.Set(480, 45, -230);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[1].bound1 = gateInterInit->bound1; gatebounds[1].bound2 = gateInterInit->bound2;
     //canteen
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(770, -15, -350); gateInterInit->bound2.Set(820, 5, -230);
+    gateInterInit->bound1.Set(770, -15, -350); gateInterInit->bound2.Set(820, 45, -230);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[2].bound1 = gateInterInit->bound1; gatebounds[2].bound2 = gateInterInit->bound2;
     //control 
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(570, -15, 270); gateInterInit->bound2.Set(617, 5, 370);
+    gateInterInit->bound1.Set(570, -15, 270); gateInterInit->bound2.Set(617, 45, 370);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[3].bound1 = gateInterInit->bound1; gatebounds[3].bound2 = gateInterInit->bound2;
     //rm1
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(545, -15, -135); gateInterInit->bound2.Set(555, 5, -100);
+    gateInterInit->bound1.Set(545, -15, -135); gateInterInit->bound2.Set(555, 30, -100);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[4].bound1 = gateInterInit->bound1; gatebounds[4].bound2 = gateInterInit->bound2;
     //rm3
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(619, -15, -135); gateInterInit->bound2.Set(630, 5, -100);
+    gateInterInit->bound1.Set(619, -15, -135); gateInterInit->bound2.Set(630, 30, -100);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[5].bound1 = gateInterInit->bound1; gatebounds[5].bound2 = gateInterInit->bound2;
     //rm2
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(545, -15, 50); gateInterInit->bound2.Set(555, 5, 85);
+    gateInterInit->bound1.Set(545, -15, 50); gateInterInit->bound2.Set(555, 30, 85);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[6].bound1 = gateInterInit->bound1; gatebounds[6].bound2 = gateInterInit->bound2;
     //rm4
     gateInterInit = new GateInteraction();
-    gateInterInit->bound1.Set(619, -15, 50); gateInterInit->bound2.Set(630, 5, 85);
+    gateInterInit->bound1.Set(619, -15, 50); gateInterInit->bound2.Set(630, 30, 85);
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[7].bound1 = gateInterInit->bound1; gatebounds[7].bound2 = gateInterInit->bound2;
 }
@@ -2129,7 +2126,7 @@ void SP2::loadVeeGame()
 
 void SP2::loadJasimGame()
 {
-
+    loadFree();
 }
 
 void SP2::pauseGame()
@@ -2897,18 +2894,20 @@ void SP2::jasimCanteen()
     modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(732, floodlevel, -594);
+	modelStack.Translate(732, SharedData::GetInstance()->floodlevel, -594);
 	modelStack.Scale(7, 5, 4.3);
 	modelStack.Rotate(-90, 1, 0, 0);
 	RenderMesh(meshList[GEO_TOILETFLOOD], true);
 	modelStack.PopMatrix();
 
-    modelStack.PushMatrix();
-    modelStack.Translate(779.6, 7.39, -614.9);
-    modelStack.Scale(1.11, 1, 1.11);
-    modelStack.Rotate(-90, 1, 0, 0);
-    RenderMesh(meshList[GEO_LMAO], true);
-    modelStack.PopMatrix();
+    if (SharedData::GetInstance()->shitintoilet) {     //in mini-game
+        modelStack.PushMatrix();
+        modelStack.Translate(779.6, 7.39, -614.9);
+        modelStack.Scale(1.11, 1, 1.11);
+        modelStack.Rotate(-90, 1, 0, 0);
+        RenderMesh(meshList[GEO_LMAO], true);
+        modelStack.PopMatrix();
+    }
 }
 
 void SP2::loadHangar()
@@ -3274,6 +3273,11 @@ void SP2::RenderUI()
     s.str("");
     s << "Gold: " << SharedData::GetInstance()->player->getGold();
     RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9, 0.9, 0), 3, 0, 15);
+    
+    //state
+    s.str("");
+    s << "State: " << SharedData::GetInstance()->gamestate;
+    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9, 0.9, 0), 3, 0, 14);
 
     //hunger bar
     RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
@@ -3641,7 +3645,7 @@ void SP2::rabbitBullet()
 
 void SP2::UpdateInventory(double dt)
 {
-    delayer += dt;
+    delayer += (float)(dt);
     if (delayer >= 0.125f)
     {
         if (Application::IsKeyPressed('V')) {

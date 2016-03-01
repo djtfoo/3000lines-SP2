@@ -1,10 +1,10 @@
 #; 0: CONVO_INTRO
-0;Hello there. Bone-appetit! ;D
+0;Ohaiyo gozaimasu!
 #; 1: CONVO_NEUTRAL
-1;Bone-appetit. ;)
+1;Watashi wa very busy D;
 #; 2: CONVO_GIFT
-2;Aww thank you, I love this a skeleTON!
+2;A-Arigatou!! Your gift is daisuki ;-;
 #; 3: CONVO_COMPLIMENT
-3;Aww, that was really humerus ;)
+3;H-Hontou ni? ;-;
 #; 4: CONVO_STARTMINIGAME
-4;I have no GUTS for this... Thanks for offering your help!
+4;Watashi needs some help...

@@ -76,9 +76,9 @@ void Camera3::Update(double dt)
 {
     MoveCamera(dt);
 
-    if (Application::IsKeyPressed('R')) {       //reset
+    /*if (Application::IsKeyPressed('R')) {       //reset
         Reset();
-    }
+    }*/
 }
 
 void Camera3::MoveCamera(double dt)

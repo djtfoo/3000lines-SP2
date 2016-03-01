@@ -55,24 +55,27 @@ Dialogue::~Dialogue()
 
 void Dialogue::DoInteraction()
 {
-    for (vector<NPC*>::iterator it = SharedData::GetInstance()->NPCs.begin(); it != SharedData::GetInstance()->NPCs.end(); ++it) {
-        Vector3 b1 = SharedData::GetInstance()->interactptr->bound1;
-        Vector3 b2 = SharedData::GetInstance()->interactptr->bound2;
-        if ((*it)->position_.x >= b1.x && (*it)->position_.x <= b2.x &&
-            (*it)->position_.y >= b1.y && (*it)->position_.y <= b2.y &&
-            (*it)->position_.z >= b1.z && (*it)->position_.z <= b2.z) {
-            SharedData::GetInstance()->dialogueProcessor.npc = *it;
-            SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_INTRO;
-            SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_FREE) {
+        for (vector<NPC*>::iterator it = SharedData::GetInstance()->NPCs.begin(); it != SharedData::GetInstance()->NPCs.end(); ++it) {
+            Vector3 b1 = SharedData::GetInstance()->interactptr->bound1;
+            Vector3 b2 = SharedData::GetInstance()->interactptr->bound2;
+            if ((*it)->position_.x >= b1.x && (*it)->position_.x <= b2.x &&
+                (*it)->position_.y >= b1.y && (*it)->position_.y <= b2.y &&
+                (*it)->position_.z >= b1.z && (*it)->position_.z <= b2.z) {
+                SharedData::GetInstance()->dialogueProcessor.npc = *it;
+                SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_INTRO;
+                SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
 
-            //set cursor
-            SharedData::GetInstance()->cursor_xpos = 400;
-            SharedData::GetInstance()->cursor_ypos = 400;
-            SharedData::GetInstance()->cursor_newxpos = 400;
-            SharedData::GetInstance()->cursor_newypos = 400;
-            break;
+                //set cursor
+                SharedData::GetInstance()->cursor_xpos = 400;
+                SharedData::GetInstance()->cursor_ypos = 400;
+                SharedData::GetInstance()->cursor_newxpos = 400;
+                SharedData::GetInstance()->cursor_newypos = 400;
+                break;
+            }
         }
     }
+
 }
 
 //shop interaction (enter shop state)
@@ -108,7 +111,47 @@ ManureInteraction::~ManureInteraction()
 
 void ManureInteraction::DoInteraction()
 {
-	SharedData::GetInstance()->toiletflood = true;
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_JASIMGAME) {
+        SharedData::GetInstance()->floodlevel += 0.1f;
+
+        //randomise interactbutton between 'Q', 'E', 'R', 'T'
+        int random = rand() % 7;
+
+        switch (random) {
+        case 0:
+            SharedData::GetInstance()->interactbutton = 'Q';
+            break;
+        case 1:
+            SharedData::GetInstance()->interactbutton = 'E';
+            break;
+        case 2:
+            SharedData::GetInstance()->interactbutton = 'R';
+            break;
+        case 3:
+            SharedData::GetInstance()->interactbutton = 'T';
+            break;
+        case 4:
+            SharedData::GetInstance()->interactbutton = 'Y';
+            break;
+        case 5:
+            SharedData::GetInstance()->interactbutton = 'F';
+            break;
+        case 6:
+            SharedData::GetInstance()->interactbutton = 'G';
+            break;
+        }
+
+        if (SharedData::GetInstance()->floodlevel > 3) {
+            SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
+            SharedData::GetInstance()->player->changeGold(100);
+            SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + 5);
+            SharedData::GetInstance()->shitintoilet = false;
+            SharedData::GetInstance()->interactbutton = 'E';
+        }
+    }
+    else {
+        SharedData::GetInstance()->canInteract = false;
+    }
 }
 
 //Lab Game. ChOncHon time
