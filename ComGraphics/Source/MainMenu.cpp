@@ -50,6 +50,12 @@ MainMenu::MainMenu()
     meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
     meshList[GEO_TEXT]->textureID = LoadTGA("Image/Text/small fonts.tga");
 
+    meshList[GEO_LOADTOP] = MeshBuilder::GenerateQuad("load_top", Color(1,1,1), 80, 70);
+    meshList[GEO_LOADTOP]->textureID = LoadTGA("Image/Text/loadTop.tga");
+    meshList[GEO_LOADBTM] = MeshBuilder::GenerateQuad("load_btm", Color(1, 1, 1), 80, 70);
+    meshList[GEO_LOADBTM]->textureID = LoadTGA("Image/Text/loadBtm.tga");
+
+
     meshList[GEO_BUTTON] = MeshBuilder::GenerateQuad("menu_btn", Color(0, 0.7, 1), 14, 5);
     meshList[GEO_BUTTON]->textureID = LoadTGA("Image/Text/dialogue box.tga");
     meshList[GEO_BUTTONHOVER] = MeshBuilder::GenerateQuad("menu_btnhover", Color(0, 0.2, 1), 18, 5);
@@ -81,6 +87,9 @@ MainMenu::MainMenu()
     delaytime = 0;
     state = MENU_MAIN;
 
+    loadDown = 60;
+    loadUp = 0;
+
     elapsedTime = 0;
     bufferTime = 0.125;
 
@@ -100,6 +109,22 @@ void MainMenu::Init()
 void MainMenu::Update(double dt)
 {
     //objx,y is for testing purpose use to determine location of anything
+    if (Application::IsKeyPressed('I'))
+    {
+        objy += 10 * dt;
+    }
+    if (Application::IsKeyPressed('K'))
+    {
+        objy -= 10* dt;
+    }
+    if (Application::IsKeyPressed('J'))
+    {
+        objx -= 10 * dt;
+    }
+    if (Application::IsKeyPressed('L'))
+    {
+        objx += 10 * dt;
+    }
     //can be applied on anything at will
 
     if (Application::IsKeyPressed(VK_LBUTTON)) {
@@ -288,9 +313,15 @@ void MainMenu::ButtonUpdater(double dt)
     {
         if (btncheck == 1)
         {
-            SharedData::GetInstance()->programstate_change = true;
-            SharedData::GetInstance()->program_state = PROGRAM_GAME;
-            selected = false;
+            loadDown -= 30 * dt;
+            loadUp += 30 * dt;
+
+            if (loadDown <= 30 || loadUp >= 30)
+            {
+                SharedData::GetInstance()->programstate_change = true;
+                SharedData::GetInstance()->program_state = PROGRAM_GAME;
+                selected = false;
+            }
         }
 
         if (btncheck == 3)
@@ -597,6 +628,9 @@ void MainMenu::MainMenuPage()
     RenderTextOnScreen(meshList[GEO_TEXT], " Romantica", Color(1, 0.3, 1), 6, 3, 8);
     RenderTextOnScreen(meshList[GEO_TEXT], " ROOM", Color(1, 0.3, 1), 4, 8, 11);
 
+    RenderButtonsOnScreen(meshList[GEO_LOADTOP], " ", Color(1, 1, 1), 3, 40, loadDown, 2, 2);
+    RenderButtonsOnScreen(meshList[GEO_LOADBTM], " ", Color(1, 1, 1), 3, 40, loadUp, 2, 2);
+
     //debug
     RenderTextOnScreen(meshList[GEO_TEXT], "objx : " + std::to_string(SharedData::GetInstance()->cursor_newxpos), Color(0, 0, 0), 2, 1, 2);
     RenderTextOnScreen(meshList[GEO_TEXT], "objy : " + std::to_string(SharedData::GetInstance()->cursor_newypos), Color(0, 0, 0), 2, 1, 1);
@@ -613,23 +647,27 @@ void MainMenu::HelpPage()
     credBtnspd = 0;
     btncheck = 0;
 
+    
+
+
     RenderButtonsOnScreen(meshList[GEO_BIGDIALOGUE], "INSTRUCTIONS", Color(0, 0, 1), 3, 40, 30, 9, 17);
     RenderTextOnScreen(meshList[GEO_TEXT], "You have crashed landed ", Color(0, 1, 0), 2, 8, 23);
     RenderTextOnScreen(meshList[GEO_TEXT], "on a Space Station!", Color(0, 1, 0), 2, 8, 21.5);
     RenderTextOnScreen(meshList[GEO_TEXT], "Make friends with the alien  ", Color(0, 0, 1), 2, 8, 20);
     RenderTextOnScreen(meshList[GEO_TEXT], "inhabitants and earn their ", Color(0, 0, 1), 2, 8, 18.5);
     RenderTextOnScreen(meshList[GEO_TEXT], "trust to repair your ship.", Color(0, 0, 1), 2, 8, 17);
+    RenderTextOnScreen(meshList[GEO_TEXT], "Help the ailens with tasks", Color(0, 0, 1), 2, 8, 14);
+    RenderTextOnScreen(meshList[GEO_TEXT], "by playing their games.", Color(0, 0, 1), 2, 8, 12.5);
+    RenderTextOnScreen(meshList[GEO_TEXT], "You can also buy them gifts!", Color(0, 0, 1), 2, 8, 11);
+    RenderTextOnScreen(meshList[GEO_TEXT], "Games earns you money to buy gifts.", Color(0, 0, 1), 2, 8, 9.5);
 
-    RenderTextOnScreen(meshList[GEO_TEXT], "WASD:Move    E:Interact    Mouse:Camera", Color(1, 1, 0), 2, 8, 15);
+    RenderTextOnScreen(meshList[GEO_TEXT], "WASD:Move    E:Interact    Mouse:Camera", Color(1, 1, 0), 1.5, 14, 10);
+    RenderTextOnScreen(meshList[GEO_TEXT], "SHIFT:Dash    Esc:Pause    Esc:Quit", Color(1, 1, 0), 1.5, 15, 8);
 
-    RenderTextOnScreen(meshList[GEO_TEXT], "Help the ailens with tasks", Color(0, 0, 1), 2, 8, 13);
-    RenderTextOnScreen(meshList[GEO_TEXT], "by playing their games.", Color(0, 0, 1), 2, 8, 11.5);
-    RenderTextOnScreen(meshList[GEO_TEXT], "You can also buy them gifts!", Color(0, 0, 1), 2, 8, 10);
-    RenderTextOnScreen(meshList[GEO_TEXT], "Games earns you money to buy gifts.", Color(0, 0, 1), 2, 8, 8.5);
-    RenderTextOnScreen(meshList[GEO_TEXT], "Beware of the rabbit at the end...!", Color(1, 0.3, 0.3), 2, 10, 4);
+    RenderTextOnScreen(meshList[GEO_TEXT], "Beware of the rabbit at the end...!", Color(1, 0.3, 0.3), 2, 10, 3);
 
     //RenderTextOnScreen(meshList[GEO_TEXT], "Captain : Jing Ting", Color(0, 0, 1), 2, 7, 19);
-
+   
 
     if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
         && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18))

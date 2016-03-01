@@ -41,6 +41,9 @@ class SP2 : public Scene
         //Minimap
         GEO_MAP,
 
+        GEO_LOADTOP,
+        GEO_LOADBTM,
+
         GEO_LAYOUT,
         GEO_GATE1,
         GEO_GATE2,
@@ -233,6 +236,8 @@ public:
     float lightpower;
     float lightpos;
     float delayBuffer;
+    float loadDown;
+    float loadUp;
 
     //Testing Minimap
     MS minimappp;

@@ -51,7 +51,11 @@ SP2::SP2()
     //Vector3 playerPos = (SharedData::GetInstance()->player->position_);
 
     //minimappy.Init(Vector3(playerPos.x, (playerPos.y + 500), playerPos.z), Vector3(0, -1, 0), Vector3(1 , 0 , 0));
-
+    /*std::cout << "1st load" << std::endl;
+    std::cout << "2nd load" << std::endl;
+    std::cout << "3rd load" << std::endl;
+    std::cout << "4th load" << std::endl;
+    std::cout << "5th load" << std::endl;*/
 
     Mtx44 projection;
     projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 10000.f);
@@ -97,6 +101,11 @@ SP2::SP2()
 
     meshList[GEO_DIALOGUEBOX] = MeshBuilder::GenerateQuad("dialogue_box", Color(0, 0, 0), 80, 20);
     meshList[GEO_DIALOGUEBOX]->textureID = LoadTGA("Image/Text/dialogue box.tga");
+
+    meshList[GEO_LOADTOP] = MeshBuilder::GenerateQuad("load_top", Color(1, 1, 1), 80, 70);
+    meshList[GEO_LOADTOP]->textureID = LoadTGA("Image/Text/loadTop.tga");
+    meshList[GEO_LOADBTM] = MeshBuilder::GenerateQuad("load_btm", Color(1, 1, 1), 80, 70);
+    meshList[GEO_LOADBTM]->textureID = LoadTGA("Image/Text/loadBtm.tga");
 
     //
     meshList[GEO_HUNGER_BAR] = MeshBuilder::GenerateOBJ("hunger_bar", "OBJ/bar_bar.obj");
@@ -560,6 +569,9 @@ SP2::SP2()
 
     objx = objy = 1;
 
+    loadDown = -115;
+    loadUp = 175;
+
     std::string temp[LOCATION_TOTAL] = {
         "OUTSIDE",
         "HANGAR",
@@ -686,6 +698,7 @@ void SP2::Init()
     light[0].kL = 0.01f;
     light[0].kQ = 0.001f;
 
+    
     //make sure uniform parameters are passed in after glUseProgram()
     glUniform1i(m_parameters[U_LIGHT0_TYPE], light[0].type);
     glUniform3fv(m_parameters[U_LIGHT0_COLOR], 1, &light[0].color.r);
@@ -719,6 +732,7 @@ void SP2::Init()
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
+    
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(757.976, 12, -452.9 + 2); interactions->bound2.Set(763.976, 15, -442.9 - 2);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
@@ -749,6 +763,7 @@ void SP2::Init()
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
+    
 	interactions = new SpaghettoInteraction();
 	interactions->bound1.Set(721.872 - 3, 12, -447.9 - 3); interactions->bound2.Set(721.872 + 3, 15, -447.9 + 3);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
@@ -798,6 +813,7 @@ void SP2::Init()
     interactions->bound1.Set(549, -10, 490);    interactions->bound2.Set(558, 5, 500);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
+    
     interactions = new VeePuzzleCheckerSwitchInteraction();
     interactions->bound1.Set(608, -10, 490);    interactions->bound2.Set(617, 5, 500);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
@@ -848,6 +864,8 @@ void SP2::Init()
         interactions2->bound1.Set(weedgame[i].x - 3, 0, weedgame[i].z - 3); interactions2->bound2.Set(weedgame[i].x + 3, 6, weedgame[i].z + 3);
         SharedData::GetInstance()->interactionItems.push_back(interactions2);
     }
+
+    
 
 	for (int i = 10; i < weedgame.size(); i++)
 	{
@@ -946,6 +964,15 @@ void SP2::loadSpaghetti()
 void SP2::Update(double dt)
 {
     FramePerSecond = 1 / dt;
+
+    loadDown += 30 * dt;
+    loadUp -= 30 * dt;
+
+    if (loadDown >= 60 || loadUp <= 0)
+    {
+        loadDown = 60;
+        loadUp = 0;
+    }
 
     //temporary check
     if (SharedData::GetInstance()->gamestate != GAME_STATE_DIALOGUE && SharedData::GetInstance()->gamestate != GAME_STATE_SHOP) {
@@ -1119,19 +1146,6 @@ void SP2::Update(double dt)
 		SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
 	}
 
-    /*if (SharedData::GetInstance()->ballpickup == true)
-    {                           T.T
-        if (ball[0])
-            ballfloat += 40 * dt;
-        if (ball[1])
-            ballfloat1 += 40 * dt;
-        if (ball[2])
-            ballfloat2 += 40 * dt;
-        if (ball[3])
-            ballfloat3 += 40 * dt;
-        if (ball[4])
-            ballfloat4 += 40 * dt;
-    }*/
 
     gateUpdate(dt);
 
@@ -1275,12 +1289,18 @@ void SP2::Render()
             RenderTextOnScreen(meshList[GEO_TEXT], "\"Let's go\"", Color(1, 1, 1), 2, 26, 10.5f);
             break;
         }
+
+        
+
         RenderCursor();
 
         RenderLoveMeter();
         break;
     }
     //RenderMinimap();
+
+    RenderObjectOnScreen(meshList[GEO_LOADTOP], 40, loadDown, 1, 1, 0);
+    RenderObjectOnScreen(meshList[GEO_LOADBTM], 40, loadUp, 1, 1, 0);
 
     if (viewOptions) {
         RenderUI();

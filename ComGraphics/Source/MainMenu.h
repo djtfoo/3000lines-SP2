@@ -27,13 +27,15 @@ class MainMenu : public Scene
     enum GEO_MENU
     {
         GEO_BG,
+        GEO_LOADTOP,
+        GEO_LOADBTM,
 
         GEO_BUTTON, GEO_BUTTONHOVER, GEO_BUTTONSELECTED,
         GEO_PLAYBUTTON, GEO_PLAYBUTTONHOVER, GEO_PLAYBUTTONSELECTED,
         GEO_BUTTONRED, GEO_BUTTONREDHOVER,
 
         GEO_BIGDIALOGUE,
-
+        
 
         GEO_MOUSECUSTOM,
         //GEO_SELECTED,
@@ -129,6 +131,9 @@ public:
     float helpBtnspd;
     float optBtnspd;
     float credBtnspd;
+
+    float loadDown;
+    float loadUp;
 
     float objx, objy;
 };
