@@ -408,10 +408,10 @@ void Player::useItem(int itemID)
 	case 3:
 		break;
 	case 4:
-		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 9);
+		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 18);
 		break;
 	case 5:
-		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 3);
+		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 9);
 		break;
 	}
 }

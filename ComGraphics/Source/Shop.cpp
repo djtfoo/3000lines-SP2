@@ -46,7 +46,7 @@ void Shop::CheckCursor(double dt, int value)
         }
 
         //buy button
-        if (SharedData::GetInstance()->player->getGold() > value) {
+        if (SharedData::GetInstance()->player->getGold() >= value) {
             if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.755f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width &&
                 SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 45.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 40.5f)))
             {
