@@ -584,7 +584,7 @@ void MainMenu::MainMenuPage()
         && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.1) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.8)) {
         if (isClicked)
         {
-            RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Option", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
+            RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Options", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
         }
         else
         {
@@ -592,7 +592,7 @@ void MainMenu::MainMenuPage()
         }
     }
     else
-        RenderButtonsOnScreen(meshList[GEO_BUTTON], "Option", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
+        RenderButtonsOnScreen(meshList[GEO_BUTTON], "Options", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //CREDITS BUTTON
     if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
@@ -656,7 +656,7 @@ void MainMenu::HelpPage()
     RenderTextOnScreen(meshList[GEO_TEXT], "Make friends with the alien  ", Color(0, 0, 1), 2, 8, 20);
     RenderTextOnScreen(meshList[GEO_TEXT], "inhabitants and earn their ", Color(0, 0, 1), 2, 8, 18.5);
     RenderTextOnScreen(meshList[GEO_TEXT], "trust to repair your ship.", Color(0, 0, 1), 2, 8, 17);
-    RenderTextOnScreen(meshList[GEO_TEXT], "Help the ailens with tasks", Color(0, 0, 1), 2, 8, 14);
+    RenderTextOnScreen(meshList[GEO_TEXT], "Help the aliens with tasks", Color(0, 0, 1), 2, 8, 14);
     RenderTextOnScreen(meshList[GEO_TEXT], "by playing their games.", Color(0, 0, 1), 2, 8, 12.5);
     RenderTextOnScreen(meshList[GEO_TEXT], "You can also buy them gifts!", Color(0, 0, 1), 2, 8, 11);
     RenderTextOnScreen(meshList[GEO_TEXT], "Games earns you money to buy gifts.", Color(0, 0, 1), 2, 8, 9.5);

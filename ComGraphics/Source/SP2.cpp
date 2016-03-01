@@ -816,21 +816,21 @@ void SP2::Init()
 
     //Vee Puzzle Interaction
     interactions = new VeePuzzleSwitchOneInteraction();
-    interactions->bound1.Set(597, -10, 490);    interactions->bound2.Set(607, 5, 500);
+    interactions->bound1.Set(597, 10, 490);    interactions->bound2.Set(606, 25, 498);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
     interactions = new VeePuzzleSwitchTwoInteraction();
-    interactions->bound1.Set(580, -10, 490);    interactions->bound2.Set(587, 5, 500);
+    interactions->bound1.Set(580, 10, 490);    interactions->bound2.Set(587, 25, 498);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
     interactions = new VeePuzzleSwitchThreeInteraction();
-    interactions->bound1.Set(564, -10, 490);    interactions->bound2.Set(575, 5, 500);
+    interactions->bound1.Set(564, 10, 490);    interactions->bound2.Set(575, 25, 498);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
     interactions = new VeePuzzleSwitchFourInteraction();
-    interactions->bound1.Set(549, -10, 490);    interactions->bound2.Set(558, 5, 500);
+    interactions->bound1.Set(549, 10, 490);    interactions->bound2.Set(558, 25, 498);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     
     interactions = new VeePuzzleCheckerSwitchInteraction();
-    interactions->bound1.Set(608, -10, 490);    interactions->bound2.Set(617, 5, 500);
+    interactions->bound1.Set(608, 15, 490);    interactions->bound2.Set(617, 22, 500);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new BedTime();
@@ -2156,27 +2156,27 @@ void SP2::ballboundfunct()
     Interaction* ballinteraction;
     //check sp2.h for arraylist of colors
     ballinteraction = new chonBallInteraction();   //ball 0 (1)
-    ballinteraction->bound1.Set(480, -15, -469); ballinteraction->bound2.Set(485, -5, -460);
+    ballinteraction->bound1.Set(480, 15, -469); ballinteraction->bound2.Set(485, 20, -460);
     SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
     ballbounds[0].bound1 = ballinteraction->bound1;     ballbounds[0].bound2 = ballinteraction->bound2;
 
     ballinteraction = new chonBallInteraction();   //ball 1 (2)
-    ballinteraction->bound1.Set(405, -15, -400); ballinteraction->bound2.Set(410, -5, -390);
+    ballinteraction->bound1.Set(405, 15, -400); ballinteraction->bound2.Set(410, 20, -390);
     SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
     ballbounds[1].bound1 = ballinteraction->bound1;    ballbounds[1].bound2 = ballinteraction->bound2;
 
     ballinteraction = new chonBallInteraction();   //ball 2 (3)
-    ballinteraction->bound1.Set(420, -15, -385); ballinteraction->bound2.Set(427, -5, -375);
+    ballinteraction->bound1.Set(420, 15, -385); ballinteraction->bound2.Set(427, 20, -375);
     SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
     ballbounds[2].bound1 = ballinteraction->bound1;    ballbounds[2].bound2 = ballinteraction->bound2;
 
     ballinteraction = new chonBallInteraction();   //ball 3 (4)
-    ballinteraction->bound1.Set(334, -15, -469); ballinteraction->bound2.Set(343, -5, -460);
+    ballinteraction->bound1.Set(334, 15, -469); ballinteraction->bound2.Set(343, 20, -460);
     SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
     ballbounds[3].bound1 = ballinteraction->bound1;    ballbounds[3].bound2 = ballinteraction->bound2;
 
     ballinteraction = new chonBallInteraction();   //ball 4 (5)
-    ballinteraction->bound1.Set(300, -15, -367); ballinteraction->bound2.Set(309, -5, -360);
+    ballinteraction->bound1.Set(300, 15, -367); ballinteraction->bound2.Set(309, 20, -360);
     SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
     ballbounds[4].bound1 = ballinteraction->bound1;    ballbounds[4].bound2 = ballinteraction->bound2;
 
@@ -3399,8 +3399,10 @@ void SP2::RenderInventory()
 	}
 
 	RenderObjectOnScreen(meshList[GEO_ITEMSELECT], 22.5 + (SharedData::GetInstance()->player->invselect * 5), 2.5);
-	if (SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect] != 0)
-        RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 14 - (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName().size() / 2, 3);
+    if (SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect] != 0) {
+        float namelength = (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName().size();
+        RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 14.5f - namelength / 2.f, 3);
+    }
 
     RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
 }
@@ -3436,18 +3438,18 @@ void SP2::RenderUI()
     std::stringstream timey;
     timey << "TIME: " << ((int)SharedData::GetInstance()->daynighttime / 1000) << (((int)SharedData::GetInstance()->daynighttime / 100) % 10) << (((int)SharedData::GetInstance()->daynighttime / 10) % 10) << ((int)SharedData::GetInstance()->daynighttime % 10);
     timey.str();
-    RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(1, 0, 0), 3, 0, 16);
+    RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(0, 0, 1), 3, 0, 16);
     RenderTimeOnScreen(meshList[GEO_DAYNIGHTICON], 80, 60);
 
     //moneh
     s.str("");
     s << "Gold: " << SharedData::GetInstance()->player->getGold();
-    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9, 0.9, 0), 3, 0, 15);
+    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.7f, 0.7f, 0), 3, 0, 15);
     
     //state
     s.str("");
     s << "State: " << SharedData::GetInstance()->gamestate;
-    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9, 0.9, 0), 3, 0, 14);
+    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9f, 0.9f, 0), 3, 0, 14);
 
 
     
@@ -3578,7 +3580,8 @@ void SP2::shoptemp()
     RenderObjectOnScreen(meshList[GEO_SHOP_ARROW], 25, 30, 1, 1, 180);
 
     //name of item
-    RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(*shop.shopIterator)->second).getName(), Color(0, 0, 0), 3, 14 - ((invmap.find(*shop.shopIterator)->second).getName().size() / 2), 13);
+    float namelength = (invmap.find(*shop.shopIterator)->second).getName().size();
+    RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(*shop.shopIterator)->second).getName(), Color(0, 0, 0), 3, 14.5f - namelength / 2.f, 13);
 
     //Temmie text
     RenderDialogueOnScreen("Buy this item?", Color(1, 1, 1), 3);
@@ -3650,6 +3653,9 @@ void SP2::CheckCharacterLocation()
     else if ((playerPos.x >= 670 && playerPos.x <= 822 && playerPos.z >= -525 && playerPos.z <= -345) ||
         (playerPos.x >= 675 && playerPos.x <= 695 && playerPos.z >= -555 && playerPos.z <= -525)) {
         SharedData::GetInstance()->location = CANTEEN;
+    }
+    else if (playerPos.x >= 820 && playerPos.x <= 1045 && playerPos.z >= -530 && playerPos.z <= -270) {
+        SharedData::GetInstance()->location = PLANTATION;
     }
     else if (playerPos.x >= 672 && playerPos.x <= 790 && playerPos.z >= -628 && playerPos.z <= -555) {
         SharedData::GetInstance()->location = TOILET;
