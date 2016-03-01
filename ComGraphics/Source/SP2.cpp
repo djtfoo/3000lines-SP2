@@ -1770,12 +1770,10 @@ void SP2::compactBallrender()
 
 void SP2::compactMovement(bool first, bool second, bool third, int i)
 {
-    bool ballpoint1 = false;
-    bool ballpoint2 = false;
-    bool ballpoint3 = false;
 
     if (first)
     {
+
         //yellow move to blue
         if (ballyellX >= 339)
         {
@@ -1783,8 +1781,6 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
             if (ballyellZ <= -465)
             {
                 ballyellZ += 1;
-
-                ballpoint1 = true;
             }
         }
 
@@ -1792,12 +1788,10 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
         //blue move to red
         if (ballbluX >= 310)
         {
-            ballbluX -= 1;
+            ballbluX -= 0.3;
             if (ballbluZ <= -364)
             {
                 ballbluZ += 1;
-
-                ballpoint2 = true;
             }
         }
 
@@ -1808,92 +1802,147 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
             if (ballredZ >= -469)
             {
                 ballredZ -= 1;
+            }
+        }
+    }
 
-                ballpoint3 = true;
+    if (second)
+    {
+        //yellow2 move to blue2(red pos)
+        if (ballyellX >= 310)
+        {
+            ballyellX -= 0.3;
+            if (ballyellZ <= -364)
+            {
+                ballyellZ += 1;
             }
         }
 
-        if (ballpoint1 && ballpoint2 && ballpoint3)
-        {
-            SharedData::GetInstance()->ballpickup = false;
-            ball[i] = false;
-            ballpoint1 = false;
-            ballpoint2 = false;
-            ballpoint3 = false;
-        }
 
-        return;
-    }
-
-    else if (second)
-    {
-        //yellow move to red
-        if (ballyellX >= 310)
-        {
-            ballyellX -= 0.5;
-        }
-        if (ballyellZ <= -364)
-        {
-            ballyellZ += 1;
-        }
-
-        //blue move to yellow
+        //blue2 move to red2(yellow pos)
         if (ballbluX <= 483)
         {
             ballbluX += 1;
-        }
-        if (ballbluZ >= -469)
-        {
-            ballbluZ -= 1;
-        }
-        //red move to blue
-        if (ballredX <= 339)
-        {
-            ballredX += 1;
-        }
-        if (ballredZ >= -465)
-        {
-            ballredZ -= 1;
+            if (ballbluZ >= -469)
+            {
+                ballbluZ -= 0.7;
+            }
         }
 
-
+        //red moves to yellow(blue pos)
+        if (ballredX >= 339)
+        {
+            ballredX -= 1;
+            if (ballredZ <= -465)
+            {
+                ballredZ += 1;
+            }
+        }
     }
 
-
-    /*else if (third)
+    if (third)
     {
+        //yellow2 move to oriYellow(yell pos)
+        if (ballyellX <= 483)
+        {
+            ballyellX += 1;
+            if (ballyellZ >= -469)
+            {
+                ballyellZ -= 0.7;
+            }
+        }
 
-    }*/
+        //blue2 move to oriBlue(blue pos)
+        if (ballbluX >= 339)
+        {
+            ballbluX -= 1;
+            if (ballbluZ <= -465)
+            {
+                ballbluZ += 1;
+            }
+        }
+
+        //red moves to oriRed(red pos)
+        if (ballredX >= 310)
+        {
+            ballredX -= 0.3;
+            if (ballredZ <= -364)
+            {
+                ballredZ += 1;
+            }
+        }
+    }
+
+    else
+        return;
 
 }
 
 void SP2::ballmoveCheck()
 {
+    
     if (ball[0] == true)
     {
+        //yellow first shift
         if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)
         {
             compactMovement(true, false, false, 0);
-
+        }
+        //blue third shift
+        if (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
+        {
+            compactMovement(false, false, true, 0);
+            SharedData::GetInstance()->ballpickup = false;
+        }
+        //red second shift
+        if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
+        {
+            compactMovement(false, true, false, 0);
         }
     }
     else if (ball[1] == true)
     {
-        
+        ball[1] = false;
+        return;
     }
     else if (ball[2] == true)
     {
-        
+        ball[2] = false;
+        return;
     }
     else if (ball[3] == true)
     {
+        //yellow second shift
+        if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)
+        {
+            compactMovement(false, true, false, 3);
+        }
+        //blue first shift
         if (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
         {
             compactMovement(true, false, false, 3);
         }
+        //red last shift
+        if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
+        {
+            compactMovement(false, false, true, 3);
+            SharedData::GetInstance()->ballpickup = false;
+        }
     }
     else if (ball[4] == true)
     {
+        //yellow third shift
+        if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)
+        {
+            compactMovement(false, false, true, 4);
+            SharedData::GetInstance()->ballpickup = false;
+        }
+        //blue second shift
+        if (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
+        {
+            compactMovement(false, true, false, 4);
+        }
+        //red first shift
         if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
         {
             compactMovement(true, false, false, 4);
@@ -1904,19 +1953,27 @@ void SP2::loadChonGame()
 {    
     loadFree();
 
+    pickupCounter = 0;
+
     //Chon's Lab Balls
-    if (SharedData::GetInstance()->ballpickup) 
+    if (SharedData::GetInstance()->ballpickup)
     {
+        pickupCounter += 1;
         for (int i = 0; i < 5; i++)
         {
             if (SharedData::GetInstance()->interactptr->bound1 == ballbounds[i].bound1 && SharedData::GetInstance()->interactptr->bound2 == ballbounds[i].bound2)
                 ball[i] = true;
             else
                 ball[i] = false;
-           
         }
-        
     }
+
+    if (pickupCounter >= 3)
+    {
+        lightpuzz.generatePuzzle();
+        pickupCounter = 0;
+    }
+    
     
     ballmoveCheck();
 
@@ -3279,8 +3336,15 @@ void SP2::RenderUI()
     s << "State: " << SharedData::GetInstance()->gamestate;
     RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9, 0.9, 0), 3, 0, 14);
 
+
     //hunger bar
     RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
+
+        //practical purposes: check position of object
+        s.str("");
+        s << "objpos:(" << objx << " , " << pickupCounter << ")";
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 16);
+    }
 }
 
 void SP2::RenderMinimap()
