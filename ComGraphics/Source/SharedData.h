@@ -51,6 +51,7 @@ public:
     bool gateopen;
 	bool toiletflood;
     bool chonGamebool;
+	bool veegamebool;
 	bool weedGamebool;
     int firstball;
     bool ballpickup;    //chon ballgame
@@ -118,6 +119,7 @@ private:
         switchCount = 0;
         switch1 = switch2 = switch3 = switch4 = false;
         switchFlip = false;
+		veegamebool = false;
 
         //toilet
 		toiletflood = false;

@@ -76,7 +76,7 @@ void DialogueProcessor::CheckCursor(double dt)
                 }
                 else if (npc->getName() == "Vee") {
                     SharedData::GetInstance()->gamestate = GAME_STATE_VEEGAME;
-                    SharedData::GetInstance()->chonGamebool = true;
+                    SharedData::GetInstance()->veegamebool = true;
                 }
                 else if (npc->getName() == "Jasim") {
                     SharedData::GetInstance()->gamestate = GAME_STATE_JASIMGAME;
