@@ -839,7 +839,7 @@ void SP2::Init()
 
     //Interacting with Jasim
     interactions = new Dialogue();
-    interactions->bound1.Set(685 - 20, 5, -430 - 20); interactions->bound2.Set(685 + 20, 35, -430 + 20);
+    interactions->bound1.Set(685 - 12, 5, -430 - 12); interactions->bound2.Set(685 + 12, 35, -430 + 12);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     //Interacting with Chon
@@ -3033,7 +3033,7 @@ void SP2::jasimCanteen()
 
 
     modelStack.PushMatrix();
-    modelStack.Translate(819, 4, -350);
+    modelStack.Translate(819, 4, -355);
     modelStack.Scale(6, 6, 6);
     RenderMesh(meshList[GEO_PLANT], true);
     modelStack.PopMatrix();
