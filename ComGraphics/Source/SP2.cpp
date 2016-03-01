@@ -3339,12 +3339,6 @@ void SP2::RenderUI()
 
     //hunger bar
     RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
-
-        //practical purposes: check position of object
-        s.str("");
-        s << "objpos:(" << objx << " , " << pickupCounter << ")";
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0), 3, 0, 16);
-    }
 }
 
 void SP2::RenderMinimap()
