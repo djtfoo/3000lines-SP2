@@ -575,6 +575,9 @@ SP2::SP2()
     meshList[GEO_CURSOR] = MeshBuilder::GenerateQuad("mouse_custom", Color(0, 0, 0), 3, 4);
     meshList[GEO_CURSOR]->textureID = LoadTGA("Image/mouse.tga");
 
+	meshList[GEO_UIBG] = MeshBuilder::GenerateQuad("uibg", Color(0, 0, 0), 4, 3);
+	meshList[GEO_UIBG]->textureID = LoadTGA("Image/UIBG.tga");
+
     meshList[GEO_DIALOGUEOPTION] = MeshBuilder::GenerateQuad("selection button", Color(0, 0, 0), 30, 5);
 
     viewOptions = true;
@@ -1258,8 +1261,8 @@ void SP2::Render()
             RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(1, 1, 0), 2, 35, 21);
         }
         RenderTextOnScreen(meshList[GEO_TEXT], "Bye", Color(1, 1, 1), 2, 32, 10.5f);
+
         
-        RenderInventory();
 
         RenderCursor();
         break;
@@ -1335,12 +1338,21 @@ void SP2::Render()
     RenderObjectOnScreen(meshList[GEO_LOADTOP], 40, loadDown, 1, 1, 0);
     RenderObjectOnScreen(meshList[GEO_LOADBTM], 40, loadUp, 1, 1, 0);
 
-    if (viewOptions) {
-        RenderUI();
-    }
+
 
     RenderTextOnScreen(meshList[GEO_TEXT], "objx : " + std::to_string(objx), Color(1, 1, 1), 2, 1, 2);
     RenderTextOnScreen(meshList[GEO_TEXT], "objy : " + std::to_string(objy), Color(1, 1, 1), 2, 1, 1);
+
+
+	//hunger bar
+	RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Hunger", Color(0.5, 1, 0.5), 2, 11.5, 3.7);
+	RenderInventory();
+	if (viewOptions) {
+		RenderObjectOnScreen(meshList[GEO_UIBG], 22, 50, 12, 7);
+		RenderUI();
+	}
+	
 
 }
 
@@ -1695,7 +1707,7 @@ void SP2::loadWSGame()
 		s << "Points: " << SharedData::GetInstance()->pointscounter;
 		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
 		s.str("");
-		s << "Weeds: " << SharedData::GetInstance()->weedcounter;
+		s << "Weeds left: " << SharedData::GetInstance()->weedcounter;
 		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0.1), 3, 0, 12);
 	}
 	
@@ -2690,7 +2702,7 @@ void SP2::stemmieShop()
 
     //Shop objs
     modelStack.PushMatrix();
-    modelStack.Translate(935, 0, 60);
+    modelStack.Translate(935, 2, 60);
     modelStack.Scale(10, 10, 10);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_VENDINGMACHINE], true);
@@ -2709,13 +2721,13 @@ void SP2::stemmieShop()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(845, 0, -70);
+    modelStack.Translate(845, 4, -70);
     modelStack.Scale(5, 5, 5);
     RenderMesh(meshList[GEO_PLANT], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(830, 6, 100);
+    modelStack.Translate(830, 10, 100);
     modelStack.Scale(3, 3, 3);
     RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
     modelStack.PopMatrix();
@@ -2830,7 +2842,7 @@ void SP2::chonLab()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(459.2, 12, -466);
+    modelStack.Translate(459.2, 13, -466);
     modelStack.Scale(9, 8, 6);
     RenderMesh(meshList[GEO_TOOLBOX], true);
     modelStack.PopMatrix();
@@ -2887,75 +2899,75 @@ void SP2::veeControlroom()
 {
     //Vee Model
     modelStack.PushMatrix();
-    modelStack.Translate(600, 10, 440);
+    modelStack.Translate(600, 11, 440);
     modelStack.Rotate(-90, 0, 1, 0);
-    modelStack.Scale(7, 7, 7);
+    modelStack.Scale(6, 6, 6);
     RenderMesh(meshList[GEO_VEE], true);
     modelStack.PopMatrix();
 
     //Control Room
     modelStack.PushMatrix();
-    modelStack.Translate(650, 0, 490);
+    modelStack.Translate(650, 2, 490);
     modelStack.Rotate(-90, 0, 1, 0);
     modelStack.Scale(7, 7, 7);
     RenderMesh(meshList[GEO_CONTROLROOM], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(640, 0, 460);
+    modelStack.Translate(640, 4, 460);
     modelStack.Rotate(-90, 0, 1, 0);
     modelStack.Scale(6, 6, 6);
     RenderMesh(meshList[GEO_CHAIR], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(510, 0, 490);
+    modelStack.Translate(510, 2, 490);
     modelStack.Rotate(-90, 0, 1, 0);
     modelStack.Scale(7, 7, 7);
     RenderMesh(meshList[GEO_CONTROLROOM], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(510, 0, 460);
+    modelStack.Translate(510, 4, 460);
     modelStack.Rotate(-90, 0, 1, 0);
     modelStack.Scale(6, 6, 6);
     RenderMesh(meshList[GEO_CHAIR], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(675, 0, 435);
+    modelStack.Translate(675, 2, 435);
     modelStack.Rotate(180, 0, 1, 0);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_SHELF], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(480, 0, 435);
+    modelStack.Translate(480, 2, 435);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_SHELF], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(480, 0, 390);
+    modelStack.Translate(480, 4, 390);
     modelStack.Scale(5, 5, 5);
     RenderMesh(meshList[GEO_PLANT], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(670, 0, 390);
+    modelStack.Translate(670, 4, 390);
     modelStack.Scale(5, 5, 5);
     RenderMesh(meshList[GEO_PLANT], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(550, 3, 370);
+    modelStack.Translate(550, 5, 370);
     modelStack.Scale(3, 3, 3);
     RenderMesh(meshList[GEO_UMBRELLASTAND], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(620, 3, 360);
-    modelStack.Scale(3, 3, 3);
+    modelStack.Translate(620, 10, 360);
+    modelStack.Scale(2, 2, 2);
     RenderMesh(meshList[GEO_FIREEXTINGUISHER], true);
     modelStack.PopMatrix();
 }
@@ -3014,20 +3026,20 @@ void SP2::jasimCanteen()
     }
 
     modelStack.PushMatrix();
-    modelStack.Translate(685, 0, -375);
+    modelStack.Translate(685, 2, -375);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_VENDINGMACHINE], true);
     modelStack.PopMatrix();
 
 
     modelStack.PushMatrix();
-    modelStack.Translate(819, 0, -350);
+    modelStack.Translate(819, 4, -350);
     modelStack.Scale(6, 6, 6);
     RenderMesh(meshList[GEO_PLANT], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(819, 0, -515);
+    modelStack.Translate(819, 4, -515);
     modelStack.Scale(6, 6, 6);
     RenderMesh(meshList[GEO_PLANT], true);
     modelStack.PopMatrix();
@@ -3388,7 +3400,7 @@ void SP2::RenderInventory()
 
 	RenderObjectOnScreen(meshList[GEO_ITEMSELECT], 22.5 + (SharedData::GetInstance()->player->invselect * 5), 2.5);
 	if (SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect] != 0)
-        RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 14 - (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName().size() / 2, 2);
+        RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 14 - (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName().size() / 2, 3);
 
     RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
 }
@@ -3438,8 +3450,7 @@ void SP2::RenderUI()
     RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9, 0.9, 0), 3, 0, 14);
 
 
-    //hunger bar
-    RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
+    
 }
 
 void SP2::RenderMinimap()

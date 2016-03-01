@@ -42,6 +42,8 @@ class SP2 : public Scene
         //Minimap
         GEO_MAP,
 
+		GEO_UIBG,
+
         GEO_LOADTOP,
         GEO_LOADBTM,
 
@@ -237,7 +239,7 @@ public:
     float pitch, yaw;
     double elapsedTime, e_elapsedTime;
 
-    int delayer;
+    float delayer;
     float delayBuffer;
     int rotator;
     float floodlevel;
