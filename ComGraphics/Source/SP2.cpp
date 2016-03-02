@@ -365,6 +365,29 @@ SP2::SP2()
 
     meshList[GEO_COUNTER] = MeshBuilder::GenerateCube("counter", Color(0, 0.7, 1), 5, 5, 5);
 
+    meshList[GEO_ANIPOSTER] = MeshBuilder::GenerateOBJ("shop_poster", "OBJ/poster.obj");
+    meshList[GEO_ANIPOSTER]->textureID = LoadTGA("Image/shop/aniPoster.tga");
+
+    meshList[GEO_COOKBOOK] = MeshBuilder::GenerateOBJ("cookbook", "OBJ/shop/genBook.obj");
+    meshList[GEO_COOKBOOK]->textureID = LoadTGA("Image/shop/cookbook.tga");
+
+    meshList[GEO_CHONKEY] = MeshBuilder::GenerateOBJ("chon", "OBJ/shop/smallChon.obj");
+    meshList[GEO_CHONKEY]->textureID = LoadTGA("Image/chonUV.tga");
+
+    meshList[GEO_SHOVEL] = MeshBuilder::GenerateOBJ("butter pie", "OBJ/shop/shovel.obj");
+    meshList[GEO_SHOVEL]->textureID = LoadTGA("Image/shop/shovel.tga");
+
+
+    meshList[GEO_BUTTERPIE] = MeshBuilder::GenerateOBJ("butter pie", "OBJ/shop/pi.obj");
+    meshList[GEO_BUTTERPIE]->textureID = LoadTGA("Image/shop/butterpie.tga");
+
+
+    meshList[GEO_NOVEL] = MeshBuilder::GenerateOBJ("novel", "OBJ/shop/genBook.obj");
+    meshList[GEO_NOVEL]->textureID = LoadTGA("Image/shop/novel.tga");
+
+    meshList[GEO_JOKEBOOK] = MeshBuilder::GenerateOBJ("jokebook", "OBJ/shop/genBook.obj");
+    meshList[GEO_JOKEBOOK]->textureID = LoadTGA("Image/shop/jokebook.tga");
+
 
     meshList[GEO_LABCOUNTER1] = MeshBuilder::GenerateOBJ("toiletbowl", "OBJ/linerLabtable.obj");
     meshList[GEO_LABCOUNTER1]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
@@ -631,24 +654,21 @@ void SP2::loadInv()
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(5, GEO_SPAGHETTOROTTEN));
 
     invmap.insert(std::pair<int, Gift>(6, Gift("Cookbook", 350)));
-    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(6, GEO_SHOPDISPLAY));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(6, GEO_COOKBOOK));
     invmap.insert(std::pair<int, Gift>(7, Gift("Anime Poster", 300)));
-    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(7, GEO_SHOPDISPLAY));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(7, GEO_ANIPOSTER));
     invmap.insert(std::pair<int, Gift>(8, Gift("Anime Keychain", 500)));
-    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(8, GEO_SHOPDISPLAY));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(8, GEO_CHONKEY));
     invmap.insert(std::pair<int, Gift>(9, Gift("Shovel", 200)));
-    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(9, GEO_SHOPDISPLAY));
-    invmap.insert(std::pair<int, Gift>(10, Gift("Butterscotch Pie", 250)));
-    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(10, GEO_SHOPDISPLAY));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(9, GEO_SHOVEL));
+    invmap.insert(std::pair<int, Gift>(10, Gift("Butterscotch Pie", 650)));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(10, GEO_BUTTERPIE));
     invmap.insert(std::pair<int, Gift>(11, Gift("Board Game", 550)));
     modelmap.insert(std::pair<int, GEOMETRY_TYPE>(11, GEO_SHOPDISPLAY));
     invmap.insert(std::pair<int, Gift>(12, Gift("Novel", 700)));
-    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(12, GEO_SHOPDISPLAY));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(12, GEO_NOVEL));
     invmap.insert(std::pair<int, Gift>(13, Gift("Jokebook", 700)));
-    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(13, GEO_SHOPDISPLAY));
-
-	invmap.insert(std::pair<int, Gift>(14, Gift("DogResidus", 2)));
-	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(14, GEO_SHOPDISPLAY));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(13, GEO_JOKEBOOK));
 }
 
 void SP2::loadCollisions()
@@ -904,10 +924,16 @@ void SP2::Init()
     ballyellX = 483; ballyellZ = -469;
     ballbluX = 339; ballbluZ = -465; 
     ballredX = 310; ballredZ = -364;
+    ballwhitey = 15;
+    ballblacky = 15;
     pickupcheck = false;
     pickupCounter = 0;
+
 	soundtimer = 1;
 	daynumber = 0;
+
+    postercounter = 0;
+
 	loadInv();
     loadCollisions();
 
@@ -1421,11 +1447,6 @@ void SP2::Render()
     }
     //RenderMinimap();
 
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 10, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_BOOK], true);
-    modelStack.PopMatrix();
 
     RenderObjectOnScreen(meshList[GEO_LOADTOP], 40, loadDown, 1, 1, 0);
     RenderObjectOnScreen(meshList[GEO_LOADBTM], 40, loadUp, 1, 1, 0);
@@ -1888,13 +1909,13 @@ void SP2::compactBallrender()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(410, 15, -396);    //425
+    modelStack.Translate(410, ballblacky, -396);    //425
     modelStack.Scale(0.5, 0.5, 0.5);
     RenderMesh(meshList[GEO_SPHEREBLACK], true);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(425, 15, -380);    //
+    modelStack.Translate(425, ballwhitey, -380);    //
     modelStack.Scale(0.5, 0.5, 0.5);
     RenderMesh(meshList[GEO_SPHEREWHITE], true);
     modelStack.PopMatrix();
@@ -2047,13 +2068,43 @@ void SP2::ballmoveCheck()
     }
     else if (ball[1] == true)
     {
-        ball[1] = false;
-        return;
+        ballblacky += 1;
+        if (ballblacky >= 20)
+        {
+            ballblacky = 15;
+            ball[1] = false;
+            SharedData::GetInstance()->ballpickup = false;
+            
+
+            if (postercounter == 0)
+                postercounter = 1;
+            else if (postercounter == 2)
+                postercounter = 3;
+            else if (postercounter == 4)
+                postercounter = 5;
+
+            return;
+        }
     }
     else if (ball[2] == true)
     {
-        ball[2] = false;
-        return;
+        ballwhitey += 1;
+        if (ballwhitey >= 20)
+        {
+            ballwhitey = 15;
+            ball[2] = false;
+            SharedData::GetInstance()->ballpickup = false;
+            
+
+            if (postercounter == 1)
+                postercounter = 2;
+            else if (postercounter == 3)
+                postercounter = 4;
+            else if (postercounter == 5)
+                postercounter = 6;
+
+            return;
+        }
     }
     else if (ball[3] == true)
     {
@@ -2093,12 +2144,16 @@ void SP2::ballmoveCheck()
             compactMovement(true, false, false, 4);
         }
     }
+
+    
 }
 void SP2::loadChonGame()
 {    
     loadFree();
 
     pickupCounter = 0;
+
+    
 
     //Chon's Lab Balls
     if (SharedData::GetInstance()->ballpickup)
@@ -2890,7 +2945,11 @@ void SP2::chonLab()
     RenderMesh(meshList[GEO_TOOLBOX], true);
     modelStack.PopMatrix();
    
-    chonSecret();
+    if (postercounter == 6)
+    {
+        chonSecret();
+    }
+    
 }
 
 void SP2::chonSecret()
@@ -2930,13 +2989,94 @@ void SP2::chonSecret()
     modelStack.Scale(15, 15, 5);
     RenderMesh(meshList[GEO_POSTER], false);
     modelStack.PopMatrix();
+    
 
+    //back
     modelStack.PushMatrix();
-    modelStack.Translate(300, 20, -475);
+    modelStack.Translate(410, 20, -333);
     modelStack.Scale(15, 15, 5);
     RenderMesh(meshList[GEO_POSTER], false);
     modelStack.PopMatrix();
-    
+
+    modelStack.PushMatrix();
+    modelStack.Translate(380, 20, -333);
+    modelStack.Scale(15, 15, 5);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(350, 20, -333);
+    modelStack.Scale(15, 15, 5);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(320, 20, -333);
+    modelStack.Scale(15, 15, 5);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+
+
+    //left
+    modelStack.PushMatrix();
+    modelStack.Translate(304, 20, -365);
+    modelStack.Scale(15, 15, 15);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(304, 20, -395);
+    modelStack.Scale(15, 15, 15);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(304, 20, -425);
+    modelStack.Scale(15, 15, 15);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(304, 20, -455);
+    modelStack.Scale(15, 15, 15);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+
+    //right
+    modelStack.PushMatrix();
+    modelStack.Translate(511, 20, -365);
+    modelStack.Scale(15, 15, 15);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(511, 20, -395);
+    modelStack.Scale(15, 15, 15);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(511, 20, -425);
+    modelStack.Scale(15, 15, 15);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(511, 20, -455);
+    modelStack.Scale(15, 15, 15);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_POSTER], false);
+    modelStack.PopMatrix();
+
 }
 void SP2::veeControlroom()
 {
@@ -3659,10 +3799,10 @@ void SP2::RotateDisplay()
             modelStack.LoadIdentity();  //reset modelStack
             modelStack.PushMatrix();
                 modelStack.Translate(40, 30, 0);
-                modelStack.Scale(2, 2, 2);
+                modelStack.Scale(7, 7, 7);
                 modelStack.Rotate(20, 1, 0, 0);
                 modelStack.Rotate(rotating, 0, 1, 0);
-                RenderMesh(meshList[modelmap.find(*shop.shopIterator)->second], true);
+                RenderMesh(meshList[modelmap.find(*shop.shopIterator)->second], false);
             modelStack.PopMatrix();
             projectionStack.PopMatrix();
             viewStack.PopMatrix();

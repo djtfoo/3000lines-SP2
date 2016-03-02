@@ -102,7 +102,39 @@ class SP2 : public Scene
         GEO_TRASH,
         GEO_BOOK,
         GEO_LMAO,   //a sh*tty joke
+        //POSTERS
         GEO_POSTER,
+        GEO_POSTSAO,
+        GEO_POSTPUNCH,
+        GEO_POSTKYOJ,
+        GEO_POSTFATE,
+        GEO_POSTDGRAY,
+        GEO_POSTRETT,
+        GEO_POSTELECTION,
+        //SIGNBOARDS
+        GEO_SIGNBOARD,
+        GEO_SIGNLAB,
+        GEO_SIGNCTRL,
+        GEO_SIGNCANTEEN,
+        GEO_SIGNROOM1,
+        GEO_SIGNROOM2,
+        GEO_SIGNROOM3,
+        GEO_SIGNROOM4,
+        GEO_SIGNHANGAR,
+        GEO_SIGNSHOP,
+        GEO_SIGNTOILET,
+        GEO_SIGNFARM,
+        GEO_SIGNCOVER,
+        //shop displays
+        GEO_COOKBOOK,
+        GEO_ANIPOSTER,
+        GEO_CHONKEY,
+        GEO_SHOVEL,
+        GEO_BUTTERPIE,
+        GEO_NOVEL,
+        GEO_JOKEBOOK,
+
+
         //^^^
 
         //Gifts
@@ -361,8 +393,10 @@ public:
     bool pickupcheck;
     int pickupCounter;
     float ballyellX, ballyellZ, ballbluX, ballbluZ, ballredX, ballredZ;
+    float ballwhitey, ballblacky;
     void ballboundfunct();
     void ballmoveCheck();
+    int postercounter;
     void compactMovement(bool first, bool second, bool third, int i);
     chonBallInteraction ballbounds[5];
 

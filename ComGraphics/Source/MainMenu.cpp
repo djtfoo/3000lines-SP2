@@ -647,9 +647,6 @@ void MainMenu::HelpPage()
     credBtnspd = 0;
     btncheck = 0;
 
-    
-
-
     RenderButtonsOnScreen(meshList[GEO_BIGDIALOGUE], "INSTRUCTIONS", Color(0, 0, 1), 3, 40, 30, 9, 17);
     RenderTextOnScreen(meshList[GEO_TEXT], "You have crashed landed ", Color(0, 1, 0), 2, 8, 23);
     RenderTextOnScreen(meshList[GEO_TEXT], "on a Space Station!", Color(0, 1, 0), 2, 8, 21.5);
