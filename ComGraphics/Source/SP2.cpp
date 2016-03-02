@@ -3403,15 +3403,6 @@ void SP2::RenderUI()
     s.str("");
     s << "State: " << SharedData::GetInstance()->gamestate;
     RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9f, 0.9f, 0), 3, 0, 14);
-
-    //temp
-    s.str("");
-    s << SharedData::GetInstance()->cursor_newxpos;
-    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0, 1), 3, 0, 12);
-
-    s.str("");
-    s << SharedData::GetInstance()->cursor_newypos;
-    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0, 1), 3, 0, 11);
 }
 
 void SP2::RenderMinimap()

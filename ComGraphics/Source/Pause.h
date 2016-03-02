@@ -1,3 +1,5 @@
+#include "Button.h"
+
 #ifndef PAUSE_H
 #define PAUSE_H
 
@@ -9,6 +11,10 @@ private:
 
     void PauseReset();      //reset the pause buttons' y-coordinate positions
     float maxDisp1, maxDisp2, maxDisp3;     //the final y-coordinate position of each button in the pause screen
+
+    Button b_ResumeGame;
+    Button b_ExitToMainMenu;
+    Button b_ExitGame;
 
 public:
     bool animation;

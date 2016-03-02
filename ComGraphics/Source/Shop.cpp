@@ -9,6 +9,11 @@ Shop::Shop() : elapsedTime(0), bufferTime(0.125)
         ShopItemsID.push_back(i);
     }
     shopIterator = ShopItemsID.begin();
+
+    b_ToggleLeft.Set(0.271f, 0.364f, 0.444f, 0.574f);
+    b_ToggleRight.Set(0.646f, 0.74f, 0.444f, 0.574f);
+    b_Buy.Set(0.755f, 1.f, 0.242f, 0.325f);
+    b_Exit.Set(0.755f, 1.f, 0.592f, 0.675f);
 }
 
 Shop::~Shop()
@@ -22,8 +27,8 @@ void Shop::CheckCursor(double dt, int value)
     if (Application::IsKeyPressed(VK_LBUTTON) && elapsedTime > bufferTime) {
         
         //toggle left
-        if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.271f) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width * 0.364f) &&
-            SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height * 0.444f) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height * 0.574f))
+        if (SharedData::GetInstance()->cursor_newxpos >= b_ToggleLeft.minX && SharedData::GetInstance()->cursor_newxpos <= b_ToggleLeft.maxX &&
+            SharedData::GetInstance()->cursor_newypos >= b_ToggleLeft.minY && SharedData::GetInstance()->cursor_newypos <= b_ToggleLeft.maxY)
         {
             if (shopIterator == ShopItemsID.begin()) {  //reached beginning of list
                 shopIterator = ShopItemsID.end();
@@ -34,8 +39,8 @@ void Shop::CheckCursor(double dt, int value)
         }
 
         //toggle right
-        else if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.646f) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width * 0.740f) &&
-            SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height * 0.444f) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height * 0.574f))
+        else if (SharedData::GetInstance()->cursor_newxpos >= b_ToggleRight.minX && SharedData::GetInstance()->cursor_newxpos <= b_ToggleRight.maxX &&
+            SharedData::GetInstance()->cursor_newypos >= b_ToggleRight.minY && SharedData::GetInstance()->cursor_newypos <= b_ToggleRight.maxY)
         {
             ++shopIterator;
             if (shopIterator == ShopItemsID.end()) {    //reached end of list
@@ -46,8 +51,8 @@ void Shop::CheckCursor(double dt, int value)
         }
 
         //buy button
-        if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.755f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width &&
-            SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 45.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 40.5f)))
+        if (SharedData::GetInstance()->cursor_newxpos >= b_Buy.minX && SharedData::GetInstance()->cursor_newxpos <= b_Buy.maxX &&
+            SharedData::GetInstance()->cursor_newypos >= b_Buy.minY && SharedData::GetInstance()->cursor_newypos <= b_Buy.maxY)
         {
             if (SharedData::GetInstance()->player->getGold() >= value) {
                 if (!SharedData::GetInstance()->player->invfull())      //if player's inventory is not full
@@ -64,8 +69,8 @@ void Shop::CheckCursor(double dt, int value)
         }
 
         //exit button
-        else if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.755f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width &&
-            SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f)))
+        else if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX &&
+            SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY)
         {
             SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
             SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;

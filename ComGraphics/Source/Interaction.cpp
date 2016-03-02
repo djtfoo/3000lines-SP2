@@ -319,7 +319,7 @@ void WeedInteraction::DoInteraction()
 			{
 				SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
 				SharedData::GetInstance()->player->changeGold(10 * SharedData::GetInstance()->pointscounter);
-                SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + 5 + SharedData::GetInstance()->pointscounter);
+                SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + SharedData::GetInstance()->pointscounter / 2);
 				SharedData::GetInstance()->pointscounter = 0;
 				SharedData::GetInstance()->weedGamebool = false;
 			}

@@ -5,6 +5,9 @@
 Pause::Pause() : elapsedTime(0), bufferTime(0.125), maxDisp1(38), maxDisp2(28), maxDisp3(18)
 {
     PauseReset();
+    b_ResumeGame.Set(0.32f, 0.695f, 0.338f, 0.421f);
+    b_ExitToMainMenu.Set(0.32f, 0.695f, 0.505f, 0.588f);
+    b_ExitGame.Set(0.32f, 0.695f, 0.671f, 0.755f);
 }
 
 Pause::~Pause()
@@ -52,9 +55,9 @@ void Pause::CheckCursor(double dt)
 
     if (Application::IsKeyPressed(VK_LBUTTON) && elapsedTime > bufferTime) {
 
-        if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.32f) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width * 0.695f)) {
+        if (SharedData::GetInstance()->cursor_newxpos >= b_ResumeGame.minX && SharedData::GetInstance()->cursor_newxpos <= b_ResumeGame.maxX) {
             //resume game
-            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height * 0.338f) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height * 0.421f))
+            if (SharedData::GetInstance()->cursor_newypos >= b_ResumeGame.minY && SharedData::GetInstance()->cursor_newypos <= b_ResumeGame.maxY)
             {
                 SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
                 SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
@@ -64,7 +67,7 @@ void Pause::CheckCursor(double dt)
             }
 
             //exit to main menu
-            else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height * 0.505f) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height * 0.588f))
+            else if (SharedData::GetInstance()->cursor_newypos >= b_ExitToMainMenu.minY && SharedData::GetInstance()->cursor_newypos <= b_ExitToMainMenu.maxY)
             {
                 SharedData::GetInstance()->programstate_change = true;
                 SharedData::GetInstance()->program_state = PROGRAM_MENU;
@@ -74,7 +77,7 @@ void Pause::CheckCursor(double dt)
             }
 
             //exit program
-            else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height * 0.671f) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height * 0.755f))
+            else if (SharedData::GetInstance()->cursor_newypos >= b_ExitGame.minY && SharedData::GetInstance()->cursor_newypos <= b_ExitGame.maxY)
             {
                 SharedData::GetInstance()->program_state = PROGRAM_EXIT;
             }

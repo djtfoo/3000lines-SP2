@@ -21,7 +21,7 @@ std::string Character::getName()
     return name_;
 }
 
-Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(1000), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0), invfulldisplay(false)
+Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(500), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0), invfulldisplay(false)
 {
 	for (int i = 0; i < 8; i++)
 	{
