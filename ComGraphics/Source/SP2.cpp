@@ -13,7 +13,6 @@
 
 #include "Application.h"
 #include "SharedData.h"
-#include "Enemy.h"
 
 #include <iostream>
 
@@ -565,10 +564,10 @@ SP2::SP2()
 	meshList[GEO_FARMPLANT] = MeshBuilder::GenerateQuad("farmplant", Color(1, 1, 1), 20, 20);
 	meshList[GEO_FARMPLANT]->textureID = LoadTGA("Image/farmplant.tga");
 
-    meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("switch1", Color(0, 0, 0), 1, 15, 4);
-    meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("switch2", Color(0, 0, 0), 1, 15, 4);
-    meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("switch3", Color(0, 0, 0), 1, 15, 4);
-    meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("switch4", Color(0, 0, 0), 1, 15, 4);
+    meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(0, 0, 0), 2);
+    meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(0, 0, 0), 2);
+    meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(0, 0, 0), 2);
+    meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(0, 0, 0), 2);
 
     meshList[GEO_CHECKER_BUTTON] = MeshBuilder::GenerateCube("checker switch", Color(1, 1, 1), 10, 10, 10);
 
@@ -611,6 +610,7 @@ SP2::SP2()
     meshList[GEO_RABBIT_SKYBOX]->textureID = LoadTGA("Image/Skybox/rabbitsky.tga");
 
     meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("bullet", Color(0, 0, 1), 20);
+    meshList[GEO_E_BULLET] = MeshBuilder::GenerateSphere("e_bullet", Color(0, 0, 1), 20);
 }
 
 SP2::~SP2()
@@ -1194,7 +1194,7 @@ void SP2::Update(double dt)
     if (Application::IsKeyPressed('P'))
     {
         SharedData::GetInstance()->player->position_.x = 1000;
-        SharedData::GetInstance()->player->position_.y = 0;
+        SharedData::GetInstance()->player->position_.y = 25;
         SharedData::GetInstance()->player->position_.z = 1000;
         SharedData::GetInstance()->gamestate = GAME_STATE_RABBIT;
     }
@@ -1205,7 +1205,9 @@ void SP2::Update(double dt)
 	SharedData::GetInstance()->interactnumber = 99;
 
     puzzleLogic();
-
+    playerShoot(dt);
+    enemyShoot(dt);
+    bulletMove(dt);
     UpdateInventory(dt);
 }
 
@@ -1352,7 +1354,7 @@ void SP2::Render()
 		RenderObjectOnScreen(meshList[GEO_UIBG], 22, 50, 12, 7);
 		RenderUI();
 	}
-	
+	RenderBullets();
 
 }
 
@@ -1776,20 +1778,12 @@ void SP2::puzzleLogic()
         meshList[GEO_SWITCH_4] = MeshBuilder::GenerateCube("switch4", Color(1, 0, 1), 1, 15, 4);
 
     //Lights
-    if (SharedData::GetInstance()->switch1 == false)
-        meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(0, 0, 0), 2);
     if (SharedData::GetInstance()->switch1 == true)
         meshList[GEO_CHECK_1] = MeshBuilder::GenerateHemisphere("check1", Color(1, 1, 1), 2);
-    if (SharedData::GetInstance()->switch2 == false)
-        meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(0, 0, 0), 2);
     if (SharedData::GetInstance()->switch2 == true)
         meshList[GEO_CHECK_2] = MeshBuilder::GenerateHemisphere("check2", Color(1, 1, 1), 2);
-    if (SharedData::GetInstance()->switch3 == false)
-        meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(0, 0, 0), 2);
     if (SharedData::GetInstance()->switch3 == true)
         meshList[GEO_CHECK_3] = MeshBuilder::GenerateHemisphere("check3", Color(1, 1, 1), 2);
-    if (SharedData::GetInstance()->switch4 == false)
-        meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(0, 0, 0), 2);
     if (SharedData::GetInstance()->switch4 == true)
         meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
 
@@ -3840,7 +3834,7 @@ void SP2::RenderBullets()
         modelStack.PushMatrix();
         modelStack.Translate(enemybullet[i].e_bulletPos.x, enemybullet[i].e_bulletPos.y, enemybullet[i].e_bulletPos.z);
         modelStack.Rotate(enemybullet[i].e_yaw, 0, 1, 0);
-        modelStack.Scale(5, 5, 5);
+        modelStack.Scale(0.1, 0.1, 0.1);
         RenderMesh(meshList[GEO_E_BULLET], false);
         modelStack.PopMatrix();
     }

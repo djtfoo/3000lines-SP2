@@ -111,7 +111,6 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Bullet.h" />
     <ClInclude Include="Source\DialogueProcessor.h" />
-    <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\GameState.h" />
     <ClInclude Include="Source\LightPuzzle.h" />
     <ClInclude Include="Source\Outfit.h" />
