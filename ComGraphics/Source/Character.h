@@ -38,6 +38,7 @@ private:
     Hat* hat;
     Top* top;
     Bottoms* bottoms;
+	
 
 public:
     Player(std::string name);
@@ -45,6 +46,7 @@ public:
     void Walk(double dt);
     void CheckCollision(float newX, float newZ, bool& zMovement, bool& xMovement);
     void CheckInteraction();
+	int footstepsound;
 
     int getHunger();
     unsigned int getHealth();

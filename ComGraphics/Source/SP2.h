@@ -242,6 +242,7 @@ public:
 
     float delayer;
     float delayBuffer;
+	float soundtimer;
     int rotator;
     float floodlevel;
     float lightpower;

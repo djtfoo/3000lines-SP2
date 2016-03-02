@@ -21,7 +21,8 @@ std::string Character::getName()
     return name_;
 }
 
-Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(500), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0), invfulldisplay(false)
+
+Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(500), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0), invfulldisplay(false), footstepsound(0)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -109,6 +110,11 @@ void Player::Walk(double dt)
     }
     
     if (Application::IsKeyPressed('W')) {   //player moves forward
+		footstepsound = 35;
+		if ((Application::IsKeyPressed(VK_SHIFT)) && (SharedData::GetInstance()->player->getHunger() < 100))
+		{
+			footstepsound = 16;
+		}
         Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position);
         Vector3 view2 = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
         view.y = 0;
@@ -131,8 +137,17 @@ void Player::Walk(double dt)
         }
         SharedData::GetInstance()->camera->position = SharedData::GetInstance()->camera->target - view2;
     }
+	else
+	{
+		footstepsound = 0;
+	}
 
     if (Application::IsKeyPressed('S')) {   //player moves backward
+		footstepsound = 35;
+		if ((Application::IsKeyPressed(VK_SHIFT)) && (SharedData::GetInstance()->player->getHunger() < 100))
+		{
+			footstepsound = 16;
+		}
         Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position);
         Vector3 view2 = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
         view.y = 0;
@@ -157,6 +172,11 @@ void Player::Walk(double dt)
     }
 
     if (Application::IsKeyPressed('A')) {   //strafe left
+		footstepsound = 35;
+		if ((Application::IsKeyPressed(VK_SHIFT)) && (SharedData::GetInstance()->player->getHunger() < 100))
+		{
+			footstepsound = 16;
+		}
         Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
         Vector3 right = view.Cross(SharedData::GetInstance()->camera->up);
         right.y = 0;
@@ -181,6 +201,11 @@ void Player::Walk(double dt)
     }
 
     if (Application::IsKeyPressed('D')) {   //strafe right
+		footstepsound = 35;
+		if ((Application::IsKeyPressed(VK_SHIFT)) && (SharedData::GetInstance()->player->getHunger() < 100))
+		{
+			footstepsound = 16;
+		}
         Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
         Vector3 right = view.Cross(SharedData::GetInstance()->camera->up);
         right.y = 0;
@@ -432,6 +457,12 @@ void Player::useItem(int itemID)
 	case 12: // novel
 		break;
 	case 13: // jokebook
+		break;
+	case 14: // dogresidus
+		for (int i = 0; i < 8; i++)
+		{
+			addItem(14);
+		}
 		break;
 	}
 }

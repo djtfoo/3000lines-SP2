@@ -350,7 +350,7 @@ void FarmPlantInteraction::DoInteraction()
 			remover3->bound1.Set(9999, 99, 9999); remover3->bound2.Set(9999, 99, 9999);
 			std::cout << " doInteraction: " << SharedData::GetInstance()->interactnumber << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.x << " " << SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber]->bound1.z << std::endl;
 			SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover3;
-			SharedData::GetInstance()->player->addItem(2);
+			//SharedData::GetInstance()->player->addItem(2);
 			SharedData::GetInstance()->pointscounter -= 1;
 		}
 	}

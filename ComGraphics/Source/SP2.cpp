@@ -646,6 +646,9 @@ void SP2::loadInv()
     modelmap.insert(std::pair<int, GEOMETRY_TYPE>(12, GEO_SHOPDISPLAY));
     invmap.insert(std::pair<int, Gift>(13, Gift("Jokebook", 700)));
     modelmap.insert(std::pair<int, GEOMETRY_TYPE>(13, GEO_SHOPDISPLAY));
+
+	invmap.insert(std::pair<int, Gift>(14, Gift("DogResidus", 2)));
+	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(14, GEO_SHOPDISPLAY));
 }
 
 void SP2::loadCollisions()
@@ -903,7 +906,7 @@ void SP2::Init()
     ballredX = 310; ballredZ = -364;
     pickupcheck = false;
     pickupCounter = 0;
-
+	soundtimer = 0;
 
 	loadInv();
     loadCollisions();
@@ -1205,12 +1208,21 @@ void SP2::Update(double dt)
 
     UpdateInventory(dt);
 
+
+	if ((SharedData::GetInstance()->player->footstepsound > true)&&(soundtimer < 0))
+	{
+		PlaySound(TEXT("Sound/footsteps.wav"), NULL, SND_FILENAME | SND_ASYNC);
+		soundtimer = SharedData::GetInstance()->player->footstepsound;
+	}
+	soundtimer--;
+
     if (SharedData::GetInstance()->gamestate == GAME_STATE_RABBIT)
     {
         playerShoot(dt);
         enemyShoot(dt);
         bulletMove(dt);
     }
+
 }
 
 void SP2::Render()
@@ -1423,7 +1435,7 @@ void SP2::loadFree()
     if (SharedData::GetInstance()->canInteract && SharedData::GetInstance()->interactptr->pressButton) {
         std::stringstream ss;
         ss << "Press " << SharedData::GetInstance()->interactbutton;
-        RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 3, 2, 6);
+        RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 3, 2, 5.5);
     }
 }  
 
@@ -3812,7 +3824,7 @@ void SP2::UpdateInventory(double dt)
     if (delayer >= 0.125f)
     {
         if (Application::IsKeyPressed('V')) {
-            SharedData::GetInstance()->player->addItem(1);
+            SharedData::GetInstance()->player->addItem(14);
             delayer = 0;
         }
         if (Application::IsKeyPressed('B')) {
