@@ -1211,17 +1211,18 @@ void SP2::Update(double dt)
 	SharedData::GetInstance()->interactnumber = 99;
 
     puzzleLogic();
-
-    UpdateInventory(dt);
-
-
-	if ((SharedData::GetInstance()->player->footstepsound > true)&&(soundtimer < 0))
+    
+    if ((SharedData::GetInstance()->player->footstepsound > true)&&(soundtimer < 0))
 	{
 		PlaySound(TEXT("Sound/footsteps.wav"), NULL, SND_FILENAME | SND_ASYNC);
 		soundtimer = SharedData::GetInstance()->player->footstepsound;
 	}
 	soundtimer--;
 
+    bulletUpadtes(dt);
+}
+void SP2::bulletUpadtes(double dt)
+{
     if (SharedData::GetInstance()->gamestate == GAME_STATE_RABBIT)
     {
         playerShoot(dt);
@@ -1229,8 +1230,70 @@ void SP2::Update(double dt)
         bulletMove(dt);
     }
 
-}
 
+    //delete collided player bullets
+    for (unsigned i = 0; i < playerbullet.size(); ++i)
+    {
+        if (playerbullet[i].p_ifCollide) {    //there is collision
+            playerbullet.erase(playerbullet.begin() + i);
+            --i;
+        }
+    }
+    //delete collided enemy bullets
+    for (unsigned i = 0; i < enemybullet.size(); ++i)
+    {
+        if (enemybullet[i].e_ifCollide) {    //there is collision
+            enemybullet.erase(enemybullet.begin() + i);
+            --i;
+        }
+    }
+    //take damage
+    if (enemy.iftakeDamage) {
+        enemy.takeDamage();
+        enemy.iftakeDamage = false;
+        if (enemy.isDead() == true)
+        {
+            enemybullet.clear();
+            playerbullet.clear();
+        }
+    }
+    if (player.iftakeDamage)
+    {
+        player.takeDamage();
+        player.iftakeDamage = false;
+        if (player.isDead() == true)
+        {
+            playerbullet.clear();
+            enemybullet.clear();
+        }
+    }
+    //check player bullets
+    for (unsigned i = 0; i < playerbullet.size(); ++i)
+    {
+        checkP_BulletCollide(playerbullet[i]);
+    }
+    //check enemy bullets
+    for (unsigned i = 0; i < enemybullet.size(); ++i)
+    {
+        checkE_BulletCollide(enemybullet[i]);
+    }
+}
+void SP2::checkP_BulletCollide(PlayerBullet& bullet)
+{
+    if ((bullet.p_bulletPos.x > 1000 || bullet.p_bulletPos.x < -1000) || (bullet.p_bulletPos.y > 100 || bullet.p_bulletPos.y < -100) || (bullet.p_bulletPos.z > 1000 || bullet.p_bulletPos.z < -1000))
+    {
+        bullet.p_ifCollide = true;
+        return;
+    }
+}
+void SP2::checkE_BulletCollide(EnemyBullet& bullet)
+{
+    if ((bullet.e_bulletPos.x > 1000 || bullet.e_bulletPos.x < -1000) || (bullet.e_bulletPos.y > 100 || bullet.e_bulletPos.y < -100) || (bullet.e_bulletPos.z > 1000 || bullet.e_bulletPos.z < -1000))
+    {
+        bullet.e_ifCollide = true;
+        return;
+    }
+}
 void SP2::Render()
 {
     // Render VBO here
@@ -3765,26 +3828,12 @@ void SP2::playerShoot(double dt)
 
 void SP2::enemyShoot(double dt)
 {
-    //Vector3 view = SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position;
-    //float scalar = view.Dot(Vector3(0, 1, 0));
-    //pitch = 110.f - Math::RadianToDegree(acos(scalar));
-    //pitch *= -1;
-
-    //float scalar2 = view.Dot(Vector3(0, 0, 1));
-    //yaw = Math::RadianToDegree(acos(scalar2));
-
-    //if (view.x <= 0)
-    //{
-    //    yaw = 360.f - yaw;
-    //}
-
-    Enemy enemy;
-
     Vector3 enemyView = SharedData::GetInstance()->camera->target - enemy.position_;
     enemyView.y = 25;
     enemyView = enemyView.Normalized();
     float scalar3 = enemyView.Dot(Vector3(0, 0, 1));
     enemy.yaw = Math::RadianToDegree(acos(scalar3));
+
     if (enemyView.x <= 0) 
     {
         enemy.yaw = 360.f - enemy.yaw;
@@ -3792,7 +3841,7 @@ void SP2::enemyShoot(double dt)
 
     bool rapidfireon = false;
     e_elapsedTime += dt;
-    if (e_elapsedTime >= 0.1 && rapidfireon == false)
+    if (e_elapsedTime >= 0.8 && rapidfireon == false)
     {
         EnemyBullet e_bullet;
         e_bullet.e_bulletPos = SharedData::GetInstance()->enemy->position_;

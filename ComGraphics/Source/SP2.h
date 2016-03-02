@@ -240,6 +240,9 @@ public:
     float pitch, yaw;
     double elapsedTime, e_elapsedTime;
 
+    Enemy enemy;
+    Player player;
+
     float delayer;
     float delayBuffer;
 	float soundtimer;
@@ -320,6 +323,9 @@ public:
     void enemyShoot(double dt);
     void bulletMove(double dt);
     void RenderBullets();
+    void bulletUpadtes(double dt);
+    void checkP_BulletCollide(PlayerBullet& bullet);
+    void checkE_BulletCollide(EnemyBullet& bullet);
 
     //cursor for dialogue, pause, shop
     void RenderCursor();

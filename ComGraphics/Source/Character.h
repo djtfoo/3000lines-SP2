@@ -41,6 +41,7 @@ private:
 	
 
 public:
+    Player();
     Player(std::string name);
     virtual ~Player();
     void Walk(double dt);
@@ -75,6 +76,10 @@ public:
     int itemHave(int itemID);
 	bool invfull();
 	bool invfulldisplay;
+
+    //Taking Damage
+    bool iftakeDamage;
+    void takeDamage();
 };
 
 class NPC : public Character
@@ -108,6 +113,10 @@ public:
 
     //State of Enemy
     bool isDead();
+
+    //Take Damage
+    bool iftakeDamage;
+    void takeDamage();
 
     float yaw;
 };

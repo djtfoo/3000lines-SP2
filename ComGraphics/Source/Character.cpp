@@ -20,7 +20,9 @@ std::string Character::getName()
 {
     return name_;
 }
-
+Player::Player() : Character("", Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(500), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0), invfulldisplay(false), iftakeDamage(false)
+{
+}
 
 Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(500), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0), invfulldisplay(false), footstepsound(0)
 {
@@ -502,7 +504,10 @@ bool Player::invfull()
 	}
 	return false;
 }
-
+void Player::takeDamage()
+{
+    health_ -= 5;
+}
 NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0), loveMeter_(0)
 {
     //initialise map with the text files
@@ -565,7 +570,7 @@ std::string NPC::Speech()
     return it->second;
 }
 
-Enemy::Enemy() : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(5000), e_damage_(5), yaw(180.f)
+Enemy::Enemy() : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(5000), e_damage_(5), yaw(180.f), iftakeDamage(false)
 {
 
 }
@@ -589,6 +594,10 @@ void Enemy::setHealth(int health)
 void Enemy::setDamage(int damage)
 {
     e_damage_ = damage;
+}
+void Enemy::takeDamage()
+{
+    e_health_ -= 5;
 }
 bool Enemy::isDead()
 {
