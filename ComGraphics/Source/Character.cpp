@@ -404,17 +404,34 @@ void Player::useItem(int itemID)
 {
 	switch (itemID)
 	{
-	case 1:
+	case 1: // hammer
 		break;
-	case 2:
+	case 2: // temmeh
 		break;
-	case 3:
+	case 3: // weed
 		break;
-	case 4:
+	case 4: // spaghetti
 		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 18);
 		break;
-	case 5:
+	case 5: // rotten spaghetti
 		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 9);
+		break;
+	case 6: // cookbook
+		break;
+	case 7: // anime poster
+		break;
+	case 8: // anime keychain
+		break;
+	case 9: // shovel
+		break;
+	case 10: // butterscotch pie
+		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 27);
+		break;
+	case 11: // board game
+		break;
+	case 12: // novel
+		break;
+	case 13: // jokebook
 		break;
 	}
 }

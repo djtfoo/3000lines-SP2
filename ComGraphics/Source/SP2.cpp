@@ -1422,7 +1422,7 @@ void SP2::loadFree()
     if (SharedData::GetInstance()->canInteract && SharedData::GetInstance()->interactptr->pressButton) {
         std::stringstream ss;
         ss << "Press " << SharedData::GetInstance()->interactbutton;
-        RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 3, 2, 2);
+        RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 3, 2, 6);
     }
 }  
 
@@ -1713,14 +1713,6 @@ void SP2::loadWSGame()
 		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0.1), 3, 0, 12);
 	}
 	
-
-	//interaction
-    if (SharedData::GetInstance()->canInteract && SharedData::GetInstance()->interactptr->pressButton) {
-		RenderTextOnScreen(meshList[GEO_TEXT], "Press E", Color(1, 0, 0), 3, 2, 2);
-	}
-
-
-
 }
 
 void SP2::puzzleLogic()
