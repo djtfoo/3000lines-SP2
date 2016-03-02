@@ -570,12 +570,12 @@ std::string NPC::Speech()
     return it->second;
 }
 
-Enemy::Enemy() : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(5000), e_damage_(5), yaw(180.f), iftakeDamage(false)
+Enemy::Enemy() : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(300), e_damage_(5), yaw(180.f), iftakeDamage(false)
 {
 
 }
 
-Enemy::Enemy(std::string name, const Vector3& pos) : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(5000), e_damage_(5), yaw(180.f)
+Enemy::Enemy(std::string name, const Vector3& pos) : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(300), e_damage_(5), yaw(180.f)
 {
 
 }
@@ -595,12 +595,15 @@ void Enemy::setDamage(int damage)
 {
     e_damage_ = damage;
 }
-void Enemy::takeDamage()
+void Enemy::takeDamage(int receiveddamage)
 {
-    e_health_ -= 5;
+    e_health_ -= receiveddamage;
 }
 bool Enemy::isDead()
 {
-    if (e_health_);
+    if (e_health_ <= 0)
+    {
+        return true;
+    }
     return false;
 }

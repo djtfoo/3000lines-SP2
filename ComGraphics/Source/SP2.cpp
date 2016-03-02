@@ -23,6 +23,7 @@ SP2::SP2()
     yaw = 0;
     elapsedTime = 0;
     e_elapsedTime = 0;
+    spreadfire = false;
 
     delayer = 0;
     delayBuffer = 0;
@@ -633,7 +634,7 @@ SP2::SP2()
     meshList[GEO_RABBIT_SKYBOX]->textureID = LoadTGA("Image/Skybox/rabbitsky.tga");
 
     meshList[GEO_BULLET] = MeshBuilder::GenerateSphere("bullet", Color(0, 0, 1), 20);
-    meshList[GEO_E_BULLET] = MeshBuilder::GenerateSphere("e_bullet", Color(0, 0, 1), 20);
+    meshList[GEO_E_BULLET] = MeshBuilder::GenerateSphere("e_bullet", Color(1, 0, 0), 20);
 }
 
 SP2::~SP2()
@@ -1238,29 +1239,51 @@ void SP2::Update(double dt)
 
     puzzleLogic();
     
-    if ((SharedData::GetInstance()->player->footstepsound > true)&&(soundtimer < 0))
-	{
-		PlaySound(TEXT("Sound/footsteps.wav"), NULL, SND_FILENAME | SND_ASYNC);
-		soundtimer = SharedData::GetInstance()->player->footstepsound;
-	}
-	soundtimer--;
-
-    bulletUpadtes(dt);
+ //   if ((SharedData::GetInstance()->player->footstepsound > true)&&(soundtimer < 0))
+	//{
+	//	PlaySound(TEXT("Sound/footsteps.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	//	soundtimer = SharedData::GetInstance()->player->footstepsound;
+	//}
+	//soundtimer--;
+    if (enemy.isDead() == false && player.isDead() == false)
+    {
+        bulletUpadtes(dt);
+        if (enemy.getHealth() <= 30)
+        {
+            powerspike = 2;
+        }
+        if ((rand() % (50 / powerspike)+ 1) == 1)
+        {
+            rapidfireon = true;
+        }
+        if ((rand() % (500 / powerspike) + 1) == 42)
+        {
+            spreadfire = true;
+        }
+        if ((rand() % (5000 / powerspike)+ 1) == 19 && enemy.getHealth() <= 150)
+        {
+            unlimitedbulletworks = true;
+        }
+    }
+    else
+    {
+        playerbullet.clear();
+        enemybullet.clear();
+    }
 }
 void SP2::bulletUpadtes(double dt)
 {
-    if (SharedData::GetInstance()->gamestate == GAME_STATE_RABBIT)
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_RABBIT && enemy.isDead() == false && player.isDead() == false)
     {
         playerShoot(dt);
         enemyShoot(dt);
         bulletMove(dt);
     }
-
-
     //delete collided player bullets
     for (unsigned i = 0; i < playerbullet.size(); ++i)
     {
-        if (playerbullet[i].p_ifCollide) {    //there is collision
+        if (playerbullet[i].p_ifCollide) 
+        {    //there is collision
             playerbullet.erase(playerbullet.begin() + i);
             --i;
         }
@@ -1268,14 +1291,16 @@ void SP2::bulletUpadtes(double dt)
     //delete collided enemy bullets
     for (unsigned i = 0; i < enemybullet.size(); ++i)
     {
-        if (enemybullet[i].e_ifCollide) {    //there is collision
+        if (enemybullet[i].e_ifCollide) 
+        {    //there is collision
             enemybullet.erase(enemybullet.begin() + i);
             --i;
         }
     }
     //take damage
-    if (enemy.iftakeDamage) {
-        enemy.takeDamage();
+    if (enemy.iftakeDamage) 
+    {
+        enemy.takeDamage(5);
         enemy.iftakeDamage = false;
         if (enemy.isDead() == true)
         {
@@ -1306,8 +1331,35 @@ void SP2::bulletUpadtes(double dt)
 }
 void SP2::checkP_BulletCollide(PlayerBullet& bullet)
 {
-    if ((bullet.p_bulletPos.x > 1000 || bullet.p_bulletPos.x < -1000) || (bullet.p_bulletPos.y > 100 || bullet.p_bulletPos.y < -100) || (bullet.p_bulletPos.z > 1000 || bullet.p_bulletPos.z < -1000))
+    if ((bullet.p_bulletPos.x > 1000 || bullet.p_bulletPos.x < -1000) || (bullet.p_bulletPos.y > 1000 || bullet.p_bulletPos.y < -1000) || (bullet.p_bulletPos.z > 1000 || bullet.p_bulletPos.z < -1000))
     {
+        bullet.p_ifCollide = true;
+        return;
+    }
+    //Body
+    if (bullet.p_bulletPos.x > SharedData::GetInstance()->enemy->position_.x - 10 && bullet.p_bulletPos.x < SharedData::GetInstance()->enemy->position_.x + 10 &&
+        bullet.p_bulletPos.y > 0 && bullet.p_bulletPos.y < SharedData::GetInstance()->enemy->position_.y + 31 &&
+        bullet.p_bulletPos.z > SharedData::GetInstance()->enemy->position_.z - 10 && bullet.p_bulletPos.z < SharedData::GetInstance()->enemy->position_.z + 10)
+    {
+        enemy.takeDamage(5);
+        bullet.p_ifCollide = true;
+        return;
+    }
+    //shoulders
+    if (bullet.p_bulletPos.x > SharedData::GetInstance()->enemy->position_.x - 20 && bullet.p_bulletPos.x < SharedData::GetInstance()->enemy->position_.x + 20 &&
+        bullet.p_bulletPos.y > 25 && bullet.p_bulletPos.y < SharedData::GetInstance()->enemy->position_.y + 31 &&
+        bullet.p_bulletPos.z > SharedData::GetInstance()->enemy->position_.z - 20 && bullet.p_bulletPos.z < SharedData::GetInstance()->enemy->position_.z + 20)
+    {
+        enemy.takeDamage(5);
+        bullet.p_ifCollide = true;
+        return;
+    }
+    //head
+    if (bullet.p_bulletPos.x > SharedData::GetInstance()->enemy->position_.x - 6 && bullet.p_bulletPos.x < SharedData::GetInstance()->enemy->position_.x + 6 &&
+        bullet.p_bulletPos.y > 31 && bullet.p_bulletPos.y < SharedData::GetInstance()->enemy->position_.y + 50 &&
+        bullet.p_bulletPos.z > SharedData::GetInstance()->enemy->position_.z - 6 && bullet.p_bulletPos.z < SharedData::GetInstance()->enemy->position_.z + 6)
+    {
+        enemy.takeDamage(10);
         bullet.p_ifCollide = true;
         return;
     }
@@ -1319,6 +1371,21 @@ void SP2::checkE_BulletCollide(EnemyBullet& bullet)
         bullet.e_ifCollide = true;
         return;
     }
+
+    if (bullet.e_bulletPos.x > SharedData::GetInstance()->player->position_.x - 10 && bullet.e_bulletPos.x < SharedData::GetInstance()->player->position_.x + 10 &&
+        bullet.e_bulletPos.y > 0 && bullet.e_bulletPos.y < 40 &&
+        bullet.e_bulletPos.z > SharedData::GetInstance()->player->position_.x - 10 && bullet.e_bulletPos.z < SharedData::GetInstance()->player->position_.z + 10 && invulnerable >= 5)
+    {
+        player.takeDamage();
+        bullet.e_ifCollide = true;
+        invulnerable = 0;
+    }
+    else
+    {
+        if (invulnerable < 5)
+            invulnerable += 0.01;
+    }
+    std::cout << player.getHealth() << std::endl;
 }
 void SP2::Render()
 {
@@ -2412,11 +2479,15 @@ void SP2::loadRabbitGame()
 
     RenderFightSkybox();
 
-    modelStack.PushMatrix();
-    modelStack.Translate(SharedData::GetInstance()->enemy->position_.x, 0, SharedData::GetInstance()->enemy->position_.z);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_ADOLPH], true);
-    modelStack.PopMatrix();
+    if (enemy.isDead() == false)
+    { 
+        modelStack.PushMatrix();
+        modelStack.Translate(SharedData::GetInstance()->enemy->position_.x, 0, SharedData::GetInstance()->enemy->position_.z);
+        modelStack.Rotate(enemy.yaw, 0, 1, 0);
+        modelStack.Scale(10, 10, 10);
+        RenderMesh(meshList[GEO_ADOLPH], true);
+        modelStack.PopMatrix();
+    }
 
     modelStack.PushMatrix();
     modelStack.Translate(0, 12, 0);
@@ -3933,8 +4004,6 @@ void SP2::RenderFightSkybox()
     modelStack.PopMatrix();
 }
 
-float BULLETSPEED = 2000.f;
-
 void SP2::playerShoot(double dt)
 {
     Vector3 view = SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position;
@@ -3955,7 +4024,8 @@ void SP2::playerShoot(double dt)
     {
         PlayerBullet bullet;
         bullet.p_bulletPos = SharedData::GetInstance()->player->position_;
-        bullet.p_bulletDir = BULLETSPEED * (float)(dt)* (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
+        bullet.p_bulletPos.y = SharedData::GetInstance()->player->position_.y - 5;
+        bullet.p_bulletDir = (BULLETSPEED + 150) * (float)(dt)* (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
         bullet.p_ifCollide = false;
 
         bullet.p_pitch = pitch;
@@ -3979,9 +4049,8 @@ void SP2::enemyShoot(double dt)
         enemy.yaw = 360.f - enemy.yaw;
     }
 
-    bool rapidfireon = false;
     e_elapsedTime += dt;
-    if (e_elapsedTime >= 0.8 && rapidfireon == false)
+    if (e_elapsedTime >= 0.5 && rapidfireon == false && spreadfire == false && unlimitedbulletworks == false)
     {
         EnemyBullet e_bullet;
         e_bullet.e_bulletPos = SharedData::GetInstance()->enemy->position_;
@@ -3992,6 +4061,72 @@ void SP2::enemyShoot(double dt)
         e_bullet.e_yaw = yaw;
 
         enemybullet.push_back(e_bullet);
+        e_elapsedTime = 0.f;  //reset
+    }
+    if (e_elapsedTime >= 0.2 && rapidfireon == true && spreadfire == false && unlimitedbulletworks == false)
+    {
+        EnemyBullet e_bullet;
+        e_bullet.e_bulletPos = SharedData::GetInstance()->enemy->position_;
+        e_bullet.e_bulletDir = (BULLETSPEED + 150)* (float)(dt)* (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->enemy->position_).Normalized();
+        e_bullet.e_ifCollide = false;
+
+        e_bullet.e_pitch = 0.f;
+        e_bullet.e_yaw = enemy.yaw;
+
+        enemybullet.push_back(e_bullet);
+        e_elapsedTime = 0.f;  //reset
+        rapidfirecount++;
+        if (rapidfirecount > 2)
+        {
+            rapidfirecount = 0;
+            rapidfireon = false;
+        }
+    }
+    if (e_elapsedTime >= 0.5 && spreadfire == true)
+    {
+        for (int i = -100; i <= 100; i+=40)
+        {
+            EnemyBullet e_bullet;
+            e_bullet.e_bulletPos = SharedData::GetInstance()->enemy->position_;
+            e_bullet.e_bulletDir = (BULLETSPEED - 50) * (float)(dt)* (Vector3(SharedData::GetInstance()->camera->target.x + i, SharedData::GetInstance()->camera->target.y, SharedData::GetInstance()->camera->target.z) - SharedData::GetInstance()->enemy->position_).Normalized();
+            e_bullet.e_ifCollide = false;
+            e_bullet.e_pitch = 0.f;
+            e_bullet.e_yaw = yaw;
+            enemybullet.push_back(e_bullet);
+        }
+        circlecount++;
+        if (circlecount > 1)
+        {
+            circlecount = 0;
+            spreadfire = false;
+        }
+        e_elapsedTime = 0.f;  //reset
+    }
+
+    if (e_elapsedTime >= 2 && unlimitedbulletworks == true)
+    {
+        for (int i = -500; i < 500; i+= 65)
+        {
+            for (int p = -500; p < 500; p+= 65)
+            {
+                EnemyBullet e_bullet;
+                e_bullet.e_bulletPos = SharedData::GetInstance()->enemy->position_;
+                e_bullet.e_bulletPos.x = SharedData::GetInstance()->enemy->position_.x + i;
+                e_bullet.e_bulletPos.z = SharedData::GetInstance()->enemy->position_.z + p;
+
+                e_bullet.e_bulletDir = (BULLETSPEED - 100) * (float)(dt)* (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->enemy->position_).Normalized();
+                e_bullet.e_ifCollide = false;
+                e_bullet.e_pitch = 0.f;
+                e_bullet.e_yaw = enemy.yaw;
+                enemybullet.push_back(e_bullet);
+            }
+        }
+        ubwcount++;
+        if (ubwcount > 3)
+        {
+            ubwcount = 0;
+            unlimitedbulletworks = false;
+        }
         e_elapsedTime = 0.f;  //reset
     }
 }
@@ -4020,7 +4155,7 @@ void SP2::RenderBullets()
         RenderMesh(meshList[GEO_BULLET], false);
         modelStack.PopMatrix();
     }
-
+    //enemy
     for (unsigned i = 0; i < enemybullet.size(); ++i) 
     {
         modelStack.PushMatrix();

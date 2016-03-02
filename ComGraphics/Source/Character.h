@@ -116,7 +116,7 @@ public:
 
     //Take Damage
     bool iftakeDamage;
-    void takeDamage();
+    void takeDamage(int receiveddamage);
 
     float yaw;
 };

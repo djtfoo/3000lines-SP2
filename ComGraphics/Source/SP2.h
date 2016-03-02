@@ -359,6 +359,17 @@ public:
     void checkP_BulletCollide(PlayerBullet& bullet);
     void checkE_BulletCollide(EnemyBullet& bullet);
 
+    float BULLETSPEED = 200.f;
+
+    bool spreadfire;
+    bool unlimitedbulletworks = false;
+    bool rapidfireon = false;
+    int circlecount = 0;
+    int ubwcount = 0;
+    int rapidfirecount = 0;
+    int powerspike = 1;
+    float invulnerable = 5;
+
     //cursor for dialogue, pause, shop
     void RenderCursor();
 
