@@ -890,10 +890,6 @@ void SP2::Init()
 	}
 	
     rotating = 0;
-    ptxt1 = 70;     //pause textbox
-    ptxt2 = 78;
-    ptxt3 = 86;
-    ptxtexit = 94;
     rotator = 0;
 	SharedData::GetInstance()->daynighttime = 0000;
 
@@ -1004,16 +1000,25 @@ void SP2::Update(double dt)
     {
         objx += 30 * dt;
     }
-    //temporary check
-    if (SharedData::GetInstance()->gamestate != GAME_STATE_DIALOGUE && SharedData::GetInstance()->gamestate != GAME_STATE_SHOP) {
-        SharedData::GetInstance()->camera->Update(dt);
-        SharedData::GetInstance()->player->Walk(dt);
+    //temporary check - change to switch
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_PAUSED) {
+        if (pause.animation) {
+            pause.PauseAnimation(dt);
+        }
+        else {
+            pause.CheckCursor(dt);
+        }
+        //also, stop the day/night timer here!
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE) {
         SharedData::GetInstance()->dialogueProcessor.CheckCursor(dt);
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_SHOP) {
         shop.CheckCursor(dt, invmap.find(*shop.shopIterator)->second.getValue());
+    }
+    else {
+        SharedData::GetInstance()->camera->Update(dt);
+        SharedData::GetInstance()->player->Walk(dt);
     }
 
     CheckCharacterLocation();
@@ -1086,6 +1091,9 @@ void SP2::Update(double dt)
     /*if (Application::IsKeyPressed('R')) {       //reset
         Reset();
     }*/
+    if (Application::IsKeyPressed(VK_ESCAPE)) {
+        SharedData::GetInstance()->gamestate = GAME_STATE_PAUSED;
+    }
 
     if (vibrateX < 0.6 && vibrateY < 0.6)
     {
@@ -1135,17 +1143,6 @@ void SP2::Update(double dt)
 		SharedData::GetInstance()->player->setHunger(100);
 
     rotating += 30 * dt;
-
-    //pause game
-    if (Application::IsKeyPressed('N'))
-    {
-        SharedData::GetInstance()->gamestate = GAME_STATE_PAUSED;
-        pauseAnimation(dt);
-    }
-    if (SharedData::GetInstance()->gamestate == GAME_STATE_PAUSED)
-    {
-        pauseAnimation(dt);
-    }
 
         //Lighting
     if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpower <= 1.3)
@@ -1264,8 +1261,6 @@ void SP2::Render()
         }
         RenderTextOnScreen(meshList[GEO_TEXT], "Bye", Color(1, 1, 1), 2, 32, 10.5f);
 
-        
-
         RenderCursor();
         break;
     case GAME_STATE_WSGAME: loadWSGame();
@@ -1277,6 +1272,7 @@ void SP2::Render()
     case GAME_STATE_JASIMGAME: loadJasimGame();
         break;
     case GAME_STATE_PAUSED: pauseGame();
+        RenderCursor();
         break;
     case GAME_STATE_RABBIT: loadRabbitGame();
         break;
@@ -2243,50 +2239,17 @@ void SP2::loadJasimGame()
 
 void SP2::pauseGame()
 {
-
     loadFree();
 
     RenderObjectOnScreen(meshList[GEO_SHOPUI], 40, 30, 50, 50);
-    RenderTextOnScreen(meshList[GEO_TEXT], "PAUSED", Color(0, 0.6, 1), 5, 5, 9);
-    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, ptxt1, 0.3, 0.3);
-    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, ptxt2, 0.3, 0.3);
-    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, ptxt3, 0.3, 0.3);
-    RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, ptxtexit, 0.3, 0.3);
+    RenderTextOnScreen(meshList[GEO_TEXT], "PAUSED", Color(0, 0.6f, 1), 5, 5.5f, 9);
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 40, pause.verticalDisp1);
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 40, pause.verticalDisp2);
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 40, pause.verticalDisp3);
 
-
-
-    //RenderObjectOnScreen(meshList[GEO_DIALOGUEBOX], 40, 25, 0.2, 0.2);
-
-    if (Application::IsKeyPressed('L'))
-    {
-        SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
-
-        ptxt1 = 70;
-        ptxt2 = 78;
-        ptxt3 = 86;
-        ptxtexit = 94;
-    }
-    
-}
-
-void SP2::pauseAnimation(double dt)
-{
-    
-
-    ptxt1 -= 80 * dt;
-    ptxt2 -= 80 * dt;
-    ptxt3 -= 80 * dt;
-    ptxtexit -= 80 * dt;
-
-    if (ptxt1 <= 40)
-        ptxt1 = 40;
-    if (ptxt2 <= 32)
-        ptxt2 = 32;
-    if (ptxt3 <= 24)
-        ptxt3 = 24;
-    if (ptxtexit <= 12)
-        ptxtexit = 12;
-   
+    RenderTextOnScreen(meshList[GEO_TEXT], "RESUME GAME", Color(0, 0.6f, 1), 2, 15.5f, 18.5f);
+    RenderTextOnScreen(meshList[GEO_TEXT], "EXIT TO MAIN MENU", Color(0, 0.6f, 1), 2, 13.5f, 13.5f);
+    RenderTextOnScreen(meshList[GEO_TEXT], "EXIT GAME", Color(0, 0.6f, 1), 2, 16.5f, 8.5f);
 }
 
 void SP2::loadRabbitGame()
@@ -3441,8 +3404,14 @@ void SP2::RenderUI()
     s << "State: " << SharedData::GetInstance()->gamestate;
     RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9f, 0.9f, 0), 3, 0, 14);
 
+    //temp
+    s.str("");
+    s << SharedData::GetInstance()->cursor_newxpos;
+    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0, 1), 3, 0, 12);
 
-    
+    s.str("");
+    s << SharedData::GetInstance()->cursor_newypos;
+    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0, 1), 3, 0, 11);
 }
 
 void SP2::RenderMinimap()

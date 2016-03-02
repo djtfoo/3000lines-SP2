@@ -126,7 +126,7 @@ void Application::Run()
 	scene->Init();
 
 	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
-    while (!glfwWindowShouldClose(m_window) && SharedData::GetInstance()->program_state != PROGRAM_EXIT && !IsKeyPressed(VK_ESCAPE))
+    while (!glfwWindowShouldClose(m_window) && SharedData::GetInstance()->program_state != PROGRAM_EXIT)
 	{
 		scene->Update(m_timer.getElapsedTime());
         scene->Render();
@@ -135,7 +135,7 @@ void Application::Run()
 		//Get and organize events, like keyboard and mouse input, window resizing, etc...
 		glfwPollEvents();
         //setting cursor
-        if (SharedData::GetInstance()->program_state == PROGRAM_MENU || SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE || SharedData::GetInstance()->gamestate == GAME_STATE_SHOP)
+        if (SharedData::GetInstance()->program_state == PROGRAM_MENU || SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE || SharedData::GetInstance()->gamestate == GAME_STATE_SHOP || SharedData::GetInstance()->gamestate == GAME_STATE_PAUSED)
             glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
         else
             glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

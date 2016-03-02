@@ -16,6 +16,7 @@
 #include "Interaction.h"
 
 #include "Shop.h"
+#include "Pause.h"
 
 #include <cstdlib>
 
@@ -327,8 +328,7 @@ public:
 
     void shoptemp();
     void RotateDisplay();
-    void pauseAnimation(double dt);
-
+    
     float objx, objy;
 
     float gateobjs[14];
@@ -343,10 +343,6 @@ public:
     GateInteraction gatebounds[8];
 
     float rotating;
-    float ptxt1;    //pause text 1
-    float ptxt2;
-    float ptxt3;
-    float ptxtexit;
     
     //Chon game variables
     bool ball[5];   
@@ -364,6 +360,7 @@ public:
     chonBallInteraction ballbounds[5];
 
     Shop shop;
+    Pause pause;
 
 	std::map<int, Gift>invmap;
 	std::map<int, GEOMETRY_TYPE>modelmap;

@@ -34,7 +34,7 @@ void Shop::CheckCursor(double dt, int value)
         }
 
         //toggle right
-        if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.646f) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width * 0.740f) &&
+        else if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.646f) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width * 0.740f) &&
             SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height * 0.444f) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height * 0.574f))
         {
             ++shopIterator;
@@ -46,28 +46,30 @@ void Shop::CheckCursor(double dt, int value)
         }
 
         //buy button
-        if (SharedData::GetInstance()->player->getGold() >= value) {
-            if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.755f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width &&
-                SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 45.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 40.5f)))
-            {
-				if (SharedData::GetInstance()->player->invfull() == false)
-				{
-					SharedData::GetInstance()->player->changeGold(-value);
-					SharedData::GetInstance()->player->addItem(*shopIterator);
-					elapsedTime = 0;
-				}
-				else
-				{
-					SharedData::GetInstance()->player->invfulldisplay = true;
-				}
+        if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.755f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width &&
+            SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 45.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 40.5f)))
+        {
+            if (SharedData::GetInstance()->player->getGold() >= value) {
+                if (!SharedData::GetInstance()->player->invfull())      //if player's inventory is not full
+                {
+                    SharedData::GetInstance()->player->changeGold(-value);
+                    SharedData::GetInstance()->player->addItem(*shopIterator);
+                    elapsedTime = 0;
+                }
+                else
+                {
+                    SharedData::GetInstance()->player->invfulldisplay = true;   //tell the player that inventory is full
+                }
             }
         }
 
         //exit button
-        if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.755f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width &&
+        else if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.755f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width &&
             SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f)))
         {
             SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
+            SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
+            SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
             elapsedTime = 0;
 			SharedData::GetInstance()->player->invfulldisplay = false;
         }
