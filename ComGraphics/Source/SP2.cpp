@@ -621,13 +621,13 @@ void SP2::loadInv()
 {
 	invmap.insert(std::pair<int, Gift>(1, Gift("Hammer", 100)));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(1, GEO_HAMMER));
-	invmap.insert(std::pair<int, Gift>(2, Gift("tEmmEh", 0)));
+	invmap.insert(std::pair<int, Gift>(2, Gift("tEmmEh", 999999999)));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(2, GEO_STEMMIE));
-	invmap.insert(std::pair<int, Gift>(3, Gift("Weed", 0)));
+	invmap.insert(std::pair<int, Gift>(3, Gift("Weed", 4)));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(3, GEO_WEEDICON));
-	invmap.insert(std::pair<int, Gift>(4, Gift("Spaghetti", 0)));
+	invmap.insert(std::pair<int, Gift>(4, Gift("Spaghetti", 10)));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(4, GEO_SPAGHETTO));
-	invmap.insert(std::pair<int, Gift>(5, Gift("\"spaghetti\"", 0)));
+	invmap.insert(std::pair<int, Gift>(5, Gift("\"spaghetti\"", 2)));
 	modelmap.insert(std::pair<int, GEOMETRY_TYPE>(5, GEO_SPAGHETTOROTTEN));
 
     invmap.insert(std::pair<int, Gift>(6, Gift("Cookbook", 350)));
@@ -3399,11 +3399,15 @@ void SP2::RenderInventory()
 	}
 
 	RenderObjectOnScreen(meshList[GEO_ITEMSELECT], 22.5 + (SharedData::GetInstance()->player->invselect * 5), 2.5);
-    if (SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect] != 0) {
+    if (SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect] != 0) 
+	{
         float namelength = (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName().size();
-        RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 14.5f - namelength / 2.f, 3);
+		RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 14.5f - namelength / 2.f, 3);
     }
-
+	if (SharedData::GetInstance()->player->invfulldisplay == true)
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "Inventory Full", Color(1, 0, 0), 2, 29, 23);
+	}
     RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
 }
 
@@ -3867,9 +3871,18 @@ void SP2::UpdateInventory(double dt)
         }
         if (Application::IsKeyPressed('X'))
         {
-            SharedData::GetInstance()->player->removeItem(SharedData::GetInstance()->player->invselect);
-            rotator = 0;
-            delayer = 0;
+			if (SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect] != 0)
+			{
+				if (SharedData::GetInstance()->gamestate == GAME_STATE_SHOP)
+				{
+					SharedData::GetInstance()->player->changeGold(invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second.getValue() / 2);
+				}
+				SharedData::GetInstance()->player->removeItem(SharedData::GetInstance()->player->invselect);
+				rotator = 0;
+				delayer = 0;
+			}
+			SharedData::GetInstance()->player->invfulldisplay = false;
+			
         }
         if ((Application::IsKeyPressed('C')) && (SharedData::GetInstance()->player->invselect < 7))
         {

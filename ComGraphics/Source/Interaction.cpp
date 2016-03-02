@@ -192,7 +192,7 @@ SpaghettoInteraction::~SpaghettoInteraction()
 
 void SpaghettoInteraction::DoInteraction()
 {
-	if (SharedData::GetInstance()->player->invfull() == false)
+	if (SharedData::GetInstance()->player->invfull() == true)
 	{
 		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() - 9);
 	}

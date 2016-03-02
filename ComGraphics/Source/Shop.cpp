@@ -50,9 +50,16 @@ void Shop::CheckCursor(double dt, int value)
             if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.755f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width &&
                 SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 45.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 40.5f)))
             {
-                SharedData::GetInstance()->player->changeGold(-value);
-                SharedData::GetInstance()->player->addItem(*shopIterator);
-                elapsedTime = 0;
+				if (SharedData::GetInstance()->player->invfull() == false)
+				{
+					SharedData::GetInstance()->player->changeGold(-value);
+					SharedData::GetInstance()->player->addItem(*shopIterator);
+					elapsedTime = 0;
+				}
+				else
+				{
+					SharedData::GetInstance()->player->invfulldisplay = true;
+				}
             }
         }
 
@@ -62,6 +69,7 @@ void Shop::CheckCursor(double dt, int value)
         {
             SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
             elapsedTime = 0;
+			SharedData::GetInstance()->player->invfulldisplay = false;
         }
     }
 }

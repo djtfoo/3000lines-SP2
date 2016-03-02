@@ -21,7 +21,7 @@ std::string Character::getName()
     return name_;
 }
 
-Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(1000), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0)
+Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(1000), hat(nullptr), top(nullptr), bottoms(nullptr), invselect(0), invfulldisplay(false)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -376,7 +376,10 @@ int Player::removeItem(int itemPos)
 	{
 		if ((i == itemPos) && (removed == false))
 		{
-			useItem(inventory[i]);
+			if (SharedData::GetInstance()->gamestate != GAME_STATE_SHOP)
+			{
+				useItem(inventory[i]);
+			}
 			inventory[i] = 0;
 			removed = true;
 		}
@@ -445,9 +448,9 @@ bool Player::invfull()
 {
 	if (inventory[7] != 0)
 	{
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0), loveMeter_(0)

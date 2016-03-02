@@ -72,6 +72,7 @@ public:
 	void convertItem(int itemID1, int itemID2);
     int itemHave(int itemID);
 	bool invfull();
+	bool invfulldisplay;
 };
 
 class NPC : public Character
