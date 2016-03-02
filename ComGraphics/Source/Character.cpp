@@ -539,3 +539,34 @@ std::string NPC::Speech()
     map<CONVO_STATE, std::string>::iterator it = dialogues.find(SharedData::GetInstance()->dialogueProcessor.convostate);
     return it->second;
 }
+
+Enemy::Enemy() : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(5000), e_damage_(5), yaw(180.f)
+{
+
+}
+
+Enemy::Enemy(std::string name, const Vector3& pos) : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(5000), e_damage_(5), yaw(180.f)
+{
+
+}
+Enemy::~Enemy()
+{
+
+}
+unsigned int Enemy::getHealth()
+{
+    return e_health_;
+}
+void Enemy::setHealth(int health)
+{
+    e_health_ = health;
+}
+void Enemy::setDamage(int damage)
+{
+    e_damage_ = damage;
+}
+bool Enemy::isDead()
+{
+    if (e_health_);
+    return false;
+}

@@ -90,8 +90,23 @@ public:
 };
 class Enemy : public Character
 {
+private:
+    int e_damage_;
+    unsigned int e_health_;
+
 public:
-    float translation;
+    Enemy();
+    Enemy(std::string name, const Vector3& pos);
+    virtual ~Enemy();
+
+    //Health Set and Get
+    unsigned int getHealth();
+    void setHealth(int health);
+    void setDamage(int damage);
+
+    //State of Enemy
+    bool isDead();
+
     float yaw;
 };
 

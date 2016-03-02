@@ -1202,10 +1202,15 @@ void SP2::Update(double dt)
 	SharedData::GetInstance()->interactnumber = 99;
 
     puzzleLogic();
-    playerShoot(dt);
-    enemyShoot(dt);
-    bulletMove(dt);
+
     UpdateInventory(dt);
+
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_RABBIT)
+    {
+        playerShoot(dt);
+        enemyShoot(dt);
+        bulletMove(dt);
+    }
 }
 
 void SP2::Render()
@@ -1350,8 +1355,8 @@ void SP2::Render()
 		RenderObjectOnScreen(meshList[GEO_UIBG], 22, 50, 12, 7);
 		RenderUI();
 	}
-	RenderBullets();
 
+    RenderBullets();
 }
 
 void SP2::loadFree()
@@ -2264,7 +2269,7 @@ void SP2::loadRabbitGame()
     RenderFightSkybox();
 
     modelStack.PushMatrix();
-    modelStack.Translate(1000, 0, 1000);
+    modelStack.Translate(SharedData::GetInstance()->enemy->position_.x, 0, SharedData::GetInstance()->enemy->position_.z);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_ADOLPH], true);
     modelStack.PopMatrix();
@@ -2617,7 +2622,7 @@ void SP2::RenderPlayer()
 void SP2::RenderNPC()
 {
     modelStack.PushMatrix();
-    modelStack.Translate(-139, 0, 68);
+    modelStack.Translate(SharedData::GetInstance()->enemy->position_.x, 0, SharedData::GetInstance()->enemy->position_.z);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_ADOLPH], true);
     modelStack.PopMatrix();
@@ -3723,47 +3728,46 @@ void SP2::playerShoot(double dt)
 
 void SP2::enemyShoot(double dt)
 {
-    Vector3 view = SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position;
-    float scalar = view.Dot(Vector3(0, 1, 0));
-    pitch = 110.f - Math::RadianToDegree(acos(scalar));
-    pitch *= -1;
+    //Vector3 view = SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position;
+    //float scalar = view.Dot(Vector3(0, 1, 0));
+    //pitch = 110.f - Math::RadianToDegree(acos(scalar));
+    //pitch *= -1;
 
-    float scalar2 = view.Dot(Vector3(0, 0, 1));
-    yaw = Math::RadianToDegree(acos(scalar2));
+    //float scalar2 = view.Dot(Vector3(0, 0, 1));
+    //yaw = Math::RadianToDegree(acos(scalar2));
 
-    if (view.x <= 0)
+    //if (view.x <= 0)
+    //{
+    //    yaw = 360.f - yaw;
+    //}
+
+    Enemy enemy;
+
+    Vector3 enemyView = SharedData::GetInstance()->camera->target - enemy.position_;
+    enemyView.y = 25;
+    enemyView = enemyView.Normalized();
+    float scalar3 = enemyView.Dot(Vector3(0, 0, 1));
+    enemy.yaw = Math::RadianToDegree(acos(scalar3));
+    if (enemyView.x <= 0) 
     {
-        yaw = 360.f - yaw;
+        enemy.yaw = 360.f - enemy.yaw;
     }
 
+    bool rapidfireon = false;
     e_elapsedTime += dt;
-    if (e_elapsedTime >= 0.5)
+    if (e_elapsedTime >= 0.1 && rapidfireon == false)
     {
         EnemyBullet e_bullet;
-        e_bullet.e_bulletPos = SharedData::GetInstance()->player->position_;
-        e_bullet.e_bulletDir = BULLETSPEED * (float)(dt)* (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
+        e_bullet.e_bulletPos = SharedData::GetInstance()->enemy->position_;
+        e_bullet.e_bulletDir = BULLETSPEED * (float)(dt) * (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->enemy->position_).Normalized();
         e_bullet.e_ifCollide = false;
 
-        e_bullet.e_pitch = pitch;
+        e_bullet.e_pitch = 0.f;
         e_bullet.e_yaw = yaw;
 
         enemybullet.push_back(e_bullet);
         e_elapsedTime = 0.f;  //reset
     }
-    /*
-    enemyROFelapsedTime += dt;
-    if (enemyROFelapsedTime >= 0.3) {    //rate of fire
-        Bullet bullet;
-        bullet.pos = Enemy.pos;
-        bullet.dir = 2.f * BULLETSPEED * (float)(dt) * (camera.target - Enemy.pos).Normalized();
-        bullet.collided = false;
-
-        bullet.pitch = 0.f;
-        bullet.yaw = Enemy.yaw;
-
-        enemyBullets.push_back(bullet);
-        enemyROFelapsedTime = 0.f;  //reset
-    }*/
 }
 
 void SP2::bulletMove(double dt)
@@ -3772,11 +3776,16 @@ void SP2::bulletMove(double dt)
     {
         playerbullet[i].p_bulletPos += playerbullet[i].p_bulletDir;
     }
+    for (int i = 0; i < enemybullet.size(); ++i)
+    {
+        enemybullet[i].e_bulletPos += enemybullet[i].e_bulletDir;
+    }
 }
 
 void SP2::RenderBullets()
 {
-    for (unsigned i = 0; i < playerbullet.size(); ++i) {
+    for (unsigned i = 0; i < playerbullet.size(); ++i) 
+    {
         modelStack.PushMatrix();
         modelStack.Translate(playerbullet[i].p_bulletPos.x, playerbullet[i].p_bulletPos.y, playerbullet[i].p_bulletPos.z);
         modelStack.Rotate(playerbullet[i].p_pitch, 1, 0, 0);
@@ -3786,7 +3795,8 @@ void SP2::RenderBullets()
         modelStack.PopMatrix();
     }
 
-    for (unsigned i = 0; i < enemybullet.size(); ++i) {
+    for (unsigned i = 0; i < enemybullet.size(); ++i) 
+    {
         modelStack.PushMatrix();
         modelStack.Translate(enemybullet[i].e_bulletPos.x, enemybullet[i].e_bulletPos.y, enemybullet[i].e_bulletPos.z);
         modelStack.Rotate(enemybullet[i].e_yaw, 0, 1, 0);

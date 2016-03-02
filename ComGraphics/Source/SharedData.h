@@ -28,6 +28,7 @@ public:
     LOCATION location;
 
     Player *player;
+    Enemy *enemy;
     Camera3 *camera;
     map<LOCATION, vector<ItemCollision>> collisionMap;
     vector<NPC*> NPCs;
@@ -90,6 +91,7 @@ private:
         programstate_change = false;
 
         player = new Player("Player");
+        enemy = new Enemy();
         camera = new Camera3();
         camera->Init(Vector3(0, 25, 0), Vector3(0, 25, 1), Vector3(0, 1, 0));
 
@@ -141,6 +143,7 @@ private:
     }
     ~SharedData() {
         delete player;
+        //delete enemy;
         delete camera;
     }
 };
