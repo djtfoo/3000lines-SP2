@@ -1,10 +1,14 @@
 #; 0: CONVO_INTRO
-0;Hello there!
+0;Cheers, my good fellow!
 #; 1: CONVO_NEUTRAL
-1;Hii~
+1;It's a nice weather, don't you think?
 #; 2: CONVO_GIFT
-2;Aww thank you!
-#; 3: CONVO_COMPLIMENT
-3;Aww, that was really humerus ;)
-#; 4: CONVO_STARTMINIGAME
-4;I have no GUTS for this... Thanks for offering your help!
+2;You've got something for me?
+#; 3: CONVO_GIFTHAPPY
+3;This is splendid! Thank you!
+#; 4: CONVO_GIFTUNHAPPY
+4;Well... This is certainly something.
+#; 5: CONVO_COMPLIMENT
+5;Thank you, my good sir!
+#; 6: CONVO_STARTMINIGAME
+6;I could use some help here.

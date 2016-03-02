@@ -3,8 +3,12 @@
 #; 1: CONVO_NEUTRAL
 1;Dear~~
 #; 2: CONVO_GIFT
-2;Aww dear, thanks a million!  xoxo
-#; 3: CONVO_COMPLIMENT
-3;Y-You're saying I look good? Thanks dear!! xoxo
-#; 4: CONVO_STARTMINIGAME
-4;Thanks for offering your help to clear the weeds dear... xoxo
+2;Omg dearie you have something for me?
+#; 3: CONVO_GIFTHAPPY
+3;Aww dear, thanks a million!  xoxo
+#; 4: CONVO_GIFTUNHAPPY
+4;I appreciate the thought, dear.
+#; 5: CONVO_COMPLIMENT
+5;Y-You're saying I look good? Thanks dear!! xoxo
+#; 6: CONVO_STARTMINIGAME
+6;Thanks for offering your help to clear the weeds dear... xoxo

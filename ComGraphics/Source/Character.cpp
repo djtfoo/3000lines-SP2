@@ -397,13 +397,15 @@ int Player::addItem(int itemID)
 int Player::removeItem(int itemPos)
 {
 	bool removed = false;
+    int itemIDtoRemove = 0;
 	for (int i = 0; i < 8; i++)
 	{
 		if ((i == itemPos) && (removed == false))
 		{
+            itemIDtoRemove = inventory[i];
 			if (SharedData::GetInstance()->gamestate != GAME_STATE_SHOP)
 			{
-				useItem(inventory[i]);
+                useItem(itemIDtoRemove);
 			}
 			inventory[i] = 0;
 			removed = true;
@@ -422,7 +424,7 @@ int Player::removeItem(int itemPos)
 	{
 		return -1;
 	}
-	return 1;
+	return itemIDtoRemove;
 }
 
 void Player::useItem(int itemID)
@@ -503,8 +505,7 @@ bool Player::invfull()
 
 NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0), loveMeter_(0)
 {
-    //initialise map with the text file's directory
-
+    //initialise map with the text files
     std::string dialogue;
     int convo;
 
@@ -535,13 +536,6 @@ NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Char
         }
     }
     inData.close();
-    
-    ////TESTING EXAMPLE
-    //dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_INTRO, "Eyyy sup"));
-    //dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_NEUTRAL, "Anything you wanna do?"));
-    //dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_GIFT, "Aww ty"));
-    //dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_COMPLIMENT, "I shy"));
-    //dialogues.insert(std::pair<CONVO_STATE, std::string>(CONVO_STARTMINIGAME, "Play mini-game"));
 }
 
 NPC::~NPC()

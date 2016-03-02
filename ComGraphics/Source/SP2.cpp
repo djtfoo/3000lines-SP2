@@ -1014,14 +1014,19 @@ void SP2::Update(double dt)
         //also, stop the day/night timer here!
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE) {
+        if (SharedData::GetInstance()->dialogueProcessor.convostate == CONVO_GIFT) {
+            SharedData::GetInstance()->dialogueProcessor.GiveGift(dt);
+        }
         SharedData::GetInstance()->dialogueProcessor.CheckCursor(dt);
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_SHOP) {
         shop.CheckCursor(dt, invmap.find(*shop.shopIterator)->second.getValue());
+        UpdateInventory(dt);
     }
     else {
         SharedData::GetInstance()->camera->Update(dt);
         SharedData::GetInstance()->player->Walk(dt);
+        UpdateInventory(dt);
     }
 
     CheckCharacterLocation();
@@ -1324,7 +1329,15 @@ void SP2::Render()
             break;
         case CONVO_GIFT:
             RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
-            RenderTextOnScreen(meshList[GEO_TEXT], "\"Welcome\"", Color(1, 1, 1), 2, 26, 10.5f);
+            RenderTextOnScreen(meshList[GEO_TEXT], "Back", Color(1, 1, 1), 2, 26, 10.5f);
+            break;
+        case CONVO_GIFTHAPPY:
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+            RenderTextOnScreen(meshList[GEO_TEXT], "\"Welcome!\"", Color(1, 1, 1), 2, 26, 10.5f);
+            break;
+        case CONVO_GIFTUNHAPPY:
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+            RenderTextOnScreen(meshList[GEO_TEXT], "\"Sorry...\"", Color(1, 1, 1), 2, 26, 10.5f);
             break;
         case CONVO_COMPLIMENT:
             RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);

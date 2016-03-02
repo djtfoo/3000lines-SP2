@@ -29,6 +29,9 @@ public:
     CONVO_STATE convostate;
     NPC* npc;
 
+    map<int, map<std::string, unsigned int>> giftmap;
+
+    void GiveGift(double dt);
     void CheckCursor(double dt);
 };
 

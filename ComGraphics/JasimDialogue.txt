@@ -1,10 +1,14 @@
 #; 0: CONVO_INTRO
-0;Hello there. Bone-appetit! ;D
+0;Hello there. Bone-appetit! ;)
 #; 1: CONVO_NEUTRAL
 1;Bone-appetit. ;)
 #; 2: CONVO_GIFT
-2;Aww thank you, I love this a skeleTON!
-#; 3: CONVO_COMPLIMENT
-3;Aww, that was really humerus ;)
-#; 4: CONVO_STARTMINIGAME
-4;Could you help me flush the  shit down the toilet? I have no GUTS to do it ;)
+2;Is that a bone in your pocket? ;)
+#; 3: CONVO_GIFTHAPPY
+3;Thank you, I love this a skeleTON! ;)
+#; 4: CONVO_GIFTUNHAPPY
+4;Do you have a bone to pick with me?
+#; 5: CONVO_COMPLIMENT
+5;Aww, that was really humerus ;)
+#; 6: CONVO_STARTMINIGAME
+6;Could you help me flush the  shit down the toilet? I have no GUTS to do it ;)

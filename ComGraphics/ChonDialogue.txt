@@ -3,8 +3,12 @@
 #; 1: CONVO_NEUTRAL
 1;Watashi wa very busy D;
 #; 2: CONVO_GIFT
-2;A-Arigatou!! Your gift is daisuki ;-;
-#; 3: CONVO_COMPLIMENT
-3;H-Hontou ni? ;-;
-#; 4: CONVO_STARTMINIGAME
-4;Watashi needs some help...
+2;Anata want to give watashi a gift?
+#; 3: CONVO_GIFTHAPPY
+3;A-Arigatou!! Your gift is daisuki ;-;
+#; 4: CONVO_GIFTUNHAPPY
+4;U-Uhh, arigatou...
+#; 5: CONVO_COMPLIMENT
+5;H-Hontou ni? ;-;
+#; 6: CONVO_STARTMINIGAME
+6;Watashi needs some help...
