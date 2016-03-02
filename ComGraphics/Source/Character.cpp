@@ -101,7 +101,7 @@ void Player::Walk(double dt)
     float newX = position_.x;
     float newZ = position_.z;
 
-    if (Application::IsKeyPressed(VK_SHIFT)) {   //sped up moving
+	if ((Application::IsKeyPressed(VK_SHIFT)) && (SharedData::GetInstance()->player->getHunger() < 100)) {   //sped up moving
         WALKSPEED = 130.f;
     }
     else {
