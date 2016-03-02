@@ -88,5 +88,11 @@ public:
     map<CONVO_STATE, std::string> dialogues;    //map for dialogues
     std::string Speech();
 };
+class Enemy : public Character
+{
+public:
+    float translation;
+    float yaw;
+};
 
 #endif
