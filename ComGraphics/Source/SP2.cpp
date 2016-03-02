@@ -638,7 +638,7 @@ void SP2::loadInv()
     modelmap.insert(std::pair<int, GEOMETRY_TYPE>(8, GEO_SHOPDISPLAY));
     invmap.insert(std::pair<int, Gift>(9, Gift("Shovel", 200)));
     modelmap.insert(std::pair<int, GEOMETRY_TYPE>(9, GEO_SHOPDISPLAY));
-    invmap.insert(std::pair<int, Gift>(10, Gift("Butterscotch Pie", 650)));
+    invmap.insert(std::pair<int, Gift>(10, Gift("Butterscotch Pie", 250)));
     modelmap.insert(std::pair<int, GEOMETRY_TYPE>(10, GEO_SHOPDISPLAY));
     invmap.insert(std::pair<int, Gift>(11, Gift("Board Game", 550)));
     modelmap.insert(std::pair<int, GEOMETRY_TYPE>(11, GEO_SHOPDISPLAY));
