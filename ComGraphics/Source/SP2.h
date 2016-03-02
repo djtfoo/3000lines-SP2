@@ -249,7 +249,7 @@ public:
     float lightpos;
     float loadDown;
     float loadUp;
-
+	int daynumber;
     //Testing Minimap
     MS minimappp;
 

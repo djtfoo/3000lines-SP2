@@ -906,8 +906,8 @@ void SP2::Init()
     ballredX = 310; ballredZ = -364;
     pickupcheck = false;
     pickupCounter = 0;
-	soundtimer = 0;
-
+	soundtimer = 1;
+	daynumber = 0;
 	loadInv();
     loadCollisions();
 
@@ -1070,6 +1070,7 @@ void SP2::Update(double dt)
 	if (SharedData::GetInstance()->daynighttime > 2400)
 	{
 		SharedData::GetInstance()->daynighttime = 0;
+		daynumber++;
 		for (int i = 0; i < SharedData::GetInstance()->player->itemHave(4); i++)
 		{
 			if (rand() % 2)
@@ -3383,6 +3384,11 @@ void SP2::RenderTime()
 	timey << "TIME: " << ((int)SharedData::GetInstance()->daynighttime / 1000) << (((int)SharedData::GetInstance()->daynighttime / 100) % 10) << (((int)SharedData::GetInstance()->daynighttime / 10) % 10) << ((int)SharedData::GetInstance()->daynighttime % 10);
 	timey.str();
 	RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(1, 0, 0), 3, 0, 16);
+
+	timey.str("");
+	timey << "DAY " << daynumber;
+	RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(0, 1, 0), 3, 0, 16);
+
 	RenderTimeOnScreen(meshList[GEO_DAYNIGHTICON], 80, 60);
 }
 
@@ -3420,6 +3426,12 @@ void SP2::RenderUI()
     s.str("");
     s << "State: " << SharedData::GetInstance()->gamestate;
     RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9f, 0.9f, 0), 3, 0, 14);
+
+	//time
+	s.str("");
+	s << "DAY " << daynumber;
+	s.str();
+	RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0, 1), 3, 20, 19);
 }
 
 void SP2::RenderMinimap()
