@@ -501,12 +501,6 @@ void Player::useItem(int itemID)
 		break;
 	case 13: // jokebook
 		break;
-	case 14: // dogresidus
-		for (int i = 0; i < 8; i++)
-		{
-			addItem(14);
-		}
-		break;
 	}
 }
 

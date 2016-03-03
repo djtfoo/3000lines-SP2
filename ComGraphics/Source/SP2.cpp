@@ -4177,7 +4177,7 @@ void SP2::UpdateInventory(double dt)
     if (delayer >= 0.125f)
     {
         if (Application::IsKeyPressed('V')) {
-            SharedData::GetInstance()->player->addItem(14);
+            SharedData::GetInstance()->player->addItem(1);
             delayer = 0;
         }
         if (Application::IsKeyPressed('B')) {
