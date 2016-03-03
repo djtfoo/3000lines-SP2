@@ -240,6 +240,9 @@ SP2::SP2()
 
     meshList[GEO_GROUND] = MeshBuilder::GenerateQuad("ground", Color(1, 1, 1), 2000, 2000);
     meshList[GEO_GROUND]->textureID = LoadTGA("Image/ground2.tga");
+    
+    meshList[GEO_SPACESHIP] = MeshBuilder::GenerateOBJ("spaceship", "OBJ/jagspaceship.obj");
+    meshList[GEO_SPACESHIP]->textureID = LoadTGA("Image/jagspaceship.tga");
 
 	//meshList[GEO_DEVTEXTURE] = MeshBuilder::GenerateQuad("devtexture", Color(1, 1, 1), 1, 1);
 	//meshList[GEO_DEVTEXTURE]->textureID = LoadTGA("Image/devtexture.tga");
@@ -761,6 +764,9 @@ SP2::SP2()
 /******************************************************************************/
 SP2::~SP2()
 {
+    for (size_t i = 0; i < SharedData::GetInstance()->interactionItems.size(); ++i) {
+        delete SharedData::GetInstance()->interactionItems[i];
+    }
 }
 /******************************************************************************/
 /*!
@@ -1290,7 +1296,6 @@ void SP2::Update(double dt)
         loadUp = -100;
     }
 
-    //temporary check - change to switch
     if (SharedData::GetInstance()->paused) {
         if (pause.animation) {
             pause.PauseAnimation(dt);
@@ -1299,6 +1304,11 @@ void SP2::Update(double dt)
             pause.CheckCursor(dt);
         }
     }
+
+    if (SharedData::GetInstance()->rabbitFight) {
+        rabbitFightTransitionCheckCursor(dt);
+    }
+
     else if (SharedData::GetInstance()->sleep) {
         Sleep(dt);    //clears off key press bools and cursor movement
     }
@@ -1355,7 +1365,7 @@ void SP2::Update(double dt)
 	rotator += (float)(10 * dt);
 
     //day-night time increasing
-    if (!SharedData::GetInstance()->paused && SharedData::GetInstance()->gamestate != GAME_STATE_SHOP) {
+    if (!SharedData::GetInstance()->rabbitFight && !SharedData::GetInstance()->paused && SharedData::GetInstance()->gamestate != GAME_STATE_SHOP) {
         SharedData::GetInstance()->daynighttime += (float)(dt * 10);
         if (((int)SharedData::GetInstance()->daynighttime % 100) > 60)
         {
@@ -1501,6 +1511,12 @@ void SP2::Update(double dt)
     {
         playerbullet.clear();
         enemybullet.clear();
+        SharedData::GetInstance()->gameEnd = true;
+    }
+
+    //player finishes the game
+    if (SharedData::GetInstance()->gameEnd) {
+        FinishGameUpdate(dt);
     }
 }
 
@@ -1880,7 +1896,7 @@ void SP2::Render()
     RenderInventory();
 
     //render prompt for end-game
-    if (SharedData::GetInstance()->daynumber > 7) {   //a week has passed
+    if (SharedData::GetInstance()->daynumber > 7 && SharedData::GetInstance()->gamestate != GAME_STATE_RABBIT) {   //a week has passed
         RenderTextOnScreen(meshList[GEO_TEXT], "The spacecraft is fixed", Color(0, 0.6f, 1), 3, 2, 11.5f);
         RenderTextOnScreen(meshList[GEO_TEXT], "Go to the hangar", Color(0, 0.6f, 1), 3, 2, 10.5f);
     }
@@ -1947,16 +1963,37 @@ void SP2::Render()
         pauseGame();
         RenderCursor();
     }
+
+    //player entering rabbit fight
+    if (SharedData::GetInstance()->rabbitFight) {
+        rabbitFightTransition();
+        RenderCursor();
+    }
+
+    //player finishes the game
+    if (SharedData::GetInstance()->gameEnd) {
+        FinishGame();
+        RenderCursor();
+    }
 }
 
 void SP2::RenderLayout()
 {
-    //The Space Station
+    //the space station
     modelStack.PushMatrix();
     modelStack.Translate(420, -1, -23);
     modelStack.Scale(50, 50, 50);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_LAYOUT], true);
+    modelStack.PopMatrix();
+
+    //the spaceship
+    modelStack.PushMatrix();
+    modelStack.Translate(100, -20, -350);
+    modelStack.Rotate(210, 0, 1, 0);
+    modelStack.Rotate(-20, 1, 0, 0);
+    modelStack.Scale(4, 4, 4);
+    RenderMesh(meshList[GEO_SPACESHIP], true);
     modelStack.PopMatrix();
 }
 
@@ -2572,6 +2609,14 @@ void SP2::pauseGame()
     RenderTextOnScreen(meshList[GEO_TEXT], "EXIT GAME", Color(0, 0.6f, 1), 2, 16.5f, 8.5f);
 }
 
+void SP2::rabbitFightTransition()
+{
+    RenderDialogueOnScreen("Don't leave...", Color(1, 1, 1), 3);
+
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+    RenderTextOnScreen(meshList[GEO_TEXT], "Fight", Color(1, 1, 1), 2, 26, 10.5f);
+}
+
 void SP2::loadRabbitGame()
 {
     SharedData::GetInstance()->player->setHunger(0);
@@ -2780,6 +2825,12 @@ void SP2::RenderDialogueOnScreen(std::string text, Color color, float size)
     //name
     if (SharedData::GetInstance()->gamestate == GAME_STATE_SHOP) {
         RenderTextOnScreen(meshList[GEO_TEXT], "StEMMIE", color, size, 1.5f, 5.3f);
+    }
+    else if (SharedData::GetInstance()->rabbitFight) {
+        RenderTextOnScreen(meshList[GEO_TEXT], "Adolph", color, size, 1.5f, 5.3f);
+    }
+    else if (SharedData::GetInstance()->gameEnd) {
+        RenderTextOnScreen(meshList[GEO_TEXT], "", color, size, 1.5f, 5.3f);
     }
     else {
         RenderTextOnScreen(meshList[GEO_TEXT], SharedData::GetInstance()->dialogueProcessor.npc->getName(), color, size, 1.5f, 5.3f);
@@ -3429,11 +3480,7 @@ void SP2::CheckCharacterLocation()
     }
 
     if (SharedData::GetInstance()->daynumber > 7 && SharedData::GetInstance()->location == HANGAR) {    //start rabbit fight
-        SharedData::GetInstance()->gamestate = GAME_STATE_RABBIT;
-
-        SharedData::GetInstance()->player->position_ = Vector3(5200, 25, 5000);
-        SharedData::GetInstance()->camera->position = Vector3(5200, 25, 5000);
-        SharedData::GetInstance()->camera->target = Vector3(5201, 25, 5000);
+        SharedData::GetInstance()->rabbitFight = true;
     }
 }
 
@@ -4541,5 +4588,53 @@ void SP2::ChonGameUpdate()
         for (int i = 0; i < 5; ++i) {
             ball[i] = false;
         }
+    }
+}
+
+void SP2::rabbitFightTransitionCheckCursor(double dt)
+{
+    if (Application::IsKeyPressed(VK_LBUTTON)) {
+
+        if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.625f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width
+            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height * 0.592f) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height * 0.675f)) {
+            if (SharedData::GetInstance()->playSound) {
+                SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
+            }
+            SharedData::GetInstance()->gamestate = GAME_STATE_RABBIT;
+            SharedData::GetInstance()->rabbitFight = false;
+
+            SharedData::GetInstance()->player->position_ = Vector3(5200, 25, 5000);
+            SharedData::GetInstance()->camera->position = Vector3(5200, 25, 5000);
+            SharedData::GetInstance()->camera->target = Vector3(5199, 25, 5000);
+        }
+    }
+}
+
+void SP2::FinishGameUpdate(double dt)
+{
+    if (Application::IsKeyPressed(VK_LBUTTON)) {
+
+        if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.5f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width
+            && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height * 0.5f) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height * 0.7f)) {
+            if (SharedData::GetInstance()->playSound) {
+                SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
+            }
+            SharedData::GetInstance()->ResetGame();
+            SharedData::GetInstance()->programstate_change = true;
+            SharedData::GetInstance()->program_state = PROGRAM_MENU;
+        }
+    }
+}
+
+void SP2::FinishGame()
+{
+    RenderDialogueOnScreen("EXIT GAME", Color(1, 1, 1), 3);
+
+    RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+    if (enemy.isDead()) {
+        RenderTextOnScreen(meshList[GEO_TEXT], "You successfully left the planet.", Color(1, 1, 1), 2, 15, 10.5f);
+    }
+    else {
+        RenderTextOnScreen(meshList[GEO_TEXT], "You died painfully...", Color(1, 1, 1), 2, 15, 10.5f);
     }
 }

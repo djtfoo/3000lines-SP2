@@ -82,6 +82,11 @@ Player::~Player()
 {
 }
 
+void Player::setHealth()
+{
+    health_ = 100;
+}
+
 static float WALKSPEED = 40.f;
 /******************************************************************************/
 /*!

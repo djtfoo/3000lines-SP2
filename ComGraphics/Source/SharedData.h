@@ -47,8 +47,12 @@ public:
     bool programstate_change;
 	float daynighttime;
     int daynumber;
+    bool rabbitFight;
 	int pointscounter;
 	int weedcounter;
+
+    //end game
+    bool gameEnd;
 
     //Dem Gamestates
     GAME_STATE gamestate;
@@ -119,6 +123,65 @@ public:
         return &data;
     }
 
+    void ResetGame()
+    {
+        player->position_.Set(0, 0, 0);
+        player->setHealth();
+        camera->Init(Vector3(0, 25, 0), Vector3(1, 25, 0), Vector3(0, 1, 0));
+
+        for (size_t i = 0; i < NPCs.size(); ++i) {
+            NPCs[i]->setLoveMeter(0);
+        }
+
+        interactptr = 0;
+
+        //daynight
+        daynighttime = 0;
+        daynumber = 1;
+
+        //fight
+        rabbitFight = false;
+        gameEnd = false;
+
+        //states
+        gamestate = GAME_STATE_FREE;
+        location = OUTSIDE;
+        paused = false;
+        gateopen = false;
+
+        //cursor for main menu
+        cursor_xpos = 400;
+        cursor_ypos = 300;
+        cursor_newxpos = 400;
+        cursor_newypos = 300;
+
+        //Vee mini-game (light puzzle)
+        one = two = three = four = 1;
+        switchCount = 0;
+        switch1 = switch2 = switch3 = switch4 = false;
+        switchFlip = false;
+
+        //toilet
+        shitintoilet = false;
+        floodlevel = -2;
+        timeElapsed = 0;    //for Jasim and Chon mini-games
+        interactbutton = 'E';
+
+        //Chon mini-game (lab)
+        ballpickup = false;     //chon ballgame
+        ballgameComplete = false;
+
+        //weed mini-game
+        pointscounter = 0;
+        weedcounter = 10;
+
+        //bed interaction
+        sleep = false;
+
+        firstball = 0;
+        ballDoneMoving = true;
+    }
+
 private:
     SharedData() {
         //irrKlang sound engine
@@ -149,6 +212,10 @@ private:
         //daynight
         daynighttime = 0;
         daynumber = 1;
+        
+        //fight
+        rabbitFight = false;
+        gameEnd = false;
 
         //states
         gamestate = GAME_STATE_FREE;

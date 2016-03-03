@@ -56,6 +56,8 @@ class SP2 : public Scene
 
         GEO_GROUND,
 
+        GEO_SPACESHIP,
+
         GEO_LOADTOP,
         GEO_LOADBTM,
 
@@ -426,6 +428,8 @@ public:
 	void loadInv();
     void chonSecret();
     void pauseGame();
+    void rabbitFightTransition();
+    void rabbitFightTransitionCheckCursor(double dt);
     void loadRabbitGame();
 	void loadWeedGame();
     void RenderFightSkybox();
@@ -526,6 +530,9 @@ public:
 
     Shop shop;
     Pause pause;
+
+    void FinishGameUpdate(double dt);
+    void FinishGame();
 
 	std::map<int, Gift>invmap;
 	std::map<int, GEOMETRY_TYPE>modelmap;
