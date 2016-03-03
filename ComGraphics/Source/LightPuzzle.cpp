@@ -101,8 +101,9 @@ bool LightPuzzle::checkPuzzleAns(int first, int second, int third, int forth)
             four = false;
             SharedData::GetInstance()->switch4 = false;
         }
- 
-        if (one == true && two == true && three == true && four == true)
+
+        //game cleared
+        if (one && two && three && four)
         {
             SharedData::GetInstance()->switchCount = 0;
             one = two = three = four = false;
@@ -112,5 +113,5 @@ bool LightPuzzle::checkPuzzleAns(int first, int second, int third, int forth)
         SharedData::GetInstance()->switchFlip = false;
     }
 
-return false;
+    return false;
 }

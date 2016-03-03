@@ -469,18 +469,6 @@ SP2::SP2()
     meshList[GEO_CANTEENWALLS]->textureID = LoadTGA("Image/layout/canteen_walls.tga");
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	meshList[GEO_PIPETYPE1] = MeshBuilder::GenerateQuad("pipetype1", Color(1, 1, 1), 1, 1);
-	meshList[GEO_PIPETYPE1]->textureID = LoadTGA("Image/pipetype1.tga");
-				 
-	meshList[GEO_PIPETYPE2] = MeshBuilder::GenerateQuad("pipetype2", Color(1, 1, 1), 1, 1);
-	meshList[GEO_PIPETYPE2]->textureID = LoadTGA("Image/pipetype2.tga");
-				 
-	meshList[GEO_PIPETYPE3] = MeshBuilder::GenerateQuad("pipetype3", Color(1, 1, 1), 1, 1);
-	meshList[GEO_PIPETYPE3]->textureID = LoadTGA("Image/pipetype3.tga");
-				 
-	meshList[GEO_PIPETYPE4] = MeshBuilder::GenerateQuad("pipetype4", Color(1, 1, 1), 1, 1);
-	meshList[GEO_PIPETYPE4]->textureID = LoadTGA("Image/pipetype4.tga");
-
     meshList[GEO_CROSSHAIRS] = MeshBuilder::GenerateQuad("crosshairs", Color(1, 1, 1), 3, 3);
     meshList[GEO_CROSSHAIRS]->textureID = LoadTGA("Image/crosshairs.tga");
 
@@ -491,7 +479,6 @@ SP2::SP2()
 	meshList[GEO_ITEMSELECT]->textureID = LoadTGA("Image/itemselect.tga");
 
     meshList[GEO_MAP] = MeshBuilder::GenerateMinimap("map", 10, 10);
-    meshList[GEO_MAP]->textureID = LoadTGA("Image/Donna.tga");
 
 	meshList[GEO_DAYNIGHTICON] = MeshBuilder::GenerateQuad("daynight", Color(1, 1, 1), 12, 12);
 	meshList[GEO_DAYNIGHTICON]->textureID = LoadTGA("Image/daynighticon.tga");
@@ -864,12 +851,7 @@ void SP2::Init()
 	interactions->bound1.Set(780, 5, -616);     interactions->bound2.Set(800, 15, -612);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
-    //interactions = new ChonGame();
-    //interactions->bound1.Set(400,-15,-430); interactions->bound2.Set(425,-5,-440);
-    //SharedData::GetInstance()->interactionItems.push_back(interactions);
-
     ballboundfunct();
-
 
     //Vee Puzzle Interaction
     interactions = new VeePuzzleSwitchOneInteraction();
@@ -973,7 +955,8 @@ void SP2::Init()
 
     lightpuzz.generatePuzzle();
 
-	
+    SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
+    SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
 }
 
 void SP2::loadWeedGame()
@@ -1064,14 +1047,13 @@ void SP2::Update(double dt)
         objx += 30 * dt;
     }
     //temporary check - change to switch
-    if (SharedData::GetInstance()->gamestate == GAME_STATE_PAUSED) {
+    if (SharedData::GetInstance()->paused) {
         if (pause.animation) {
             pause.PauseAnimation(dt);
         }
         else {
             pause.CheckCursor(dt);
         }
-        //also, stop the day/night timer here!
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE) {
         if (SharedData::GetInstance()->dialogueProcessor.convostate == CONVO_GIFT) {
@@ -1122,28 +1104,34 @@ void SP2::Update(double dt)
     }
 
 	rotator++;
-	SharedData::GetInstance()->daynighttime+= (dt * 10);
-	if (((int)SharedData::GetInstance()->daynighttime % 100) > 60)
-	{
-		SharedData::GetInstance()->daynighttime += 40;
-		if (SharedData::GetInstance()->interactnumber != 32)
-		{
-			SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 5);
-		}
-		SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 1);
-	}
-	if (SharedData::GetInstance()->daynighttime > 2400)
-	{
-		SharedData::GetInstance()->daynighttime = 0;
-		daynumber++;
-		for (int i = 0; i < SharedData::GetInstance()->player->itemHave(4); i++)
-		{
-			if (rand() % 2)
-			{
-				SharedData::GetInstance()->player->convertItem(4, 5);
-			}
-		}
-	}
+
+    //day-night time increasing
+    if (!SharedData::GetInstance()->paused) {
+        SharedData::GetInstance()->daynighttime += (dt * 10);
+        if (((int)SharedData::GetInstance()->daynighttime % 100) > 60)
+        {
+            SharedData::GetInstance()->daynighttime += 40;
+            if (SharedData::GetInstance()->interactnumber != 32)
+            {
+                SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 5);
+            }
+            SharedData::GetInstance()->player->setHunger(SharedData::GetInstance()->player->getHunger() + 1);
+        }
+        if (SharedData::GetInstance()->daynighttime > 2400)
+        {
+            SharedData::GetInstance()->daynighttime = 0;
+            daynumber++;
+            for (int i = 0; i < SharedData::GetInstance()->player->itemHave(4); i++)
+            {
+                if (rand() % 2)
+                {
+                    SharedData::GetInstance()->player->convertItem(4, 5);
+                }
+            }
+        }
+
+    }
+
     //options
     if (Application::IsKeyPressed('1')) //enable back face culling
         glEnable(GL_CULL_FACE);
@@ -1161,7 +1149,7 @@ void SP2::Update(double dt)
         Reset();
     }*/
     if (Application::IsKeyPressed(VK_ESCAPE)) {
-        SharedData::GetInstance()->gamestate = GAME_STATE_PAUSED;
+        SharedData::GetInstance()->paused = true;
     }
 
     if (vibrateX < 0.6 && vibrateY < 0.6)
@@ -1228,21 +1216,6 @@ void SP2::Update(double dt)
         glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
     }
 
-    //Interactions?
-    if (SharedData::GetInstance()->chonGamebool == true)
-    {
-        SharedData::GetInstance()->gamestate = GAME_STATE_CHONGAME;
-    }
-	else if (SharedData::GetInstance()->veegamebool == true)
-	{
-		SharedData::GetInstance()->gamestate = GAME_STATE_VEEGAME;
-	}
-	else if (SharedData::GetInstance()->weedGamebool == true)
-	{
-		SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
-	}
-
-
     gateUpdate(dt);
 
     //Position of Light
@@ -1304,6 +1277,7 @@ void SP2::Update(double dt)
         enemybullet.clear();
     }
 }
+
 void SP2::bulletUpadtes(double dt)
 {
     if (SharedData::GetInstance()->gamestate == GAME_STATE_RABBIT && enemy.isDead() == false && player.isDead() == false)
@@ -1362,6 +1336,7 @@ void SP2::bulletUpadtes(double dt)
         checkE_BulletCollide(enemybullet[i]);
     }
 }
+
 void SP2::checkP_BulletCollide(PlayerBullet& bullet)
 {
     if ((bullet.p_bulletPos.x > 1000 || bullet.p_bulletPos.x < -1000) || (bullet.p_bulletPos.y > 1000 || bullet.p_bulletPos.y < -1000) || (bullet.p_bulletPos.z > 1000 || bullet.p_bulletPos.z < -1000))
@@ -1397,6 +1372,7 @@ void SP2::checkP_BulletCollide(PlayerBullet& bullet)
         return;
     }
 }
+
 void SP2::checkE_BulletCollide(EnemyBullet& bullet)
 {
     if ((bullet.e_bulletPos.x > 1000 || bullet.e_bulletPos.x < -1000) || (bullet.e_bulletPos.y > 100 || bullet.e_bulletPos.y < -100) || (bullet.e_bulletPos.z > 1000 || bullet.e_bulletPos.z < -1000))
@@ -1474,7 +1450,6 @@ void SP2::Render()
             RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(1, 1, 0), 2, 35, 21);
         }
         RenderTextOnScreen(meshList[GEO_TEXT], "Bye", Color(1, 1, 1), 2, 32, 10.5f);
-
         RenderCursor();
         break;
     case GAME_STATE_WSGAME: loadWSGame();
@@ -1485,14 +1460,11 @@ void SP2::Render()
         break;
     case GAME_STATE_JASIMGAME: loadJasimGame();
         break;
-    case GAME_STATE_PAUSED: pauseGame();
-        RenderCursor();
-        break;
     case GAME_STATE_RABBIT: loadRabbitGame();
         break;
     case GAME_STATE_DIALOGUE: loadFree();
         RenderDialogueOnScreen(SharedData::GetInstance()->dialogueProcessor.npc->Speech(), Color(1, 1, 1), 3);
-        
+
         //options
         switch (SharedData::GetInstance()->dialogueProcessor.convostate)
         {
@@ -1539,16 +1511,11 @@ void SP2::Render()
             RenderTextOnScreen(meshList[GEO_TEXT], "\"Let's go\"", Color(1, 1, 1), 2, 26, 10.5f);
             break;
         }
-
-        
-
         RenderCursor();
-
         RenderLoveMeter();
         break;
     }
     //RenderMinimap();
-
 
     RenderObjectOnScreen(meshList[GEO_LOADTOP], 40, loadDown, 1, 1, 0);
     RenderObjectOnScreen(meshList[GEO_LOADBTM], 40, loadUp, 1, 1, 0);
@@ -1559,14 +1526,19 @@ void SP2::Render()
     RenderTextOnScreen(meshList[GEO_TEXT], "objy : " + std::to_string(objy), Color(1, 1, 1), 2, 1, 1);
 
 
-	//hunger bar
-	RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Hunger", Color(0.5, 1, 0.5), 2, 11.5, 3.7);
-	RenderInventory();
-	if (viewOptions) {
-		RenderObjectOnScreen(meshList[GEO_UIBG], 22, 50, 12, 7);
-		RenderUI();
-	}
+    //hunger bar
+    RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
+    RenderTextOnScreen(meshList[GEO_TEXT], "Hunger", Color(0.5, 1, 0.5), 2, 11.5, 3.7);
+    RenderInventory();
+    if (viewOptions) {
+        RenderObjectOnScreen(meshList[GEO_UIBG], 22, 50, 12, 7);
+        RenderUI();
+    }
+
+    if (SharedData::GetInstance()->paused) {
+        pauseGame();
+        RenderCursor();
+    }
 
     RenderBullets();
 }
@@ -1583,13 +1555,6 @@ void SP2::loadFree()
     modelStack.Scale(50, 50, 50);
     modelStack.Rotate(180, 0, 1, 0);
     RenderMesh(meshList[GEO_LAYOUT], true);
-    modelStack.PopMatrix();
-    
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 12, 0);
-    modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
-    modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
-    //RenderPlayer();
     modelStack.PopMatrix();
 
 	for (int i = 0; i < 12; i++)
@@ -1871,13 +1836,6 @@ void SP2::loadWSGame()
 	RenderMesh(meshList[GEO_LAYOUT], true);
 	modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
-	modelStack.Translate(0, 12, 0);
-	modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
-	modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
-	//RenderPlayer();
-	modelStack.PopMatrix();
-
 	for (int i = 0; i < 12; i++)
 	{
 		modelStack.PushMatrix();
@@ -1997,13 +1955,15 @@ void SP2::puzzleLogic()
         SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
         std::cout << "You win!" << std::endl;
         lightpuzz.generatePuzzle();
+        SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
+        //increase love meter and gain gold based on a timer & number of tries
+        SharedData::GetInstance()->player->changeGold(200);
+        SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + 5);
     }
 }
 
 void SP2::compactBallrender()
 {
-
-
     modelStack.PushMatrix();
     modelStack.Translate(ballyellX, 15, ballyellZ);
     modelStack.Scale(0.5, 0.5, 0.5);
@@ -2033,7 +1993,6 @@ void SP2::compactBallrender()
     modelStack.Scale(0.5, 0.5, 0.5);
     RenderMesh(meshList[GEO_SPHERERED], true);
     modelStack.PopMatrix();
-
 }
 
 void SP2::compactMovement(bool first, bool second, bool third, int i)
@@ -2270,18 +2229,17 @@ void SP2::loadChonGame()
         }
     }
 
+    //game complete
     if (pickupCounter >= 3)
     {
-        lightpuzz.generatePuzzle();
+        lightpuzz.generatePuzzle();     //to re-generate Chon's mini-game
         pickupCounter = 0;
     }
-
-
+    
+    
     ballmoveCheck();
 
-    compactBallrender();    //yel, black, white, blue, red
-
-
+    compactBallrender();    //yellow, black, white, blue, red
 }   
 
 void SP2::ballboundfunct()
@@ -2318,7 +2276,8 @@ void SP2::ballboundfunct()
 void SP2::loadVeeGame()
 {
 	loadFree();
-//Switches and Lightings
+
+    //Switches and Lightings
     modelStack.PushMatrix();
     modelStack.Translate(600, 0, 500);
     modelStack.Rotate(-90, 0, 1, 0);
@@ -2390,8 +2349,6 @@ void SP2::loadJasimGame()
 
 void SP2::pauseGame()
 {
-    loadFree();
-
     RenderObjectOnScreen(meshList[GEO_SHOPUI], 40, 30, 50, 50);
     RenderTextOnScreen(meshList[GEO_TEXT], "PAUSED", Color(0, 0.6f, 1), 5, 5.5f, 9);
     RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 40, pause.verticalDisp1);
@@ -2423,15 +2380,6 @@ void SP2::loadRabbitGame()
         RenderMesh(meshList[GEO_ADOLPH], true);
         modelStack.PopMatrix();
     }
-
-    modelStack.PushMatrix();
-    modelStack.Translate(0, 12, 0);
-    modelStack.Translate(SharedData::GetInstance()->player->position_.x, SharedData::GetInstance()->player->position_.y, SharedData::GetInstance()->player->position_.z);
-    modelStack.Rotate(SharedData::GetInstance()->player->direction_, 0, 1, 0);
-    //RenderPlayer();
-    modelStack.PopMatrix();
-
-    //RenderUI();
 
     RenderInventory();
     //RenderTime();
@@ -2700,75 +2648,6 @@ void SP2::RenderGround()
     modelStack.PopMatrix();
 }
 
-void SP2::RenderPlayer()
-{
-    modelStack.PushMatrix();
-    modelStack.Scale(2, 5, 2);
-
-    //body
-    modelStack.PushMatrix();
-    modelStack.Scale(1.5f, 2.f, 0.7f);
-    RenderMesh(meshList[GEO_PLAYER_BODY], true);
-    modelStack.PopMatrix();
-
-    //head
-    modelStack.PushMatrix();
-    modelStack.Translate(0.f, 1.4f, 0.f);
-    modelStack.Scale(1.f, 0.8f, 0.8f);
-    RenderMesh(meshList[GEO_PLAYER_HEAD], true);
-    modelStack.PopMatrix();
-
-    //right leg
-    modelStack.PushMatrix();
-    modelStack.Translate(0.4f, -1.5f, 0.f);
-	modelStack.Scale(0.6f, 1.5f, 0.5f);
-	RenderMesh(meshList[GEO_PLAYER_LEG], true);
-	modelStack.PopMatrix();
-
-    //left leg
-    modelStack.PushMatrix();
-    modelStack.Translate(-0.4f, -1.5f, 0.f);
-    modelStack.Scale(0.6f, 1.5f, 0.5f);
-    RenderMesh(meshList[GEO_PLAYER_LEG], true);
-    modelStack.PopMatrix();
-
-    //right arm
-    modelStack.PushMatrix();
-    modelStack.Translate(1.f, 0.25f, 0.f);
-
-    modelStack.PushMatrix();
-    modelStack.Scale(0.5f, 1.5f, 0.5f);
-    RenderMesh(meshList[GEO_PLAYER_UPPERARM], true);
-    modelStack.PopMatrix();
-
-    //lower arm
-    modelStack.PushMatrix();
-    modelStack.Translate(0.f, -1.f, 0.f);
-    RenderMesh(meshList[GEO_PLAYER_LOWERARM], true);
-    modelStack.PopMatrix();
-
-    modelStack.PopMatrix();
-
-    //left arm
-    modelStack.PushMatrix();
-    modelStack.Translate(-1.f, 0.25f, 0.f);
-
-    modelStack.PushMatrix();
-    modelStack.Scale(0.5f, 1.5f, 0.5f);
-    RenderMesh(meshList[GEO_PLAYER_UPPERARM], true);
-    modelStack.PopMatrix();
-
-    //lower arm
-    modelStack.PushMatrix();
-    modelStack.Translate(0.f, -1.f, 0.f);
-    RenderMesh(meshList[GEO_PLAYER_LOWERARM], true);
-    modelStack.PopMatrix();
-    
-    modelStack.PopMatrix();
-
-    modelStack.PopMatrix();
-}
-
 void SP2::RenderSignboards()
 {
     modelStack.PushMatrix();
@@ -2823,7 +2702,6 @@ void SP2::RenderSignboards()
     RenderMesh(meshList[GEO_SIGNRIGHT], false);
     modelStack.PopMatrix();
 }
-
 
 void SP2::RenderNPC()
 {
@@ -3710,6 +3588,11 @@ void SP2::RenderUI()
 	s << "DAY " << daynumber;
 	s.str();
 	RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0, 1), 3, 20, 19);
+
+    s.str("");
+    s << "Chon: " << pickupCounter;
+    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9f, 0.9f, 0), 3, 0, 12);
+    
 }
 
 void SP2::RenderMinimap()
@@ -3838,7 +3721,7 @@ void SP2::shoptemp()
 
     //name of item
     float namelength = (invmap.find(*shop.shopIterator)->second).getName().size();
-    RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(*shop.shopIterator)->second).getName(), Color(0, 0, 0), 3, 14.5f - namelength / 2.f, 13);
+    RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(*shop.shopIterator)->second).getName(), Color(0, 1, 1), 3, 14.5f - namelength / 2.f, 14);
 
     //Temmie text
     RenderDialogueOnScreen("Buy this item?", Color(1, 1, 1), 3);
@@ -3852,7 +3735,7 @@ void SP2::RotateDisplay()
         modelStack.Rotate(20,1,0,0);
         glDisable(GL_DEPTH_TEST);
         Mtx44 ortho;
-        ortho.SetToOrtho(0, 80, 0, 60, -10, 10);    //size of screen UI
+        ortho.SetToOrtho(0, 80, 0, 60, -100, 100);    //size of screen UI
         projectionStack.PushMatrix();
         projectionStack.LoadMatrix(ortho);
         viewStack.PushMatrix();
@@ -3860,7 +3743,7 @@ void SP2::RotateDisplay()
 	    modelStack.PushMatrix();
             modelStack.LoadIdentity();  //reset modelStack
             modelStack.PushMatrix();
-                modelStack.Translate(40, 30, 0);
+                modelStack.Translate(40, 30, 20);
                 modelStack.Scale(7, 7, 7);
                 modelStack.Rotate(20, 1, 0, 0);
                 modelStack.Rotate(rotating, 0, 1, 0);

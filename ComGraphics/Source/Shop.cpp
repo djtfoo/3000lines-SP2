@@ -75,6 +75,9 @@ void Shop::CheckCursor(double dt, int value)
             SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
             SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
             SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
+
+            //resetting the shop
+            shopIterator = ShopItemsID.begin();
             elapsedTime = 0;
 			SharedData::GetInstance()->player->invfulldisplay = false;
         }

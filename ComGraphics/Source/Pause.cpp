@@ -59,7 +59,7 @@ void Pause::CheckCursor(double dt)
             //resume game
             if (SharedData::GetInstance()->cursor_newypos >= b_ResumeGame.minY && SharedData::GetInstance()->cursor_newypos <= b_ResumeGame.maxY)
             {
-                SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
+                SharedData::GetInstance()->paused = false;
                 SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
                 SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
                 PauseReset();
@@ -71,7 +71,6 @@ void Pause::CheckCursor(double dt)
             {
                 SharedData::GetInstance()->programstate_change = true;
                 SharedData::GetInstance()->program_state = PROGRAM_MENU;
-                SharedData::GetInstance()->gamestate = GAME_STATE_FREE;     //reset game state
                 PauseReset();
                 elapsedTime = 0;
             }

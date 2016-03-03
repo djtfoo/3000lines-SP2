@@ -7,12 +7,12 @@
 
 DialogueProcessor::DialogueProcessor() : convostate(CONVO_INTRO), npc(0), elapsedTime(0), bufferTime(0.125)
 {
-    map<std::string, unsigned int> loveGain;
-    map<std::string, unsigned int>::iterator it;
-    loveGain.insert(std::pair<std::string, unsigned int>("Chon", 0));
-    loveGain.insert(std::pair<std::string, unsigned int>("Jasim", 0));
-    loveGain.insert(std::pair<std::string, unsigned int>("Vee", 0));
-    loveGain.insert(std::pair<std::string, unsigned int>("Wengstang", 0));
+    map<std::string, int> loveGain;
+    map<std::string, int>::iterator it;
+    loveGain.insert(std::pair<std::string, int>("Chon", 0));
+    loveGain.insert(std::pair<std::string, int>("Jasim", 0));
+    loveGain.insert(std::pair<std::string, int>("Vee", 0));
+    loveGain.insert(std::pair<std::string, int>("Wengstang", 0));
 
     int itemID = 0;
     int love = 0;
@@ -63,7 +63,7 @@ DialogueProcessor::DialogueProcessor() : convostate(CONVO_INTRO), npc(0), elapse
             it = loveGain.find("Wengstang");
             it->second = love;
 
-            giftmap.insert(std::pair<int, map<std::string, unsigned int>>(itemID, loveGain));
+            giftmap.insert(std::pair<int, map<std::string, int>>(itemID, loveGain));
         }
     }
     inData.close();
@@ -94,9 +94,9 @@ void DialogueProcessor::GiveGift(double dt)
             {
                 elapsedTime = 0;
                 int removedItemID = SharedData::GetInstance()->player->removeItem(SharedData::GetInstance()->player->invselect);
-                map<int, map<std::string, unsigned int>>::iterator it = giftmap.find(removedItemID);    //gets iterator pointing to the element of the item in question
-                map<std::string, unsigned int>::iterator it2 = it->second.find(npc->getName());     //gets iterator pointing to the element with love meter value
-                unsigned int loveGained = it2->second;
+                map<int, map<std::string, int>>::iterator it = giftmap.find(removedItemID);    //gets iterator pointing to the element of the item in question
+                map<std::string, int>::iterator it2 = it->second.find(npc->getName());     //gets iterator pointing to the element with love meter value
+                int loveGained = it2->second;
                 npc->setLoveMeter(npc->getLoveMeter() + loveGained);
                 if (loveGained > 2) {
                     convostate = CONVO_GIFTHAPPY;
@@ -106,6 +106,14 @@ void DialogueProcessor::GiveGift(double dt)
                 }
             }
         }
+    }
+}
+
+void DialogueProcessor::Compliment()
+{
+    if (npc->numberCompliments_ < 10) {     //compliments can only increase love meter up to 10 times
+        npc->setLoveMeter(npc->getLoveMeter() + 1);
+        npc->numberCompliments_ += 1;
     }
 }
 
@@ -127,6 +135,7 @@ void DialogueProcessor::CheckCursor(double dt)
             }
             else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 38.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 33.5f))) {
                 convostate = CONVO_COMPLIMENT;
+                Compliment();
                 elapsedTime = 0;
             }
             else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 45.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 40.5f))) {
@@ -145,9 +154,7 @@ void DialogueProcessor::CheckCursor(double dt)
             }
             else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 38.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 33.5f))) {
                 convostate = CONVO_COMPLIMENT;
-                if (npc->getLoveMeter() < 20) {     //compliments can only increase love meter until 20%
-                    npc->setLoveMeter(npc->getLoveMeter() + 1);
-                }
+                Compliment();
                 elapsedTime = 0;
             }
             else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 45.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 40.5f))) {
@@ -183,11 +190,9 @@ void DialogueProcessor::CheckCursor(double dt)
             if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
                 if (npc->getName() == "Chon") {
                     SharedData::GetInstance()->gamestate = GAME_STATE_CHONGAME;
-                    SharedData::GetInstance()->chonGamebool = true;
                 }
                 else if (npc->getName() == "Vee") {
                     SharedData::GetInstance()->gamestate = GAME_STATE_VEEGAME;
-                    SharedData::GetInstance()->veegamebool = true;
                 }
                 else if (npc->getName() == "Jasim") {
                     SharedData::GetInstance()->gamestate = GAME_STATE_JASIMGAME;
@@ -198,7 +203,6 @@ void DialogueProcessor::CheckCursor(double dt)
 					if (SharedData::GetInstance()->weedcounter != 0)    //weeds must reset
 					{
 						SharedData::GetInstance()->gamestate = GAME_STATE_WSGAME;
-						SharedData::GetInstance()->weedGamebool = true;
 					}
                 }
                 else {  //temp default
@@ -209,10 +213,11 @@ void DialogueProcessor::CheckCursor(double dt)
             break;
         }
 
+        if (SharedData::GetInstance()->gamestate != GAME_STATE_DIALOGUE) {
+            SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
+            SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
+        }
+
     }
 
-    if (SharedData::GetInstance()->gamestate == GAME_STATE_FREE) {
-        SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
-        SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
-    }
 }

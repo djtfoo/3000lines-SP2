@@ -26,6 +26,7 @@ public:
     //Dem Gamestates
     GAME_STATE gamestate;
     LOCATION location;
+    bool paused;
 
     Player *player;
     Enemy *enemy;
@@ -53,9 +54,6 @@ public:
     bool shitintoilet;
     float floodlevel;
     char interactbutton;    //changes for toilet game only
-    bool chonGamebool;
-	bool veegamebool;
-	bool weedGamebool;
     int firstball;
     bool ballpickup;    //chon ballgame
 
@@ -93,7 +91,7 @@ private:
         player = new Player("Player");
         enemy = new Enemy();
         camera = new Camera3();
-        camera->Init(Vector3(0, 25, 0), Vector3(0, 25, 1), Vector3(0, 1, 0));
+        camera->Init(Vector3(0, 25, 0), Vector3(1, 25, 0), Vector3(0, 1, 0));
 
         //NPCs
         NPC* npc = new NPC("Chon", Vector3(412, 20, -459), "ChonDialogue.txt");
@@ -110,6 +108,7 @@ private:
         //states
         gamestate = GAME_STATE_FREE;
         location = OUTSIDE;
+        paused = false;
         gateopen = false;
 
         //cursor for main menu
@@ -123,7 +122,6 @@ private:
         switchCount = 0;
         switch1 = switch2 = switch3 = switch4 = false;
         switchFlip = false;
-		veegamebool = false;
 
         //toilet
         shitintoilet = false;
@@ -131,11 +129,9 @@ private:
         interactbutton = 'E';
         
         //Chon mini-game (lab)
-        chonGamebool = false;
         ballpickup = false;     //chon ballgame
 
 		//weed mini-game
-		weedGamebool = false;
 		pointscounter = 0;
 		weedcounter = 10;
 		

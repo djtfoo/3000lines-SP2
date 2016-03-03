@@ -88,6 +88,8 @@ private:
     int loveMeter_;
 
 public:
+    int numberCompliments_;
+
     NPC(std::string name, const Vector3& pos, std::string textDirectory);
     virtual ~NPC();
     int getLoveMeter();
@@ -95,6 +97,7 @@ public:
     map<CONVO_STATE, std::string> dialogues;    //map for dialogues
     std::string Speech();
 };
+
 class Enemy : public Character
 {
 private:

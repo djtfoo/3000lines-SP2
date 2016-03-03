@@ -361,10 +361,10 @@ void Player::setGold(int moneh)
 void Player::changeGold(int change)
 {
     if (gold_ + change <= 0) {
-        gold_ = 0;
+        setGold(0);
     }
     else {
-        gold_ += change;
+        setGold(gold_ + change);
     }
 }
 
@@ -508,7 +508,7 @@ void Player::takeDamage()
 {
     health_ -= 5;
 }
-NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0), loveMeter_(0)
+NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0), loveMeter_(0), numberCompliments_(0)
 {
     //initialise map with the text files
     std::string dialogue;

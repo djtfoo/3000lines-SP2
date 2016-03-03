@@ -184,11 +184,6 @@ class SP2 : public Scene
 		GEO_WEEDICON,
 		GEO_FARMPLANT,
 
-		GEO_PIPETYPE1,
-		GEO_PIPETYPE2,
-		GEO_PIPETYPE3,
-		GEO_PIPETYPE4,
-
         //UI stuff
         GEO_CROSSHAIRS,
 		GEO_INVENTORY,
@@ -316,7 +311,6 @@ public:
     
     void RenderSkybox();
     void RenderGround();
-    void RenderPlayer();
 	void RenderPuzzle();
     void stemmieShop();
 	void RenderRoom();
@@ -400,7 +394,7 @@ public:
     
     //Chon game variables
     bool ball[5];   
-    /*0 = yellow, 
+    /*0 = yellow,
     1 = black, 
     2 = white, 
     3 = blue, 

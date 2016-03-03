@@ -30,20 +30,6 @@ void GateInteraction::DoInteraction()
     }
 }
 
-
-//pipe puzzle interaction (rotation)
-PipePuzzleInteraction::PipePuzzleInteraction() : Interaction(true)
-{
-}
-
-PipePuzzleInteraction::~PipePuzzleInteraction()
-{
-}
-
-void PipePuzzleInteraction::DoInteraction()
-{
-}
-
 //Dialogue Interaction class
 Dialogue::Dialogue() : Interaction(true)
 {
@@ -97,8 +83,6 @@ void ShopInteraction::DoInteraction()
     SharedData::GetInstance()->cursor_newxpos = 400;
     SharedData::GetInstance()->cursor_newypos = 400;
 }
-
-
 
 //flush away~! (get rid of manure)
 ManureInteraction::ManureInteraction() : Interaction(true)
@@ -154,20 +138,6 @@ void ManureInteraction::DoInteraction()
     }
 }
 
-//Lab Game. ChOncHon time
-ChonGame::ChonGame() :Interaction(true)
-{
-}
-
-ChonGame::~ChonGame()
-{
-}
-
-void ChonGame::DoInteraction()
-{
-    SharedData::GetInstance()->chonGamebool = true;
-}
-
 chonBallInteraction::chonBallInteraction() : Interaction(true)
 {
 }
@@ -202,6 +172,7 @@ void SpaghettoInteraction::DoInteraction()
 	SharedData::GetInstance()->interactionItems[SharedData::GetInstance()->interactnumber] = remover;
 	SharedData::GetInstance()->player->addItem(4);
 }
+
 VeePuzzleSwitchOneInteraction::VeePuzzleSwitchOneInteraction() : Interaction(true)
 {
 }
@@ -230,6 +201,7 @@ void VeePuzzleSwitchTwoInteraction::DoInteraction()
     if (SharedData::GetInstance()->two > 6)
         SharedData::GetInstance()->two = 1;
 }
+
 VeePuzzleSwitchThreeInteraction::VeePuzzleSwitchThreeInteraction() : Interaction(true)
 {
 }
@@ -244,6 +216,7 @@ void VeePuzzleSwitchThreeInteraction::DoInteraction()
     if (SharedData::GetInstance()->three > 6)
         SharedData::GetInstance()->three = 1;
 }
+
 VeePuzzleSwitchFourInteraction::VeePuzzleSwitchFourInteraction() : Interaction(true)
 {
 }
@@ -321,7 +294,6 @@ void WeedInteraction::DoInteraction()
 				SharedData::GetInstance()->player->changeGold(10 * SharedData::GetInstance()->pointscounter);
                 SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + SharedData::GetInstance()->pointscounter / 2);
 				SharedData::GetInstance()->pointscounter = 0;
-				SharedData::GetInstance()->weedGamebool = false;
 			}
 		}
 	}
