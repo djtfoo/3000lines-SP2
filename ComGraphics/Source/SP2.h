@@ -144,6 +144,8 @@ class SP2 : public Scene
         GEO_SIGNCOMP1,
         GEO_SIGNCOMP2,
         GEO_SIGNCOMP3,
+        GEO_SIGNEASTER,
+
         //shop displays
         GEO_COOKBOOK,
         GEO_ANIPOSTER,
@@ -519,6 +521,8 @@ public:
     int postercounter;
     void compactMovement(bool first, bool second, bool third, int i);
     chonBallInteraction ballbounds[5];
+
+    void ChonGameUpdate();
 
     Shop shop;
     Pause pause;

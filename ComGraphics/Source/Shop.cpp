@@ -48,7 +48,7 @@ Shop::~Shop()
     Gold Value of an Item from Shop.
 */
 /******************************************************************************/
-void Shop::CheckCursor(double dt, int value)
+void Shop::CheckCursor(double dt, unsigned int value)
 {
     elapsedTime += dt;
 

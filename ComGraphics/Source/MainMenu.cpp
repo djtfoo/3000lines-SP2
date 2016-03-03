@@ -69,18 +69,18 @@ MainMenu::MainMenu()
     meshList[GEO_LOADBTM] = MeshBuilder::GenerateQuad("load_btm", Color(1, 1, 1), 80, 70);
     meshList[GEO_LOADBTM]->textureID = LoadTGA("Image/Text/loadBtm.tga");
 
-    meshList[GEO_BUTTON] = MeshBuilder::GenerateQuad("menu_btn", Color(0, 0.7, 1), 14, 5);
+    meshList[GEO_BUTTON] = MeshBuilder::GenerateQuad("menu_btn", Color(0, 0.7f, 1), 14, 5);
     meshList[GEO_BUTTON]->textureID = LoadTGA("Image/Text/dialogue box.tga");
-    meshList[GEO_BUTTONHOVER] = MeshBuilder::GenerateQuad("menu_btnhover", Color(0, 0.2, 1), 18, 5);
+    meshList[GEO_BUTTONHOVER] = MeshBuilder::GenerateQuad("menu_btnhover", Color(0, 0.2f, 1), 18, 5);
     meshList[GEO_BUTTONHOVER]->textureID = LoadTGA("Image/Text/dialogue box.tga");
     meshList[GEO_BUTTONSELECTED] = MeshBuilder::GenerateQuad("menu_btnselect", Color(1, 1, 1), 16, 4);
     meshList[GEO_BUTTONSELECTED]->textureID = LoadTGA("Image/Text/dialogue box.tga");
 
-    meshList[GEO_BUTTONRED] = MeshBuilder::GenerateQuad("menu_exit", Color(1, 0.2, 0), 14, 5);
-    meshList[GEO_BUTTONREDHOVER] = MeshBuilder::GenerateQuad("menu_exithover", Color(1, 0.2, 0), 18, 5);
+    meshList[GEO_BUTTONRED] = MeshBuilder::GenerateQuad("menu_exit", Color(1, 0.2f, 0), 14, 5);
+    meshList[GEO_BUTTONREDHOVER] = MeshBuilder::GenerateQuad("menu_exithover", Color(1, 0.2f, 0), 18, 5);
 
-    meshList[GEO_PLAYBUTTON] = MeshBuilder::GenerateQuad("play_btn", Color(0, 1, 0.5), 14, 14);
-    meshList[GEO_PLAYBUTTONHOVER] = MeshBuilder::GenerateQuad("play_btnhover", Color(0, 0.8, 0), 14, 14);
+    meshList[GEO_PLAYBUTTON] = MeshBuilder::GenerateQuad("play_btn", Color(0, 1, 0.5f), 14, 14);
+    meshList[GEO_PLAYBUTTONHOVER] = MeshBuilder::GenerateQuad("play_btnhover", Color(0, 0.8f, 0), 14, 14);
     meshList[GEO_PLAYBUTTONSELECTED] = MeshBuilder::GenerateQuad("play_btnselect", Color(1, 1, 1), 14, 14);
     //meshList[GEO_BUTTON]->textureID = LoadTGA("Image/Text/dialogue box.tga");
 
@@ -415,8 +415,8 @@ void MainMenu::ButtonUpdater(double dt)
     {
         if (btncheck == 1)
         {
-            loadDown -= 30 * dt;
-            loadUp += 30 * dt;
+            loadDown -= (float)(30 * dt);
+            loadUp += (float)(30 * dt);
 
             if (loadDown <= 30 || loadUp >= 30)
             {
@@ -428,19 +428,19 @@ void MainMenu::ButtonUpdater(double dt)
 
         if (btncheck == 3)
         {
-            helpBtnspd += (80 * dt);
+            helpBtnspd += (float)(80 * dt);
             optBtnspd = 0;
             credBtnspd = 0;
         }
         else if (btncheck == 4)
         {
-            optBtnspd += (80 * dt);
+            optBtnspd += (float)(80 * dt);
             helpBtnspd = 0;
             credBtnspd = 0;
         }
         else if (btncheck == 5)
         {
-            credBtnspd += (80 * dt);
+            credBtnspd += (float)(80 * dt);
             optBtnspd = 0;
             helpBtnspd = 0;
         }
@@ -506,7 +506,7 @@ void MainMenu::Render()
 
 
     //custom mouse here! (o w o)b
-    RenderButtonsOnScreen(meshList[GEO_MOUSECUSTOM], "", Color(0, 0, 0), 1, SharedData::GetInstance()->cursor_newxpos / (SharedData::GetInstance()->width / 80), 60 - SharedData::GetInstance()->cursor_newypos / (SharedData::GetInstance()->height / 60), 1, 1);
+    RenderButtonsOnScreen(meshList[GEO_MOUSECUSTOM], "", Color(0, 0, 0), 1, (float)(SharedData::GetInstance()->cursor_newxpos / (SharedData::GetInstance()->width / 80)), (float)(60 - SharedData::GetInstance()->cursor_newypos / (SharedData::GetInstance()->height / 60)), 1, 1);
 }
 /******************************************************************************/
 /*!
@@ -740,64 +740,64 @@ void MainMenu::MainMenuPage()
         && SharedData::GetInstance()->cursor_newypos >= b_Help.minY && SharedData::GetInstance()->cursor_newypos <= b_Help.maxY) {
         if (isClicked)
         {
-            RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Help", Color(1, 1, 1), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
+            RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Help", Color(1, 1, 1), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4f);
         }
         else
         {
-            RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Help!", Color(1, 1, 1), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
+            RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Help!", Color(1, 1, 1), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4f);
         }
     }
     else
-        RenderButtonsOnScreen(meshList[GEO_BUTTON], "Help", Color(1, 1, 1), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
+        RenderButtonsOnScreen(meshList[GEO_BUTTON], "Help", Color(1, 1, 1), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4f);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //OPTION BUTTON
     if (!clicked && SharedData::GetInstance()->cursor_newxpos >= b_Options.minX && SharedData::GetInstance()->cursor_newxpos <= b_Options.maxX
         && SharedData::GetInstance()->cursor_newypos >= b_Options.minY && SharedData::GetInstance()->cursor_newypos <= b_Options.maxY) {
         if (isClicked)
         {
-            RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Options", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
+            RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Options", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2f + optBtnspd / 2, 14);
         }
         else
         {
-            RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Options!", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
+            RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Options!", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2f + optBtnspd / 2, 14);
         }
     }
     else
-        RenderButtonsOnScreen(meshList[GEO_BUTTON], "Options", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
+        RenderButtonsOnScreen(meshList[GEO_BUTTON], "Options", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2f + optBtnspd / 2, 14);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //CREDITS BUTTON
     if (!clicked && SharedData::GetInstance()->cursor_newxpos >= b_Credits.minX && SharedData::GetInstance()->cursor_newxpos <= b_Credits.maxX
         && SharedData::GetInstance()->cursor_newypos >= b_Credits.minY && SharedData::GetInstance()->cursor_newypos <= b_Credits.maxY) {
         if (isClicked)
         {
-            RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Credits", Color(1, 1, 1), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
+            RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Credits", Color(1, 1, 1), 2, 5 + credBtnspd, 22, 0.4f + credBtnspd / 2, 10.5f);
         }
         else
         {
-            RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Credits!", Color(1, 1, 1), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
+            RenderButtonsOnScreen(meshList[GEO_BUTTONHOVER], "Credits!", Color(1, 1, 1), 2, 5 + credBtnspd, 22, 0.4f + credBtnspd / 2, 10.5f);
         }
     }
     else
-        RenderButtonsOnScreen(meshList[GEO_BUTTON], "Credits", Color(1, 1, 1), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
+        RenderButtonsOnScreen(meshList[GEO_BUTTON], "Credits", Color(1, 1, 1), 2, 5 + credBtnspd, 22, 0.4f + credBtnspd / 2, 10.5f);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //EXIT BUTTON
     if (!clicked && SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
         && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY) {
         if (isClicked)
         {
-            RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(1, 1, 1), 2, 5, 12, 2.2, 5.4);
+            RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(1, 1, 1), 2, 5, 12, 2.2f, 5.4f);
         }
         else
         {
-            RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Exit", Color(1, 1, 1), 2, 5, 12, 2.2, 5.4);
+            RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Exit", Color(1, 1, 1), 2, 5, 12, 2.2f, 5.4f);
         }
     }
     else
-        RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+        RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2f, 5.4f);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    RenderTextOnScreen(meshList[GEO_TEXT], " ROMANTICA", Color(1, 0.3, 1), 6, 3, 8);
-    RenderTextOnScreen(meshList[GEO_TEXT], " ROOM", Color(1, 0.3, 1), 4, 8, 11);
+    RenderTextOnScreen(meshList[GEO_TEXT], " ROMANTICA", Color(1, 0.3f, 1), 6, 3, 8);
+    RenderTextOnScreen(meshList[GEO_TEXT], " ROOM", Color(1, 0.3f, 1), 4, 8, 11);
 
     RenderButtonsOnScreen(meshList[GEO_LOADTOP], " ", Color(1, 1, 1), 3, 40, loadDown, 2, 2);
     RenderButtonsOnScreen(meshList[GEO_LOADBTM], " ", Color(1, 1, 1), 3, 40, loadUp, 2, 2);
@@ -832,15 +832,15 @@ void MainMenu::HelpPage()
     RenderTextOnScreen(meshList[GEO_TEXT], "WASD:Move    E:Interact    Mouse:Camera", Color(1, 1, 0), 1.5, 14, 10);
     RenderTextOnScreen(meshList[GEO_TEXT], "SHIFT:Dash    Esc:Pause    Esc:Quit", Color(1, 1, 0), 1.5, 15, 8);
 
-    RenderTextOnScreen(meshList[GEO_TEXT], "Beware of the rabbit at the end...!", Color(1, 0.3, 0.3), 2, 10, 3);
+    RenderTextOnScreen(meshList[GEO_TEXT], "Beware of the rabbit at the end...!", Color(1, 0.3f, 0.3f), 2, 10, 3);
 
     if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
         && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY)
     {
-        RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Back", Color(0, 0, 0), 2, 5, 12, 0.5, 5.4);
+        RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Back", Color(0, 0, 0), 2, 5, 12, 0.5f, 5.4f);
     }
     else
-        RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Back", Color(0, 0, 0), 2, 5, 12, 0.5, 5.4);
+        RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Back", Color(0, 0, 0), 2, 5, 12, 0.5f, 5.4f);
 
 }
 /******************************************************************************/
@@ -883,10 +883,10 @@ void MainMenu::OptionsPage()
     if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
         && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY)
     {
-        RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Back", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+        RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Back", Color(0, 0, 0), 2, 5, 12, 2.2f, 5.4f);
     }
     else
-        RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Back", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+        RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Back", Color(0, 0, 0), 2, 5, 12, 2.2f, 5.4f);
 }
 /******************************************************************************/
 /*!
@@ -913,10 +913,10 @@ void MainMenu::CreditsPage()
     if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
         && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY)
     {
-        RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Back", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+        RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Back", Color(0, 0, 0), 2, 5, 12, 2.2f, 5.4f);
     }
     else
-        RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Back", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
+        RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Back", Color(0, 0, 0), 2, 5, 12, 2.2f, 5.4f);
 
 }
 /******************************************************************************/

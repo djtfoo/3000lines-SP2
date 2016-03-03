@@ -56,13 +56,13 @@ void Pause::PauseReset()
 void Pause::PauseAnimation(double dt)
 {
     if (verticalDisp1 > maxDisp1) {
-        verticalDisp1 -= 80 * dt;
+        verticalDisp1 -= (float)(80 * dt);
     }
     if (verticalDisp2 > maxDisp2) {
-        verticalDisp2 -= 80 * dt;
+        verticalDisp2 -= (float)(80 * dt);
     }
     if (verticalDisp3 > maxDisp3) {
-        verticalDisp3 -= 80 * dt;
+        verticalDisp3 -= (float)(80 * dt);
     }
 
     if (verticalDisp1 < maxDisp1) {

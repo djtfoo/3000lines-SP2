@@ -719,6 +719,9 @@ SP2::SP2()
 
     meshList[GEO_DIALOGUEOPTION] = MeshBuilder::GenerateQuad("selection button", Color(0, 0, 0), 30, 5);
 
+    meshList[GEO_SIGNEASTER] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNEASTER]->textureID = LoadTGA("Image/signboards/easterSign.tga");
+
     viewOptions = true;
 
     loadDown = -115;
@@ -1245,7 +1248,7 @@ void SP2::loadWeedGame()
 		}
 		for (int i = 10; i < 30; i++)
 		{
-            weedgame.push_back(Vector3(rand() % 140 + 865, 10 + (0.1 * i), rand() % 100 - 400));
+            weedgame.push_back(Vector3((float)(rand() % 140 + 865), (float)(10 + (0.1 * i)), (float)(rand() % 100 - 400)));
 		}
 	}
 	
@@ -1319,11 +1322,13 @@ void SP2::Update(double dt)
     
     SharedData::GetInstance()->player->CheckInteraction();
 
+    //gates - auto-open
     if (SharedData::GetInstance()->canInteract && SharedData::GetInstance()->interactnumber >= 12 && SharedData::GetInstance()->interactnumber <= 15)
     {
         SharedData::GetInstance()->interactptr->DoInteraction();
     }
 
+    //interactions
 	if (Application::IsKeyPressed(SharedData::GetInstance()->interactbutton) && SharedData::GetInstance()->canInteract && delayBuffer >= 2) 
     {
 		if (SharedData::GetInstance()->interactnumber != 32)
@@ -1445,15 +1450,16 @@ void SP2::Update(double dt)
         SharedData::GetInstance()->player->position_= Vector3(5200, 25, 5000);
         SharedData::GetInstance()->camera->position = Vector3(5200, 25, 5000);
         SharedData::GetInstance()->camera->target = Vector3(5200, 25, 5001);
-        //set hunger to 0
-        //stop timer
-        //camera i think
     }
 	if (Application::IsKeyPressed('0'))
 	{
 		loadWeedGame();
 	}
 	SharedData::GetInstance()->interactnumber = 99;
+
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_CHONGAME) {
+        ChonGameUpdate();
+    }
 
     puzzleLogic();
     
@@ -1778,9 +1784,6 @@ void SP2::Render()
         RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 0, 1), 3, 5, 7.5f);
     }
 
-    //player crosshairs
-    RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
-
     switch (SharedData::GetInstance()->gamestate)
     {
     case GAME_STATE_FREE:
@@ -1801,8 +1804,8 @@ void SP2::Render()
         RenderBullets();
         RenderPlayerHealth();
         RenderBossHealth();
-		//player crosshairs
-		RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
+        //player crosshairs
+        RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
         break;
     case GAME_STATE_DIALOGUE:
         RenderDialogueOnScreen(SharedData::GetInstance()->dialogueProcessor.npc->Speech(), Color(1, 1, 1), 3);
@@ -1875,6 +1878,9 @@ void SP2::Render()
     RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (float)(SharedData::GetInstance()->player->getHunger() / 3), 1);
     RenderTextOnScreen(meshList[GEO_TEXT], "Hunger", Color(0.5f, 1, 0.5f), 2, 11.5f, 3.7f);
 
+    //player crosshairs
+    RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
+
     if (viewOptions) {
         RenderUI();
     }
@@ -1895,12 +1901,28 @@ void SP2::Render()
         s.str("");
         s << "Weeds left: " << SharedData::GetInstance()->weedcounter;
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0.1f), 3, 0, 12);
+
+        s.str("");
+        s << "Find and pick the weeds!";
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.5f, 1), 3, 2, 10.5f);
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_CHONGAME)
     {
         std::stringstream s;
         s << "Timer: " << (int)(SharedData::GetInstance()->timeElapsed);
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6f, 1), 3, 0, 13);
+        
+        s.str("");
+        if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2) {
+            s << "Chase the yellow ball!";
+        }
+        else if (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4) {
+            s << "Chase the blue ball!";
+        }
+        else if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6) {
+            s << "Chase the red ball!";
+        }
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.5f, 1), 3, 2, 10.5f);
 
         s.str("");
         s << "Counter: " << pickupCounter;
@@ -1911,12 +1933,20 @@ void SP2::Render()
         std::stringstream s;
         s << "No. of tries: " << SharedData::GetInstance()->switchCount;
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6f, 1), 3, 0, 13);
+
+        s.str("");
+        s << "Find the colour combination!";
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.5f, 1), 3, 2, 10.5f);
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_JASIMGAME)
     {
         std::stringstream s;
         s << "Timer: " << (int)(SharedData::GetInstance()->timeElapsed);
         RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6f, 1), 3, 0, 13);
+
+        s.str("");
+        s << "Go to the toilet!";
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.5f, 1), 3, 2, 10.5f);
     }
 
     //game is paused
@@ -2292,8 +2322,12 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
             }
         }
 
-        if (ballyellZ == -465 && ballbluZ == -364 && ballredZ == -469) {
+        if (ballyellX <= 339 && ballbluX <= 310 && ballredX >= 483) {
             pickupCounter += 1;
+            SharedData::GetInstance()->ballDoneMoving = true;
+            for (int i = 0; i < 5; ++i) {
+                ball[i] = false;
+            }
         }
     }
 
@@ -2329,9 +2363,17 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
                 ballredZ += 1;
             }
         }
+
+        if (ballyellX <= 310 && ballbluX >= 483 && ballredX <= 339) {
+            pickupCounter += 1;
+            SharedData::GetInstance()->ballDoneMoving = true;
+            for (int i = 0; i < 5; ++i) {
+                ball[i] = false;
+            }
+        }
     }
 
-    if (third)
+    else if (third)
     {
         //yellow2 move to oriYellow(yell pos)
         if (ballyellX <= 483)
@@ -2342,8 +2384,6 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
                 ballyellZ -= 0.7f;
             }
         }
-        else 
-            SharedData::GetInstance()->ballpickup = false;
 
         //blue2 move to oriBlue(blue pos)
          if (ballbluX >= 339)
@@ -2365,6 +2405,13 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
             }
         }
         
+        if (ballyellX >= 483 && ballbluX <= 339 && ballredX <= 310) {
+            pickupCounter += 1;
+            SharedData::GetInstance()->ballDoneMoving = true;
+            for (int i = 0; i < 5; ++i) {
+                ball[i] = false;
+            }
+        }
 
     }
 
@@ -2378,19 +2425,25 @@ void SP2::ballmoveCheck()
     if (ball[0] == true)
     {
         //yellow first shift
-        if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)
+        if (pickupCounter == 0 && (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2))
         {
             compactMovement(true, false, false, 0);
         }
         //blue third shift
-        if (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
+        else if (pickupCounter == 2 && (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4))
         {
             compactMovement(false, false, true, 0);
         }
         //red second shift
-        if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
+        else if (pickupCounter == 1 && (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6))
         {
             compactMovement(false, true, false, 0);
+        }
+        else if (pickupCounter == 3 && (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)) {  //game ends here
+            SharedData::GetInstance()->ballgameComplete = true;
+        }
+        else {  //wrong ball selected
+            SharedData::GetInstance()->ballDoneMoving = true;
         }
     }
     else if (ball[1] == true)
@@ -2401,7 +2454,6 @@ void SP2::ballmoveCheck()
             ballblacky = 15;
             ball[1] = false;
             SharedData::GetInstance()->ballpickup = false;
-
 
             if (postercounter == 0)
                 postercounter = 1;
@@ -2422,7 +2474,6 @@ void SP2::ballmoveCheck()
             ball[2] = false;
             SharedData::GetInstance()->ballpickup = false;
 
-
             if (postercounter == 1)
                 postercounter = 2;
             else if (postercounter == 3)
@@ -2436,70 +2487,80 @@ void SP2::ballmoveCheck()
     else if (ball[3] == true)
     {
         //yellow second shift
-        if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)
+        if (pickupCounter == 1 && (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2))
         {
             compactMovement(false, true, false, 3);
         }
         //blue first shift
-        if (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
+        else if (pickupCounter == 0 && (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4))
         {
             compactMovement(true, false, false, 3);
         }
-        //red last shift
-        if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
+        //red third shift
+        else if (pickupCounter == 2 && (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6))
         {
             compactMovement(false, false, true, 3);
+        }
+        else if (pickupCounter == 3 && (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)) {  //game ends here
+            SharedData::GetInstance()->ballgameComplete = true;
+        }
+        else {  //wrong ball selected
+            SharedData::GetInstance()->ballDoneMoving = true;
         }
     }
     else if (ball[4] == true)
     {
         //yellow third shift
-        if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)
+        if (pickupCounter == 2 && (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2))
         {
             compactMovement(false, false, true, 4);
         }
         //blue second shift
-        if (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
+        else if (pickupCounter == 1 && (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4))
         {
             compactMovement(false, true, false, 4);
         }
         //red first shift
-        if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
+        else if (pickupCounter == 0 && (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6))
         {
             compactMovement(true, false, false, 4);
         }
+        else if (pickupCounter == 3 && (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)) {  //game ends here
+            SharedData::GetInstance()->ballgameComplete = true;
+        }
+        else {  //wrong ball selected
+            SharedData::GetInstance()->ballDoneMoving = true;
+        }
     }
 
-
-    
 }
 
 void SP2::ballboundfunct()
 {
     Interaction* ballinteraction;
     //check sp2.h for arraylist of colors
-    ballinteraction = new chonBallInteraction();   //ball 0 (1)
+    ballinteraction = new chonBallInteraction();   //ball 0
     ballinteraction->bound1.Set(480, 15, -469); ballinteraction->bound2.Set(485, 20, -460);
     SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
     ballbounds[0].bound1 = ballinteraction->bound1;     ballbounds[0].bound2 = ballinteraction->bound2;
 
-    ballinteraction = new chonBallInteraction();   //ball 1 (2)
+    ballinteraction = new chonBallInteraction();   //ball 1
     ballinteraction->bound1.Set(405, 15, -400); ballinteraction->bound2.Set(410, 20, -390);
     SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
     ballbounds[1].bound1 = ballinteraction->bound1;    ballbounds[1].bound2 = ballinteraction->bound2;
 
-    ballinteraction = new chonBallInteraction();   //ball 2 (3)
+    ballinteraction = new chonBallInteraction();   //ball 2
     ballinteraction->bound1.Set(420, 15, -385); ballinteraction->bound2.Set(427, 20, -375);
     SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
     ballbounds[2].bound1 = ballinteraction->bound1;    ballbounds[2].bound2 = ballinteraction->bound2;
 
-    ballinteraction = new chonBallInteraction();   //ball 3 (4)
+    ballinteraction = new chonBallInteraction();   //ball 3
     ballinteraction->bound1.Set(334, 15, -469); ballinteraction->bound2.Set(343, 20, -460);
     SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
     ballbounds[3].bound1 = ballinteraction->bound1;    ballbounds[3].bound2 = ballinteraction->bound2;
 
-    ballinteraction = new chonBallInteraction();   //ball 4 (5)
-    ballinteraction->bound1.Set(300, 15, -367); ballinteraction->bound2.Set(309, 20, -360);
+    ballinteraction = new chonBallInteraction();   //ball 4
+    ballinteraction->bound1.Set(315, 15, -367); ballinteraction->bound2.Set(325, 20, -360);
     SharedData::GetInstance()->interactionItems.push_back(ballinteraction);
     ballbounds[4].bound1 = ballinteraction->bound1;    ballbounds[4].bound2 = ballinteraction->bound2;
 
@@ -2636,7 +2697,6 @@ void SP2::RenderObjectOnScreen(Mesh* mesh, float x, float y, float scalex, float
     viewStack.LoadIdentity();   //no need camera for ortho mode
     modelStack.PushMatrix();
     modelStack.LoadIdentity();  //reset modelStack
-
     
     modelStack.PushMatrix();
     modelStack.Translate(x, y, 0);
@@ -2805,6 +2865,12 @@ void SP2::RenderGround()
 void SP2::RenderSignboards()
 {
     modelStack.PushMatrix();
+    modelStack.Translate(431, 58, -298);
+    modelStack.Scale(100, 130, 50);
+    RenderMesh(meshList[GEO_SIGNEASTER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
     modelStack.Translate(460, 45, -243);
     modelStack.Scale(30, 30, 30);
     modelStack.Rotate(90, 0, 1, 0);
@@ -2870,8 +2936,6 @@ void SP2::RenderSignboards()
     RenderMesh(meshList[GEO_SIGNROOM3], false);
     modelStack.PopMatrix();
 }
-
-
 
 void SP2::chonSecret()
 {
@@ -3188,11 +3252,6 @@ void SP2::RenderUI()
     s.str("");
     s << "Gold: " << SharedData::GetInstance()->player->getGold();
     RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.7f, 0.7f, 0), 3, 0, 15);
-    
-    //state
-    s.str("");
-    s << "State: " << SharedData::GetInstance()->gamestate;
-    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9f, 0.9f, 0), 3, 0, 14);
 
 	//time
 	s.str("");
@@ -3363,7 +3422,7 @@ void SP2::CheckCharacterLocation()
     else if (playerPos.x >= 442 && playerPos.x <= 478 && playerPos.z >= -335 && playerPos.z <= -245) {
         SharedData::GetInstance()->location = CORRIDOR;     //corridor to laboratory
     }
-    else if (playerPos.x >= 538 && playerPos.x <= 618 && playerPos.z >= 275 && playerPos.z <= 382) {
+    else if (playerPos.x >= 538 && playerPos.x <= 618 && playerPos.z >= 275 && playerPos.z <= 385) {
         SharedData::GetInstance()->location = CORRIDOR;     //corridor to control room
     }
     else if (playerPos.x >= 770 && playerPos.x <= 820 && playerPos.z >= -345 && playerPos.z <= -245) {
@@ -3684,7 +3743,7 @@ void SP2::Sleep(double dt)
     Application::IsKeyPressed('D');
 
     if (SharedData::GetInstance()->sleep) {
-        SharedData::GetInstance()->daynighttime += 200 * dt;
+        SharedData::GetInstance()->daynighttime += (float)(200 * dt);
         sleepTime += 100 * dt;
         if (sleepTime > 400) {      //sleep for 4 hours
             SharedData::GetInstance()->sleep = false;
@@ -3822,39 +3881,39 @@ void SP2::RenderRoom2()
     modelStack.Rotate(270, 0, 1, 0);
     RenderMesh(meshList[GEO_LABCOUNTER_CORNER], true);  //btm right corner
     modelStack.PushMatrix();
-    modelStack.Translate(-2, 0.9, 0);
-    modelStack.Scale(0.3, 0.3, 0.3);
+    modelStack.Translate(-2, 0.9f, 0);
+    modelStack.Scale(0.3f, 0.3f, 0.3f);
     //modelStack.Rotate(270, 0, 1, 0);
     RenderMesh(meshList[GEO_BOXCRATE], true);
     modelStack.PopMatrix();
     modelStack.PushMatrix();
-    modelStack.Translate(0.744, 1.2, 0.2);
-    modelStack.Scale(0.6, 1, 1);
+    modelStack.Translate(0.744f, 1.2f, 0.2f);
+    modelStack.Scale(0.6f, 1, 1);
     modelStack.Rotate(-90, 0, 1, 0);
     RenderMesh(meshList[GEO_SIGNCOMP3], false);
     modelStack.PushMatrix();
-    modelStack.Translate(-0.5, -0.2, 0.5);
+    modelStack.Translate(-0.5f, -0.2f, 0.5f);
     modelStack.Scale(1, 1, 1);
     modelStack.Rotate(-90, 1, 0, 0);
     RenderMesh(meshList[GEO_KEYBOARD], false);
     modelStack.PopMatrix();
     modelStack.PopMatrix();
     modelStack.PushMatrix();
-    modelStack.Translate(1.4, 1.2, -0.15);
-    modelStack.Scale(0.6, 1, 0.6);
+    modelStack.Translate(1.4f, 1.2f, -0.15f);
+    modelStack.Scale(0.6f, 1, 0.6f);
     modelStack.Rotate(-40, 0, 1, 0);
     RenderMesh(meshList[GEO_SIGNCOMP2], false);
     modelStack.PopMatrix();
     modelStack.PushMatrix();
-    modelStack.Translate(0.076, 1.2, -0.13);
-    modelStack.Scale(0.6, 1, 0.6);
+    modelStack.Translate(0.076f, 1.2f, -0.13f);
+    modelStack.Scale(0.6f, 1, 0.6f);
     modelStack.Rotate(-130, 0, 1, 0);
     RenderMesh(meshList[GEO_SIGNCOMP1], false);
     modelStack.PopMatrix();
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(433, 1.9, 58);
+    modelStack.Translate(433, 1.9f, 58);
     modelStack.Scale(40, 40, 40);
     //modelStack.Rotate(90, 0, 1, 0);
     RenderMesh(meshList[GEO_JAGCUPBOARDS], true);
@@ -4402,29 +4461,6 @@ void SP2::RenderToilet()
 
 void SP2::RenderChonGame()
 {
-    //Chon's Lab Balls
-    if (SharedData::GetInstance()->ballpickup)
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            if (SharedData::GetInstance()->interactptr->bound1 == ballbounds[i].bound1 && SharedData::GetInstance()->interactptr->bound2 == ballbounds[i].bound2)
-            {
-                ball[i] = true;
-            }
-            else
-                ball[i] = false;
-        }
-    }
-
-    //game complete
-    if (pickupCounter == 3)
-    {
-        lightpuzz.generatePuzzle();     //to re-generate Chon's mini-game
-        //pickupCounter = 0;
-    }
-
-    ballmoveCheck();
-
     compactBallrender();    //yellow, black, white, blue, red
 }
 
@@ -4462,4 +4498,47 @@ void SP2::RenderInShop()
     }
     RenderTextOnScreen(meshList[GEO_TEXT], "Bye", Color(1, 1, 1), 2, 32, 10.5f);
     RenderCursor();
+}
+
+void SP2::ChonGameUpdate()
+{
+    if (SharedData::GetInstance()->ballpickup && SharedData::GetInstance()->ballDoneMoving)
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            if (SharedData::GetInstance()->interactptr->bound1 == ballbounds[i].bound1 && SharedData::GetInstance()->interactptr->bound2 == ballbounds[i].bound2)
+            {
+                ball[i] = true;
+                SharedData::GetInstance()->ballDoneMoving = false;
+                SharedData::GetInstance()->ballpickup = false;
+            }
+            else
+                ball[i] = false;
+        }
+    }
+
+    ballmoveCheck();
+
+    if (SharedData::GetInstance()->ballgameComplete) {     //game is completed
+        SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
+        SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_FINISHMINIGAME;
+        //gain gold and love meter based on timer
+        int gained = 40 - (int)(SharedData::GetInstance()->timeElapsed);
+        if (gained < 0) {
+            gained = 0;
+        }
+        SharedData::GetInstance()->player->changeGold(4 * gained);
+        SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + (gained / 3));
+
+        //reset Chon's mini-game
+        lightpuzz.generatePuzzle();     //to re-generate Chon's mini-game
+        pickupCounter = 0;
+        SharedData::GetInstance()->timeElapsed = 0;
+        SharedData::GetInstance()->ballDoneMoving = true;
+        SharedData::GetInstance()->ballpickup = false;
+        SharedData::GetInstance()->ballgameComplete = false;
+        for (int i = 0; i < 5; ++i) {
+            ball[i] = false;
+        }
+    }
 }

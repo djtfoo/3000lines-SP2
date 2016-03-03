@@ -214,7 +214,7 @@ void ManureInteraction::DoInteraction()
             SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_FINISHMINIGAME;
             
             //gain gold and love meter based on timer
-            int gained = 50 - SharedData::GetInstance()->timeElapsed;
+            int gained = 50 - (int)(SharedData::GetInstance()->timeElapsed);
             if (gained < 0) {
                 gained = 0;
             }

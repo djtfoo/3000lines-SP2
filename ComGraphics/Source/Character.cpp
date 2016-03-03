@@ -117,8 +117,8 @@ void Player::Walk(double dt)
         view.y = 0;
         view = view.Normalized();
 
-        newX = SharedData::GetInstance()->camera->target.x + view.x * dt * WALKSPEED;
-        newZ = SharedData::GetInstance()->camera->target.z + view.z * dt * WALKSPEED;
+        newX = (float)(SharedData::GetInstance()->camera->target.x + view.x * dt * WALKSPEED);
+        newZ = (float)(SharedData::GetInstance()->camera->target.z + view.z * dt * WALKSPEED);
 
         CheckCollision(newX, newZ, xMovement, zMovement);
 
@@ -150,8 +150,8 @@ void Player::Walk(double dt)
         view.y = 0;
         view = view.Normalized();
 
-        newX = SharedData::GetInstance()->camera->target.x - view.x * dt * WALKSPEED;
-        newZ = SharedData::GetInstance()->camera->target.z - view.z * dt * WALKSPEED;
+        newX = (float)(SharedData::GetInstance()->camera->target.x - view.x * dt * WALKSPEED);
+        newZ = (float)(SharedData::GetInstance()->camera->target.z - view.z * dt * WALKSPEED);
 
         CheckCollision(newX, newZ, xMovement, zMovement);
 
@@ -179,8 +179,8 @@ void Player::Walk(double dt)
         right.y = 0;
         right.Normalize();
 
-        newX = SharedData::GetInstance()->camera->target.x - right.x * dt * WALKSPEED;
-        newZ = SharedData::GetInstance()->camera->target.z - right.z * dt * WALKSPEED;
+        newX = (float)(SharedData::GetInstance()->camera->target.x - right.x * dt * WALKSPEED);
+        newZ = (float)(SharedData::GetInstance()->camera->target.z - right.z * dt * WALKSPEED);
 
         CheckCollision(newX, newZ, xMovement, zMovement);
 
@@ -208,8 +208,8 @@ void Player::Walk(double dt)
         right.y = 0;
         right.Normalize();
 
-        newX = SharedData::GetInstance()->camera->target.x + right.x * dt * WALKSPEED;
-        newZ = SharedData::GetInstance()->camera->target.z + right.z * dt * WALKSPEED;
+        newX = (float)(SharedData::GetInstance()->camera->target.x + right.x * dt * WALKSPEED);
+        newZ = (float)(SharedData::GetInstance()->camera->target.z + right.z * dt * WALKSPEED);
 
         CheckCollision(newX, newZ, xMovement, zMovement);
 

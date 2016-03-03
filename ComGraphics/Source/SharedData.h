@@ -80,10 +80,13 @@ public:
     bool gateopen;
     char interactbutton;    //changes for toilet game only
     int firstball;
+    bool ballDoneMoving;
     bool ballpickup;    //chon ballgame
+    bool ballgameComplete;
 
     //Puzzle Interaction
-    float one, two, three, four, switchCount;
+    float one, two, three, four;
+    int switchCount;
     bool switch1, switch2, switch3, switch4;
     bool switchFlip;
 
@@ -173,6 +176,7 @@ private:
         
         //Chon mini-game (lab)
         ballpickup = false;     //chon ballgame
+        ballgameComplete = false;
 
 		//weed mini-game
 		pointscounter = 0;
@@ -182,6 +186,7 @@ private:
         sleep = false;
 
         firstball = 0;
+        ballDoneMoving = true;
     }
     ~SharedData() {
         engine->drop();     //delete irrKlang engine

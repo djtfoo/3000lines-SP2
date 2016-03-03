@@ -36,7 +36,7 @@ public:
     ~Shop();
 
     std::vector<int>::iterator shopIterator;
-    void CheckCursor(double dt, int value);
+    void CheckCursor(double dt, unsigned int value);
 };
 
 #endif
