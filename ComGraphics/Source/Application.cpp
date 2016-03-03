@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	Application.cpp
+\author 3000 Lines Studio
+\brief
+Functions for application
+*/
+/******************************************************************************/
+
 #include "Application.h"
 
 //Include GLEW
@@ -38,10 +47,20 @@ bool Application::IsKeyPressed(unsigned short key)
     return ((GetAsyncKeyState(key) & 0x8001) != 0);
 }
 
+/******************************************************************************/
+/*!
+\brief	Application default constructor
+*/
+/******************************************************************************/
 Application::Application()
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	Application default destructor
+*/
+/******************************************************************************/
 Application::~Application()
 {
 }

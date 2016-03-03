@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	SharedData.h
+\author 3000 Lines Studio
+\brief
+SharedData header file
+*/
+/******************************************************************************/
+
 #include <vector>
 #include <map>
 
@@ -20,6 +29,12 @@ using std::map;
 #ifndef SHAREDDATA_H
 #define SHAREDDATA_H
 
+/******************************************************************************/
+/*!
+Class SharedData:
+\brief	Stores data to be used across all files
+*/
+/******************************************************************************/
 class SharedData
 {
 public:

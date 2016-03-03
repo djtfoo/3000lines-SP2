@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	RabbitFight.cpp
+\author 3000 Lines Studio
+\brief
+Functions for final Rabbit boss fight
+*/
+/******************************************************************************/
+
 #include "RabbitFight.h"
 //#include "SP2.h"
 //#include "GL\glew.h"
@@ -13,11 +22,21 @@
 //
 //#include "Application.h"
 
+/******************************************************************************/
+/*!
+\brief	RabbitFight default constructor
+*/
+/******************************************************************************/
 RabbitFight::RabbitFight() : bulletDamage(10), bulletSpeed(25)
 {
 
 }
 
+/******************************************************************************/
+/*!
+\brief	RabbitFight default destructor
+*/
+/******************************************************************************/
 RabbitFight::~RabbitFight()
 {
 

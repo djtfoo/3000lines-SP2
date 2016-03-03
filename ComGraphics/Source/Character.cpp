@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	Character.cpp
+\author 3000 Lines Studio
+\brief
+Functions for the character and inventory
+*/
+/******************************************************************************/
+
 #include "Character.h"
 
 #include "Application.h"
@@ -6,12 +15,22 @@
 #include <sstream>
 #include <fstream>
 
+/******************************************************************************/
+/*!
+\brief	Character default constructor
+*/
+/******************************************************************************/
 Character::Character(std::string name, Vector3 position, float 
     
     ) : name_(name), position_(position), direction_(0)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	Character default destructor
+*/
+/******************************************************************************/
 Character::~Character()
 {
 }
@@ -20,9 +39,24 @@ std::string Character::getName()
 {
     return name_;
 }
+
+/******************************************************************************/
+/*!
+\brief	Player default constructor
+*/
+/******************************************************************************/
+
 Player::Player() : Character("", Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(500), invselect(0), invfulldisplay(false), iftakeDamage(false), footstepsound(0)
 {
 }
+
+/******************************************************************************/
+/*!
+\brief	Player default constructor
+\param name
+name of player
+*/
+/******************************************************************************/
 
 Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger_(0), health_(100), gold_(500), invselect(0), invfulldisplay(false), iftakeDamage(false), footstepsound(0)
 {
@@ -32,6 +66,11 @@ Player::Player(std::string name) : Character(name, Vector3(0, 25, 0), 0), hunger
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief	Player default destructor
+*/
+/******************************************************************************/
 Player::~Player()
 {
 }
@@ -508,6 +547,18 @@ void Player::takeDamage()
 {
     health_ -= 5;
 }
+
+/******************************************************************************/
+/*!
+\brief	NPC default constructor
+\param name
+name of non-playable character
+\param pos
+position of non-playable character
+\param textDirectory
+location where dialogue is stored
+*/
+/******************************************************************************/
 NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0), loveMeter_(0), numberCompliments_(0), minigameComplete_(false)
 {
     //initialise map with the text files
@@ -543,6 +594,11 @@ NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Char
     inData.close();
 }
 
+/******************************************************************************/
+/*!
+\brief	NPC default destructor
+*/
+/******************************************************************************/
 NPC::~NPC()
 {
 }
@@ -570,15 +626,35 @@ std::string NPC::Speech()
     return it->second;
 }
 
+/******************************************************************************/
+/*!
+\brief	Enemy default constructor
+*/
+/******************************************************************************/
 Enemy::Enemy() : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(300), e_damage_(5), yaw(180.f), iftakeDamage(false)
 {
 
 }
 
+/******************************************************************************/
+/*!
+\brief	Enemy default constructor
+\param name
+name of the enemy
+\param pos
+position of enemy
+*/
+/******************************************************************************/
 Enemy::Enemy(std::string name, const Vector3& pos) : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(300), e_damage_(5), yaw(180.f)
 {
 
 }
+
+/******************************************************************************/
+/*!
+\brief	Enemy default destructor
+*/
+/******************************************************************************/
 Enemy::~Enemy()
 {
 

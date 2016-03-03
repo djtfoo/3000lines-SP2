@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	MainMenu.cpp
+\author 3000 Lines Studio
+\brief
+Main Menu scene
+*/
+/******************************************************************************/
+
 #include "MainMenu.h"
 #include "GL\glew.h"
 
@@ -11,6 +20,11 @@
 #include "Application.h"
 #include "SharedData.h"
 
+/******************************************************************************/
+/*!
+\brief	MainMenu default constructor
+*/
+/******************************************************************************/
 MainMenu::MainMenu()
 {
     glClearColor(0.f, 0.f, 0.4f, 0.0f);
@@ -92,6 +106,12 @@ MainMenu::MainMenu()
 
     clicked = isClicked = selected = false;
 }
+
+/******************************************************************************/
+/*!
+\brief	MainMenu default destructor
+*/
+/******************************************************************************/
 MainMenu::~MainMenu()
 {
 

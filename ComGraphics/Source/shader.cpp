@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	shader.cpp
+\author 3000 Lines Studio
+\brief
+Functions for shader
+*/
+/******************************************************************************/
+
 #include <stdio.h>
 #include <string>
 #include <vector>

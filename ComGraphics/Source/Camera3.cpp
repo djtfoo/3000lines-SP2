@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	Camera3.cpp
+\author 3000 Lines Studio
+\brief
+Functions for the 3D FirstPerson Camera
+*/
+/******************************************************************************/
+
 #include "Camera3.h"
 #include "MyMath.h"
 #include "Application.h"

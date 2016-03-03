@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	DialogueProcessor.cpp
+\author 3000 Lines Studio
+\brief
+Functions to display dialogue
+*/
+/******************************************************************************/
+
 #include "DialogueProcessor.h"
 #include "Application.h"
 #include "SharedData.h"
@@ -5,6 +14,11 @@
 #include <fstream>
 #include <sstream>
 
+/******************************************************************************/
+/*!
+\brief	DialogueProcessor default constructor
+*/
+/******************************************************************************/
 DialogueProcessor::DialogueProcessor() : convostate(CONVO_INTRO), npc(0), elapsedTime(0), bufferTime(0.125)
 {
     map<std::string, int> loveGain;
@@ -69,6 +83,11 @@ DialogueProcessor::DialogueProcessor() : convostate(CONVO_INTRO), npc(0), elapse
     inData.close();
 }
 
+/******************************************************************************/
+/*!
+\brief	DialogueProcessor default destructor
+*/
+/******************************************************************************/
 DialogueProcessor::~DialogueProcessor()
 {
 }

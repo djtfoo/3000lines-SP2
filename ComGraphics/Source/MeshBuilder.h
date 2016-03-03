@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	MeshBuilder.h
+\author 3000 Lines Studio
+\brief
+MeshBuilder header file
+*/
+/******************************************************************************/
+
 #ifndef MESH_BUILDER_H
 #define MESH_BUILDER_H
 

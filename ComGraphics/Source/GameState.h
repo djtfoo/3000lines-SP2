@@ -1,6 +1,21 @@
+/******************************************************************************/
+/*!
+\file	GameState.h
+\author 3000 Lines Studio
+\brief
+Gamestate header file
+*/
+/******************************************************************************/
+
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+/******************************************************************************/
+/*!
+Enum PROGRAM_STATE:
+\brief	Stores the different states for the program
+*/
+/******************************************************************************/
 enum PROGRAM_STATE
 {
     PROGRAM_MENU,
@@ -10,6 +25,12 @@ enum PROGRAM_STATE
     PROGRAM_TOTAL
 };
 
+/******************************************************************************/
+/*!
+Enum GAME_STATE:
+\brief	Stores the different states for the game
+*/
+/******************************************************************************/
 enum GAME_STATE
 {
     GAME_STATE_FREE = 0,
@@ -25,6 +46,12 @@ enum GAME_STATE
     GAME_STATE_TOTAL,
 };
 
+/******************************************************************************/
+/*!
+Enum CONVO_STATE:
+\brief	Stores the different states for the conversations
+*/
+/******************************************************************************/
 enum CONVO_STATE
 {
     CONVO_INTRO,    //0
@@ -39,6 +66,12 @@ enum CONVO_STATE
     CONVO_TOTAL
 };
 
+/******************************************************************************/
+/*!
+Enum LOCATION:
+\brief	Stores the different locations
+*/
+/******************************************************************************/
 enum LOCATION
 {
     OUTSIDE,    //0

@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	LightPuzzle.cpp
+\author 3000 Lines Studio
+\brief
+Logic for light puzzle
+*/
+/******************************************************************************/
+
 #include "LightPuzzle.h"
 #include "SharedData.h"
 #include <iostream>
@@ -5,6 +14,11 @@
 using std::cout;
 using std::endl;
 
+/******************************************************************************/
+/*!
+\brief	LightPuzzle default constructor
+*/
+/******************************************************************************/
 LightPuzzle::LightPuzzle() : checker(0)
 {
     one = two = three = four = false;
@@ -13,6 +27,12 @@ LightPuzzle::LightPuzzle() : checker(0)
         puzzleSize[i] = 0.f;
     }
 }
+
+/******************************************************************************/
+/*!
+\brief	LightPuzzle default destructor
+*/
+/******************************************************************************/
 LightPuzzle::~LightPuzzle()
 {
     

@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	LoadOBJ.cpp
+\author 3000 Lines Studio
+\brief
+Functions to load OBJ model files
+*/
+/******************************************************************************/
+
 #include <iostream>
 #include <fstream>
 #include <map>

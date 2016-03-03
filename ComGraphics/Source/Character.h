@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	Character.h
+\author 3000 Lines Studio
+\brief
+Character header file
+*/
+/******************************************************************************/
+
 #include "Vector3.h"
 #include "Item.h"
 #include "GameState.h"
@@ -10,6 +19,12 @@ using std::map;
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
+/******************************************************************************/
+/*!
+Class Character:
+\brief	Contains information for characters
+*/
+/******************************************************************************/
 class Character
 {
 private:
@@ -27,6 +42,12 @@ public:
     float direction_;
 };
 
+/******************************************************************************/
+/*!
+Class Player:
+\brief	Contains information for player
+*/
+/******************************************************************************/
 class Player : public Character
 {
 private:
@@ -76,6 +97,12 @@ public:
     void takeDamage();
 };
 
+/******************************************************************************/
+/*!
+Class NPC:
+\brief	Contains information for Non-playing characters
+*/
+/******************************************************************************/
 class NPC : public Character
 {
 private:
@@ -93,6 +120,12 @@ public:
     std::string Speech();
 };
 
+/******************************************************************************/
+/*!
+Class Enemy:
+\brief	Contains information for enemy
+*/
+/******************************************************************************/
 class Enemy : public Character
 {
 private:

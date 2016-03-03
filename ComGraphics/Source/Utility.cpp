@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	Utility.cpp
+\author 3000 Lines Studio
+\brief
+Functions for Utility
+*/
+/******************************************************************************/
+
 #include "Utility.h"
 
 Position operator*(const Mtx44& lhs, const Position& rhs)

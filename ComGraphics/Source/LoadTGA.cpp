@@ -1,3 +1,11 @@
+/******************************************************************************/
+/*!
+\file	LoadTGA.cpp
+\author 3000 Lines Studio
+\brief
+Functions to load TGA texture files
+*/
+/******************************************************************************/
 
 #include <iostream>
 #include <fstream>

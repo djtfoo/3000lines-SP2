@@ -1,19 +1,51 @@
+/******************************************************************************/
+/*!
+\file	Interaction.cpp
+\author 3000 Lines Studio
+\brief
+Functions to check interactions
+*/
+/******************************************************************************/
+
 #include "Interaction.h"
 #include "SharedData.h"
 
 //abstract class of interaction
+/******************************************************************************/
+/*!
+\brief	Interaction default constructor
+\param pressbutton
+check if button is pressed
+*/
+/******************************************************************************/
 Interaction::Interaction(bool pressbutton) : pressButton(pressbutton)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	Interaction default destructor
+*/
+/******************************************************************************/
 Interaction::~Interaction()
 {
 }
 
 //Gate interaction open/close
+/******************************************************************************/
+/*!
+\brief	GateInteraction default constructor
+*/
+/******************************************************************************/
 GateInteraction::GateInteraction() : Interaction(false)
 {
 }
+
+/******************************************************************************/
+/*!
+\brief	GateInteraction default destructor
+*/
+/******************************************************************************/
 GateInteraction::~GateInteraction()
 {
 }
@@ -31,10 +63,20 @@ void GateInteraction::DoInteraction()
 }
 
 //Dialogue Interaction class
+/******************************************************************************/
+/*!
+\brief	Dialogue default constructor
+*/
+/******************************************************************************/
 Dialogue::Dialogue() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	Dialogue default destructor
+*/
+/******************************************************************************/
 Dialogue::~Dialogue()
 {
 }
@@ -71,10 +113,20 @@ void Dialogue::DoInteraction()
 }
 
 //shop interaction (enter shop state)
+/******************************************************************************/
+/*!
+\brief	ShopInteraction default constructor
+*/
+/******************************************************************************/
 ShopInteraction::ShopInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	ShopInteraction default destructor
+*/
+/******************************************************************************/
 ShopInteraction::~ShopInteraction()
 {
 }
@@ -91,10 +143,20 @@ void ShopInteraction::DoInteraction()
 }
 
 //flush away~! (get rid of manure)
+/******************************************************************************/
+/*!
+\brief	ManureInteraction default constructor
+*/
+/******************************************************************************/
 ManureInteraction::ManureInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	ManureInteraction default destructor
+*/
+/******************************************************************************/
 ManureInteraction::~ManureInteraction()
 {
 }
@@ -154,10 +216,20 @@ void ManureInteraction::DoInteraction()
     }
 }
 
+/******************************************************************************/
+/*!
+\brief	chonBallInteraction default constructor
+*/
+/******************************************************************************/
 chonBallInteraction::chonBallInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	chonBallInteraction default destructor
+*/
+/******************************************************************************/
 chonBallInteraction::~chonBallInteraction()
 {
 }
@@ -168,10 +240,20 @@ void chonBallInteraction::DoInteraction()
 }
 
 //MOM'S SPAGHETTI
+/******************************************************************************/
+/*!
+\brief	SpaghettoInteraction default constructor
+*/
+/******************************************************************************/
 SpaghettoInteraction::SpaghettoInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	SpaghettoInteraction default destructor
+*/
+/******************************************************************************/
 SpaghettoInteraction::~SpaghettoInteraction()
 {
 }
@@ -189,10 +271,20 @@ void SpaghettoInteraction::DoInteraction()
 	SharedData::GetInstance()->player->addItem(4);
 }
 
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchOneInteraction default constructor
+*/
+/******************************************************************************/
 VeePuzzleSwitchOneInteraction::VeePuzzleSwitchOneInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchOneInteraction default destructor
+*/
+/******************************************************************************/
 VeePuzzleSwitchOneInteraction::~VeePuzzleSwitchOneInteraction()
 {
 }
@@ -203,10 +295,21 @@ void VeePuzzleSwitchOneInteraction::DoInteraction()
     if (SharedData::GetInstance()->one > 6)
         SharedData::GetInstance()->one = 1;
 }
+
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchTwoInteraction default constructor
+*/
+/******************************************************************************/
 VeePuzzleSwitchTwoInteraction::VeePuzzleSwitchTwoInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchTwoInteraction default destructor
+*/
+/******************************************************************************/
 VeePuzzleSwitchTwoInteraction::~VeePuzzleSwitchTwoInteraction()
 {
 }
@@ -218,10 +321,20 @@ void VeePuzzleSwitchTwoInteraction::DoInteraction()
         SharedData::GetInstance()->two = 1;
 }
 
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchThreeInteraction default constructor
+*/
+/******************************************************************************/
 VeePuzzleSwitchThreeInteraction::VeePuzzleSwitchThreeInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchThreeInteraction default destructor
+*/
+/******************************************************************************/
 VeePuzzleSwitchThreeInteraction::~VeePuzzleSwitchThreeInteraction()
 {
 }
@@ -233,10 +346,20 @@ void VeePuzzleSwitchThreeInteraction::DoInteraction()
         SharedData::GetInstance()->three = 1;
 }
 
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchFourInteraction default constructor
+*/
+/******************************************************************************/
 VeePuzzleSwitchFourInteraction::VeePuzzleSwitchFourInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchFourInteraction default destructor
+*/
+/******************************************************************************/
 VeePuzzleSwitchFourInteraction::~VeePuzzleSwitchFourInteraction()
 {
 }
@@ -247,10 +370,21 @@ void VeePuzzleSwitchFourInteraction::DoInteraction()
     if (SharedData::GetInstance()->four > 6)
         SharedData::GetInstance()->four = 1;
 }
+
+/******************************************************************************/
+/*!
+\brief	VeePuzzleCheckerSwitchInteraction default constructor
+*/
+/******************************************************************************/
 VeePuzzleCheckerSwitchInteraction::VeePuzzleCheckerSwitchInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	VeePuzzleCheckerSwitchInteraction default destructor
+*/
+/******************************************************************************/
 VeePuzzleCheckerSwitchInteraction::~VeePuzzleCheckerSwitchInteraction()
 {
 }
@@ -262,10 +396,20 @@ void VeePuzzleCheckerSwitchInteraction::DoInteraction()
     SharedData::GetInstance()->switchCount += 1;
 }
 
+/******************************************************************************/
+/*!
+\brief	BedTime default constructor
+*/
+/******************************************************************************/
 BedTime::BedTime() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	BedTime default destructor
+*/
+/******************************************************************************/
 BedTime::~BedTime()
 {
 }
@@ -278,10 +422,20 @@ void BedTime::DoInteraction()
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief	WeedInteraction default constructor
+*/
+/******************************************************************************/
 WeedInteraction::WeedInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	WeedInteraction default destructor
+*/
+/******************************************************************************/
 WeedInteraction::~WeedInteraction()
 {
 }
@@ -316,10 +470,20 @@ void WeedInteraction::DoInteraction()
 	}
 }
 
+/******************************************************************************/
+/*!
+\brief	FarmPlantInteraction default constructor
+*/
+/******************************************************************************/
 FarmPlantInteraction::FarmPlantInteraction() : Interaction(true)
 {
 }
 
+/******************************************************************************/
+/*!
+\brief	FarmPlantInteraction default destructor
+*/
+/******************************************************************************/
 FarmPlantInteraction::~FarmPlantInteraction()
 {
 }

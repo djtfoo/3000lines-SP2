@@ -1,8 +1,23 @@
+/******************************************************************************/
+/*!
+\file	RabbitFight.h
+\author 3000 Lines Studio
+\brief
+RabbitFight header file
+*/
+/******************************************************************************/
+
 #ifndef RABBITFIGHT_H
 #define RABBITFIGHT_H
 
 #include "Vector3.h"
 
+/******************************************************************************/
+/*!
+Class RabbitFight:
+\brief	Stores information for the Rabbit boss fight
+*/
+/******************************************************************************/
 class RabbitFight
 {
 public:

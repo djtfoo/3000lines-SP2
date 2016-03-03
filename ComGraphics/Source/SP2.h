@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	SP2.h
+\author 3000 Lines Studio
+\brief
+SP2 header file
+*/
+/******************************************************************************/
+
 #include "Scene.h"
 #include "Mesh.h"
 #include "Camera3.h"
@@ -26,6 +35,12 @@
 #ifndef SP2_H
 #define SP2_H
 
+/******************************************************************************/
+/*!
+Class SP2:
+\brief	Stores all information needed for SP2 Scene
+*/
+/******************************************************************************/
 class SP2 : public Scene
 {
     enum GEOMETRY_TYPE

@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	MiniMapCamera.h
+\author 3000 Lines Studio
+\brief
+Minimap header file
+*/
+/******************************************************************************/
+
 #include "Vector3.h"
 
 #include "Character.h"
@@ -8,6 +17,12 @@
 #ifndef MINIMAPCAMERA_H
 #define MINIMAPCAMERA_H
 
+/******************************************************************************/
+/*!
+Class Minimapcamera:
+\brief	stores information for minimap
+*/
+/******************************************************************************/
 class Minimapcamera
 {
 private:

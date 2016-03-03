@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	MeshBuilder.cpp
+\author 3000 Lines Studio
+\brief
+Functions to build meshes
+*/
+/******************************************************************************/
+
 #include <vector>
 #include "MyMath.h"
 #include "MeshBuilder.h"

@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	DialogueProcessor.h
+\author 3000 Lines Studio
+\brief
+DialogueProcessor header file
+*/
+/******************************************************************************/
+
 #include "Interaction.h"
 #include "Character.h"
 #include "GameState.h"
@@ -19,6 +28,12 @@ using std::map;
     NPC_TOTAL
 };*/
 
+/******************************************************************************/
+/*!
+Class DialogueProcessor:
+\brief	Stores information for dialogue
+*/
+/******************************************************************************/
 class DialogueProcessor
 {
     double elapsedTime, bufferTime;

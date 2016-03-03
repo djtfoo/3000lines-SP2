@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	MainMenu.h
+\author 3000 Lines Studio
+\brief
+Mainmenu header file
+*/
+/******************************************************************************/
+
 #include "Scene.h"
 #include "Mesh.h"
 #include "Mtx44.h"
@@ -11,6 +20,12 @@
 #ifndef MAIN_MENU_H
 #define MAIN_MENU_H
 
+/******************************************************************************/
+/*!
+Class MainMenu:
+\brief	Stores all information required for main menu scene
+*/
+/******************************************************************************/
 class MainMenu : public Scene
 {
     enum MENU_STATE

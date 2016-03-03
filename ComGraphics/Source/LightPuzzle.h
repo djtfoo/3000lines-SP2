@@ -1,9 +1,24 @@
+/******************************************************************************/
+/*!
+\file	LightPuzzle.h
+\author 3000 Lines Studio
+\brief
+LightPuzzle header file
+*/
+/******************************************************************************/
+
 #ifndef LIGHTPUZZLE_H
 #define LIGHTPUZZLE_H
 
 #include "Vector3.h"
 #include <cstdlib>
 
+/******************************************************************************/
+/*!
+Class LightPuzzle:
+\brief	Contains the information for the puzzle
+*/
+/******************************************************************************/
 class LightPuzzle
 {
 public:

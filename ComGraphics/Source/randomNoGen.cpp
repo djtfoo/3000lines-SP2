@@ -1,3 +1,12 @@
+/******************************************************************************/
+/*!
+\file	randomNoGen.cpp
+\author 3000 Lines Studio
+\brief
+Generates a random number
+*/
+/******************************************************************************/
+
 #include <cstdlib>
 #include <iostream>
 void testrng();
