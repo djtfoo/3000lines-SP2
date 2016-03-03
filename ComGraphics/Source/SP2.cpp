@@ -1223,14 +1223,14 @@ void SP2::loadWeedGame()
 		Interaction* interactions4;
 		for (int i = 0; i < 10; i++)
 		{
-			weedgame[i] = (Vector3(rand() % 140 + 865, 1 + (0.1f * i), rand() % 100 - 400));
+			weedgame[i] = (Vector3((float)(rand() % 140 + 865), (float)(1 + (0.1f * i)), (float)(rand() % 100 - 400)));
 			interactions4 = new WeedInteraction();
 			interactions4->bound1.Set(weedgame[i].x - 3, 0, weedgame[i].z - 3); interactions4->bound2.Set(weedgame[i].x + 3, 6, weedgame[i].z + 3);
 			SharedData::GetInstance()->interactionItems[i + 37] = interactions4;
 		}
 		for (unsigned int i = 10; i < weedgame.size(); i++)
 		{
-            weedgame[i] = (Vector3(rand() % 140 + 865, 10 + (0.1f * i), rand() % 100 - 400));
+			weedgame[i] = (Vector3((float)(rand() % 140 + 865), (float)(10 + (0.1f * i)), (float)(rand() % 100 - 400)));
 			interactions4 = new FarmPlantInteraction();
 			interactions4->bound1.Set(weedgame[i].x - 3, 0, weedgame[i].z - 3); interactions4->bound2.Set(weedgame[i].x + 3, 7, weedgame[i].z + 3);
 			SharedData::GetInstance()->interactionItems[i + 37] = interactions4;
@@ -1241,7 +1241,7 @@ void SP2::loadWeedGame()
 	{
 		for (int i = 0; i < 10; i++)
 		{
-            weedgame.push_back(Vector3(rand() % 140 + 865, 1 + (0.1f * i), rand() % 100 - 400));
+			weedgame.push_back(Vector3((float)(rand() % 140 + 865), (float)(1 + (0.1f * i)), (float)(rand() % 100 - 400)));
 		}
 		for (int i = 10; i < 30; i++)
 		{
