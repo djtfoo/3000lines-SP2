@@ -9,10 +9,6 @@ Logic for light puzzle
 
 #include "LightPuzzle.h"
 #include "SharedData.h"
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 /******************************************************************************/
 /*!

@@ -14,8 +14,6 @@ Functions to display dialogue
 #include <fstream>
 #include <sstream>
 
-#include <iostream>
-
 /******************************************************************************/
 /*!
 \brief	DialogueProcessor default constructor

@@ -23,8 +23,6 @@ SP2 Scene where the game takes place
 #include "Application.h"
 #include "SharedData.h"
 
-#include <iostream>
-
 /******************************************************************************/
 /*!
 \brief	SP2 default constructor
@@ -1438,34 +1436,7 @@ void SP2::Update(double dt)
 
     rotating += (float)(30 * dt);
 
-        //Lighting
-    if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpower <= 1.3)
-    {
-        lightpower += 0.001f;
-        light[0].power = lightpower;
-        glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
-    }
-    if (SharedData::GetInstance()->daynighttime >= 1900 && lightpower >= 0.3 && lightpos <= 1000)
-    {
-        lightpower -= 0.001f;
-        lightpos += 1;
-        light[0].power = lightpower;
-        glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
-    }
-
     gateUpdate(dt);
-
-    //Position of Light
-    if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpos >= -1000)
-    {
-        lightpos -= 0.4f;
-        light[0].position.Set(0, 1000, lightpos);
-    }
-    if (SharedData::GetInstance()->daynighttime >= 1900 || SharedData::GetInstance()->daynighttime <= 0650 && lightpos <= 1000)
-    {
-        lightpos += 0.85f;
-        light[0].position.Set(0, 1000, lightpos);
-    }
 
     if (Application::IsKeyPressed('P'))
     {
@@ -1830,6 +1801,8 @@ void SP2::Render()
         RenderBullets();
         RenderPlayerHealth();
         RenderBossHealth();
+		//player crosshairs
+		RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
         break;
     case GAME_STATE_DIALOGUE:
         RenderDialogueOnScreen(SharedData::GetInstance()->dialogueProcessor.npc->Speech(), Color(1, 1, 1), 3);
