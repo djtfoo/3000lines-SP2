@@ -9,7 +9,8 @@ DialogueProcessor header file
 
 #include "Interaction.h"
 #include "Character.h"
-#include "GameState.h"
+#include "Button.h"
+
 #include <string>
 #include <map>
 
@@ -37,6 +38,11 @@ Class DialogueProcessor:
 class DialogueProcessor
 {
     double elapsedTime, bufferTime;
+
+    Button b_Gift;
+    Button b_Compliment;
+    Button b_MiniGame;
+    Button b_Back;
 
 public:
     DialogueProcessor();

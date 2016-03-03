@@ -22,6 +22,7 @@ Default constructor
 /******************************************************************************/
 Camera3::Camera3()
 {
+    //phi = 0;
     active = 0;
 }
 
@@ -123,7 +124,8 @@ void Camera3::MoveCamera(double dt)
         rotation.SetToIdentity();
         rotation.SetToRotation((float)(diff_ypos * ROTSPEED * dt), right.x, right.y, right.z);
         view = rotation * view;
-        if (view.y < 0.8f && view.y > -0.9f) {
+        //phi += (float)(diff_ypos * ROTSPEED * dt);
+        if (view.y < 0.8f && view.y > -0.8f) {
             target = position + view;
         }
     }

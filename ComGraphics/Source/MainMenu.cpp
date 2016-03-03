@@ -806,7 +806,6 @@ void MainMenu::CreditsPage()
     RenderTextOnScreen(meshList[GEO_TEXT], "Droid : Noel", Color(1, 1, 0), 2, 8, 13);
     RenderTextOnScreen(meshList[GEO_TEXT], "1stMate : Ray", Color(1, 1, 0), 2, 8, 10);
 
-
     if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
         && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY)
     {

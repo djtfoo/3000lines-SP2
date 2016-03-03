@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Button.cpp" />
     <ClCompile Include="Source\DialogueProcessor.cpp" />
     <ClCompile Include="Source\Interaction.cpp" />
     <ClCompile Include="Source\Item.cpp" />

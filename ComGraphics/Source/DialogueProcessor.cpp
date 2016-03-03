@@ -14,6 +14,8 @@ Functions to display dialogue
 #include <fstream>
 #include <sstream>
 
+#include <iostream>
+
 /******************************************************************************/
 /*!
 \brief	DialogueProcessor default constructor
@@ -139,19 +141,23 @@ void DialogueProcessor::Compliment()
 void DialogueProcessor::CheckCursor(double dt)
 {
     elapsedTime += dt;
+    b_Gift.Set(0.625f, 1.f, 0.242f, 0.325f);
+    b_Compliment.Set(0.625f, 1.f, 0.358f, 0.442f);
+    b_MiniGame.Set(0.625f, 1.f, 0.475f, 0.558f);
+    b_Back.Set(0.625f, 1.f, 0.592f, 0.675f);
 
-    if (Application::IsKeyPressed(VK_LBUTTON) && elapsedTime > bufferTime && SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width * 0.625f) && SharedData::GetInstance()->cursor_newxpos <= SharedData::GetInstance()->width) {
+    if (Application::IsKeyPressed(VK_LBUTTON) && elapsedTime > bufferTime && SharedData::GetInstance()->cursor_newxpos >= b_Gift.minX && SharedData::GetInstance()->cursor_newxpos <= b_Gift.maxX) {
         switch (convostate)
         {
         case CONVO_INTRO:
-            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+            if (SharedData::GetInstance()->cursor_newypos >= b_Back.minY && SharedData::GetInstance()->cursor_newypos <= b_Back.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
                 SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
                 elapsedTime = 0;
             }
-            else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 31.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 26.5f))) {
+            else if (SharedData::GetInstance()->cursor_newypos >= b_MiniGame.minY && SharedData::GetInstance()->cursor_newypos <= b_MiniGame.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -164,7 +170,7 @@ void DialogueProcessor::CheckCursor(double dt)
                 }
                 elapsedTime = 0;
             }
-            else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 38.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 33.5f))) {
+            else if (SharedData::GetInstance()->cursor_newypos >= b_Compliment.minY && SharedData::GetInstance()->cursor_newypos <= b_Compliment.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -172,7 +178,7 @@ void DialogueProcessor::CheckCursor(double dt)
                 Compliment();
                 elapsedTime = 0;
             }
-            else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 45.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 40.5f))) {
+            else if (SharedData::GetInstance()->cursor_newypos >= b_Gift.minY && SharedData::GetInstance()->cursor_newypos <= b_Gift.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -181,14 +187,14 @@ void DialogueProcessor::CheckCursor(double dt)
             }
             break;
         case CONVO_NEUTRAL:
-            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+            if (SharedData::GetInstance()->cursor_newypos >= b_Back.minY && SharedData::GetInstance()->cursor_newypos <= b_Back.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
                 SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
                 elapsedTime = 0;
             }
-            else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 31.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 26.5f))) {
+            else if (SharedData::GetInstance()->cursor_newypos >= b_MiniGame.minY && SharedData::GetInstance()->cursor_newypos <= b_MiniGame.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -201,7 +207,7 @@ void DialogueProcessor::CheckCursor(double dt)
                 }
                 elapsedTime = 0;
             }
-            else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 38.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 33.5f))) {
+            else if (SharedData::GetInstance()->cursor_newypos >= b_Compliment.minY && SharedData::GetInstance()->cursor_newypos <= b_Compliment.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -209,7 +215,7 @@ void DialogueProcessor::CheckCursor(double dt)
                 Compliment();
                 elapsedTime = 0;
             }
-            else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 45.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 40.5f))) {
+            else if (SharedData::GetInstance()->cursor_newypos >= b_Gift.minY && SharedData::GetInstance()->cursor_newypos <= b_Gift.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -218,7 +224,7 @@ void DialogueProcessor::CheckCursor(double dt)
             }
             break;
         case CONVO_GIFT:
-            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+            if (SharedData::GetInstance()->cursor_newypos >= b_Back.minY && SharedData::GetInstance()->cursor_newypos <= b_Back.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -227,7 +233,7 @@ void DialogueProcessor::CheckCursor(double dt)
             }
             break;
         case CONVO_GIFTHAPPY:
-            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+            if (SharedData::GetInstance()->cursor_newypos >= b_Back.minY && SharedData::GetInstance()->cursor_newypos <= b_Back.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -236,7 +242,7 @@ void DialogueProcessor::CheckCursor(double dt)
             }
             break;
         case CONVO_GIFTUNHAPPY:
-            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+            if (SharedData::GetInstance()->cursor_newypos >= b_Back.minY && SharedData::GetInstance()->cursor_newypos <= b_Back.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -245,7 +251,7 @@ void DialogueProcessor::CheckCursor(double dt)
             }
             break;
         case CONVO_COMPLIMENT:
-            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+            if (SharedData::GetInstance()->cursor_newypos >= b_Back.minY && SharedData::GetInstance()->cursor_newypos <= b_Back.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -254,7 +260,7 @@ void DialogueProcessor::CheckCursor(double dt)
             }
             break;
         case CONVO_STARTMINIGAME:
-            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+            if (SharedData::GetInstance()->cursor_newypos >= b_Back.minY && SharedData::GetInstance()->cursor_newypos <= b_Back.maxY) {
                 if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
                 }
@@ -282,19 +288,19 @@ void DialogueProcessor::CheckCursor(double dt)
             }
             break;
         case CONVO_FINISHMINIGAME:
-            if (SharedData::GetInstance()->playSound) {
-                SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
-            }
-            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+            if (SharedData::GetInstance()->cursor_newypos >= b_Back.minY && SharedData::GetInstance()->cursor_newypos <= b_Back.maxY) {
+                if (SharedData::GetInstance()->playSound) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
+                }
                 SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
                 elapsedTime = 0;
             }
             break;
         case CONVO_BOSSPROMPT:
-            if (SharedData::GetInstance()->playSound) {
-                SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
-            }
-            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+            if (SharedData::GetInstance()->cursor_newypos >= b_Back.minY && SharedData::GetInstance()->cursor_newypos <= b_Back.maxY) {
+                if (SharedData::GetInstance()->playSound) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
+                }
                 SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
                 elapsedTime = 0;
             }

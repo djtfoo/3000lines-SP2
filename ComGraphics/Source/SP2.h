@@ -409,14 +409,7 @@ public:
     void RenderGround();
 	void RenderPuzzle();
     void stemmieShop();
-	void RenderRoom();
     void compactBallrender();
-    void chonLab();
-    void veeControlroom();
-    void jasimCanteen();
-    void loadHangar();
-	void renderFarm();
-	void RenderNPC();
 	void RenderInventory();
 	void RenderTime();
     bool viewOptions;
@@ -429,19 +422,30 @@ public:
 
 	void loadSpaghetti();
 	void loadInv();
-    void loadFree();
-    void loadShop();
-    void loadWSGame();
-    void loadChonGame();
     void chonSecret();
-    void loadVeeGame();
-    void loadJasimGame();
     void pauseGame();
     void loadRabbitGame();
 	void loadWeedGame();
     void RenderFightSkybox();
     void puzzleLogic();
     void UpdateInventory(double dt);
+
+    //RENDER STUFF.
+    void RenderLayout();
+    void RenderHangar();
+    void RenderRoom1();
+    void RenderRoom2();
+    void RenderRoom3();
+    void RenderRoom4();
+    void RenderShop();
+    void RenderCanteen();
+    void RenderPlantation();
+    void RenderControlRoom();
+    void RenderLab();
+    void RenderToilet();
+
+    void RenderChonGame();
+    void RenderInShop();
 
     //rabbit fight
     void playerShoot(double dt);
@@ -474,8 +478,6 @@ public:
 
     void shoptemp();
     void RotateDisplay();
-    
-    float objx, objy;
 
     float gateobjs[10];
     /*0,1 = hang 1,2            10, 11, 12, 13 = room 1, 2, 3, 4

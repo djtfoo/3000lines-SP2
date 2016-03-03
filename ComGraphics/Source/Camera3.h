@@ -28,6 +28,7 @@ private:
     Vector3 defaultUp;
 
 public:
+    //float phi;      //angle of elevation
     float active;       //To check if bullet active;
     float dy, dx;       //Speed of Bullet
 
