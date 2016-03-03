@@ -27,7 +27,7 @@ SP2::SP2()
 
     delayer = 0;
     delayBuffer = 0;
-    lightpower = 0.3;
+    lightpower = (float)0.3;
     lightpos = 1000;
     chonFloat = false;
     chonFloaty = vibrateX = vibrateY = 0;
@@ -122,7 +122,7 @@ SP2::SP2()
     meshList[GEO_DAYS_UI] = MeshBuilder::GenerateCircle("days_ui", Color(0, 0, 1), 10, 10);
     //meshList[GEO_DAYS_UI]->textureID = LoadTGA("Image/Text/day_ui.tga");
 
-    meshList[GEO_SHOPUI] = MeshBuilder::GenerateQuad("shop_ui", Color(1, 0.8, 0.8),1,1);
+    meshList[GEO_SHOPUI] = MeshBuilder::GenerateQuad("shop_ui", Color(1.f, 0.8f, 0.8f), 1, 1);
     meshList[GEO_SHOPUI]->textureID = LoadTGA("Image/layout/canteen_walls.tga");
 
     meshList[GEO_HEART] = MeshBuilder::GenerateQuad("love meter heart", Color(1, 0, 0), 3, 3);
@@ -364,7 +364,7 @@ SP2::SP2()
     meshList[GEO_SHOP_ARROW] = MeshBuilder::GenerateQuad("shop UI arrow", Color(0, 0, 0), 8, 8);
     meshList[GEO_SHOP_ARROW]->textureID = LoadTGA("Image/shop arrow.tga");
 
-    meshList[GEO_COUNTER] = MeshBuilder::GenerateCube("counter", Color(0, 0.7, 1), 5, 5, 5);
+    meshList[GEO_COUNTER] = MeshBuilder::GenerateCube("counter", Color(0.f, 0.7f, 1.f), 5, 5, 5);
 
     //Shop Display Objects
     meshList[GEO_ANIPOSTER] = MeshBuilder::GenerateOBJ("shop_poster", "OBJ/poster.obj");
@@ -415,13 +415,13 @@ SP2::SP2()
     meshList[GEO_SPHEREWHITE]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SPHEREWHITE]->material.kShininess = 1.f;
 
-    meshList[GEO_SPHEREBLUE] = MeshBuilder::GenerateSphere("sphereblue", Color(0, 0.3, 1), 5, 36, 18);
+    meshList[GEO_SPHEREBLUE] = MeshBuilder::GenerateSphere("sphereblue", Color(0.f, 0.3f, 1.f), 5, 36, 18);
     meshList[GEO_SPHEREBLUE]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
     meshList[GEO_SPHEREBLUE]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
     meshList[GEO_SPHEREBLUE]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SPHEREBLUE]->material.kShininess = 1.f;
 
-    meshList[GEO_SPHERERED] = MeshBuilder::GenerateSphere("spherered", Color(1, 0.3, 0), 5, 36, 18);
+    meshList[GEO_SPHERERED] = MeshBuilder::GenerateSphere("spherered", Color(1.f, 0.3f, 0.f), 5, 36, 18);
     meshList[GEO_SPHERERED]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
     meshList[GEO_SPHERERED]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
     meshList[GEO_SPHERERED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
@@ -771,70 +771,70 @@ void SP2::Init()
 
     glUniform1i(m_parameters[U_NUMLIGHTS], 1);
 	
-	srand(time(0));
+	srand((unsigned int)time(0));
 
     Interaction* interactions;
 
 	//spaghetti random spawns
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, 12, -378.31 + 2); interactions->bound2.Set(763.976, 15, -368.31 - 2);
+	interactions->bound1.Set(757.976f, 12.f, -378.31f + 2.f); interactions->bound2.Set(763.976f, 15.f, -368.31f - 2.f);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, 12, -391.7 + 2); interactions->bound2.Set(763.976, 15, -381.7 - 2);
+	interactions->bound1.Set(757.976f, 12.f, -391.7f + 2.f); interactions->bound2.Set(763.976f, 15.f, -381.7f - 2.f);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, 12, -437.6 + 2); interactions->bound2.Set(763.976, 15, -427.6 - 2);
-	SharedData::GetInstance()->interactionItems.push_back(interactions);
-	spaghettilocation.push_back(interactions);
-
-    
-	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, 12, -452.9 + 2); interactions->bound2.Set(763.976, 15, -442.9 - 2);
-	SharedData::GetInstance()->interactionItems.push_back(interactions);
-	spaghettilocation.push_back(interactions);
-
-	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, 12, -498.8 + 2); interactions->bound2.Set(763.976, 15, -488.8 - 2);
-	SharedData::GetInstance()->interactionItems.push_back(interactions);
-	spaghettilocation.push_back(interactions);
-
-	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(757.976, 12, -510.7 + 2); interactions->bound2.Set(763.976, 15, -500.7 - 2);
-	SharedData::GetInstance()->interactionItems.push_back(interactions);
-	spaghettilocation.push_back(interactions);
-
-	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, 12, -373.31 - 3); interactions->bound2.Set(721.872 + 3, 15, -373.31 + 3);
-	SharedData::GetInstance()->interactionItems.push_back(interactions);
-	spaghettilocation.push_back(interactions);
-
-	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, 12, -386.7 - 3); interactions->bound2.Set(721.872 + 3, 15, -386.7 + 3);
-	SharedData::GetInstance()->interactionItems.push_back(interactions);
-	spaghettilocation.push_back(interactions);
-
-	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, 12, -432.6 - 3); interactions->bound2.Set(721.872 + 3, 15, -432.6 + 3);
+	interactions->bound1.Set(757.976f, 12.f, -437.6f + 2.f); interactions->bound2.Set(763.976f, 15.f, -427.6f - 2.f);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
     
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, 12, -447.9 - 3); interactions->bound2.Set(721.872 + 3, 15, -447.9 + 3);
+	interactions->bound1.Set(757.976f, 12.f, -452.9f + 2.f); interactions->bound2.Set(763.976f, 15.f, -442.9f - 2.f);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, 12, -493.8 - 3); interactions->bound2.Set(721.872 + 3, 15, -493.8 + 3);
+	interactions->bound1.Set(757.976f, 12.f, -498.8f + 2.f); interactions->bound2.Set(763.976f, 15.f, -488.8f - 2.f);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 
 	interactions = new SpaghettoInteraction();
-	interactions->bound1.Set(721.872 - 3, 12, -505.7 - 3); interactions->bound2.Set(721.872 + 3, 15, -505.7 + 3);
+	interactions->bound1.Set(757.976f, 12.f, -510.7f + 2.f); interactions->bound2.Set(763.976f, 15.f, -500.7f - 2.f);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872f - 3.f, 12.f, -373.31f - 3.f); interactions->bound2.Set(721.872f + 3.f, 15.f, -373.31f + 3.f);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872f - 3.f, 12.f, -386.7f - 3.f); interactions->bound2.Set(721.872f + 3.f, 15.f, -386.7f + 3.f);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872f - 3.f, 12.f, -432.6f - 3.f); interactions->bound2.Set(721.872f + 3.f, 15.f, -432.6f + 3.f);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
+
+    
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872f - 3.f, 12.f, -447.9f - 3.f); interactions->bound2.Set(721.872f + 3.f, 15.f, -447.9f + 3.f);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872f - 3.f, 12.f, -493.8f - 3.f); interactions->bound2.Set(721.872f + 3.f, 15.f, -493.8f + 3.f);
+	SharedData::GetInstance()->interactionItems.push_back(interactions);
+	spaghettilocation.push_back(interactions);
+
+	interactions = new SpaghettoInteraction();
+	interactions->bound1.Set(721.872f - 3.f, 12.f, -505.7f - 3.f); interactions->bound2.Set(721.872f + 3.f, 15.f, -505.7f + 3.f);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 	spaghettilocation.push_back(interactions);
 	//spaghetto random spawns
@@ -844,27 +844,27 @@ void SP2::Init()
 
     //Other Interaction Bounds
     interactions = new ShopInteraction();
-    interactions->bound1.Set(890, 20, -35);     interactions->bound2.Set(900, 38, -25);
+    interactions->bound1.Set(890.f, 20.f, -35.f);     interactions->bound2.Set(900.f, 38.f, -25.f);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
 	interactions = new ManureInteraction();
-	interactions->bound1.Set(780, 5, -616);     interactions->bound2.Set(800, 15, -612);
+	interactions->bound1.Set(780.f, 5.f, -616.f);     interactions->bound2.Set(800.f, 15.f, -612.f);
 	SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     ballboundfunct();
 
     //Vee Puzzle Interaction
     interactions = new VeePuzzleSwitchOneInteraction();
-    interactions->bound1.Set(597, 10, 490);    interactions->bound2.Set(606, 25, 498);
+    interactions->bound1.Set(597.f, 10.f, 490.f);    interactions->bound2.Set(606.f, 25.f, 498.f);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
     interactions = new VeePuzzleSwitchTwoInteraction();
-    interactions->bound1.Set(580, 10, 490);    interactions->bound2.Set(587, 25, 498);
+    interactions->bound1.Set(580.f, 10.f, 490.f);    interactions->bound2.Set(587.f, 25.f, 498.f);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
     interactions = new VeePuzzleSwitchThreeInteraction();
-    interactions->bound1.Set(564, 10, 490);    interactions->bound2.Set(575, 25, 498);
+    interactions->bound1.Set(564.f, 10.f, 490.f);    interactions->bound2.Set(575.f, 25.f, 498.f);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
     interactions = new VeePuzzleSwitchFourInteraction();
-    interactions->bound1.Set(549, 10, 490);    interactions->bound2.Set(558, 25, 498);
+    interactions->bound1.Set(549.f, 10.f, 490.f);    interactions->bound2.Set(558.f, 25.f, 498.f);
     SharedData::GetInstance()->interactionItems.push_back(interactions);
 
     
@@ -921,7 +921,7 @@ void SP2::Init()
 
     
 
-	for (int i = 10; i < weedgame.size(); i++)
+	for (unsigned int i = 10; i < weedgame.size(); i++)
 	{
 		interactions = new FarmPlantInteraction();
 		interactions->bound1.Set(weedgame[i].x - 3, 0, weedgame[i].z - 3); interactions->bound2.Set(weedgame[i].x + 3, 7, weedgame[i].z + 3);
@@ -967,14 +967,14 @@ void SP2::loadWeedGame()
 		Interaction* interactions4;
 		for (int i = 0; i < 10; i++)
 		{
-			weedgame[i] = (Vector3(rand() % 140 + 865, 1 + (0.1 * i), rand() % 100 - 400));
+			weedgame[i] = (Vector3((float)(rand() % 140 + 865, 1 + (0.1f * i), rand() % 100 - 400)));
 			interactions4 = new WeedInteraction();
 			interactions4->bound1.Set(weedgame[i].x - 3, 0, weedgame[i].z - 3); interactions4->bound2.Set(weedgame[i].x + 3, 6, weedgame[i].z + 3);
 			SharedData::GetInstance()->interactionItems[i + 37] = interactions4;
 		}
-		for (int i = 10; i < weedgame.size(); i++)
+		for (unsigned int i = 10; i < weedgame.size(); i++)
 		{
-			weedgame[i] = (Vector3(rand() % 140 + 865, 10 + (0.1 * i), rand() % 100 - 400));
+            weedgame[i] = (Vector3((float)(rand() % 140 + 865, 10 + (0.1f * i), rand() % 100 - 400)));
 			interactions4 = new FarmPlantInteraction();
 			interactions4->bound1.Set(weedgame[i].x - 3, 0, weedgame[i].z - 3); interactions4->bound2.Set(weedgame[i].x + 3, 7, weedgame[i].z + 3);
 			SharedData::GetInstance()->interactionItems[i + 37] = interactions4;
@@ -985,12 +985,12 @@ void SP2::loadWeedGame()
 	{
 		for (int i = 0; i < 10; i++)
 		{
-			weedgame.push_back(Vector3(rand() % 140 + 865, 1 + (0.1 * i), rand() % 100 - 400));
+            weedgame.push_back(Vector3((float)(rand() % 140 + 865, 1 + (0.1f * i), rand() % 100 - 400)));
 			std::cout << " load game: " << weedgame[i] << std::endl;
 		}
 		for (int i = 10; i < 30; i++)
 		{
-			weedgame.push_back(Vector3(rand() % 140 + 865, 10 + (0.1 * i), rand() % 100 - 400));
+            weedgame.push_back(Vector3((float)(rand() % 140 + 865, 10 + (0.1 * i), rand() % 100 - 400)));
 		}
 	}
 	
@@ -1023,8 +1023,8 @@ void SP2::Update(double dt)
 {
     FramePerSecond = 1 / dt;
 
-    loadDown += 30 * dt;
-    loadUp -= 30 * dt;
+    loadDown += (float)(30 * dt);
+    loadUp -= (float)(30 * dt);
 
     if (loadDown >= 160 || loadUp <= -100)
     {
@@ -1033,19 +1033,19 @@ void SP2::Update(double dt)
     }
     if (Application::IsKeyPressed('I'))
     {
-        objy += 30 * dt;
+        objy += (float)(30 * dt);
     }
     if (Application::IsKeyPressed('K'))
     {
-        objy -= 30 * dt;
+        objy -= (float)(30 * dt);
     }
     if (Application::IsKeyPressed('J'))
     {
-        objx -= 30 * dt;
+        objx -= (float)(30 * dt);
     }
     if (Application::IsKeyPressed('L'))
     {
-        objx += 30 * dt;
+        objx += (float)(30 * dt);
     }
     //temporary check - change to switch
     if (SharedData::GetInstance()->paused) {
@@ -1066,7 +1066,7 @@ void SP2::Update(double dt)
         SharedData::GetInstance()->dialogueProcessor.CheckCursor(dt);
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_SHOP) {
-        shop.CheckCursor(dt, invmap.find(*shop.shopIterator)->second.getValue());
+        shop.CheckCursor(dt, (int)(invmap.find(*shop.shopIterator)->second.getValue()));
         UpdateInventory(dt);
     }
     else {
@@ -1100,7 +1100,7 @@ void SP2::Update(double dt)
     }
     else
     {
-        delayBuffer += 0.1;
+        delayBuffer += (float)(0.1);
         if (delayBuffer >= 2)
         {
             delayBuffer = 2;
@@ -1111,7 +1111,7 @@ void SP2::Update(double dt)
 
     //day-night time increasing
     if (!SharedData::GetInstance()->paused) {
-        SharedData::GetInstance()->daynighttime += (dt * 10);
+        SharedData::GetInstance()->daynighttime += (float)(dt * 10);
         if (((int)SharedData::GetInstance()->daynighttime % 100) > 60)
         {
             SharedData::GetInstance()->daynighttime += 40;
@@ -1163,8 +1163,8 @@ void SP2::Update(double dt)
 
     if (vibrateX < 0.6 && vibrateY < 0.6)
     {
-        vibrateX += 0.25;
-        vibrateY += 0.17;
+        vibrateX += (float)(0.25);
+        vibrateY += (float)(0.17);
     }
     else
     {
@@ -1174,7 +1174,7 @@ void SP2::Update(double dt)
 
     if (chonFloat == false)
     {
-        chonFloaty += 0.1;
+        chonFloaty += (float)(0.1);
         if (chonFloaty >= 10.0f)
         {
             chonFloat = true;
@@ -1182,7 +1182,7 @@ void SP2::Update(double dt)
     }
     if (chonFloat == true)
     {
-        chonFloaty -= 0.1;
+        chonFloaty -= (float)(0.1);
         if (chonFloaty <= 0)
         {
             chonFloat = false;
@@ -1208,18 +1208,18 @@ void SP2::Update(double dt)
 	if (SharedData::GetInstance()->player->getHunger() >= 100)
 		SharedData::GetInstance()->player->setHunger(100);
 
-    rotating += 30 * dt;
+    rotating += (float)(30 * dt);
 
         //Lighting
     if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpower <= 1.3)
     {
-        lightpower += 0.001;
+        lightpower += (float)(0.001);
         light[0].power = lightpower;
         glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
     }
     if (SharedData::GetInstance()->daynighttime >= 1900 && lightpower >= 0.3 && lightpos <= 1000)
     {
-        lightpower -= 0.001;
+        lightpower -= (float)(0.001);
         lightpos += 1;
         light[0].power = lightpower;
         glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
@@ -1230,12 +1230,12 @@ void SP2::Update(double dt)
     //Position of Light
     if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpos >= -1000)
     {
-        lightpos -= 0.4;
+        lightpos -= (float)(0.4);
         light[0].position.Set(0, 1000, lightpos);
     }
     if (SharedData::GetInstance()->daynighttime >= 1900 || SharedData::GetInstance()->daynighttime <= 0650 && lightpos <= 1000)
     {
-        lightpos += 0.85;
+        lightpos += (float)(0.85);
         light[0].position.Set(0, 1000, lightpos);
     }
 
@@ -1263,9 +1263,17 @@ void SP2::Update(double dt)
     if (enemy.isDead() == false && player.isDead() == false)
     {
         bulletUpadtes(dt);
-        if (enemy.getHealth() <= 30)
+        if (enemy.getHealth() <= 200)
         {
             powerspike = 2;
+        }
+        if (enemy.getHealth() <= 100)
+        {
+            powerspike = 3;
+        }
+        if (enemy.getHealth() <= 50)
+        {
+            powerspike = 5;
         }
         if ((rand() % (50 / powerspike)+ 1) == 1)
         {
@@ -1316,7 +1324,7 @@ void SP2::bulletUpadtes(double dt)
     //take damage
     if (enemy.iftakeDamage) 
     {
-        enemy.takeDamage(5);
+        enemy.takeDamage(2);
         enemy.iftakeDamage = false;
         if (enemy.isDead() == true)
         {
@@ -1358,7 +1366,7 @@ void SP2::checkP_BulletCollide(PlayerBullet& bullet)
         bullet.p_bulletPos.y > 0 && bullet.p_bulletPos.y < SharedData::GetInstance()->enemy->position_.y + 31 &&
         bullet.p_bulletPos.z > SharedData::GetInstance()->enemy->position_.z - 10 && bullet.p_bulletPos.z < SharedData::GetInstance()->enemy->position_.z + 10)
     {
-        enemy.takeDamage(5);
+        enemy.takeDamage(2);
         bullet.p_ifCollide = true;
         return;
     }
@@ -1367,7 +1375,7 @@ void SP2::checkP_BulletCollide(PlayerBullet& bullet)
         bullet.p_bulletPos.y > 25 && bullet.p_bulletPos.y < SharedData::GetInstance()->enemy->position_.y + 31 &&
         bullet.p_bulletPos.z > SharedData::GetInstance()->enemy->position_.z - 20 && bullet.p_bulletPos.z < SharedData::GetInstance()->enemy->position_.z + 20)
     {
-        enemy.takeDamage(5);
+        enemy.takeDamage(2);
         bullet.p_ifCollide = true;
         return;
     }
@@ -1376,7 +1384,7 @@ void SP2::checkP_BulletCollide(PlayerBullet& bullet)
         bullet.p_bulletPos.y > 31 && bullet.p_bulletPos.y < SharedData::GetInstance()->enemy->position_.y + 50 &&
         bullet.p_bulletPos.z > SharedData::GetInstance()->enemy->position_.z - 6 && bullet.p_bulletPos.z < SharedData::GetInstance()->enemy->position_.z + 6)
     {
-        enemy.takeDamage(10);
+        enemy.takeDamage(4);
         bullet.p_ifCollide = true;
         return;
     }
@@ -1390,9 +1398,9 @@ void SP2::checkE_BulletCollide(EnemyBullet& bullet)
         return;
     }
 
-    if (bullet.e_bulletPos.x > SharedData::GetInstance()->player->position_.x - 10 && bullet.e_bulletPos.x < SharedData::GetInstance()->player->position_.x + 10 &&
+    if (bullet.e_bulletPos.x > SharedData::GetInstance()->player->position_.x - 6 && bullet.e_bulletPos.x < SharedData::GetInstance()->player->position_.x + 6 &&
         bullet.e_bulletPos.y > 0 && bullet.e_bulletPos.y < 40 &&
-        bullet.e_bulletPos.z > SharedData::GetInstance()->player->position_.x - 10 && bullet.e_bulletPos.z < SharedData::GetInstance()->player->position_.z + 10 && invulnerable >= 5)
+        bullet.e_bulletPos.z > SharedData::GetInstance()->player->position_.z - 6 && bullet.e_bulletPos.z < SharedData::GetInstance()->player->position_.z + 6 && invulnerable >= 5)
     {
         player.takeDamage();
         bullet.e_ifCollide = true;
@@ -1401,7 +1409,7 @@ void SP2::checkE_BulletCollide(EnemyBullet& bullet)
     else
     {
         if (invulnerable < 5)
-            invulnerable += 0.01;
+            invulnerable += (float)(0.01);
     }
     std::cout << player.getHealth() << std::endl;
 }
@@ -1540,8 +1548,8 @@ void SP2::Render()
 
 
     //hunger bar
-    RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (SharedData::GetInstance()->player->getHunger() / 3), 1);
-    RenderTextOnScreen(meshList[GEO_TEXT], "Hunger", Color(0.5, 1, 0.5), 2, 11.5, 3.7);
+    RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (float)(SharedData::GetInstance()->player->getHunger() / 3), 1);
+    RenderTextOnScreen(meshList[GEO_TEXT], "Hunger", Color(0.5f, 1, 0.5f), 2, 11.5f, 3.7f);
     RenderInventory();
     if (viewOptions) {
         RenderObjectOnScreen(meshList[GEO_UIBG], 22, 50, 12, 7);
@@ -1553,32 +1561,32 @@ void SP2::Render()
     {
         std::stringstream s;
         s << "Points: " << SharedData::GetInstance()->pointscounter;
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6f, 1), 3, 0, 13.f);
         s.str("");
         s << "Weeds left: " << SharedData::GetInstance()->weedcounter;
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0.1), 3, 0, 12);
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0.1f), 3, 0, 12);
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_CHONGAME)
     {
         std::stringstream s;
         s << "Timer: " << (int)(SharedData::GetInstance()->timeElapsed);
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6f, 1), 3, 0, 13);
 
         s.str("");
         s << "Counter: " << pickupCounter;
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 12);
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6f, 1), 3, 0, 12);
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_VEEGAME)
     {
         std::stringstream s;
         s << "No. of tries: " << SharedData::GetInstance()->switchCount;
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6f, 1), 3, 0, 13);
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_JASIMGAME)
     {
         std::stringstream s;
         s << "Timer: " << (int)(SharedData::GetInstance()->timeElapsed);
-        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6f, 1), 3, 0, 13);
     }
 
     //game is paused
@@ -1616,7 +1624,7 @@ void SP2::loadFree()
     RenderNPC();
     stemmieShop();
     modelStack.PushMatrix();
-    modelStack.Translate(895, 30 + vibrateY, -36.7 + vibrateX);
+    modelStack.Translate(895, 30 + vibrateY, -36.7f + vibrateX);
     modelStack.Scale(10, 10, 10);
     RenderMesh(meshList[GEO_STEMMIE_FACE], false);
     modelStack.PopMatrix();
@@ -1728,8 +1736,8 @@ void SP2::gateUpdate(double dt)
 
                 if (gateopenBool[0] == true)
                 {//Hangar
-                    gateobjs[0] += 100 * dt;
-                    gateobjs[1] += 100 * dt;
+                    gateobjs[0] += (float)(100 * dt);
+                    gateobjs[1] += (float)(100 * dt);
 
                     if (gateobjs[0] >= 143)
                     {//btm, top
@@ -1741,8 +1749,8 @@ void SP2::gateUpdate(double dt)
                 }
                 if (gateopenBool[1] == true)
                 {//lab
-                    gateobjs[2] += 100 * dt;
-                    gateobjs[3] += 100 * dt;
+                    gateobjs[2] += (float)(100 * dt);
+                    gateobjs[3] += (float)(100 * dt);
 
                     if (gateobjs[2] >= 70)
                     {//btm, top
@@ -1754,8 +1762,8 @@ void SP2::gateUpdate(double dt)
                 }
                 if (gateopenBool[2] == true)
                 {//canteen 
-                    gateobjs[4] += 100 * dt;
-                    gateobjs[5] += 100 * dt;
+                    gateobjs[4] += (float)(100 * dt);
+                    gateobjs[5] += (float)(100 * dt);
 
                     if (gateobjs[4] >= 70)
                     {//btm, top
@@ -1767,10 +1775,10 @@ void SP2::gateUpdate(double dt)
                 }
                 if (gateopenBool[3] == true)
                 {//control
-                    gateobjs[6] += 100 * dt;
-                    gateobjs[7] += 100 * dt;
-                    gateobjs[8] += 100 * dt;
-                    gateobjs[9] += 100 * dt;
+                    gateobjs[6] += (float)(100 * dt);
+                    gateobjs[7] += (float)(100 * dt);
+                    gateobjs[8] += (float)(100 * dt);
+                    gateobjs[9] += (float)(100 * dt);
 
                     if (gateobjs[6] >= 70)
                     {
@@ -1784,7 +1792,7 @@ void SP2::gateUpdate(double dt)
                 }
                 if (gateopenBool[4] == true)
                 {//room 1
-                    gateobjs[10] += 100 * dt;
+                    gateobjs[10] += (float)(100 * dt);
 
                     if (gateobjs[10] >= 70)
                         gateobjs[10] = 70;
@@ -1792,7 +1800,7 @@ void SP2::gateUpdate(double dt)
                 }
                 if (gateopenBool[5] == true)
                 {//r3
-                    gateobjs[11] += 100 * dt;
+                    gateobjs[11] += (float)(100 * dt);
 
                     if (gateobjs[11] >= 243)
                         gateobjs[11] = 143;
@@ -1800,7 +1808,7 @@ void SP2::gateUpdate(double dt)
                 }
                 if (gateopenBool[6] == true)
                 {//r2
-                    gateobjs[12] += 100 * dt;
+                    gateobjs[12] += (float)(100 * dt);
 
                     if (gateobjs[12] >= 243)
                         gateobjs[12] = 143;
@@ -1808,7 +1816,7 @@ void SP2::gateUpdate(double dt)
                 }
                 if (gateopenBool[7] == true)
                 {//r4
-                    gateobjs[13] += 100 * dt;
+                    gateobjs[13] += (float)(100 * dt);
 
                     if (gateobjs[13] >= 243)
                         gateobjs[13] = 143;
@@ -1916,6 +1924,15 @@ void SP2::loadWSGame()
 	RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30, 1, 1);
 
 	//RenderMinimap();
+	if (SharedData::GetInstance()->gamestate == GAME_STATE_WSGAME)
+	{
+		std::stringstream s;
+		s << "Points: " << SharedData::GetInstance()->pointscounter;
+		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6f, 1), 3, 0, 13);
+		s.str("");
+		s << "Weeds left: " << SharedData::GetInstance()->weedcounter;
+		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0.1f), 3, 0, 12);
+	}
 	
 }
 
@@ -1984,7 +2001,7 @@ void SP2::puzzleLogic()
         meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
 
     //win the mini-game
-    if (lightpuzz.checkPuzzleAns(SharedData::GetInstance()->one, SharedData::GetInstance()->two, SharedData::GetInstance()->three, SharedData::GetInstance()->four) == true)
+    if (lightpuzz.checkPuzzleAns((int)(SharedData::GetInstance()->one), (int)(SharedData::GetInstance()->two), (int)(SharedData::GetInstance()->three), (int)(SharedData::GetInstance()->four)) == true)
     {
         SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
         std::cout << "You win!" << std::endl;
@@ -1992,7 +2009,7 @@ void SP2::puzzleLogic()
         SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
         SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_FINISHMINIGAME;
         //increase love meter and gain gold based on number of tries
-        int gained = 12 - SharedData::GetInstance()->switchCount;
+        int gained = 12 - (int)(SharedData::GetInstance()->switchCount);
         if (gained < 0) {   //cannot gain negative
             gained = 0;
         }
@@ -2054,7 +2071,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
         //blue move to red
         if (ballbluX >= 310)
         {
-            ballbluX -= 0.3;
+            ballbluX -= (float)(0.3);
             if (ballbluZ <= -364)
             {
                 ballbluZ += 1;
@@ -2077,7 +2094,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
         //yellow2 move to blue2(red pos)
         if (ballyellX >= 310)
         {
-            ballyellX -= 0.3;
+            ballyellX -= (float)(0.3);
             if (ballyellZ <= -364)
             {
                 ballyellZ += 1;
@@ -2091,7 +2108,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
             ballbluX += 1;
             if (ballbluZ >= -469)
             {
-                ballbluZ -= 0.7;
+                ballbluZ -= (float)(0.7);
             }
         }
 
@@ -2114,7 +2131,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
             ballyellX += 1;
             if (ballyellZ >= -469)
             {
-                ballyellZ -= 0.7;
+                ballyellZ -= (float)(0.7);
             }
         }
 
@@ -2131,7 +2148,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
         //red moves to oriRed(red pos)
         if (ballredX >= 310)
         {
-            ballredX -= 0.3;
+            ballredX -= (float)(0.3);
             if (ballredZ <= -364)
             {
                 ballredZ += 1;
@@ -2919,7 +2936,7 @@ void SP2::chonLab()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
-    modelStack.Translate(459.2, 13, -466);
+    modelStack.Translate(459.2f, 13, -466);
     modelStack.Scale(9, 8, 6);
     RenderMesh(meshList[GEO_TOOLBOX], true);
     modelStack.PopMatrix();
@@ -3166,21 +3183,21 @@ void SP2::jasimCanteen()
     {
         //-520 //-505
         modelStack.PushMatrix();
-        modelStack.Translate(740, 0, -515 + i);
+        modelStack.Translate(740, 0, (float)(-515 + i));
         modelStack.Scale(7, 7, 7);
         modelStack.Rotate(-90, 0, 1, 0);
         RenderMesh(meshList[GEO_BENCH], true);
         modelStack.PopMatrix();
 
         modelStack.PushMatrix();
-        modelStack.Translate(740, 0, -500 + i);
+        modelStack.Translate(740, 0, (float)(-500 + i));
         modelStack.Scale(7, 7, 7);
         modelStack.Rotate(90, 0, 1, 0);
         RenderMesh(meshList[GEO_TABLE], true);
         modelStack.PopMatrix();
 
         modelStack.PushMatrix();
-        modelStack.Translate(740, 0, -485 + i);
+        modelStack.Translate(740, 0, (float)(-485 + i));
         modelStack.Scale(7, 7, 7);
         modelStack.Rotate(90, 0, 1, 0);
         RenderMesh(meshList[GEO_BENCH], true);
@@ -3227,15 +3244,15 @@ void SP2::jasimCanteen()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(732, SharedData::GetInstance()->floodlevel, -594);
-	modelStack.Scale(7, 5, 4.3);
+	modelStack.Scale(7, 5, 4.3f);
 	modelStack.Rotate(-90, 1, 0, 0);
 	RenderMesh(meshList[GEO_TOILETFLOOD], true);
 	modelStack.PopMatrix();
 
     if (SharedData::GetInstance()->shitintoilet) {     //in mini-game
         modelStack.PushMatrix();
-        modelStack.Translate(779.6, 7.39, -614.9);
-        modelStack.Scale(1.11, 1, 1.11);
+        modelStack.Translate(779.6f, 7.39f, -614.9f);
+        modelStack.Scale(1.11f, 1, 1.11f);
         modelStack.Rotate(-90, 1, 0, 0);
         RenderMesh(meshList[GEO_LMAO], true);
         modelStack.PopMatrix();
@@ -3247,21 +3264,21 @@ void SP2::loadHangar()
     for (int i = -175; i < 176; i += 350)
     {
         modelStack.PushMatrix();
-        modelStack.Translate(75, 0, i);
+        modelStack.Translate(75, 0, (float)(i));
         modelStack.Scale(5, 8, 5);
         modelStack.Rotate(90, 0, 1, 0);
         RenderMesh(meshList[GEO_TABLE], true);
         modelStack.PopMatrix();
 
         modelStack.PushMatrix();
-        modelStack.Translate(115, 0, i);
+        modelStack.Translate(115, 0, (float)(i));
         modelStack.Scale(5, 8, 5);
         modelStack.Rotate(90, 0, 1, 0);
         RenderMesh(meshList[GEO_TABLE], true);
         modelStack.PopMatrix();
 
         modelStack.PushMatrix();
-        modelStack.Translate(155, 0, i);
+        modelStack.Translate(155, 0, (float)(i));
         modelStack.Scale(5, 8, 5);
         modelStack.Rotate(90, 0, 1, 0);
         RenderMesh(meshList[GEO_TABLE], true);
@@ -3328,14 +3345,14 @@ void SP2::renderFarm()
 	for (int i = 0; i < 11; i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(835.5 + (i * 19), 0, -530);
+        modelStack.Translate((float)(835.5 + (i * 19)), 0, -530);
 		modelStack.Rotate(-90, 0, 1, 0);
 		modelStack.Scale(5, 5, 5);
 		RenderMesh(meshList[GEO_FENCE], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		modelStack.Translate(845 + (i * 19), 0, -530);
+        modelStack.Translate((float)(845 + (i * 19)), 0, -530);
 		modelStack.Rotate(90, 0, 1, 0);
 		modelStack.Scale(5, 5, 5);
 		RenderMesh(meshList[GEO_FENCE], true);
@@ -3345,13 +3362,13 @@ void SP2::renderFarm()
 	for (int i = 0; i < 13; i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(1039.75, 0, -525.25 + (i * 19));
+        modelStack.Translate(1039.75f, 0, (float)(-525.25f + (i * 19)));
 		modelStack.Scale(5, 5, 5);
 		RenderMesh(meshList[GEO_FENCE], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		modelStack.Translate(1039.75, 0, -515.75 + (i * 19));
+        modelStack.Translate(1039.75f, 0, (float)(-515.75 + (i * 19)));
 		modelStack.Rotate(180, 0, 1, 0);
 		modelStack.Scale(5, 5, 5);
 		RenderMesh(meshList[GEO_FENCE], true);
@@ -3368,14 +3385,14 @@ void SP2::renderFarm()
 	for (int i = 0; i < 11; i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(835.5 + (i * 19), 0, -273.5);
+        modelStack.Translate((float)(835.5 + (i * 19)), 0, -273.5f);
 		modelStack.Rotate(90, 0, 1, 0);
 		modelStack.Scale(5, 5, 5);
 		RenderMesh(meshList[GEO_FENCE], true);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		modelStack.Translate(845 + (i * 19), 0, -273.5);
+        modelStack.Translate((float)(845 + (i * 19)), 0, -273.5f);
 		modelStack.Rotate(-90, 0, 1, 0);
 		modelStack.Scale(5, 5, 5);
 		RenderMesh(meshList[GEO_FENCE], true);
@@ -3387,7 +3404,7 @@ void SP2::renderFarm()
 		for (int i = 0; i < 7; i++)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(875 + (i * 20), 1, -310 - (j * 20));
+            modelStack.Translate((float)(875 + (i * 20)), 1, (float)(-310 - (j * 20)));
 			modelStack.Rotate(90, 0, 1, 0);
 			modelStack.Rotate(-90, 1, 0, 0);
 			RenderMesh(meshList[GEO_FARM], true);
@@ -3405,16 +3422,16 @@ void SP2::renderFarm()
 	for (int i = 0; i < 10; i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 37]->bound1.x + 3, 1.1 + (i * 0.1), SharedData::GetInstance()->interactionItems[i + 37]->bound1.z + 3);
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 37]->bound1.x + 3, 1.1f + (i * 0.1f), SharedData::GetInstance()->interactionItems[i + 37]->bound1.z + 3);
 		modelStack.Rotate(90, 0, 1, 0);
 		modelStack.Rotate(-90, 1, 0, 0);
 		RenderMesh(meshList[GEO_WEED], false);
 		modelStack.PopMatrix(); 
 	}
-	for (int i = 10; i < weedgame.size(); i++)
+	for (unsigned int i = 10; i < weedgame.size(); i++)
 	{
 		modelStack.PushMatrix();
-		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 37]->bound1.x + 3, 2.3 + (i * 0.02), SharedData::GetInstance()->interactionItems[i + 37]->bound1.z + 3);
+		modelStack.Translate(SharedData::GetInstance()->interactionItems[i + 37]->bound1.x + 3, 2.3f + (i * 0.02f), SharedData::GetInstance()->interactionItems[i + 37]->bound1.z + 3);
 		modelStack.Rotate(90, 0, 1, 0);
 		modelStack.Rotate(-90, 1, 0, 0);
 		RenderMesh(meshList[GEO_FARMPLANT], false);
@@ -3442,7 +3459,7 @@ void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y)
 	modelStack.Translate(x, y, 0);
 	//modelStack.Rotate(rotator, 0, 1, 0);
 	modelStack.Rotate(-75, 1, 0, 1);
-	modelStack.Scale(1.2, 1.2, 1.2);
+	modelStack.Scale(1.2f, 1.2f, 1.2f);
 	RenderMesh(mesh, false);
 	modelStack.PopMatrix();
 
@@ -3471,9 +3488,9 @@ void SP2::RenderInventoryOnScreenRotating(Mesh* mesh, float x, float y)
 
 	modelStack.PushMatrix();
 	modelStack.Translate(x, y, 0);
-	modelStack.Rotate(rotator, 0, 1, 0);
+    modelStack.Rotate((float)(rotator), 0, 1, 0);
 	modelStack.Rotate(-75, 1, 0, 1);
-	modelStack.Scale(1.2, 1.2, 1.2);
+	modelStack.Scale(1.2f, 1.2f, 1.2f);
 	RenderMesh(mesh, false);
 	modelStack.PopMatrix();
 
@@ -3535,12 +3552,12 @@ void SP2::RenderInventory()
 			//gift1
 			if (SharedData::GetInstance()->player->invselect != i)
 			{
-				RenderInventoryOnScreenStatic(meshList[modelmap.find(SharedData::GetInstance()->player->inventory[i])->second], 22.5 + (i * 5), 2.5);
+				RenderInventoryOnScreenStatic(meshList[modelmap.find(SharedData::GetInstance()->player->inventory[i])->second], 22.5f + (i * 5), 2.5f);
 			}
 			else
 			{
 				//RenderInventoryOnScreenRotating(meshList[GEO_HAMMER], 22.5 + (i * 5), 2.5);
-				RenderInventoryOnScreenRotating(meshList[modelmap.find(SharedData::GetInstance()->player->inventory[i])->second], 22.5 + (i * 5), 2.5);
+				RenderInventoryOnScreenRotating(meshList[modelmap.find(SharedData::GetInstance()->player->inventory[i])->second], 22.5f + (i * 5), 2.5f);
 			}
 			//RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(1)->second).getName(), Color(1, 1, 0), 3, 10, 2);
 			continue;
@@ -3560,10 +3577,10 @@ void SP2::RenderInventory()
 		//}
 	}
 
-	RenderObjectOnScreen(meshList[GEO_ITEMSELECT], 22.5 + (SharedData::GetInstance()->player->invselect * 5), 2.5);
+	RenderObjectOnScreen(meshList[GEO_ITEMSELECT], 22.5f + (SharedData::GetInstance()->player->invselect * 5), 2.5f);
     if (SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect] != 0) 
 	{
-        float namelength = (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName().size();
+        float namelength = (float)(invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName().size();
 		RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second).getName(), Color(1, 1, 0), 3, 14.5f - namelength / 2.f, 3);
     }
 	if (SharedData::GetInstance()->player->invfulldisplay == true)
@@ -3753,7 +3770,7 @@ void SP2::shoptemp()
     RenderObjectOnScreen(meshList[GEO_SHOP_ARROW], 25, 30, 1, 1, 180);
 
     //name of item
-    float namelength = (invmap.find(*shop.shopIterator)->second).getName().size();
+    float namelength = (float)((invmap.find(*shop.shopIterator)->second).getName().size());
     RenderTextOnScreen(meshList[GEO_TEXT], (invmap.find(*shop.shopIterator)->second).getName(), Color(0, 1, 1), 3, 14.5f - namelength / 2.f, 14);
 
     //Temmie text
@@ -3856,7 +3873,7 @@ void SP2::CheckCharacterLocation()
 
 void SP2::RenderCursor()
 {
-    RenderObjectOnScreen(meshList[GEO_CURSOR], SharedData::GetInstance()->cursor_newxpos / (SharedData::GetInstance()->width / 80), 60 - SharedData::GetInstance()->cursor_newypos / (SharedData::GetInstance()->height / 60), 1, 1);
+    RenderObjectOnScreen(meshList[GEO_CURSOR], (float)(SharedData::GetInstance()->cursor_newxpos) / (float)(SharedData::GetInstance()->width / 80), (float)(60 - SharedData::GetInstance()->cursor_newypos / (SharedData::GetInstance()->height / 60)), 1, 1);
 }
 void SP2::RenderFightSkybox()
 {
@@ -4012,16 +4029,16 @@ void SP2::enemyShoot(double dt)
 
     if (e_elapsedTime >= 2 && unlimitedbulletworks == true)
     {
-        for (int i = -500; i < 500; i+= 65)
+        for (int i = -200; i < 200; i+= 65)
         {
-            for (int p = -500; p < 500; p+= 65)
+            for (int p = -200; p < 200; p+= 65)
             {
                 EnemyBullet e_bullet;
                 e_bullet.e_bulletPos = SharedData::GetInstance()->enemy->position_;
                 e_bullet.e_bulletPos.x = SharedData::GetInstance()->enemy->position_.x + i;
                 e_bullet.e_bulletPos.z = SharedData::GetInstance()->enemy->position_.z + p;
 
-                e_bullet.e_bulletDir = (BULLETSPEED - 100) * (float)(dt)* (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->enemy->position_).Normalized();
+                e_bullet.e_bulletDir = (BULLETSPEED - 40) * (float)(dt)* (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->enemy->position_).Normalized();
                 e_bullet.e_ifCollide = false;
                 e_bullet.e_pitch = 0.f;
                 e_bullet.e_yaw = enemy.yaw;
@@ -4040,11 +4057,11 @@ void SP2::enemyShoot(double dt)
 
 void SP2::bulletMove(double dt)
 {
-    for (int i = 0; i < playerbullet.size(); ++i) 
+    for (unsigned int i = 0; i < playerbullet.size(); ++i) 
     {
         playerbullet[i].p_bulletPos += playerbullet[i].p_bulletDir;
     }
-    for (int i = 0; i < enemybullet.size(); ++i)
+    for (unsigned int i = 0; i < enemybullet.size(); ++i)
     {
         enemybullet[i].e_bulletPos += enemybullet[i].e_bulletDir;
     }
@@ -4058,7 +4075,7 @@ void SP2::RenderBullets()
         modelStack.Translate(playerbullet[i].p_bulletPos.x, playerbullet[i].p_bulletPos.y, playerbullet[i].p_bulletPos.z);
         modelStack.Rotate(playerbullet[i].p_pitch, 1, 0, 0);
         modelStack.Rotate(playerbullet[i].p_yaw, 0, 1, 0);
-        modelStack.Scale(0.1, 0.1, 0.1);
+        modelStack.Scale(0.1f, 0.1f, 0.1f);
         RenderMesh(meshList[GEO_BULLET], false);
         modelStack.PopMatrix();
     }
@@ -4068,7 +4085,7 @@ void SP2::RenderBullets()
         modelStack.PushMatrix();
         modelStack.Translate(enemybullet[i].e_bulletPos.x, enemybullet[i].e_bulletPos.y, enemybullet[i].e_bulletPos.z);
         modelStack.Rotate(enemybullet[i].e_yaw, 0, 1, 0);
-        modelStack.Scale(0.1, 0.1, 0.1);
+        modelStack.Scale(0.1f, 0.1f, 0.1f);
         RenderMesh(meshList[GEO_E_BULLET], false);
         modelStack.PopMatrix();
     }
@@ -4099,7 +4116,7 @@ void SP2::UpdateInventory(double dt)
 			{
 				if (SharedData::GetInstance()->gamestate == GAME_STATE_SHOP)
 				{
-					SharedData::GetInstance()->player->changeGold(invmap.find(SharedData::GetInstance()->player->inventory[SharedData::GetInstance()->player->invselect])->second.getValue() / 2);
+                    SharedData::GetInstance()->player->changeGold(invmap.find((int)SharedData::GetInstance()->player->inventory[(int)(SharedData::GetInstance()->player->invselect)])->second.getValue() / 2);
 				}
 				SharedData::GetInstance()->player->removeItem(SharedData::GetInstance()->player->invselect);
 				rotator = 0;
