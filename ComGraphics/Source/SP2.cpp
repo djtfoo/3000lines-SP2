@@ -41,7 +41,7 @@ SP2::SP2()
 
     delayer = 0;
     delayBuffer = 0;
-    lightpower = 0.3f;
+    lightpower = (float)0.3;
     lightpos = 1000;
     chonFloat = false;
     chonFloaty = vibrateX = vibrateY = 0;
@@ -144,6 +144,12 @@ SP2::SP2()
 
     meshList[GEO_LOVEMETER_BAR] = MeshBuilder::GenerateOBJ("hunger_bar", "OBJ/bar_bar.obj");
     meshList[GEO_LOVEMETER_BAR]->textureID = LoadTGA("Image/lovemeter.tga");
+
+    meshList[GEO_BOSSHEALTH_BAR] = MeshBuilder::GenerateOBJ("bosshealth_bar", "OBJ/bar_bar.obj");
+    meshList[GEO_BOSSHEALTH_BAR]->textureID = LoadTGA("Image/bosshpmeter.tga");
+
+    meshList[GEO_PLAYERHEALTH_BAR] = MeshBuilder::GenerateOBJ("hunger_bar", "OBJ/bar_bar.obj");
+    meshList[GEO_PLAYERHEALTH_BAR]->textureID = LoadTGA("Image/playerhpmeter.tga");
 
     //skybox
     meshList[GEO_SKYBOX_LEFT] = MeshBuilder::GenerateQuad("skybox_left", Color(1, 1, 1), 1500, 1500);
@@ -1262,10 +1268,14 @@ void SP2::Update(double dt)
 
     if (Application::IsKeyPressed('P'))
     {
-        SharedData::GetInstance()->player->position_.x = 1000;
-        SharedData::GetInstance()->player->position_.y = 25;
-        SharedData::GetInstance()->player->position_.z = 1000;
         SharedData::GetInstance()->gamestate = GAME_STATE_RABBIT;
+
+        SharedData::GetInstance()->player->position_= Vector3(5200, 25, 5000);
+        SharedData::GetInstance()->camera->position = Vector3(5200, 25, 5000);
+        SharedData::GetInstance()->camera->target = Vector3(5200, 25, 5001);
+        //set hunger to 0
+        //stop timer
+        //camera i think
     }
 	if (Application::IsKeyPressed('0'))
 	{
@@ -1284,17 +1294,29 @@ void SP2::Update(double dt)
     if (enemy.isDead() == false && player.isDead() == false)
     {
         bulletUpadtes(dt);
-        if (enemy.getHealth() <= 200)
+        if (enemy.getHealth() <= 400)
         {
             powerspike = 2;
         }
+        if (enemy.getHealth() <= 300)
+        {
+            powerspike = 5;
+        }
+        if (enemy.getHealth() <= 150)
+        {
+            powerspike = 8;
+        }
         if (enemy.getHealth() <= 100)
         {
-            powerspike = 3;
+            powerspike = 9;
         }
         if (enemy.getHealth() <= 50)
         {
-            powerspike = 5;
+            powerspike = 10;
+        }
+        if (enemy.getHealth() <= 15)
+        {
+            powerspike = 15;
         }
         if ((rand() % (50 / powerspike)+ 1) == 1)
         {
@@ -1314,16 +1336,19 @@ void SP2::Update(double dt)
         playerbullet.clear();
         enemybullet.clear();
     }
+
+    //if (SharedData::GetInstance()->player->position_)
 }
 
 void SP2::bulletUpadtes(double dt)
 {
-    if (SharedData::GetInstance()->gamestate == GAME_STATE_RABBIT && enemy.isDead() == false && player.isDead() == false)
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_RABBIT && enemy.isDead() == false && player.isDead() == false && (SharedData::GetInstance()->paused == false))
     {
         playerShoot(dt);
         enemyShoot(dt);
         bulletMove(dt);
     }
+
     //delete collided player bullets
     for (unsigned i = 0; i < playerbullet.size(); ++i)
     {
@@ -1377,7 +1402,7 @@ void SP2::bulletUpadtes(double dt)
 
 void SP2::checkP_BulletCollide(PlayerBullet& bullet)
 {
-    if ((bullet.p_bulletPos.x > 1000 || bullet.p_bulletPos.x < -1000) || (bullet.p_bulletPos.y > 1000 || bullet.p_bulletPos.y < -1000) || (bullet.p_bulletPos.z > 1000 || bullet.p_bulletPos.z < -1000))
+    if ((bullet.p_bulletPos.x > 6000 || bullet.p_bulletPos.x < 4000) || (bullet.p_bulletPos.y > 1000 || bullet.p_bulletPos.y < -1000) || (bullet.p_bulletPos.z > 6000 || bullet.p_bulletPos.z < 4000))
     {
         bullet.p_ifCollide = true;
         return;
@@ -1413,7 +1438,7 @@ void SP2::checkP_BulletCollide(PlayerBullet& bullet)
 
 void SP2::checkE_BulletCollide(EnemyBullet& bullet)
 {
-    if ((bullet.e_bulletPos.x > 1000 || bullet.e_bulletPos.x < -1000) || (bullet.e_bulletPos.y > 100 || bullet.e_bulletPos.y < -100) || (bullet.e_bulletPos.z > 1000 || bullet.e_bulletPos.z < -1000))
+    if ((bullet.e_bulletPos.x > 6000 || bullet.e_bulletPos.x < 4000) || (bullet.e_bulletPos.y > 1000 || bullet.e_bulletPos.y < -1000) || (bullet.e_bulletPos.z > 6000 || bullet.e_bulletPos.z < 4000))
     {
         bullet.e_ifCollide = true;
         return;
@@ -1430,7 +1455,7 @@ void SP2::checkE_BulletCollide(EnemyBullet& bullet)
     else
     {
         if (invulnerable < 5)
-            invulnerable += 0.01f;
+            invulnerable += (float)(0.005);
     }
     std::cout << player.getHealth() << std::endl;
 }
@@ -1498,7 +1523,11 @@ void SP2::Render()
         break;
     case GAME_STATE_JASIMGAME: loadJasimGame();
         break;
-    case GAME_STATE_RABBIT: loadRabbitGame();
+    case GAME_STATE_RABBIT: 
+        loadRabbitGame();
+        RenderBullets();
+        RenderPlayerHealth();
+        RenderBossHealth();
         break;
     case GAME_STATE_DIALOGUE: loadFree();
         RenderDialogueOnScreen(SharedData::GetInstance()->dialogueProcessor.npc->Speech(), Color(1, 1, 1), 3);
@@ -1624,8 +1653,6 @@ void SP2::Render()
         pauseGame();
         RenderCursor();
     }
-
-    RenderBullets();
 }
 
 void SP2::loadFree()
@@ -2456,6 +2483,9 @@ void SP2::pauseGame()
 
 void SP2::loadRabbitGame()
 {
+    SharedData::GetInstance()->player->setHunger(0);
+    SharedData::GetInstance()->timeElapsed = 0;
+
     if (light[0].type == Light::LIGHT_DIRECTIONAL)
     {
         Vector3 lightDir(light[0].position.x, light[0].position.y, light[0].position.z);
@@ -4042,6 +4072,7 @@ void SP2::playerShoot(double dt)
 
 void SP2::enemyShoot(double dt)
 {
+    enemy.position_ = Vector3(5000, 25, 5000);
     Vector3 enemyView = SharedData::GetInstance()->camera->target - enemy.position_;
     enemyView.y = 25;
     enemyView = enemyView.Normalized();
@@ -4058,12 +4089,12 @@ void SP2::enemyShoot(double dt)
     {
         EnemyBullet e_bullet;
         e_bullet.e_bulletPos = SharedData::GetInstance()->enemy->position_;
-        e_bullet.e_bulletDir = BULLETSPEED * (float)(dt) * (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->enemy->position_).Normalized();
+        e_bullet.e_bulletDir = (BULLETSPEED + 2 * powerspike)* (float)(dt)* (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->enemy->position_).Normalized();
         e_bullet.e_ifCollide = false;
 
         e_bullet.e_pitch = 0.f;
         e_bullet.e_yaw = yaw;
-
+        std::cout << e_bullet.e_bulletPos << std::endl;
         enemybullet.push_back(e_bullet);
         e_elapsedTime = 0.f;  //reset
     }
@@ -4088,18 +4119,18 @@ void SP2::enemyShoot(double dt)
     }
     if (e_elapsedTime >= 0.5 && spreadfire == true)
     {
-        for (int i = -100; i <= 100; i+=40)
+        for (int i = -300; i <= 300; i+=(rand() % 20 + 35))
         {
             EnemyBullet e_bullet;
             e_bullet.e_bulletPos = SharedData::GetInstance()->enemy->position_;
-            e_bullet.e_bulletDir = (BULLETSPEED - 50) * (float)(dt)* (Vector3(SharedData::GetInstance()->camera->target.x + i, SharedData::GetInstance()->camera->target.y, SharedData::GetInstance()->camera->target.z) - SharedData::GetInstance()->enemy->position_).Normalized();
+            e_bullet.e_bulletDir = (BULLETSPEED + 2 * powerspike) * (float)(dt)* (Vector3(SharedData::GetInstance()->camera->target.x + i, SharedData::GetInstance()->camera->target.y, SharedData::GetInstance()->camera->target.z) - SharedData::GetInstance()->enemy->position_).Normalized();
             e_bullet.e_ifCollide = false;
             e_bullet.e_pitch = 0.f;
             e_bullet.e_yaw = yaw;
             enemybullet.push_back(e_bullet);
         }
         circlecount++;
-        if (circlecount > 1)
+        if (circlecount > 2)
         {
             circlecount = 0;
             spreadfire = false;
@@ -4107,18 +4138,18 @@ void SP2::enemyShoot(double dt)
         e_elapsedTime = 0.f;  //reset
     }
 
-    if (e_elapsedTime >= 2 && unlimitedbulletworks == true)
+    if (e_elapsedTime >= 0.8 && unlimitedbulletworks == true)
     {
-        for (int i = -200; i < 200; i+= 65)
+        for (int i = -200; i < 200; i += (rand() % 20 + 40))
         {
-            for (int p = -200; p < 200; p+= 65)
+            for (int p = -200; p < 200; p += (rand() % 20 + 40))
             {
                 EnemyBullet e_bullet;
                 e_bullet.e_bulletPos = SharedData::GetInstance()->enemy->position_;
                 e_bullet.e_bulletPos.x = SharedData::GetInstance()->enemy->position_.x + i;
                 e_bullet.e_bulletPos.z = SharedData::GetInstance()->enemy->position_.z + p;
 
-                e_bullet.e_bulletDir = (BULLETSPEED - 40) * (float)(dt)* (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->enemy->position_).Normalized();
+                e_bullet.e_bulletDir = ((BULLETSPEED - 150) + 20 * powerspike) * (float)(dt)* (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->enemy->position_).Normalized();
                 e_bullet.e_ifCollide = false;
                 e_bullet.e_pitch = 0.f;
                 e_bullet.e_yaw = enemy.yaw;
@@ -4126,7 +4157,7 @@ void SP2::enemyShoot(double dt)
             }
         }
         ubwcount++;
-        if (ubwcount > 3)
+        if (ubwcount > 2)
         {
             ubwcount = 0;
             unlimitedbulletworks = false;
@@ -4137,13 +4168,16 @@ void SP2::enemyShoot(double dt)
 
 void SP2::bulletMove(double dt)
 {
-    for (unsigned int i = 0; i < playerbullet.size(); ++i) 
+    if (SharedData::GetInstance()->paused != 1) 
     {
-        playerbullet[i].p_bulletPos += playerbullet[i].p_bulletDir;
-    }
-    for (unsigned int i = 0; i < enemybullet.size(); ++i)
-    {
-        enemybullet[i].e_bulletPos += enemybullet[i].e_bulletDir;
+        for (unsigned int i = 0; i < playerbullet.size(); ++i)
+        {
+            playerbullet[i].p_bulletPos += playerbullet[i].p_bulletDir;
+        }
+        for (unsigned int i = 0; i < enemybullet.size(); ++i)
+        {
+            enemybullet[i].e_bulletPos += enemybullet[i].e_bulletDir;
+        }
     }
 }
 
@@ -4223,6 +4257,25 @@ void SP2::RenderLoveMeter()
     std::stringstream ss;
     ss << loveMeter << "%";
     RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 2, 2.f, 18);
+}
+void SP2::RenderPlayerHealth(){
+
+    RenderObjectOnScreen(meshList[GEO_PLAYERHEALTH_BAR], 23, 10, ((float)(player.getHealth()) / 3), 1, 0);
+
+    std::stringstream ss;
+    ss << player.getHealth() << "/100 HP";
+    RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 2, 14, 6);
+}
+void SP2::RenderBossHealth()
+{
+    RenderObjectOnScreen(meshList[GEO_BOSSHEALTH_BAR], 23, 40, ((float)(enemy.getHealth()) / 10), 1, 0);
+
+    std::stringstream ss;
+    ss << enemy.getHealth() << "/450 HP";
+    RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 2, 14, 22);
+    std::stringstream sd;
+    sd << "WEDDING CRASHER";
+    RenderTextOnScreen(meshList[GEO_TEXT], sd.str(), Color(1, 0, 0), 2, 14, 21);
 }
 
 void SP2::Sleep(double dt)

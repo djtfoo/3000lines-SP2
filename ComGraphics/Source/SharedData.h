@@ -127,7 +127,7 @@ private:
         programstate_change = false;
 
         player = new Player("Player");
-        enemy = new Enemy();
+        enemy = new Enemy("Rabbit", Vector3(5000, 25, 5000));
         camera = new Camera3();
         camera->Init(Vector3(0, 25, 0), Vector3(1, 25, 0), Vector3(0, 1, 0));
 

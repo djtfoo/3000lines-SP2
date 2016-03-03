@@ -382,7 +382,7 @@ int Player::getHunger()
     return hunger_;
 }
 
-unsigned int Player::getHealth()
+int Player::getHealth()
 {
     return health_;
 }
@@ -414,10 +414,13 @@ void Player::setHunger(int hungee)
 
 bool Player::isDead()
 {
-    if (getHealth() == 0) {
+    if (health_ <= 0) 
+    {
+        health_ = 0;
         return true;
     }
-    else {
+    else 
+    {
         return false;
     }
 }
@@ -539,7 +542,7 @@ bool Player::invfull()
 }
 void Player::takeDamage()
 {
-    health_ -= 5;
+    health_ -= 3;
 }
 
 /******************************************************************************/
@@ -619,17 +622,15 @@ std::string NPC::Speech()
     map<CONVO_STATE, std::string>::iterator it = dialogues.find(SharedData::GetInstance()->dialogueProcessor.convostate);
     return it->second;
 }
-
 /******************************************************************************/
 /*!
 \brief	Enemy default constructor
 */
 /******************************************************************************/
-Enemy::Enemy() : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(300), e_damage_(5), yaw(180.f), iftakeDamage(false)
+Enemy::Enemy() : Character("rabbit", Vector3(5000, 25, 5000), 0), e_health_(450), e_damage_(5), yaw(180.f), iftakeDamage(false)
 {
 
 }
-
 /******************************************************************************/
 /*!
 \brief	Enemy default constructor
@@ -639,7 +640,7 @@ name of the enemy
 position of enemy
 */
 /******************************************************************************/
-Enemy::Enemy(std::string name, const Vector3& pos) : Character("rabbit", Vector3(-100, 25, 0), 0), e_health_(300), e_damage_(5), yaw(180.f)
+Enemy::Enemy(std::string name, const Vector3& pos) : Character("rabbit", Vector3(5000, 25, 5000), 0), e_health_(450), e_damage_(5), yaw(180.f)
 {
 
 }
@@ -673,6 +674,7 @@ bool Enemy::isDead()
 {
     if (e_health_ <= 0)
     {
+        e_health_ = 0;
         return true;
     }
     return false;

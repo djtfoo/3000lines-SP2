@@ -210,6 +210,8 @@ class SP2 : public Scene
 
         GEO_HEART,
         GEO_LOVEMETER_BAR,
+        GEO_BOSSHEALTH_BAR,
+        GEO_PLAYERHEALTH_BAR,
 
         //Switches
         GEO_SWITCH_1,
@@ -371,6 +373,9 @@ public:
     void bulletUpadtes(double dt);
     void checkP_BulletCollide(PlayerBullet& bullet);
     void checkE_BulletCollide(EnemyBullet& bullet);
+
+    void RenderPlayerHealth();
+    void RenderBossHealth();
 
     float BULLETSPEED = 200.f;
 

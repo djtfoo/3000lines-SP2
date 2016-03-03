@@ -52,7 +52,7 @@ class Player : public Character
 {
 private:
     int hunger_;
-    unsigned int health_;
+    int health_;
     unsigned int gold_;
 
 public:
@@ -65,7 +65,7 @@ public:
 	int footstepsound;
 
     int getHunger();
-    unsigned int getHealth();
+    int getHealth();
     unsigned int getGold();
 
     void setName();
@@ -130,7 +130,7 @@ class Enemy : public Character
 {
 private:
     int e_damage_;
-    unsigned int e_health_;
+    int e_health_;
 
 public:
     Enemy();
