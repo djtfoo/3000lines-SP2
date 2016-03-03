@@ -111,6 +111,7 @@ class SP2 : public Scene
         GEO_POSTDGRAY,
         GEO_POSTRETT,
         GEO_POSTELECTION,
+        GEO_SECRETGUIDE,
         //SIGNBOARDS
         GEO_SIGNBOARD,
         GEO_SIGNLAB,
@@ -120,7 +121,8 @@ class SP2 : public Scene
         GEO_SIGNROOM2,
         GEO_SIGNROOM3,
         GEO_SIGNROOM4,
-        GEO_SIGNHANGAR,
+        GEO_SIGNLEFT,       //sign left and right are directions
+        GEO_SIGNRIGHT,      //   signs after the hangar entrance
         GEO_SIGNSHOP,
         GEO_SIGNTOILET,
         GEO_SIGNFARM,
@@ -130,6 +132,7 @@ class SP2 : public Scene
         GEO_ANIPOSTER,
         GEO_CHONKEY,
         GEO_SHOVEL,
+        GEO_BOARDGAME,
         GEO_BUTTERPIE,
         GEO_NOVEL,
         GEO_JOKEBOOK,
@@ -330,6 +333,7 @@ public:
     void RenderUI();
     void RenderLoveMeter();
     void renderPuzzle();
+    void RenderSignboards();
 
     void RenderMinimap();
     void RenderGates();

@@ -366,26 +366,21 @@ SP2::SP2()
 
     meshList[GEO_COUNTER] = MeshBuilder::GenerateCube("counter", Color(0, 0.7, 1), 5, 5, 5);
 
+    //Shop Display Objects
     meshList[GEO_ANIPOSTER] = MeshBuilder::GenerateOBJ("shop_poster", "OBJ/poster.obj");
     meshList[GEO_ANIPOSTER]->textureID = LoadTGA("Image/shop/aniPoster.tga");
-
     meshList[GEO_COOKBOOK] = MeshBuilder::GenerateOBJ("cookbook", "OBJ/shop/genBook.obj");
     meshList[GEO_COOKBOOK]->textureID = LoadTGA("Image/shop/cookbook.tga");
-
     meshList[GEO_CHONKEY] = MeshBuilder::GenerateOBJ("chon", "OBJ/shop/smallChon.obj");
     meshList[GEO_CHONKEY]->textureID = LoadTGA("Image/chonUV.tga");
-
     meshList[GEO_SHOVEL] = MeshBuilder::GenerateOBJ("butter pie", "OBJ/shop/shovel.obj");
     meshList[GEO_SHOVEL]->textureID = LoadTGA("Image/shop/shovel.tga");
-
-
+    meshList[GEO_BOARDGAME] = MeshBuilder::GenerateOBJ("butter pie", "OBJ/shop/boardgame.obj");
+    meshList[GEO_BOARDGAME]->textureID = LoadTGA("Image/shop/boardGame.tga");
     meshList[GEO_BUTTERPIE] = MeshBuilder::GenerateOBJ("butter pie", "OBJ/shop/pi.obj");
     meshList[GEO_BUTTERPIE]->textureID = LoadTGA("Image/shop/butterpie.tga");
-
-
     meshList[GEO_NOVEL] = MeshBuilder::GenerateOBJ("novel", "OBJ/shop/genBook.obj");
     meshList[GEO_NOVEL]->textureID = LoadTGA("Image/shop/novel.tga");
-
     meshList[GEO_JOKEBOOK] = MeshBuilder::GenerateOBJ("jokebook", "OBJ/shop/genBook.obj");
     meshList[GEO_JOKEBOOK]->textureID = LoadTGA("Image/shop/jokebook.tga");
 
@@ -402,40 +397,51 @@ SP2::SP2()
     meshList[GEO_LABCOUNTER_CORNER]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_LABCOUNTER_CORNER]->material.kShininess = 1.f;
 
-    meshList[GEO_SPHEREYELLOW] = MeshBuilder::GenerateSphere("spheretemp", Color(1, 1, 0), 5, 36, 18);
-    //meshList[GEO_SPHERETEMP]->textureID = LoadTGA("Image/translucenttest.tga");
+    meshList[GEO_SPHEREYELLOW] = MeshBuilder::GenerateSphere("sphereyellow", Color(1, 1, 0), 5, 36, 18);
     meshList[GEO_SPHEREYELLOW]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
     meshList[GEO_SPHEREYELLOW]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
     meshList[GEO_SPHEREYELLOW]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SPHEREYELLOW]->material.kShininess = 1.f;
 
-    meshList[GEO_SPHEREBLACK] = MeshBuilder::GenerateSphere("spheretemp", Color(0, 0, 0), 5, 36, 18);
-    //meshList[GEO_SPHERETEMP]->textureID = LoadTGA("Image/translucenttest.tga");
+    meshList[GEO_SPHEREBLACK] = MeshBuilder::GenerateSphere("sphereblack", Color(0, 0, 0), 5, 36, 18);
     meshList[GEO_SPHEREBLACK]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
     meshList[GEO_SPHEREBLACK]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
     meshList[GEO_SPHEREBLACK]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SPHEREBLACK]->material.kShininess = 1.f;
 
-    meshList[GEO_SPHEREWHITE] = MeshBuilder::GenerateSphere("spheretemp", Color(1, 1, 1), 5, 36, 18);
-    //meshList[GEO_SPHERETEMP]->textureID = LoadTGA("Image/translucenttest.tga");
+    meshList[GEO_SPHEREWHITE] = MeshBuilder::GenerateSphere("spherewhite", Color(1, 1, 1), 5, 36, 18);
     meshList[GEO_SPHEREWHITE]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
     meshList[GEO_SPHEREWHITE]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
     meshList[GEO_SPHEREWHITE]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SPHEREWHITE]->material.kShininess = 1.f;
 
-    meshList[GEO_SPHEREBLUE] = MeshBuilder::GenerateSphere("spheretemp", Color(0, 0.3, 1), 5, 36, 18);
-    //meshList[GEO_SPHERETEMP]->textureID = LoadTGA("Image/translucenttest.tga");
+    meshList[GEO_SPHEREBLUE] = MeshBuilder::GenerateSphere("sphereblue", Color(0, 0.3, 1), 5, 36, 18);
     meshList[GEO_SPHEREBLUE]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
     meshList[GEO_SPHEREBLUE]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
     meshList[GEO_SPHEREBLUE]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SPHEREBLUE]->material.kShininess = 1.f;
 
-    meshList[GEO_SPHERERED] = MeshBuilder::GenerateSphere("spheretemp", Color(1, 0.3, 0), 5, 36, 18);
-    //meshList[GEO_SPHERETEMP]->textureID = LoadTGA("Image/translucenttest.tga");
+    meshList[GEO_SPHERERED] = MeshBuilder::GenerateSphere("spherered", Color(1, 0.3, 0), 5, 36, 18);
     meshList[GEO_SPHERERED]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
     meshList[GEO_SPHERERED]->material.kDiffuse.Set(0.7f, 0.7f, 0.7f);
     meshList[GEO_SPHERERED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_SPHERERED]->material.kShininess = 1.f;
+
+    //Lab secrets
+    meshList[GEO_SECRETGUIDE] = MeshBuilder::GenerateOBJ("shop_poster", "OBJ/poster.obj");
+    meshList[GEO_SECRETGUIDE]->textureID = LoadTGA("Image/labPosters/secretGuide.tga");
+    meshList[GEO_POSTSAO] = MeshBuilder::GenerateOBJ("shop_poster", "OBJ/poster.obj");
+    meshList[GEO_POSTSAO]->textureID = LoadTGA("Image/labPosters/saoPoster.tga");
+    meshList[GEO_POSTPUNCH] = MeshBuilder::GenerateOBJ("shop_poster", "OBJ/poster.obj");
+    meshList[GEO_POSTPUNCH]->textureID = LoadTGA("Image/labPosters/opPoster.tga");
+    meshList[GEO_POSTKYOJ] = MeshBuilder::GenerateOBJ("shop_poster", "OBJ/poster.obj");
+    meshList[GEO_POSTKYOJ]->textureID = LoadTGA("Image/labPosters/kyojPoster.tga");
+    meshList[GEO_POSTFATE] = MeshBuilder::GenerateOBJ("shop_poster", "OBJ/poster.obj");
+    meshList[GEO_POSTFATE]->textureID = LoadTGA("Image/labPosters/fatePoster.tga");
+    meshList[GEO_POSTDGRAY] = MeshBuilder::GenerateOBJ("shop_poster", "OBJ/poster.obj");
+    meshList[GEO_POSTDGRAY]->textureID = LoadTGA("Image/labPosters/dgryPoster.tga");
+    meshList[GEO_POSTRETT] = MeshBuilder::GenerateOBJ("shop_poster", "OBJ/poster.obj");
+    meshList[GEO_POSTRETT]->textureID = LoadTGA("Image/labPosters/rettPoster.tga");
 
     	//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	meshList[GEO_HANGAR] = MeshBuilder::GenerateQuad("hangar", Color(1, 1, 1), 1, 1);
@@ -570,6 +576,33 @@ SP2::SP2()
     meshList[GEO_POSTER]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_POSTER]->material.kShininess = 1.f;
 
+    //SIGNBOARDS
+    meshList[GEO_SIGNLAB] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNLAB]->textureID = LoadTGA("Image/signboards/labSign.tga");
+    meshList[GEO_SIGNCANTEEN] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNCANTEEN]->textureID = LoadTGA("Image/signboards/canteenSign.tga");
+    meshList[GEO_SIGNLEFT] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNLEFT]->textureID = LoadTGA("Image/signboards/leftSign.tga");
+    meshList[GEO_SIGNRIGHT] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNRIGHT]->textureID = LoadTGA("Image/signboards/rightSign.tga");
+    meshList[GEO_SIGNFARM] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNFARM]->textureID = LoadTGA("Image/signboards/farmSign.tga");
+    meshList[GEO_SIGNCTRL] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNCTRL]->textureID = LoadTGA("Image/signboards/controlSign.tga");
+    meshList[GEO_SIGNROOM1] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNROOM1]->textureID = LoadTGA("Image/testposter.tga");
+    meshList[GEO_SIGNROOM2] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNROOM2]->textureID = LoadTGA("Image/testposter.tga");
+    meshList[GEO_SIGNROOM3] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNROOM3]->textureID = LoadTGA("Image/signboards/playerSign.tga");
+    meshList[GEO_SIGNROOM4] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNROOM4]->textureID = LoadTGA("Image/testposter.tga");
+    meshList[GEO_SIGNTOILET] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNTOILET]->textureID = LoadTGA("Image/signboards/toiletSign.tga");
+    meshList[GEO_SIGNSHOP] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNSHOP]->textureID = LoadTGA("Image/signboards/shopSign.tga");
+
+
 	    //GEO_SWITCH
     meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
     meshList[GEO_SWITCH_2] = MeshBuilder::GenerateCube("switch2", Color(1, 0, 0), 1, 15, 4);
@@ -665,7 +698,7 @@ void SP2::loadInv()
     invmap.insert(std::pair<int, Gift>(10, Gift("Butterscotch Pie", 650)));
     modelmap.insert(std::pair<int, GEOMETRY_TYPE>(10, GEO_BUTTERPIE));
     invmap.insert(std::pair<int, Gift>(11, Gift("Board Game", 550)));
-    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(11, GEO_SHOPDISPLAY));
+    modelmap.insert(std::pair<int, GEOMETRY_TYPE>(11, GEO_BOARDGAME));
     invmap.insert(std::pair<int, Gift>(12, Gift("Novel", 700)));
     modelmap.insert(std::pair<int, GEOMETRY_TYPE>(12, GEO_NOVEL));
     invmap.insert(std::pair<int, Gift>(13, Gift("Jokebook", 700)));
@@ -1421,6 +1454,8 @@ void SP2::Render()
     }
 
     std::stringstream s;
+    RenderSignboards();
+
     switch (SharedData::GetInstance()->gamestate)
     {
     case GAME_STATE_FREE: loadFree();
@@ -1518,7 +1553,7 @@ void SP2::Render()
     RenderObjectOnScreen(meshList[GEO_LOADTOP], 40, loadDown, 1, 1, 0);
     RenderObjectOnScreen(meshList[GEO_LOADBTM], 40, loadUp, 1, 1, 0);
 
-
+    
 
     RenderTextOnScreen(meshList[GEO_TEXT], "objx : " + std::to_string(objx), Color(1, 1, 1), 2, 1, 2);
     RenderTextOnScreen(meshList[GEO_TEXT], "objy : " + std::to_string(objy), Color(1, 1, 1), 2, 1, 1);
@@ -2141,7 +2176,7 @@ void SP2::ballmoveCheck()
             ballblacky = 15;
             ball[1] = false;
             SharedData::GetInstance()->ballpickup = false;
-            
+
 
             if (postercounter == 0)
                 postercounter = 1;
@@ -2161,7 +2196,7 @@ void SP2::ballmoveCheck()
             ballwhitey = 15;
             ball[2] = false;
             SharedData::GetInstance()->ballpickup = false;
-            
+
 
             if (postercounter == 1)
                 postercounter = 2;
@@ -2220,7 +2255,7 @@ void SP2::loadChonGame()
 
     pickupCounter = 0;
 
-    
+
 
     //Chon's Lab Balls
     if (SharedData::GetInstance()->ballpickup)
@@ -2240,113 +2275,13 @@ void SP2::loadChonGame()
         lightpuzz.generatePuzzle();
         pickupCounter = 0;
     }
-    
-    
+
+
     ballmoveCheck();
 
     compactBallrender();    //yel, black, white, blue, red
 
-    
 
-    /*if (ballyellX >= ballbluX)
-    {
-        if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)
-        {
-            ball[0] = false;
-            ballyellX = ballbluX;
-        }
-        else
-        {
-            ball[0] = false;
-            SharedData::GetInstance()->ballpickup = false;
-        }
-    }
-        
-    
-    else if (ball[1] == true)
-    {
-        modelStack.PushMatrix();
-        modelStack.Translate(410, 15, -396);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLACK], true);
-        modelStack.PopMatrix();
-
-        compactBallrender();
-
-        if (ballredX >= 15)
-        {
-            ball[1] = false;
-            SharedData::GetInstance()->ballpickup = false;
-        }
-    }
-    else if (ball[2] == true)
-    {
-        modelStack.PushMatrix();
-        modelStack.Translate(425, 15, -380);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREWHITE], true);
-        modelStack.PopMatrix();
-
-        compactBallrender();
-
-        if (ballredX >= 15)
-        {
-            ball[2] = false;
-            SharedData::GetInstance()->ballpickup = false;
-        }
-    }
-    else if (ball[3] == true)
-    {
-        modelStack.PushMatrix();
-        modelStack.Translate(339, 15, -465);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHEREBLUE], true);
-        modelStack.PopMatrix();
-
-        compactBallrender();
-
-        if (ballredX >= 15)
-        {
-            if(SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
-            {
-                ball[3] = false;
-                ballredX = 999;
-            }
-            else
-            {
-                ball[3] = false;
-                SharedData::GetInstance()->ballpickup = false;
-            }
-        }
-    }
-    else if (ball[4] == true)
-    {
-        modelStack.PushMatrix();
-        modelStack.Translate(310, 15, -364);
-        modelStack.Scale(0.5, 0.5, 0.5);
-        RenderMesh(meshList[GEO_SPHERERED], true);
-        modelStack.PopMatrix();
-
-        compactBallrender();
-
-        if (ballredX >= 15)
-        {
-            if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
-            {
-                ball[4] = false;
-                ballredX = 999;
-            }
-            else
-            {
-                ball[4] = false;
-                SharedData::GetInstance()->ballpickup = false;
-            }
-        }
-    }
-    else
-    {
-        compactBallrender();
-    }*/
 }   
 
 void SP2::ballboundfunct()
@@ -2834,6 +2769,62 @@ void SP2::RenderPlayer()
     modelStack.PopMatrix();
 }
 
+void SP2::RenderSignboards()
+{
+    modelStack.PushMatrix();
+    modelStack.Translate(460, 45, -243);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_SIGNLAB], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(797, 45, -243);
+    modelStack.Scale(30, 30, 30);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_SIGNCANTEEN], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(582, 45, 278);
+    modelStack.Scale(40, 30, 30);
+    modelStack.Rotate(-90, 0, 1, 0);
+    RenderMesh(meshList[GEO_SIGNCTRL], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(686, 40, -525);
+    modelStack.Scale(20, 30, 30);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_SIGNTOILET], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(825, 40, -441);
+    modelStack.Scale(30, 30, 25);
+    RenderMesh(meshList[GEO_SIGNFARM], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(835, 55, 5);
+    modelStack.Scale(30, 30, 40);
+    RenderMesh(meshList[GEO_SIGNSHOP], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(420, 25, -30);
+    modelStack.Scale(30, 30, 30);
+    RenderMesh(meshList[GEO_SIGNLEFT], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(420, 25, 30);
+    modelStack.Scale(30, 30, 30);
+    RenderMesh(meshList[GEO_SIGNRIGHT], false);
+    modelStack.PopMatrix();
+}
+
+
 void SP2::RenderNPC()
 {
     modelStack.PushMatrix();
@@ -3016,6 +3007,12 @@ void SP2::chonLab()
     RenderMesh(meshList[GEO_TOOLBOX], true);
     modelStack.PopMatrix();
    
+    modelStack.PushMatrix();
+    modelStack.Translate(410, 15, -475);
+    modelStack.Scale(10, 10, 5);
+    RenderMesh(meshList[GEO_SECRETGUIDE], false);
+    modelStack.PopMatrix();
+
     if (postercounter == 6)
     {
         chonSecret();
@@ -3028,37 +3025,31 @@ void SP2::chonSecret()
     modelStack.PushMatrix();
     modelStack.Translate(490, 20, -475);
     modelStack.Scale(15, 15, 5);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTSAO], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(470, 20, -475);
     modelStack.Scale(15, 15, 5);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTPUNCH], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(440, 20, -475);
     modelStack.Scale(15, 15, 5);
-    RenderMesh(meshList[GEO_POSTER], false);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(410, 20, -475);
-    modelStack.Scale(15, 15, 5);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTKYOJ], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(360, 20, -475);
     modelStack.Scale(15, 15, 5);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTFATE], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(330, 20, -475);
     modelStack.Scale(15, 15, 5);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTDGRAY], false);
     modelStack.PopMatrix();
     
 
@@ -3066,25 +3057,25 @@ void SP2::chonSecret()
     modelStack.PushMatrix();
     modelStack.Translate(410, 20, -333);
     modelStack.Scale(15, 15, 5);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTRETT], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(380, 20, -333);
     modelStack.Scale(15, 15, 5);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTSAO], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(350, 20, -333);
     modelStack.Scale(15, 15, 5);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTPUNCH], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(320, 20, -333);
     modelStack.Scale(15, 15, 5);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_ANIPOSTER], false);
     modelStack.PopMatrix();
 
 
@@ -3094,28 +3085,28 @@ void SP2::chonSecret()
     modelStack.Translate(304, 20, -365);
     modelStack.Scale(15, 15, 15);
     modelStack.Rotate(90, 0, 1, 0);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTKYOJ], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(304, 20, -395);
     modelStack.Scale(15, 15, 15);
     modelStack.Rotate(90, 0, 1, 0);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTFATE], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(304, 20, -425);
     modelStack.Scale(15, 15, 15);
     modelStack.Rotate(90, 0, 1, 0);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTDGRAY], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(304, 20, -455);
     modelStack.Scale(15, 15, 15);
     modelStack.Rotate(90, 0, 1, 0);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTRETT], false);
     modelStack.PopMatrix();
 
 
@@ -3124,28 +3115,28 @@ void SP2::chonSecret()
     modelStack.Translate(511, 20, -365);
     modelStack.Scale(15, 15, 15);
     modelStack.Rotate(90, 0, 1, 0);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTSAO], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(511, 20, -395);
     modelStack.Scale(15, 15, 15);
     modelStack.Rotate(90, 0, 1, 0);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTPUNCH], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(511, 20, -425);
     modelStack.Scale(15, 15, 15);
     modelStack.Rotate(90, 0, 1, 0);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTKYOJ], false);
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
     modelStack.Translate(511, 20, -455);
     modelStack.Scale(15, 15, 15);
     modelStack.Rotate(90, 0, 1, 0);
-    RenderMesh(meshList[GEO_POSTER], false);
+    RenderMesh(meshList[GEO_POSTFATE], false);
     modelStack.PopMatrix();
 
 }
