@@ -238,7 +238,7 @@ class SP2 : public Scene
         U_MATERIAL_DIFFUSE,
         U_MATERIAL_SPECULAR,
         U_MATERIAL_SHININESS,
-        //light 0
+        //light 0 (DIRECTIONAL)
         U_LIGHT0_POSITION,
         U_LIGHT0_COLOR,
         U_LIGHT0_POWER,
@@ -250,6 +250,84 @@ class SP2 : public Scene
         U_LIGHT0_COSCUTOFF,
         U_LIGHT0_COSINNER,
         U_LIGHT0_EXPONENT,
+        //light 1 (Hangar spot 1)
+        U_LIGHT1_POSITION,
+        U_LIGHT1_COLOR,
+        U_LIGHT1_POWER,
+        U_LIGHT1_KC,
+        U_LIGHT1_KL,
+        U_LIGHT1_KQ,
+        U_LIGHT1_TYPE,
+        U_LIGHT1_SPOTDIRECTION,
+        U_LIGHT1_COSCUTOFF,
+        U_LIGHT1_COSINNER,
+        U_LIGHT1_EXPONENT,
+        //light 2 (Hangar spot 2)
+        U_LIGHT2_POSITION,
+        U_LIGHT2_COLOR,
+        U_LIGHT2_POWER,
+        U_LIGHT2_KC,
+        U_LIGHT2_KL,
+        U_LIGHT2_KQ,
+        U_LIGHT2_TYPE,
+        U_LIGHT2_SPOTDIRECTION,
+        U_LIGHT2_COSCUTOFF,
+        U_LIGHT2_COSINNER,
+        U_LIGHT2_EXPONENT,
+        //light 3 (Lab point green)
+        U_LIGHT3_POSITION,
+        U_LIGHT3_COLOR,
+        U_LIGHT3_POWER,
+        U_LIGHT3_KC,
+        U_LIGHT3_KL,
+        U_LIGHT3_KQ,
+        U_LIGHT3_TYPE,
+        //light 4 (Toilet spot)
+        U_LIGHT4_POSITION,
+        U_LIGHT4_COLOR,
+        U_LIGHT4_POWER,
+        U_LIGHT4_KC,
+        U_LIGHT4_KL,
+        U_LIGHT4_KQ,
+        U_LIGHT4_TYPE,
+        U_LIGHT4_SPOTDIRECTION,
+        U_LIGHT4_COSCUTOFF,
+        U_LIGHT4_COSINNER,
+        U_LIGHT4_EXPONENT,
+        //light 5 (control puzzle spot)
+        U_LIGHT5_POSITION,
+        U_LIGHT5_COLOR,
+        U_LIGHT5_POWER,
+        U_LIGHT5_KC,
+        U_LIGHT5_KL,
+        U_LIGHT5_KQ,
+        U_LIGHT5_TYPE,
+        U_LIGHT5_SPOTDIRECTION,
+        U_LIGHT5_COSCUTOFF,
+        U_LIGHT5_COSINNER,
+        U_LIGHT5_EXPONENT,
+        //light 6 (Shop spot 1)
+        U_LIGHT6_POSITION,
+        U_LIGHT6_COLOR,
+        U_LIGHT6_POWER,
+        U_LIGHT6_KC,
+        U_LIGHT6_KL,
+        U_LIGHT6_KQ,
+        U_LIGHT6_TYPE,
+        U_LIGHT6_SPOTDIRECTION,
+        U_LIGHT6_COSCUTOFF,
+        U_LIGHT6_COSINNER,
+        U_LIGHT6_EXPONENT,
+        //light 7 (farm sign)
+        U_LIGHT7_POSITION,
+        U_LIGHT7_COLOR,
+        U_LIGHT7_POWER,
+        U_LIGHT7_KC,
+        U_LIGHT7_KL,
+        U_LIGHT7_KQ,
+        U_LIGHT7_TYPE,
+        
+
 
         U_LIGHTENABLED,
         U_NUMLIGHTS,
@@ -308,7 +386,7 @@ public:
     LightPuzzle lightpuzz;
     //float one, two, three, four;
 
-    Light light[1];
+    Light light[2];
 
     //float fontWidth[256];
 

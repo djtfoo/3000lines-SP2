@@ -102,6 +102,83 @@ SP2::SP2()
     m_parameters[U_LIGHT0_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[0].cosCutoff");
     m_parameters[U_LIGHT0_COSINNER] = glGetUniformLocation(m_programID, "lights[0].cosInner");
     m_parameters[U_LIGHT0_EXPONENT] = glGetUniformLocation(m_programID, "lights[0].exponent");
+    //light 1
+    m_parameters[U_LIGHT1_POSITION] = glGetUniformLocation(m_programID, "lights[1].position_cameraspace");
+    m_parameters[U_LIGHT1_COLOR] = glGetUniformLocation(m_programID, "lights[1].color");
+    m_parameters[U_LIGHT1_POWER] = glGetUniformLocation(m_programID, "lights[1].power");
+    m_parameters[U_LIGHT1_KC] = glGetUniformLocation(m_programID, "lights[1].kC");
+    m_parameters[U_LIGHT1_KL] = glGetUniformLocation(m_programID, "lights[1].kL");
+    m_parameters[U_LIGHT1_KQ] = glGetUniformLocation(m_programID, "lights[1].kQ");
+    m_parameters[U_LIGHT1_TYPE] = glGetUniformLocation(m_programID, "lights[1].type");
+    m_parameters[U_LIGHT1_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[1].spotDirection");
+    m_parameters[U_LIGHT1_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[1].cosCutoff");
+    m_parameters[U_LIGHT1_COSINNER] = glGetUniformLocation(m_programID, "lights[1].cosInner");
+    m_parameters[U_LIGHT1_EXPONENT] = glGetUniformLocation(m_programID, "lights[1].exponent");
+    //light 2
+    m_parameters[U_LIGHT2_POSITION] = glGetUniformLocation(m_programID, "lights[2].position_cameraspace");
+    m_parameters[U_LIGHT2_COLOR] = glGetUniformLocation(m_programID, "lights[2].color");
+    m_parameters[U_LIGHT2_POWER] = glGetUniformLocation(m_programID, "lights[2].power");
+    m_parameters[U_LIGHT2_KC] = glGetUniformLocation(m_programID, "lights[2].kC");
+    m_parameters[U_LIGHT2_KL] = glGetUniformLocation(m_programID, "lights[2].kL");
+    m_parameters[U_LIGHT2_KQ] = glGetUniformLocation(m_programID, "lights[2].kQ");
+    m_parameters[U_LIGHT2_TYPE] = glGetUniformLocation(m_programID, "lights[2].type");
+    m_parameters[U_LIGHT2_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[2].spotDirection");
+    m_parameters[U_LIGHT2_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[2].cosCutoff");
+    m_parameters[U_LIGHT2_COSINNER] = glGetUniformLocation(m_programID, "lights[2].cosInner");
+    m_parameters[U_LIGHT2_EXPONENT] = glGetUniformLocation(m_programID, "lights[2].exponent");
+    //light 3
+    m_parameters[U_LIGHT3_POSITION] = glGetUniformLocation(m_programID, "lights[3].position_cameraspace");
+    m_parameters[U_LIGHT3_COLOR] = glGetUniformLocation(m_programID, "lights[3].color");
+    m_parameters[U_LIGHT3_POWER] = glGetUniformLocation(m_programID, "lights[3].power");
+    m_parameters[U_LIGHT3_KC] = glGetUniformLocation(m_programID, "lights[3].kC");
+    m_parameters[U_LIGHT3_KL] = glGetUniformLocation(m_programID, "lights[3].kL");
+    m_parameters[U_LIGHT3_KQ] = glGetUniformLocation(m_programID, "lights[3].kQ");
+    m_parameters[U_LIGHT3_TYPE] = glGetUniformLocation(m_programID, "lights[3].type");
+    //light 4
+    m_parameters[U_LIGHT4_POSITION] = glGetUniformLocation(m_programID, "lights[4].position_cameraspace");
+    m_parameters[U_LIGHT4_COLOR] = glGetUniformLocation(m_programID, "lights[4].color");
+    m_parameters[U_LIGHT4_POWER] = glGetUniformLocation(m_programID, "lights[4].power");
+    m_parameters[U_LIGHT4_KC] = glGetUniformLocation(m_programID, "lights[4].kC");
+    m_parameters[U_LIGHT4_KL] = glGetUniformLocation(m_programID, "lights[4].kL");
+    m_parameters[U_LIGHT4_KQ] = glGetUniformLocation(m_programID, "lights[4].kQ");
+    m_parameters[U_LIGHT4_TYPE] = glGetUniformLocation(m_programID, "lights[4].type");
+    m_parameters[U_LIGHT4_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[4].spotDirection");
+    m_parameters[U_LIGHT4_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[4].cosCutoff");
+    m_parameters[U_LIGHT4_COSINNER] = glGetUniformLocation(m_programID, "lights[4].cosInner");
+    m_parameters[U_LIGHT4_EXPONENT] = glGetUniformLocation(m_programID, "lights[4].exponent");
+    //light 5
+    m_parameters[U_LIGHT5_POSITION] = glGetUniformLocation(m_programID, "lights[5].position_cameraspace");
+    m_parameters[U_LIGHT5_COLOR] = glGetUniformLocation(m_programID, "lights[5].color");
+    m_parameters[U_LIGHT5_POWER] = glGetUniformLocation(m_programID, "lights[5].power");
+    m_parameters[U_LIGHT5_KC] = glGetUniformLocation(m_programID, "lights[5].kC");
+    m_parameters[U_LIGHT5_KL] = glGetUniformLocation(m_programID, "lights[5].kL");
+    m_parameters[U_LIGHT5_KQ] = glGetUniformLocation(m_programID, "lights[5].kQ");
+    m_parameters[U_LIGHT5_TYPE] = glGetUniformLocation(m_programID, "lights[5].type");
+    m_parameters[U_LIGHT5_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[5].spotDirection");
+    m_parameters[U_LIGHT5_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[5].cosCutoff");
+    m_parameters[U_LIGHT5_COSINNER] = glGetUniformLocation(m_programID, "lights[5].cosInner");
+    m_parameters[U_LIGHT5_EXPONENT] = glGetUniformLocation(m_programID, "lights[5].exponent");
+    //light 6
+    m_parameters[U_LIGHT6_POSITION] = glGetUniformLocation(m_programID, "lights[6].position_cameraspace");
+    m_parameters[U_LIGHT6_COLOR] = glGetUniformLocation(m_programID, "lights[6].color");
+    m_parameters[U_LIGHT6_POWER] = glGetUniformLocation(m_programID, "lights[6].power");
+    m_parameters[U_LIGHT6_KC] = glGetUniformLocation(m_programID, "lights[6].kC");
+    m_parameters[U_LIGHT6_KL] = glGetUniformLocation(m_programID, "lights[6].kL");
+    m_parameters[U_LIGHT6_KQ] = glGetUniformLocation(m_programID, "lights[6].kQ");
+    m_parameters[U_LIGHT6_TYPE] = glGetUniformLocation(m_programID, "lights[6].type");
+    m_parameters[U_LIGHT6_SPOTDIRECTION] = glGetUniformLocation(m_programID, "lights[6].spotDirection");
+    m_parameters[U_LIGHT6_COSCUTOFF] = glGetUniformLocation(m_programID, "lights[6].cosCutoff");
+    m_parameters[U_LIGHT6_COSINNER] = glGetUniformLocation(m_programID, "lights[6].cosInner");
+    m_parameters[U_LIGHT6_EXPONENT] = glGetUniformLocation(m_programID, "lights[6].exponent");
+    //light 7
+    m_parameters[U_LIGHT7_POSITION] = glGetUniformLocation(m_programID, "lights[7].position_cameraspace");
+    m_parameters[U_LIGHT7_COLOR] = glGetUniformLocation(m_programID, "lights[7].color");
+    m_parameters[U_LIGHT7_POWER] = glGetUniformLocation(m_programID, "lights[7].power");
+    m_parameters[U_LIGHT7_KC] = glGetUniformLocation(m_programID, "lights[7].kC");
+    m_parameters[U_LIGHT7_KL] = glGetUniformLocation(m_programID, "lights[7].kL");
+    m_parameters[U_LIGHT7_KQ] = glGetUniformLocation(m_programID, "lights[7].kQ");
+    m_parameters[U_LIGHT7_TYPE] = glGetUniformLocation(m_programID, "lights[7].type");
+
 
     m_parameters[U_LIGHTENABLED] = glGetUniformLocation(m_programID, "lightEnabled");
     m_parameters[U_NUMLIGHTS] = glGetUniformLocation(m_programID, "numLights");
@@ -785,10 +862,66 @@ void SP2::Init()
     light[0].type = Light::LIGHT_DIRECTIONAL;
     light[0].position.Set(0, 1000, lightpos);
     light[0].color.Set(1, 1, 1);
-    light[0].power = lightpower;
+    light[0].power = 0.5;
     light[0].kC = 1.f;
     light[0].kL = 0.01f;
     light[0].kQ = 0.001f;
+
+    light[1].type = Light::LIGHT_SPOT;
+    light[1].position.Set(0, 1, 1);
+    light[1].color.Set(1, 1, 1);
+    light[1].power = 1;
+    light[1].kC = 1.f;
+    light[1].kL = 0.01f;
+    light[1].kQ = 0.001f;
+   
+    light[2].type = Light::LIGHT_SPOT;
+    light[2].position.Set(0, 1, 1);
+    light[2].color.Set(1, 1, 1);
+    light[2].power = 1;
+    light[2].kC = 1.f;
+    light[2].kL = 0.01f;
+    light[2].kQ = 0.001f;
+   
+    light[3].type = Light::LIGHT_POINT;
+    light[3].position.Set(0, 1, 1);
+    light[3].color.Set(1, 1, 1);
+    light[3].power = 1;
+    light[3].kC = 1.f;
+    light[3].kL = 0.01f;
+    light[3].kQ = 0.001f;
+   
+    light[4].type = Light::LIGHT_SPOT;
+    light[4].position.Set(0, 1, 1);
+    light[4].color.Set(1, 1, 1);
+    light[4].power = 1;
+    light[4].kC = 1.f;
+    light[4].kL = 0.01f;
+    light[4].kQ = 0.001f;
+   
+    light[5].type = Light::LIGHT_SPOT;
+    light[5].position.Set(0, 1, 1);
+    light[5].color.Set(1, 1, 1);
+    light[5].power = 1;
+    light[5].kC = 1.f;
+    light[5].kL = 0.01f;
+    light[5].kQ = 0.001f;
+   
+    light[6].type = Light::LIGHT_SPOT;
+    light[6].position.Set(0, 1, 1);
+    light[6].color.Set(1, 1, 1);
+    light[6].power = 1;
+    light[6].kC = 1.f;
+    light[6].kL = 0.01f;
+    light[6].kQ = 0.001f;
+   
+    light[7].type = Light::LIGHT_POINT;
+    light[7].position.Set(0, 1, 1);
+    light[7].color.Set(1, 1, 1);
+    light[7].power = 1;
+    light[7].kC = 1.f;
+    light[7].kL = 0.01f;
+    light[7].kQ = 0.001f;
 
     
     //make sure uniform parameters are passed in after glUseProgram()
@@ -801,8 +934,75 @@ void SP2::Init()
     glUniform1f(m_parameters[U_LIGHT0_COSCUTOFF], light[0].cosCutoff);
     glUniform1f(m_parameters[U_LIGHT0_COSINNER], light[0].cosInner);
     glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
+    //light 1
+    glUniform1i(m_parameters[U_LIGHT1_TYPE], light[1].type);
+    glUniform3fv(m_parameters[U_LIGHT1_COLOR], 1, &light[1].color.r);
+    glUniform1f(m_parameters[U_LIGHT1_POWER], light[1].power);
+    glUniform1f(m_parameters[U_LIGHT1_KC], light[1].kC);
+    glUniform1f(m_parameters[U_LIGHT1_KL], light[1].kL);
+    glUniform1f(m_parameters[U_LIGHT1_KQ], light[1].kQ);
+    glUniform1f(m_parameters[U_LIGHT1_COSCUTOFF], light[1].cosCutoff);
+    glUniform1f(m_parameters[U_LIGHT1_COSINNER], light[1].cosInner);
+    glUniform1f(m_parameters[U_LIGHT1_EXPONENT], light[1].exponent);
+    //light 2
+    glUniform1i(m_parameters[U_LIGHT2_TYPE], light[2].type);
+    glUniform3fv(m_parameters[U_LIGHT2_COLOR], 1, &light[2].color.r);
+    glUniform1f(m_parameters[U_LIGHT2_POWER], light[2].power);
+    glUniform1f(m_parameters[U_LIGHT2_KC], light[2].kC);
+    glUniform1f(m_parameters[U_LIGHT2_KL], light[2].kL);
+    glUniform1f(m_parameters[U_LIGHT2_KQ], light[2].kQ);
+    glUniform1f(m_parameters[U_LIGHT2_COSCUTOFF], light[2].cosCutoff);
+    glUniform1f(m_parameters[U_LIGHT2_COSINNER], light[2].cosInner);
+    glUniform1f(m_parameters[U_LIGHT2_EXPONENT], light[2].exponent);
+    //light 3
+    glUniform1i(m_parameters[U_LIGHT3_TYPE], light[3].type);
+    glUniform3fv(m_parameters[U_LIGHT3_COLOR], 1, &light[3].color.r);
+    glUniform1f(m_parameters[U_LIGHT3_POWER], light[3].power);
+    glUniform1f(m_parameters[U_LIGHT3_KC], light[3].kC);
+    glUniform1f(m_parameters[U_LIGHT3_KL], light[3].kL);
+    glUniform1f(m_parameters[U_LIGHT3_KQ], light[3].kQ);
+    //light 4
+    glUniform1i(m_parameters[U_LIGHT4_TYPE], light[4].type);
+    glUniform3fv(m_parameters[U_LIGHT4_COLOR], 1, &light[4].color.r);
+    glUniform1f(m_parameters[U_LIGHT4_POWER], light[4].power);
+    glUniform1f(m_parameters[U_LIGHT4_KC], light[4].kC);
+    glUniform1f(m_parameters[U_LIGHT4_KL], light[4].kL);
+    glUniform1f(m_parameters[U_LIGHT4_KQ], light[4].kQ);
+    glUniform1f(m_parameters[U_LIGHT4_COSCUTOFF], light[4].cosCutoff);
+    glUniform1f(m_parameters[U_LIGHT4_COSINNER], light[4].cosInner);
+    glUniform1f(m_parameters[U_LIGHT4_EXPONENT], light[4].exponent);
+    //light 5
+    glUniform1i(m_parameters[U_LIGHT5_TYPE], light[5].type);
+    glUniform3fv(m_parameters[U_LIGHT5_COLOR], 1, &light[5].color.r);
+    glUniform1f(m_parameters[U_LIGHT5_POWER], light[5].power);
+    glUniform1f(m_parameters[U_LIGHT5_KC], light[5].kC);
+    glUniform1f(m_parameters[U_LIGHT5_KL], light[5].kL);
+    glUniform1f(m_parameters[U_LIGHT5_KQ], light[5].kQ);
+    glUniform1f(m_parameters[U_LIGHT5_COSCUTOFF], light[5].cosCutoff);
+    glUniform1f(m_parameters[U_LIGHT5_COSINNER], light[5].cosInner);
+    glUniform1f(m_parameters[U_LIGHT5_EXPONENT], light[5].exponent);
+    //light 6
+    glUniform1i(m_parameters[U_LIGHT6_TYPE], light[6].type);
+    glUniform3fv(m_parameters[U_LIGHT6_COLOR], 1, &light[6].color.r);
+    glUniform1f(m_parameters[U_LIGHT6_POWER], light[6].power);
+    glUniform1f(m_parameters[U_LIGHT6_KC], light[6].kC);
+    glUniform1f(m_parameters[U_LIGHT6_KL], light[6].kL);
+    glUniform1f(m_parameters[U_LIGHT6_KQ], light[6].kQ);
+    glUniform1f(m_parameters[U_LIGHT6_COSCUTOFF], light[6].cosCutoff);
+    glUniform1f(m_parameters[U_LIGHT6_COSINNER], light[6].cosInner);
+    glUniform1f(m_parameters[U_LIGHT6_EXPONENT], light[6].exponent);
+    //light 7
+    glUniform1i(m_parameters[U_LIGHT7_TYPE], light[7].type);
+    glUniform3fv(m_parameters[U_LIGHT7_COLOR], 1, &light[7].color.r);
+    glUniform1f(m_parameters[U_LIGHT7_POWER], light[7].power);
+    glUniform1f(m_parameters[U_LIGHT7_KC], light[7].kC);
+    glUniform1f(m_parameters[U_LIGHT7_KL], light[7].kL);
+    glUniform1f(m_parameters[U_LIGHT7_KQ], light[7].kQ);
+   
 
-    glUniform1i(m_parameters[U_NUMLIGHTS], 1);
+
+
+    glUniform1i(m_parameters[U_NUMLIGHTS], 8);
 	
 	srand((unsigned int)time(0));
 
@@ -1490,6 +1690,48 @@ void SP2::Render()
         Vector3 lightDir(light[0].position.x, light[0].position.y, light[0].position.z);
         Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
         glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
+    }
+    if (light[1].type == Light::LIGHT_SPOT)
+    {
+        Vector3 lightDir(light[1].position.x, light[1].position.y, light[1].position.z);
+        Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+        glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightDirection_cameraspace.x);
+    }
+    if (light[2].type == Light::LIGHT_SPOT)
+    {
+        Vector3 lightDir(light[2].position.x, light[2].position.y, light[2].position.z);
+        Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+        glUniform3fv(m_parameters[U_LIGHT2_POSITION], 1, &lightDirection_cameraspace.x);
+    }
+    if (light[3].type == Light::LIGHT_POINT)
+    {
+        Vector3 lightDir(light[3].position.x, light[3].position.y, light[3].position.z);
+        Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+        glUniform3fv(m_parameters[U_LIGHT3_POSITION], 1, &lightDirection_cameraspace.x);
+    }
+    if (light[4].type == Light::LIGHT_SPOT)
+    {
+        Vector3 lightDir(light[4].position.x, light[4].position.y, light[4].position.z);
+        Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+        glUniform3fv(m_parameters[U_LIGHT4_POSITION], 1, &lightDirection_cameraspace.x);
+    }
+    if (light[5].type == Light::LIGHT_SPOT)
+    {
+        Vector3 lightDir(light[5].position.x, light[5].position.y, light[5].position.z);
+        Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+        glUniform3fv(m_parameters[U_LIGHT5_POSITION], 1, &lightDirection_cameraspace.x);
+    }
+    if (light[6].type == Light::LIGHT_SPOT)
+    {
+        Vector3 lightDir(light[6].position.x, light[6].position.y, light[6].position.z);
+        Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+        glUniform3fv(m_parameters[U_LIGHT6_POSITION], 1, &lightDirection_cameraspace.x);
+    }
+    if (light[7].type == Light::LIGHT_POINT)
+    {
+        Vector3 lightDir(light[7].position.x, light[7].position.y, light[7].position.z);
+        Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+        glUniform3fv(m_parameters[U_LIGHT7_POSITION], 1, &lightDirection_cameraspace.x);
     }
 
     std::stringstream s;
