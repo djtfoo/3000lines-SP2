@@ -463,7 +463,7 @@ BedTime::~BedTime()
 /******************************************************************************/
 void BedTime::DoInteraction()
 {
-	if(SharedData::GetInstance()->player->getHunger() < 100)
+	if(SharedData::GetInstance()->daynumber <= 7 && SharedData::GetInstance()->player->getHunger() < 100)
 	{
         SharedData::GetInstance()->sleep = true;
 	}

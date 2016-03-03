@@ -1443,18 +1443,6 @@ void SP2::Update(double dt)
 
     gateUpdate(dt);
 
-    if (Application::IsKeyPressed('P'))
-    {
-        SharedData::GetInstance()->gamestate = GAME_STATE_RABBIT;
-
-        SharedData::GetInstance()->player->position_= Vector3(5200, 25, 5000);
-        SharedData::GetInstance()->camera->position = Vector3(5200, 25, 5000);
-        SharedData::GetInstance()->camera->target = Vector3(5200, 25, 5001);
-    }
-	if (Application::IsKeyPressed('0'))
-	{
-		loadWeedGame();
-	}
 	SharedData::GetInstance()->interactnumber = 99;
 
     if (SharedData::GetInstance()->gamestate == GAME_STATE_CHONGAME) {
@@ -1514,8 +1502,6 @@ void SP2::Update(double dt)
         playerbullet.clear();
         enemybullet.clear();
     }
-
-    //if (SharedData::GetInstance()->player->position_)
 }
 
 void SP2::bulletUpadtes(double dt)
@@ -1787,17 +1773,27 @@ void SP2::Render()
     switch (SharedData::GetInstance()->gamestate)
     {
     case GAME_STATE_FREE:
+        //player crosshairs
+        RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
         break;
     case GAME_STATE_SHOP:
         RenderInShop();
         break;
     case GAME_STATE_WSGAME:
+        //player crosshairs
+        RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
         break;
     case GAME_STATE_CHONGAME: RenderChonGame();
+        //player crosshairs
+        RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
         break;
     case GAME_STATE_VEEGAME:
+        //player crosshairs
+        RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
         break;
     case GAME_STATE_JASIMGAME:
+        //player crosshairs
+        RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
         break;
     case GAME_STATE_RABBIT: 
         loadRabbitGame();
@@ -1877,9 +1873,6 @@ void SP2::Render()
     //hunger bar
     RenderObjectOnScreen(meshList[GEO_HUNGER_BAR], 23, 7, 1 + (float)(SharedData::GetInstance()->player->getHunger() / 3), 1);
     RenderTextOnScreen(meshList[GEO_TEXT], "Hunger", Color(0.5f, 1, 0.5f), 2, 11.5f, 3.7f);
-
-    //player crosshairs
-    RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30);
 
     if (viewOptions) {
         RenderUI();
@@ -3434,6 +3427,14 @@ void SP2::CheckCharacterLocation()
     else {
         SharedData::GetInstance()->location = OUTSIDE;
     }
+
+    if (SharedData::GetInstance()->daynumber > 7 && SharedData::GetInstance()->location == HANGAR) {    //start rabbit fight
+        SharedData::GetInstance()->gamestate = GAME_STATE_RABBIT;
+
+        SharedData::GetInstance()->player->position_ = Vector3(5200, 25, 5000);
+        SharedData::GetInstance()->camera->position = Vector3(5200, 25, 5000);
+        SharedData::GetInstance()->camera->target = Vector3(5201, 25, 5000);
+    }
 }
 
 void SP2::RenderCursor()
@@ -3743,9 +3744,9 @@ void SP2::Sleep(double dt)
     Application::IsKeyPressed('D');
 
     if (SharedData::GetInstance()->sleep) {
-        SharedData::GetInstance()->daynighttime += (float)(200 * dt);
-        sleepTime += 100 * dt;
-        if (sleepTime > 400) {      //sleep for 4 hours
+        SharedData::GetInstance()->daynighttime += (float)(1000 * dt);
+        sleepTime += 1000 * dt;
+        if (sleepTime > 800) {      //sleep for 8 hours
             SharedData::GetInstance()->sleep = false;
             sleepTime = 0;
             //reset the mini-games' bool
