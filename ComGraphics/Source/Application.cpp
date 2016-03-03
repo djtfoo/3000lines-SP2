@@ -119,10 +119,14 @@ void Application::Run()
     switch (SharedData::GetInstance()->program_state)
     {
     case PROGRAM_MENU: scene = new MainMenu();
-        SharedData::GetInstance()->engine->play2D("Sound/main menu bgm.XM", true);
+        if (SharedData::GetInstance()->playMusic) {
+            SharedData::GetInstance()->engine->play2D("Sound/main menu bgm.XM", true);
+        }
         break;
     case PROGRAM_GAME: scene = new SP2();
-        SharedData::GetInstance()->engine->play2D("Sound/game bgm.S3M", true);
+        if (SharedData::GetInstance()->playMusic) {
+            SharedData::GetInstance()->engine->play2D("Sound/game bgm.S3M", true);
+        }
         break;
     }
 	scene->Init();
@@ -153,10 +157,14 @@ void Application::Run()
             switch (SharedData::GetInstance()->program_state)
             {
             case PROGRAM_MENU: scene = new MainMenu();
-                SharedData::GetInstance()->engine->play2D("Sound/main menu bgm.XM", true);
+                if (SharedData::GetInstance()->playMusic) {
+                    SharedData::GetInstance()->engine->play2D("Sound/main menu bgm.XM", true);
+                }
                 break;
             case PROGRAM_GAME: scene = new SP2();
-                SharedData::GetInstance()->engine->play2D("Sound/game bgm.S3M", true);
+                if (SharedData::GetInstance()->playMusic) {
+                    SharedData::GetInstance()->engine->play2D("Sound/game bgm.S3M", true);
+                }
                 break;
             }
             scene->Init();

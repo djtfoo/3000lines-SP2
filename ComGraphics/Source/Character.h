@@ -1,6 +1,5 @@
 #include "Vector3.h"
 #include "Item.h"
-#include "Outfit.h"
 #include "GameState.h"
 
 #include <string>
@@ -34,11 +33,6 @@ private:
     int hunger_;
     unsigned int health_;
     unsigned int gold_;
-    //add pointers for clothes - hats, top, bottoms, etc
-    Hat* hat;
-    Top* top;
-    Bottoms* bottoms;
-	
 
 public:
     Player();

@@ -55,7 +55,6 @@ MainMenu::MainMenu()
     meshList[GEO_LOADBTM] = MeshBuilder::GenerateQuad("load_btm", Color(1, 1, 1), 80, 70);
     meshList[GEO_LOADBTM]->textureID = LoadTGA("Image/Text/loadBtm.tga");
 
-
     meshList[GEO_BUTTON] = MeshBuilder::GenerateQuad("menu_btn", Color(0, 0.7, 1), 14, 5);
     meshList[GEO_BUTTON]->textureID = LoadTGA("Image/Text/dialogue box.tga");
     meshList[GEO_BUTTONHOVER] = MeshBuilder::GenerateQuad("menu_btnhover", Color(0, 0.2, 1), 18, 5);
@@ -80,8 +79,6 @@ MainMenu::MainMenu()
     meshList[GEO_MOUSECUSTOM] = MeshBuilder::GenerateQuad("mouse_custom", Color(0, 0, 0), 3, 4);
     meshList[GEO_MOUSECUSTOM]->textureID = LoadTGA("Image/mouse.tga");
 
-    objx = objy = 0;
-
     btncheck = 0;
     helpBtnspd = optBtnspd = credBtnspd = 0;
     delaytime = 0;
@@ -94,7 +91,6 @@ MainMenu::MainMenu()
     bufferTime = 0.125;
 
     clicked = isClicked = selected = false;
-
 }
 MainMenu::~MainMenu()
 {
@@ -103,38 +99,29 @@ MainMenu::~MainMenu()
 
 void MainMenu::Init()
 {
-    //MENU_STATE state = MENU_MAIN;
+    b_Play.Set(0.397f, 0.571f, 0.435f, 0.667f);
+    b_Help.Set(0.f, 0.152f, 0.351f, 0.444f);
+    b_Options.Set(0.f, 0.152f, 0.476f, 0.556f);
+    b_Credits.Set(0.f, 0.152f, 0.588f, 0.68f);
+    b_Exit.Set(0.f, 0.152f, 0.752f, 0.847f);
+    b_MusicOn.Set(0.458f, 0.503f, 0.292f, 0.329f);
+    b_MusicOff.Set(0.534f, 0.591f, 0.292f, 0.329f);
+    b_SoundOn.Set(0.458f, 0.503f, 0.366f, 0.403f);
+    b_SoundOff.Set(0.534f, 0.591f, 0.366f, 0.403f);
 }
 
 void MainMenu::Update(double dt)
 {
-    //objx,y is for testing purpose use to determine location of anything
-    if (Application::IsKeyPressed('I'))
-    {
-        objy += 10 * dt;
-    }
-    if (Application::IsKeyPressed('K'))
-    {
-        objy -= 10* dt;
-    }
-    if (Application::IsKeyPressed('J'))
-    {
-        objx -= 10 * dt;
-    }
-    if (Application::IsKeyPressed('L'))
-    {
-        objx += 10 * dt;
-    }
-    //can be applied on anything at will
-
     if (Application::IsKeyPressed(VK_LBUTTON)) {
 
         switch (state)
         {
         case MENU_MAIN:
             elapsedTime += dt;
-            if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width / 2.52) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 1.75)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.3) && (SharedData::GetInstance()->height / 1.5)) {
+
+            //PLAY BUTTON
+            if (SharedData::GetInstance()->cursor_newxpos >= b_Play.minX && SharedData::GetInstance()->cursor_newxpos <= b_Play.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Play.minY && SharedData::GetInstance()->cursor_newypos <= b_Play.maxY) {
                 if (!selected) {
                     isClicked = true;
                     btncheck = 1;
@@ -147,8 +134,8 @@ void MainMenu::Update(double dt)
             }
 
             //HELP BUTTON
-            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.85) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 2.25)) {
+            else if (SharedData::GetInstance()->cursor_newxpos >= b_Help.minX && SharedData::GetInstance()->cursor_newxpos <= b_Help.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Help.minY && SharedData::GetInstance()->cursor_newypos <= b_Help.maxY) {
                 if (!selected)
                 {
                     isClicked = true;
@@ -162,8 +149,8 @@ void MainMenu::Update(double dt)
             }
 
             //OPTION BUTTON
-            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.1) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.8)) {
+            else if (SharedData::GetInstance()->cursor_newxpos >= b_Options.minX && SharedData::GetInstance()->cursor_newxpos <= b_Options.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Options.minY && SharedData::GetInstance()->cursor_newypos <= b_Options.maxY) {
                 if (!selected && Application::IsKeyPressed(VK_LBUTTON)) {
                     isClicked = true;
                     btncheck = 4;
@@ -176,8 +163,8 @@ void MainMenu::Update(double dt)
             }
 
             //CREDITS BUTTON
-            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.7) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.47)) {
+            else if (SharedData::GetInstance()->cursor_newxpos >= b_Credits.minX && SharedData::GetInstance()->cursor_newxpos <= b_Credits.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Credits.minY && SharedData::GetInstance()->cursor_newypos <= b_Credits.maxY) {
                 if (!selected && Application::IsKeyPressed(VK_LBUTTON))
                 {
                     isClicked = true;
@@ -191,8 +178,8 @@ void MainMenu::Update(double dt)
             }
 
             //EXIT BUTTON
-            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
+            else if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY) {
                 if (!selected && Application::IsKeyPressed(VK_LBUTTON) && elapsedTime >= bufferTime)
                 {
                     isClicked = true;
@@ -208,36 +195,84 @@ void MainMenu::Update(double dt)
             break;
 
         case MENU_INSTRUCTIONS:
-            if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
-                if (Application::IsKeyPressed(VK_LBUTTON)) {
+            //back button
+            if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY) {
+                if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
-                    state = MENU_MAIN;
-                    elapsedTime = 0;
                 }
+                state = MENU_MAIN;
+                elapsedTime = 0;
             }
 
             break;
 
         case MENU_OPTIONS:
-            if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
-                if (Application::IsKeyPressed(VK_LBUTTON)) {
-                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
-                    state = MENU_MAIN;
+            //music on button
+            if (SharedData::GetInstance()->cursor_newxpos >= b_MusicOn.minX && SharedData::GetInstance()->cursor_newxpos <= b_MusicOn.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_MusicOn.minY && SharedData::GetInstance()->cursor_newypos <= b_MusicOn.maxY) {
+                if (!SharedData::GetInstance()->playMusic) {    //music was switched off
+                    if (SharedData::GetInstance()->playSound) {     //clicking sound effect
+                        SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    }
+                    SharedData::GetInstance()->engine->play2D("Sound/main menu bgm.XM", true);
+                    SharedData::GetInstance()->playMusic = true;
                     elapsedTime = 0;
                 }
+            }
+
+            //music off button
+            if (SharedData::GetInstance()->cursor_newxpos >= b_MusicOff.minX && SharedData::GetInstance()->cursor_newxpos <= b_MusicOff.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_MusicOff.minY && SharedData::GetInstance()->cursor_newypos <= b_MusicOff.maxY) {
+                if (SharedData::GetInstance()->playMusic) {     //music was switched on
+                    SharedData::GetInstance()->engine->stopAllSounds();
+                    if (SharedData::GetInstance()->playSound) {     //clicking sound effect
+                        SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    }
+                    SharedData::GetInstance()->playMusic = false;
+                    elapsedTime = 0;
+                }
+            }
+
+            //sound on button
+            if (SharedData::GetInstance()->cursor_newxpos >= b_SoundOn.minX && SharedData::GetInstance()->cursor_newxpos <= b_SoundOn.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_SoundOn.minY && SharedData::GetInstance()->cursor_newypos <= b_SoundOn.maxY) {
+                if (!SharedData::GetInstance()->playSound) {    //sound was switched off at first
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    SharedData::GetInstance()->playSound = true;
+                    elapsedTime = 0;
+                }
+            }
+
+            //sound off button
+            if (SharedData::GetInstance()->cursor_newxpos >= b_SoundOff.minX && SharedData::GetInstance()->cursor_newxpos <= b_SoundOff.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_SoundOff.minY && SharedData::GetInstance()->cursor_newypos <= b_SoundOff.maxY) {
+                if (SharedData::GetInstance()->playSound) {     //sound was switched on at first
+                    SharedData::GetInstance()->playSound = false;
+                    elapsedTime = 0;
+                }
+            }
+
+            //back button
+            if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY) {
+                if (SharedData::GetInstance()->playSound) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                }
+                state = MENU_MAIN;
+                elapsedTime = 0;
             }
             break;
 
         case MENU_CREDITS:
-            if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
-                if (Application::IsKeyPressed(VK_LBUTTON)) {
+            //back button
+            if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY) {
+                if (SharedData::GetInstance()->playSound) {
                     SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
-                    state = MENU_MAIN;
-                    elapsedTime = 0;
                 }
+                state = MENU_MAIN;
+                elapsedTime = 0;
             }
             break;
 
@@ -248,10 +283,14 @@ void MainMenu::Update(double dt)
     else {
         if (state == MENU_MAIN) {
             elapsedTime += dt;
-            if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width / 2.52) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 1.75)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.3) && (SharedData::GetInstance()->height / 1.5)) {
+
+            //PLAY BUTTON
+            if (SharedData::GetInstance()->cursor_newxpos >= b_Play.minX && SharedData::GetInstance()->cursor_newxpos <= b_Play.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Play.minY && SharedData::GetInstance()->cursor_newypos <= b_Play.maxY) {
                 if (isClicked && btncheck == 1) {
-                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    if (SharedData::GetInstance()->playSound) {
+                        SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    }
                     clicked = true;
                     isClicked = false;
                     selected = true;
@@ -259,10 +298,12 @@ void MainMenu::Update(double dt)
             }
 
             //HELP BUTTON
-            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.85) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 2.25)) {
+            else if (SharedData::GetInstance()->cursor_newxpos >= b_Help.minX && SharedData::GetInstance()->cursor_newxpos <= b_Help.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Help.minY && SharedData::GetInstance()->cursor_newypos <= b_Help.maxY) {
                 if (isClicked && btncheck == 3) {
-                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    if (SharedData::GetInstance()->playSound) {
+                        SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    }
                     clicked = true;
                     isClicked = false;
                     selected = true;
@@ -270,10 +311,12 @@ void MainMenu::Update(double dt)
             }
 
             //OPTION BUTTON
-            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.1) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.8)) {
+            else if (SharedData::GetInstance()->cursor_newxpos >= b_Options.minX && SharedData::GetInstance()->cursor_newxpos <= b_Options.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Options.minY && SharedData::GetInstance()->cursor_newypos <= b_Options.maxY) {
                 if (isClicked && btncheck == 4) {
-                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    if (SharedData::GetInstance()->playSound) {
+                        SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    }
                     clicked = true;
                     isClicked = false;
                     selected = true;
@@ -284,7 +327,9 @@ void MainMenu::Update(double dt)
             else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
                 && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.7) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.47)) {
                 if (isClicked && btncheck == 5) {
-                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    if (SharedData::GetInstance()->playSound) {
+                        SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    }
                     clicked = true;
                     isClicked = false;
                     selected = true;
@@ -292,10 +337,12 @@ void MainMenu::Update(double dt)
             }
 
             //EXIT BUTTON
-            else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-                && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
+            else if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
+                && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY) {
                 if (isClicked && btncheck == 6) {
-                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    if (SharedData::GetInstance()->playSound) {
+                        SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    }
                     clicked = true;
                     isClicked = false;
                     selected = true;
@@ -562,8 +609,8 @@ void MainMenu::MainMenuPage()
 {
     /*Each individual buttons for menu here. Seperated by comment line*/
     //PLAY BUTTON
-    if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width / 2.52) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 1.75)
-        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.3) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.5)){
+    if (SharedData::GetInstance()->cursor_newxpos >= b_Play.minX && SharedData::GetInstance()->cursor_newxpos <= b_Play.maxX
+        && SharedData::GetInstance()->cursor_newypos >= b_Play.minY && SharedData::GetInstance()->cursor_newypos <= b_Play.maxY) {
         if (isClicked)
         {
             RenderButtonsOnScreen(meshList[GEO_PLAYBUTTONSELECTED], "Play", Color(0, 0, 0), 3, 38, 27, 11.5, 8.5);
@@ -577,8 +624,8 @@ void MainMenu::MainMenuPage()
         RenderButtonsOnScreen(meshList[GEO_PLAYBUTTON], "Play", Color(0, 0, 0), 3, 38, 27, 11.5, 8.5);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //HELP BUTTON
-    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.85) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 2.25)) {
+    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= b_Help.minX && SharedData::GetInstance()->cursor_newxpos <= b_Help.maxX
+        && SharedData::GetInstance()->cursor_newypos >= b_Help.minY && SharedData::GetInstance()->cursor_newypos <= b_Help.maxY) {
         if (isClicked)
         {
             RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Help", Color(1, 1, 1), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
@@ -592,8 +639,8 @@ void MainMenu::MainMenuPage()
         RenderButtonsOnScreen(meshList[GEO_BUTTON], "Help", Color(1, 1, 1), 2, 5 + helpBtnspd, 36, 1 + helpBtnspd / 2, 17.4);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //OPTION BUTTON
-    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.1) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.8)) {
+    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= b_Options.minX && SharedData::GetInstance()->cursor_newxpos <= b_Options.maxX
+        && SharedData::GetInstance()->cursor_newypos >= b_Options.minY && SharedData::GetInstance()->cursor_newypos <= b_Options.maxY) {
         if (isClicked)
         {
             RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Options", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
@@ -607,8 +654,8 @@ void MainMenu::MainMenuPage()
         RenderButtonsOnScreen(meshList[GEO_BUTTON], "Options", Color(1, 1, 1), 2, 5 + optBtnspd, 29, 0.2 + optBtnspd / 2, 14);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //CREDITS BUTTON
-    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.7) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.47)) {
+    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= b_Credits.minX && SharedData::GetInstance()->cursor_newxpos <= b_Credits.maxX
+        && SharedData::GetInstance()->cursor_newypos >= b_Credits.minY && SharedData::GetInstance()->cursor_newypos <= b_Credits.maxY) {
         if (isClicked)
         {
             RenderButtonsOnScreen(meshList[GEO_BUTTONSELECTED], "Credits", Color(1, 1, 1), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
@@ -622,8 +669,8 @@ void MainMenu::MainMenuPage()
         RenderButtonsOnScreen(meshList[GEO_BUTTON], "Credits", Color(1, 1, 1), 2, 5 + credBtnspd, 22, 0.4 + credBtnspd / 2, 10.5);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //EXIT BUTTON
-    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
+    if (!clicked && SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
+        && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY) {
         if (isClicked)
         {
             RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(1, 1, 1), 2, 5, 12, 2.2, 5.4);
@@ -637,15 +684,11 @@ void MainMenu::MainMenuPage()
         RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Exit", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    RenderTextOnScreen(meshList[GEO_TEXT], " Romantica", Color(1, 0.3, 1), 6, 3, 8);
+    RenderTextOnScreen(meshList[GEO_TEXT], " ROMANTICA", Color(1, 0.3, 1), 6, 3, 8);
     RenderTextOnScreen(meshList[GEO_TEXT], " ROOM", Color(1, 0.3, 1), 4, 8, 11);
 
     RenderButtonsOnScreen(meshList[GEO_LOADTOP], " ", Color(1, 1, 1), 3, 40, loadDown, 2, 2);
     RenderButtonsOnScreen(meshList[GEO_LOADBTM], " ", Color(1, 1, 1), 3, 40, loadUp, 2, 2);
-
-    //debug
-    RenderTextOnScreen(meshList[GEO_TEXT], "objx : " + std::to_string(SharedData::GetInstance()->cursor_newxpos), Color(0, 0, 0), 2, 1, 2);
-    RenderTextOnScreen(meshList[GEO_TEXT], "objy : " + std::to_string(SharedData::GetInstance()->cursor_newypos), Color(0, 0, 0), 2, 1, 1);
 }
 
 void MainMenu::HelpPage()
@@ -675,11 +718,8 @@ void MainMenu::HelpPage()
 
     RenderTextOnScreen(meshList[GEO_TEXT], "Beware of the rabbit at the end...!", Color(1, 0.3, 0.3), 2, 10, 3);
 
-    //RenderTextOnScreen(meshList[GEO_TEXT], "Captain : Jing Ting", Color(0, 0, 1), 2, 7, 19);
-   
-
-    if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18))
+    if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
+        && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY)
     {
         RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Back", Color(0, 0, 0), 2, 5, 12, 0.5, 5.4);
     }
@@ -700,14 +740,33 @@ void MainMenu::OptionsPage()
     btncheck = 0;
 
     RenderButtonsOnScreen(meshList[GEO_BIGDIALOGUE], "OPTIONS", Color(0, 0, 1), 3, 40, 30, 5, 17);
-    if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18))
+    RenderTextOnScreen(meshList[GEO_TEXT], "Music", Color(0, 0, 1), 3, 6, 13.5f);
+    if (SharedData::GetInstance()->playMusic) {
+        RenderTextOnScreen(meshList[GEO_TEXT], "On", Color(1, 1, 1), 3, 12, 13.5f);
+        RenderTextOnScreen(meshList[GEO_TEXT], "Off", Color(0, 0, 1), 3, 14, 13.5f);
+    }
+    else {
+        RenderTextOnScreen(meshList[GEO_TEXT], "On", Color(0, 0, 1), 3, 12, 13.5f);
+        RenderTextOnScreen(meshList[GEO_TEXT], "Off", Color(1, 1, 1), 3, 14, 13.5f);
+    }
+    
+    RenderTextOnScreen(meshList[GEO_TEXT], "Sound", Color(0, 0, 1), 3, 6, 12);
+    if (SharedData::GetInstance()->playSound) {
+        RenderTextOnScreen(meshList[GEO_TEXT], "On", Color(1, 1, 1), 3, 12, 12);
+        RenderTextOnScreen(meshList[GEO_TEXT], "Off", Color(0, 0, 1), 3, 14, 12);
+    }
+    else {
+        RenderTextOnScreen(meshList[GEO_TEXT], "On", Color(0, 0, 1), 3, 12, 12);
+        RenderTextOnScreen(meshList[GEO_TEXT], "Off", Color(1, 1, 1), 3, 14, 12);
+    }
+
+    if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
+        && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY)
     {
         RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Back", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
     }
     else
         RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Back", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
-
 }
 
 void MainMenu::CreditsPage()
@@ -728,8 +787,8 @@ void MainMenu::CreditsPage()
     RenderTextOnScreen(meshList[GEO_TEXT], "1stMate : Ray", Color(1, 1, 0), 2, 8, 10);
 
 
-    if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
-        && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18))
+    if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX
+        && SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY)
     {
         RenderButtonsOnScreen(meshList[GEO_BUTTONREDHOVER], "Back", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
     }

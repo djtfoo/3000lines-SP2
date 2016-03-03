@@ -91,7 +91,6 @@
     <ClCompile Include="Source\LightPuzzle.cpp" />
     <ClCompile Include="Source\MainMenu.cpp" />
     <ClCompile Include="Source\MiniMapCamera.cpp" />
-    <ClCompile Include="Source\Outfit.cpp" />
     <ClCompile Include="Source\Pause.cpp" />
     <ClCompile Include="Source\RabbitFight.cpp" />
     <ClCompile Include="Source\Character.cpp" />
@@ -114,7 +113,6 @@
     <ClInclude Include="Source\DialogueProcessor.h" />
     <ClInclude Include="Source\GameState.h" />
     <ClInclude Include="Source\LightPuzzle.h" />
-    <ClInclude Include="Source\Outfit.h" />
     <ClInclude Include="Source\Pause.h" />
     <ClInclude Include="Source\Interaction.h" />
     <ClInclude Include="Source\Item.h" />

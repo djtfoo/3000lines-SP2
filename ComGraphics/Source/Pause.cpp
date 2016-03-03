@@ -59,6 +59,9 @@ void Pause::CheckCursor(double dt)
             //resume game
             if (SharedData::GetInstance()->cursor_newypos >= b_ResumeGame.minY && SharedData::GetInstance()->cursor_newypos <= b_ResumeGame.maxY)
             {
+                if (SharedData::GetInstance()->playSound) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
+                }
                 SharedData::GetInstance()->paused = false;
                 SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
                 SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;

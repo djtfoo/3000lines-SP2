@@ -25,6 +25,8 @@ class SharedData
 public:
     //start sound engine with default parameters
     ISoundEngine* engine;
+    bool playSound;
+    bool playMusic;
 
     PROGRAM_STATE program_state;
     bool programstate_change;
@@ -103,6 +105,8 @@ private:
     SharedData() {
         //irrKlang sound engine
         engine = createIrrKlangDevice();
+        playSound = true;
+        playMusic = true;
 
         program_state = PROGRAM_MENU;
         programstate_change = false;
@@ -168,8 +172,12 @@ private:
         engine->drop();     //delete irrKlang engine
 
         delete player;
-        //delete enemy;
+        delete enemy;
         delete camera;
+
+        for (size_t i = 0; i < NPCs.size(); ++i) {
+            delete NPCs[i];
+        }
     }
 };
 

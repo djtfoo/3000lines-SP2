@@ -30,6 +30,9 @@ void Shop::CheckCursor(double dt, int value)
         if (SharedData::GetInstance()->cursor_newxpos >= b_ToggleLeft.minX && SharedData::GetInstance()->cursor_newxpos <= b_ToggleLeft.maxX &&
             SharedData::GetInstance()->cursor_newypos >= b_ToggleLeft.minY && SharedData::GetInstance()->cursor_newypos <= b_ToggleLeft.maxY)
         {
+            if (SharedData::GetInstance()->playSound) {
+                SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
+            }
             if (shopIterator == ShopItemsID.begin()) {  //reached beginning of list
                 shopIterator = ShopItemsID.end();
             }
@@ -42,6 +45,9 @@ void Shop::CheckCursor(double dt, int value)
         else if (SharedData::GetInstance()->cursor_newxpos >= b_ToggleRight.minX && SharedData::GetInstance()->cursor_newxpos <= b_ToggleRight.maxX &&
             SharedData::GetInstance()->cursor_newypos >= b_ToggleRight.minY && SharedData::GetInstance()->cursor_newypos <= b_ToggleRight.maxY)
         {
+            if (SharedData::GetInstance()->playSound) {
+                SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
+            }
             ++shopIterator;
             if (shopIterator == ShopItemsID.end()) {    //reached end of list
                 shopIterator = ShopItemsID.begin();
@@ -57,7 +63,9 @@ void Shop::CheckCursor(double dt, int value)
             if (SharedData::GetInstance()->player->getGold() >= value) {
                 if (!SharedData::GetInstance()->player->invfull())      //if player's inventory is not full
                 {
-                    SharedData::GetInstance()->engine->play2D("Sound/shop buy.mp3");
+                    if (SharedData::GetInstance()->playSound) {
+                        SharedData::GetInstance()->engine->play2D("Sound/shop buy.mp3");
+                    }
                     SharedData::GetInstance()->player->changeGold(-value);
                     SharedData::GetInstance()->player->addItem(*shopIterator);
                     elapsedTime = 0;
@@ -73,6 +81,9 @@ void Shop::CheckCursor(double dt, int value)
         else if (SharedData::GetInstance()->cursor_newxpos >= b_Exit.minX && SharedData::GetInstance()->cursor_newxpos <= b_Exit.maxX &&
             SharedData::GetInstance()->cursor_newypos >= b_Exit.minY && SharedData::GetInstance()->cursor_newypos <= b_Exit.maxY)
         {
+            if (SharedData::GetInstance()->playSound) {
+                SharedData::GetInstance()->engine->play2D("Sound/button press 2.mp3");
+            }
             SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
             SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
             SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;

@@ -6,6 +6,8 @@
 #include "Light.h"
 #include "Material.h"
 
+#include "Button.h"
+
 #ifndef MAIN_MENU_H
 #define MAIN_MENU_H
 
@@ -78,6 +80,16 @@ class MainMenu : public Scene
         U_TOTAL,
     };
 
+    Button b_Play;
+    Button b_Help;
+    Button b_Options;
+    Button b_Credits;
+    Button b_Exit;  //also a back button
+    Button b_MusicOn;   //inside options
+    Button b_MusicOff;  //inside options
+    Button b_SoundOn;   //inside options
+    Button b_SoundOff;  //inside options
+
 public:
     MainMenu();
     ~MainMenu();
@@ -134,8 +146,6 @@ public:
 
     float loadDown;
     float loadUp;
-
-    float objx, objy;
 };
 
 #endif
