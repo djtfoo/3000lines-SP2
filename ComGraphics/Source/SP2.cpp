@@ -27,7 +27,7 @@ SP2::SP2()
 
     delayer = 0;
     delayBuffer = 0;
-    lightpower = (float)0.3;
+    lightpower = 0.3f;
     lightpos = 1000;
     chonFloat = false;
     chonFloaty = vibrateX = vibrateY = 0;
@@ -209,9 +209,6 @@ SP2::SP2()
     meshList[GEO_CHON]->material.kSpecular.Set(0.7f, 0.7f, 0.7f);
     meshList[GEO_CHON]->material.kShininess = 1.f;
 
-    //GEO_MAP
-    meshList[GEO_MAP] = MeshBuilder::GenerateQuad("minimap", Color(1, 1, 1), 10, 10);
-    
     meshList[GEO_LAYOUT] = MeshBuilder::GenerateOBJ("big map", "OBJ/bigareaFixed.obj");
     meshList[GEO_LAYOUT]->textureID = LoadTGA("Image/layout/bigareatxture.tga");
     meshList[GEO_LAYOUT]->material.kAmbient.Set(0.3f, 0.3f, 0.3f);
@@ -478,8 +475,6 @@ SP2::SP2()
 	meshList[GEO_ITEMSELECT] = MeshBuilder::GenerateQuad("itemselect", Color(1, 1, 1), 4, 4);
 	meshList[GEO_ITEMSELECT]->textureID = LoadTGA("Image/itemselect.tga");
 
-    meshList[GEO_MAP] = MeshBuilder::GenerateMinimap("map", 10, 10);
-
 	meshList[GEO_DAYNIGHTICON] = MeshBuilder::GenerateQuad("daynight", Color(1, 1, 1), 12, 12);
 	meshList[GEO_DAYNIGHTICON]->textureID = LoadTGA("Image/daynighticon.tga");
 
@@ -617,9 +612,6 @@ SP2::SP2()
 
     meshList[GEO_CURSOR] = MeshBuilder::GenerateQuad("mouse_custom", Color(0, 0, 0), 3, 4);
     meshList[GEO_CURSOR]->textureID = LoadTGA("Image/mouse.tga");
-
-	meshList[GEO_UIBG] = MeshBuilder::GenerateQuad("uibg", Color(0, 0, 0), 4, 3);
-	meshList[GEO_UIBG]->textureID = LoadTGA("Image/UIBG.tga");
 
     meshList[GEO_DIALOGUEOPTION] = MeshBuilder::GenerateQuad("selection button", Color(0, 0, 0), 30, 5);
 
@@ -946,7 +938,6 @@ void SP2::Init()
     pickupCounter = 0;
 
 	soundtimer = 1;
-	daynumber = 1;
     sleepTime = 0;
 
     postercounter = 0;
@@ -967,14 +958,14 @@ void SP2::loadWeedGame()
 		Interaction* interactions4;
 		for (int i = 0; i < 10; i++)
 		{
-			weedgame[i] = (Vector3((float)(rand() % 140 + 865, 1 + (0.1f * i), rand() % 100 - 400)));
+			weedgame[i] = (Vector3(rand() % 140 + 865, 1 + (0.1f * i), rand() % 100 - 400));
 			interactions4 = new WeedInteraction();
 			interactions4->bound1.Set(weedgame[i].x - 3, 0, weedgame[i].z - 3); interactions4->bound2.Set(weedgame[i].x + 3, 6, weedgame[i].z + 3);
 			SharedData::GetInstance()->interactionItems[i + 37] = interactions4;
 		}
 		for (unsigned int i = 10; i < weedgame.size(); i++)
 		{
-            weedgame[i] = (Vector3((float)(rand() % 140 + 865, 10 + (0.1f * i), rand() % 100 - 400)));
+            weedgame[i] = (Vector3(rand() % 140 + 865, 10 + (0.1f * i), rand() % 100 - 400));
 			interactions4 = new FarmPlantInteraction();
 			interactions4->bound1.Set(weedgame[i].x - 3, 0, weedgame[i].z - 3); interactions4->bound2.Set(weedgame[i].x + 3, 7, weedgame[i].z + 3);
 			SharedData::GetInstance()->interactionItems[i + 37] = interactions4;
@@ -985,12 +976,12 @@ void SP2::loadWeedGame()
 	{
 		for (int i = 0; i < 10; i++)
 		{
-            weedgame.push_back(Vector3((float)(rand() % 140 + 865, 1 + (0.1f * i), rand() % 100 - 400)));
+            weedgame.push_back(Vector3(rand() % 140 + 865, 1 + (0.1f * i), rand() % 100 - 400));
 			std::cout << " load game: " << weedgame[i] << std::endl;
 		}
 		for (int i = 10; i < 30; i++)
 		{
-            weedgame.push_back(Vector3((float)(rand() % 140 + 865, 10 + (0.1 * i), rand() % 100 - 400)));
+            weedgame.push_back(Vector3(rand() % 140 + 865, 10 + (0.1 * i), rand() % 100 - 400));
 		}
 	}
 	
@@ -1057,7 +1048,7 @@ void SP2::Update(double dt)
         }
     }
     else if (SharedData::GetInstance()->sleep) {
-        Sleep();    //clears off key press bools and cursor movement
+        Sleep(dt);    //clears off key press bools and cursor movement
     }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE) {
         if (SharedData::GetInstance()->dialogueProcessor.convostate == CONVO_GIFT) {
@@ -1100,17 +1091,17 @@ void SP2::Update(double dt)
     }
     else
     {
-        delayBuffer += (float)(0.1);
+        delayBuffer += 0.1f;
         if (delayBuffer >= 2)
         {
             delayBuffer = 2;
         }
     }
 
-	rotator++;
+	rotator += (float)(10 * dt);
 
     //day-night time increasing
-    if (!SharedData::GetInstance()->paused) {
+    if (!SharedData::GetInstance()->paused && SharedData::GetInstance()->gamestate != GAME_STATE_SHOP) {
         SharedData::GetInstance()->daynighttime += (float)(dt * 10);
         if (((int)SharedData::GetInstance()->daynighttime % 100) > 60)
         {
@@ -1124,7 +1115,7 @@ void SP2::Update(double dt)
         if (SharedData::GetInstance()->daynighttime > 2400)
         {
             SharedData::GetInstance()->daynighttime = 0;
-            daynumber++;
+            SharedData::GetInstance()->daynumber++;
             for (int i = 0; i < SharedData::GetInstance()->player->itemHave(4); i++)
             {
                 if (rand() % 2)
@@ -1163,8 +1154,8 @@ void SP2::Update(double dt)
 
     if (vibrateX < 0.6 && vibrateY < 0.6)
     {
-        vibrateX += (float)(0.25);
-        vibrateY += (float)(0.17);
+        vibrateX += 0.25f;
+        vibrateY += 0.17f;
     }
     else
     {
@@ -1174,7 +1165,7 @@ void SP2::Update(double dt)
 
     if (chonFloat == false)
     {
-        chonFloaty += (float)(0.1);
+        chonFloaty += 0.1f;
         if (chonFloaty >= 10.0f)
         {
             chonFloat = true;
@@ -1182,17 +1173,12 @@ void SP2::Update(double dt)
     }
     if (chonFloat == true)
     {
-        chonFloaty -= (float)(0.1);
+        chonFloaty -= 0.1f;
         if (chonFloaty <= 0)
         {
             chonFloat = false;
         }
     }
-    ////minimapUpdate()
-    //GEO_MAP
-    //meshList[GEO_MAP] = MeshBuilder::GenerateMinimap("map", 10, 10);
-    //meshList[GEO_MAP]->textureID = LoadTGA("Image/Donna.tga");
-    
 
     //debugging code
     if (Application::IsKeyPressed('O'))
@@ -1213,13 +1199,13 @@ void SP2::Update(double dt)
         //Lighting
     if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpower <= 1.3)
     {
-        lightpower += (float)(0.001);
+        lightpower += 0.001f;
         light[0].power = lightpower;
         glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
     }
     if (SharedData::GetInstance()->daynighttime >= 1900 && lightpower >= 0.3 && lightpos <= 1000)
     {
-        lightpower -= (float)(0.001);
+        lightpower -= 0.001f;
         lightpos += 1;
         light[0].power = lightpower;
         glUniform1f(m_parameters[U_LIGHT0_POWER], light[0].power);
@@ -1230,12 +1216,12 @@ void SP2::Update(double dt)
     //Position of Light
     if (SharedData::GetInstance()->daynighttime >= 0700 && SharedData::GetInstance()->daynighttime <= 1850 && lightpos >= -1000)
     {
-        lightpos -= (float)(0.4);
+        lightpos -= 0.4f;
         light[0].position.Set(0, 1000, lightpos);
     }
     if (SharedData::GetInstance()->daynighttime >= 1900 || SharedData::GetInstance()->daynighttime <= 0650 && lightpos <= 1000)
     {
-        lightpos += (float)(0.85);
+        lightpos += 0.85f;
         light[0].position.Set(0, 1000, lightpos);
     }
 
@@ -1409,7 +1395,7 @@ void SP2::checkE_BulletCollide(EnemyBullet& bullet)
     else
     {
         if (invulnerable < 5)
-            invulnerable += (float)(0.01);
+            invulnerable += 0.01f;
     }
     std::cout << player.getHealth() << std::endl;
 }
@@ -1531,6 +1517,10 @@ void SP2::Render()
             RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
             RenderTextOnScreen(meshList[GEO_TEXT], "\"No problem!\"", Color(1, 1, 1), 2, 26, 10.5f);
             break;
+        case CONVO_BOSSPROMPT:
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+            RenderTextOnScreen(meshList[GEO_TEXT], "\"I will miss you\"", Color(1, 1, 1), 2, 26, 10.5f);
+            break;
         }
         RenderCursor();
         RenderLoveMeter();
@@ -1552,8 +1542,13 @@ void SP2::Render()
     RenderTextOnScreen(meshList[GEO_TEXT], "Hunger", Color(0.5f, 1, 0.5f), 2, 11.5f, 3.7f);
     RenderInventory();
     if (viewOptions) {
-        RenderObjectOnScreen(meshList[GEO_UIBG], 22, 50, 12, 7);
         RenderUI();
+    }
+
+    //render prompt for end-game
+    if (SharedData::GetInstance()->daynumber > 7) {   //a week has passed
+        RenderTextOnScreen(meshList[GEO_TEXT], "The spacecraft is fixed", Color(0, 0.6f, 1), 3, 2, 11.5f);
+        RenderTextOnScreen(meshList[GEO_TEXT], "Go to the hangar", Color(0, 0.6f, 1), 3, 2, 10.5f);
     }
 
     //render game information
@@ -1643,13 +1638,16 @@ void SP2::loadFree()
     //RenderObjectOnScreen(meshList[GEO_INVENTORY], 40, 2.5);
     RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30,1,1);
 
-    //RenderMinimap();
-    
     //interaction
     if (SharedData::GetInstance()->canInteract && SharedData::GetInstance()->interactptr->pressButton) {
         std::stringstream ss;
         ss << "Press " << SharedData::GetInstance()->interactbutton;
         RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 3, 2, 5.5);
+    }
+    if (SharedData::GetInstance()->sleep) {
+        std::stringstream ss;
+        ss << "Sleeping...";
+        RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(0, 0, 1), 3, 5, 7.5f);
     }
 }  
 
@@ -1790,38 +1788,38 @@ void SP2::gateUpdate(double dt)
                     }
                     return;
                 }
-                if (gateopenBool[4] == true)
-                {//room 1
-                    gateobjs[10] += (float)(100 * dt);
-
-                    if (gateobjs[10] >= 70)
-                        gateobjs[10] = 70;
-                    return;
-                }
-                if (gateopenBool[5] == true)
-                {//r3
-                    gateobjs[11] += (float)(100 * dt);
-
-                    if (gateobjs[11] >= 243)
-                        gateobjs[11] = 143;
-                    return;
-                }
-                if (gateopenBool[6] == true)
-                {//r2
-                    gateobjs[12] += (float)(100 * dt);
-
-                    if (gateobjs[12] >= 243)
-                        gateobjs[12] = 143;
-                    return;
-                }
-                if (gateopenBool[7] == true)
-                {//r4
-                    gateobjs[13] += (float)(100 * dt);
-
-                    if (gateobjs[13] >= 243)
-                        gateobjs[13] = 143;
-                    return;
-                }
+                //if (gateopenBool[4] == true)
+                //{//room 1
+                //    gateobjs[10] += (float)(100 * dt);
+                //
+                //    if (gateobjs[10] >= 70)
+                //        gateobjs[10] = 70;
+                //    return;
+                //}
+                //if (gateopenBool[5] == true)
+                //{//r3
+                //    gateobjs[11] += (float)(100 * dt);
+                //
+                //    if (gateobjs[11] >= 143)
+                //        gateobjs[11] = 143;
+                //    return;
+                //}
+                //if (gateopenBool[6] == true)
+                //{//r2
+                //    gateobjs[12] += (float)(100 * dt);
+                //
+                //    if (gateobjs[12] >= 143)
+                //        gateobjs[12] = 143;
+                //    return;
+                //}
+                //if (gateopenBool[7] == true)
+                //{//r4
+                //    gateobjs[13] += (float)(100 * dt);
+                //
+                //    if (gateobjs[13] >= 143)
+                //        gateobjs[13] = 143;
+                //    return;
+                //}
             }
             else
             {
@@ -2004,12 +2002,11 @@ void SP2::puzzleLogic()
     if (lightpuzz.checkPuzzleAns((int)(SharedData::GetInstance()->one), (int)(SharedData::GetInstance()->two), (int)(SharedData::GetInstance()->three), (int)(SharedData::GetInstance()->four)) == true)
     {
         SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
-        std::cout << "You win!" << std::endl;
         lightpuzz.generatePuzzle();
         SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
         SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_FINISHMINIGAME;
         //increase love meter and gain gold based on number of tries
-        int gained = 12 - (int)(SharedData::GetInstance()->switchCount);
+        int gained = 10 - SharedData::GetInstance()->switchCount;
         if (gained < 0) {   //cannot gain negative
             gained = 0;
         }
@@ -2071,7 +2068,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
         //blue move to red
         if (ballbluX >= 310)
         {
-            ballbluX -= (float)(0.3);
+            ballbluX -= 0.3f;
             if (ballbluZ <= -364)
             {
                 ballbluZ += 1;
@@ -2094,7 +2091,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
         //yellow2 move to blue2(red pos)
         if (ballyellX >= 310)
         {
-            ballyellX -= (float)(0.3);
+            ballyellX -= 0.3f;
             if (ballyellZ <= -364)
             {
                 ballyellZ += 1;
@@ -2108,7 +2105,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
             ballbluX += 1;
             if (ballbluZ >= -469)
             {
-                ballbluZ -= (float)(0.7);
+                ballbluZ -= 0.7f;
             }
         }
 
@@ -2131,7 +2128,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
             ballyellX += 1;
             if (ballyellZ >= -469)
             {
-                ballyellZ -= (float)(0.7);
+                ballyellZ -= 0.7f;
             }
         }
 
@@ -2148,7 +2145,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
         //red moves to oriRed(red pos)
         if (ballredX >= 310)
         {
-            ballredX -= (float)(0.3);
+            ballredX -= 0.3f;
             if (ballredZ <= -364)
             {
                 ballredZ += 1;
@@ -3457,7 +3454,6 @@ void SP2::RenderInventoryOnScreenStatic(Mesh* mesh, float x, float y)
 
 	modelStack.PushMatrix();
 	modelStack.Translate(x, y, 0);
-	//modelStack.Rotate(rotator, 0, 1, 0);
 	modelStack.Rotate(-75, 1, 0, 1);
 	modelStack.Scale(1.2f, 1.2f, 1.2f);
 	RenderMesh(mesh, false);
@@ -3488,7 +3484,7 @@ void SP2::RenderInventoryOnScreenRotating(Mesh* mesh, float x, float y)
 
 	modelStack.PushMatrix();
 	modelStack.Translate(x, y, 0);
-    modelStack.Rotate((float)(rotator), 0, 1, 0);
+    modelStack.Rotate(rotator, 0, 1, 0);
 	modelStack.Rotate(-75, 1, 0, 1);
 	modelStack.Scale(1.2f, 1.2f, 1.2f);
 	RenderMesh(mesh, false);
@@ -3598,7 +3594,7 @@ void SP2::RenderTime()
 	RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(1, 0, 0), 3, 0, 16);
 
 	timey.str("");
-	timey << "DAY " << daynumber;
+    timey << "DAY " << SharedData::GetInstance()->daynumber;
 	RenderTextOnScreen(meshList[GEO_TEXT], timey.str(), Color(0, 1, 0), 3, 0, 16);
 
 	RenderTimeOnScreen(meshList[GEO_DAYNIGHTICON], 80, 60);
@@ -3641,39 +3637,9 @@ void SP2::RenderUI()
 
 	//time
 	s.str("");
-	s << "DAY " << daynumber;
+    s << "DAY " << SharedData::GetInstance()->daynumber;
 	s.str();
 	RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0, 1), 3, 20, 19);
-}
-
-void SP2::RenderMinimap()
-{
-    minimappp.LoadIdentity();
-    minimappp.LookAt(minimappy.pos.x, minimappy.pos.y, minimappy.pos.z, minimappy.targ.x, minimappy.targ.y, minimappy.targ.z, minimappy.UP.x, minimappy.UP.y, minimappy.UP.z);
-
-    if (!meshList[GEO_MAP]->textureID <= 0)  //error check
-        return;
-
-    glDisable(GL_DEPTH_TEST);
-    Mtx44 ortho;
-    ortho.SetToOrtho(0, 80, 0, 60, -10, 10);    //size of screen UI
-    projectionStack.PushMatrix();
-    projectionStack.LoadMatrix(ortho);
-    viewStack.PushMatrix();
-    viewStack.LoadIdentity();   //no need camera for ortho mode
-
-    modelStack.PushMatrix();
-    modelStack.LoadIdentity();  //reset modelStack
-
-    modelStack.PushMatrix();
-    
-    modelStack.Translate(15, 15, 0);
-    RenderMesh(meshList[GEO_MAP], false);
-
-    projectionStack.PopMatrix();
-    viewStack.PopMatrix();
-    modelStack.PopMatrix();
-    glEnable(GL_DEPTH_TEST);
 }
 
 void SP2::RenderGates()
@@ -3738,22 +3704,22 @@ void SP2::RenderGates()
 
         //Rooms
     modelStack.PushMatrix();
-    modelStack.Translate(550, 18, gateobjs[10]);
+    modelStack.Translate(550, 18, -119);
     modelStack.Scale(1, 34, 34);
     RenderMesh(meshList[GEO_GATE1], false);        //room1  (away from ctrl, closest to lab)
     modelStack.PopMatrix();
         modelStack.PushMatrix();
-        modelStack.Translate(626, 18, gateobjs[11]);
+        modelStack.Translate(626, 18, -119);
         modelStack.Scale(1, 34, 34);
         RenderMesh(meshList[GEO_GATE2], false);     //room3 (across rm1)
         modelStack.PopMatrix();                     //       4 - 2
-    modelStack.PushMatrix();                        //         /
-    modelStack.Translate(550, 18, gateobjs[12]);    //       3 - 1
-    modelStack.Scale(1, 34, 34);
-    RenderMesh(meshList[GEO_GATE1], false);         //room2 (same lane as rm1, closer to ctrl)
-    modelStack.PopMatrix();
+    //modelStack.PushMatrix();                        //         /
+    //modelStack.Translate(550, 18, 67);    //       3 - 1
+    //modelStack.Scale(1, 34, 34);
+    //RenderMesh(meshList[GEO_GATE1], false);         //room2 (same lane as rm1, closer to ctrl)
+    //modelStack.PopMatrix();
         modelStack.PushMatrix();
-        modelStack.Translate(626, 18, gateobjs[13]);
+        modelStack.Translate(626, 18, 67);
         modelStack.Scale(1, 34, 34);
         RenderMesh(meshList[GEO_GATE2], false);     //room4 (same lane as rm3, across rm2)
         modelStack.PopMatrix();
@@ -4145,7 +4111,7 @@ void SP2::RenderLoveMeter()
     RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 2, 2.f, 18);
 }
 
-void SP2::Sleep()
+void SP2::Sleep(double dt)
 {
     SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
     SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
@@ -4156,8 +4122,8 @@ void SP2::Sleep()
     Application::IsKeyPressed('D');
 
     if (SharedData::GetInstance()->sleep) {
-        SharedData::GetInstance()->daynighttime += 10;
-        sleepTime += 10;
+        SharedData::GetInstance()->daynighttime += 200 * dt;
+        sleepTime += 100 * dt;
         if (sleepTime > 400) {      //sleep for 4 hours
             SharedData::GetInstance()->sleep = false;
             sleepTime = 0;

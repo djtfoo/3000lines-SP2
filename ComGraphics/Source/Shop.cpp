@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "SharedData.h"
 
-Shop::Shop() : elapsedTime(0), bufferTime(0.125)
+Shop::Shop() : elapsedTime(0), bufferTime(0.15)
 {
     ShopItemsID.push_back(1);
     for (int i = 6; i <= 13; ++i) {
@@ -57,6 +57,7 @@ void Shop::CheckCursor(double dt, int value)
             if (SharedData::GetInstance()->player->getGold() >= value) {
                 if (!SharedData::GetInstance()->player->invfull())      //if player's inventory is not full
                 {
+                    SharedData::GetInstance()->engine->play2D("Sound/shop buy.mp3");
                     SharedData::GetInstance()->player->changeGold(-value);
                     SharedData::GetInstance()->player->addItem(*shopIterator);
                     elapsedTime = 0;

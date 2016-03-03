@@ -8,6 +8,12 @@
 #include "GameState.h"
 #include "DialogueProcessor.h"
 
+#include "irrklang/irrKlang.h"
+
+using namespace irrklang;
+
+#pragma comment(lib, "irrKlang.lib")    //link with irrKlang.dll
+
 using std::vector;
 using std::map;
 
@@ -17,9 +23,13 @@ using std::map;
 class SharedData
 {
 public:
+    //start sound engine with default parameters
+    ISoundEngine* engine;
+
     PROGRAM_STATE program_state;
     bool programstate_change;
 	float daynighttime;
+    int daynumber;
 	int pointscounter;
 	int weedcounter;
 
@@ -91,6 +101,9 @@ public:
 
 private:
     SharedData() {
+        //irrKlang sound engine
+        engine = createIrrKlangDevice();
+
         program_state = PROGRAM_MENU;
         programstate_change = false;
 
@@ -110,6 +123,10 @@ private:
         NPCs.push_back(npc);
 
         interactptr = 0;
+
+        //daynight
+        daynighttime = 0;
+        daynumber = 1;
 
         //states
         gamestate = GAME_STATE_FREE;
@@ -148,6 +165,8 @@ private:
         firstball = 0;
     }
     ~SharedData() {
+        engine->drop();     //delete irrKlang engine
+
         delete player;
         //delete enemy;
         delete camera;

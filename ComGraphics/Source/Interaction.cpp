@@ -49,7 +49,13 @@ void Dialogue::DoInteraction()
                 (*it)->position_.y >= b1.y && (*it)->position_.y <= b2.y &&
                 (*it)->position_.z >= b1.z && (*it)->position_.z <= b2.z) {
                 SharedData::GetInstance()->dialogueProcessor.npc = *it;
-                SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_INTRO;
+
+                if (SharedData::GetInstance()->daynumber <= 7) {
+                    SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_INTRO;
+                }
+                else {
+                    SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_BOSSPROMPT;
+                }
                 SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
 
                 //set cursor
@@ -98,7 +104,7 @@ void ManureInteraction::DoInteraction()
     if (SharedData::GetInstance()->gamestate == GAME_STATE_JASIMGAME) {
         SharedData::GetInstance()->floodlevel += 0.1f;
 
-        //randomise interactbutton between 'Q', 'E', 'R', 'T'
+        //randomise interactbutton
         int random = rand() % 7;
 
         switch (random) {
@@ -135,12 +141,12 @@ void ManureInteraction::DoInteraction()
                 gained = 0;
             }
             SharedData::GetInstance()->player->changeGold(4 * gained);
-            SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + (gained / 2));
+            SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + (gained / 3));
 
             //reset mini-game
             SharedData::GetInstance()->timeElapsed = 0;
             SharedData::GetInstance()->shitintoilet = false;
-            SharedData::GetInstance()->interactbutton = 'E';
+            SharedData::GetInstance()->interactbutton = 'E';    //change interactbutton back to 'E'
         }
     }
     else {

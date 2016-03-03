@@ -14,3 +14,5 @@
 6;I could use some help here.
 #; 7: CONVO_FINISHMINIGAME
 7;You're such a great help to have here.
+#; 8: CONVO_BOSSPROMPT
+8;It is time for you to leave. Stay safe.

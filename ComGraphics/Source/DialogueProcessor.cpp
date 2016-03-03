@@ -229,6 +229,12 @@ void DialogueProcessor::CheckCursor(double dt)
                 elapsedTime = 0;
             }
             break;
+        case CONVO_BOSSPROMPT:
+            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+                SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
+                elapsedTime = 0;
+            }
+            break;
         }
 
         if (SharedData::GetInstance()->gamestate != GAME_STATE_DIALOGUE) {

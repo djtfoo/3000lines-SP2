@@ -40,10 +40,6 @@ class SP2 : public Scene
         GEO_RABBIT_SKYBOX,
 
         GEO_GROUND,
-        //Minimap
-        GEO_MAP,
-
-		GEO_UIBG,
 
         GEO_LOADTOP,
         GEO_LOADBTM,
@@ -276,13 +272,12 @@ public:
     float delayer;
     float delayBuffer;
 	float soundtimer;
-    int rotator;
+    float rotator;
     float floodlevel;
     float lightpower;
     float lightpos;
     float loadDown;
     float loadUp;
-	int daynumber;
     //Testing Minimap
     MS minimappp;
 
@@ -329,7 +324,6 @@ public:
     void renderPuzzle();
     void RenderSignboards();
 
-    void RenderMinimap();
     void RenderGates();
 
 	void loadSpaghetti();
@@ -379,7 +373,7 @@ public:
     
     float objx, objy;
 
-    float gateobjs[14];
+    float gateobjs[10];
     /*0,1 = hang 1,2            10, 11, 12, 13 = room 1, 2, 3, 4
     2, 3 = lab
     4, 5, = canteen
@@ -387,15 +381,15 @@ public:
 
     void gateOpenInteractions();
     void gateUpdate(double dt);
-    bool gateopenBool[8];
-    GateInteraction gatebounds[8];
+    bool gateopenBool[4];
+    GateInteraction gatebounds[4];
 
     //for shop OBJs
     float rotating;
 
     //sleep
     double sleepTime;
-    void Sleep();
+    void Sleep(double dt);
     
     //Chon game variables
     bool ball[5];   

@@ -14,3 +14,5 @@
 6;Thanks for offering your help to clear the weeds dear... xoxo
 #; 7: CONVO_FINISHMINIGAME
 7;Omg thank you for helping dear!
+#; 8: CONVO_BOSSPROMPT
+8;Be safe on your way home dear xoxo

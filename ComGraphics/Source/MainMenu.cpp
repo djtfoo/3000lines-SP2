@@ -211,6 +211,7 @@ void MainMenu::Update(double dt)
             if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
                 && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
                 if (Application::IsKeyPressed(VK_LBUTTON)) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
                     state = MENU_MAIN;
                     elapsedTime = 0;
                 }
@@ -221,16 +222,22 @@ void MainMenu::Update(double dt)
         case MENU_OPTIONS:
             if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
                 && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
-                state = MENU_MAIN;
-                elapsedTime = 0;
+                if (Application::IsKeyPressed(VK_LBUTTON)) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    state = MENU_MAIN;
+                    elapsedTime = 0;
+                }
             }
             break;
 
         case MENU_CREDITS:
             if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
                 && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
-                state = MENU_MAIN;
-                elapsedTime = 0;
+                if (Application::IsKeyPressed(VK_LBUTTON)) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
+                    state = MENU_MAIN;
+                    elapsedTime = 0;
+                }
             }
             break;
 
@@ -244,6 +251,7 @@ void MainMenu::Update(double dt)
             if (SharedData::GetInstance()->cursor_newxpos >= (SharedData::GetInstance()->width / 2.52) && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 1.75)
                 && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.3) && (SharedData::GetInstance()->height / 1.5)) {
                 if (isClicked && btncheck == 1) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
                     clicked = true;
                     isClicked = false;
                     selected = true;
@@ -254,6 +262,7 @@ void MainMenu::Update(double dt)
             else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
                 && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.85) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 2.25)) {
                 if (isClicked && btncheck == 3) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
                     clicked = true;
                     isClicked = false;
                     selected = true;
@@ -264,6 +273,7 @@ void MainMenu::Update(double dt)
             else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
                 && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 2.1) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.8)) {
                 if (isClicked && btncheck == 4) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
                     clicked = true;
                     isClicked = false;
                     selected = true;
@@ -274,6 +284,7 @@ void MainMenu::Update(double dt)
             else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
                 && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.7) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.47)) {
                 if (isClicked && btncheck == 5) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
                     clicked = true;
                     isClicked = false;
                     selected = true;
@@ -284,6 +295,7 @@ void MainMenu::Update(double dt)
             else if (SharedData::GetInstance()->cursor_newxpos >= 0 && SharedData::GetInstance()->cursor_newxpos <= (SharedData::GetInstance()->width / 6.6)
                 && SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 1.33) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 1.18)) {
                 if (isClicked && btncheck == 6) {
+                    SharedData::GetInstance()->engine->play2D("Sound/button press 1.mp3");
                     clicked = true;
                     isClicked = false;
                     selected = true;
