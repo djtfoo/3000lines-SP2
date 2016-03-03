@@ -98,6 +98,8 @@ class SP2 : public Scene
         GEO_TRASH,
         GEO_BOOK,
         GEO_LMAO,   //a sh*tty joke
+        GEO_JAGCUPBOARDS,
+        GEO_TECHCHAIR,
         //POSTERS
         GEO_POSTER,
         GEO_POSTSAO,
@@ -108,6 +110,7 @@ class SP2 : public Scene
         GEO_POSTRETT,
         GEO_POSTELECTION,
         GEO_SECRETGUIDE,
+        GEO_KEYBOARD,
         //SIGNBOARDS
         GEO_SIGNBOARD,
         GEO_SIGNLAB,
@@ -123,6 +126,9 @@ class SP2 : public Scene
         GEO_SIGNTOILET,
         GEO_SIGNFARM,
         GEO_SIGNCOVER,
+        GEO_SIGNCOMP1,
+        GEO_SIGNCOMP2,
+        GEO_SIGNCOMP3,
         //shop displays
         GEO_COOKBOOK,
         GEO_ANIPOSTER,
@@ -400,6 +406,12 @@ public:
     4 = red*/
     bool pickupcheck;
     int pickupCounter;
+    bool posreach1;
+    bool posreach2;
+    bool posreach3;
+    int yellowcount;
+    int bluecount;
+    int redcount;
     float ballyellX, ballyellZ, ballbluX, ballbluZ, ballredX, ballredZ;
     float ballwhitey, ballblacky;
     void ballboundfunct();

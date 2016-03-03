@@ -502,6 +502,11 @@ SP2::SP2()
 	meshList[GEO_BED]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
 	meshList[GEO_BED]->material.kShininess = 1.f;
 
+    meshList[GEO_JAGCUPBOARDS] = MeshBuilder::GenerateOBJ("stairshelf", "OBJ//stairshelf.obj");
+    meshList[GEO_JAGCUPBOARDS]->textureID = LoadTGA("Image//480wood.tga");
+    meshList[GEO_TECHCHAIR] = MeshBuilder::GenerateOBJ("techChair", "OBJ/techChair.obj");
+    meshList[GEO_TECHCHAIR]->textureID = LoadTGA("Image/layout/control_walls.tga");
+
 	meshList[GEO_FENCE] = MeshBuilder::GenerateOBJ("fence", "OBJ/fence.obj");
 	meshList[GEO_FENCE]->textureID = LoadTGA("Image/fence.tga");
 	meshList[GEO_FENCE]->material.kAmbient.Set(0.4f, 0.4f, 0.4f);
@@ -558,6 +563,10 @@ SP2::SP2()
     meshList[GEO_POSTER]->material.kSpecular.Set(0.2f, 0.2f, 0.2f);
     meshList[GEO_POSTER]->material.kShininess = 1.f;
 
+    meshList[GEO_KEYBOARD] = MeshBuilder::GenerateOBJ("keyboard", "OBJ/poster.obj");
+    meshList[GEO_KEYBOARD]->textureID = LoadTGA("Image/keyboard.tga");
+
+
     //SIGNBOARDS
     meshList[GEO_SIGNLAB] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
     meshList[GEO_SIGNLAB]->textureID = LoadTGA("Image/signboards/labSign.tga");
@@ -583,7 +592,14 @@ SP2::SP2()
     meshList[GEO_SIGNTOILET]->textureID = LoadTGA("Image/signboards/toiletSign.tga");
     meshList[GEO_SIGNSHOP] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
     meshList[GEO_SIGNSHOP]->textureID = LoadTGA("Image/signboards/shopSign.tga");
-
+    meshList[GEO_SIGNCOMP1] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNCOMP1]->textureID = LoadTGA("Image/signboards/comp1.tga");
+    meshList[GEO_SIGNCOMP2] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNCOMP2]->textureID = LoadTGA("Image/signboards/comp2.tga");
+    meshList[GEO_SIGNCOMP3] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNCOMP3]->textureID = LoadTGA("Image/signboards/comp3.tga");
+    meshList[GEO_SIGNCOVER] = MeshBuilder::GenerateOBJ("trash", "OBJ/screen1.obj");
+    meshList[GEO_SIGNCOVER]->textureID = LoadTGA("Image/signboards/coverSign.tga");
 
 	    //GEO_SWITCH
     meshList[GEO_SWITCH_1] = MeshBuilder::GenerateCube("switch1", Color(1, 0, 0), 1, 15, 4);
@@ -2086,7 +2102,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
         }
     }
 
-    if (second)
+    else if (second)
     {
         //yellow2 move to blue2(red pos)
         if (ballyellX >= 310)
@@ -2131,9 +2147,11 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
                 ballyellZ -= 0.7f;
             }
         }
+        else 
+            SharedData::GetInstance()->ballpickup = false;
 
         //blue2 move to oriBlue(blue pos)
-        if (ballbluX >= 339)
+         if (ballbluX >= 339)
         {
             ballbluX -= 1;
             if (ballbluZ <= -465)
@@ -2151,6 +2169,8 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
                 ballredZ += 1;
             }
         }
+        
+
     }
 
     else
@@ -2160,7 +2180,7 @@ void SP2::compactMovement(bool first, bool second, bool third, int i)
 
 void SP2::ballmoveCheck()
 {
-    
+    std::cout << pickupCounter << std::endl;
     if (ball[0] == true)
     {
         //yellow first shift
@@ -2172,7 +2192,6 @@ void SP2::ballmoveCheck()
         if (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
         {
             compactMovement(false, false, true, 0);
-            SharedData::GetInstance()->ballpickup = false;
         }
         //red second shift
         if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
@@ -2236,7 +2255,6 @@ void SP2::ballmoveCheck()
         if (SharedData::GetInstance()->firstball == 5 || SharedData::GetInstance()->firstball == 6)
         {
             compactMovement(false, false, true, 3);
-            SharedData::GetInstance()->ballpickup = false;
         }
     }
     else if (ball[4] == true)
@@ -2245,7 +2263,6 @@ void SP2::ballmoveCheck()
         if (SharedData::GetInstance()->firstball == 1 || SharedData::GetInstance()->firstball == 2)
         {
             compactMovement(false, false, true, 4);
-            SharedData::GetInstance()->ballpickup = false;
         }
         //blue second shift
         if (SharedData::GetInstance()->firstball == 3 || SharedData::GetInstance()->firstball == 4)
@@ -2258,6 +2275,7 @@ void SP2::ballmoveCheck()
             compactMovement(true, false, false, 4);
         }
     }
+
 
     
 }
@@ -2272,11 +2290,15 @@ void SP2::loadChonGame()
     //Chon's Lab Balls
     if (SharedData::GetInstance()->ballpickup)
     {
-        pickupCounter += 1;
+       
         for (int i = 0; i < 5; i++)
         {
             if (SharedData::GetInstance()->interactptr->bound1 == ballbounds[i].bound1 && SharedData::GetInstance()->interactptr->bound2 == ballbounds[i].bound2)
+            {
+                pickupCounter += 1;
                 ball[i] = true;
+                ballmoveCheck();
+            }
             else
                 ball[i] = false;
         }
@@ -2754,6 +2776,20 @@ void SP2::RenderSignboards()
     modelStack.Scale(30, 30, 30);
     RenderMesh(meshList[GEO_SIGNRIGHT], false);
     modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(833, 58, -323);
+    modelStack.Scale(100, 100, 100);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_SIGNCOVER], false);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(552, 37, 67);
+    modelStack.Scale(30, 25, 20);
+    modelStack.Rotate(180, 0, 1, 0);
+    RenderMesh(meshList[GEO_SIGNROOM3], false);
+    modelStack.PopMatrix();
 }
 
 void SP2::RenderNPC()
@@ -2832,12 +2868,71 @@ void SP2::stemmieShop()
 
 void SP2::RenderRoom()
 {
+    //player room
 	modelStack.PushMatrix();
 	modelStack.Translate(533, 4, 188);
 	modelStack.Scale(3, 5, 4);
 	RenderMesh(meshList[GEO_BED], true);
 	modelStack.PopMatrix();
 
+    modelStack.PushMatrix();
+    modelStack.Translate(433, 2, 172);
+    modelStack.Scale(12, 12, 12);
+    modelStack.Rotate(270, 0, 1, 0);
+    RenderMesh(meshList[GEO_LABCOUNTER_CORNER], true);  //btm right corner
+        modelStack.PushMatrix();
+        modelStack.Translate(-2, 0.9, 0);
+        modelStack.Scale(0.3, 0.3, 0.3);
+        //modelStack.Rotate(270, 0, 1, 0);
+        RenderMesh(meshList[GEO_BOXCRATE], true);  
+        modelStack.PopMatrix();
+            modelStack.PushMatrix();
+            modelStack.Translate(0.744, 1.2, 0.2);
+            modelStack.Scale(0.6, 1, 1);
+            modelStack.Rotate(-90, 0, 1, 0);
+            RenderMesh(meshList[GEO_SIGNCOMP3], false);
+                modelStack.PushMatrix();
+                modelStack.Translate(-0.5, -0.2, 0.5);
+                modelStack.Scale(1, 1, 1);
+                modelStack.Rotate(-90, 1, 0, 0);
+                RenderMesh(meshList[GEO_KEYBOARD], false);
+                modelStack.PopMatrix();
+            modelStack.PopMatrix();
+        modelStack.PushMatrix();
+        modelStack.Translate(1.4, 1.2, -0.15);
+        modelStack.Scale(0.6, 1, 0.6);
+        modelStack.Rotate(-40, 0, 1, 0);
+        RenderMesh(meshList[GEO_SIGNCOMP2], false);
+        modelStack.PopMatrix();
+            modelStack.PushMatrix();
+            modelStack.Translate(0.076, 1.2, -0.13);
+            modelStack.Scale(0.6, 1, 0.6);
+            modelStack.Rotate(-130, 0, 1, 0);
+            RenderMesh(meshList[GEO_SIGNCOMP1], false);
+            modelStack.PopMatrix();
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(433, 1.9, 58);
+    modelStack.Scale(40, 40, 40);
+    //modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_JAGCUPBOARDS], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(490, 2, 110);
+    modelStack.Scale(7, 5.5, 5);
+    RenderMesh(meshList[GEO_TABLE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(445, 2, 180);
+    modelStack.Scale(4, 4, 4);
+    modelStack.Rotate(90, 0, 1, 0);
+    RenderMesh(meshList[GEO_TECHCHAIR], true);
+    modelStack.PopMatrix();
+
+    //end of player room
 	modelStack.PushMatrix();
 	modelStack.Translate(429, 2, -110);
 	modelStack.Scale(5, 6, 5);
