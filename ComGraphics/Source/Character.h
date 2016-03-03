@@ -89,6 +89,7 @@ private:
 
 public:
     int numberCompliments_;
+    bool minigameComplete_;
 
     NPC(std::string name, const Vector3& pos, std::string textDirectory);
     virtual ~NPC();

@@ -126,9 +126,19 @@ void ManureInteraction::DoInteraction()
         }
 
         if (SharedData::GetInstance()->floodlevel > 3) {
-            SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
-            SharedData::GetInstance()->player->changeGold(100);
-            SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + 5);
+            SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
+            SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_FINISHMINIGAME;
+            
+            //gain gold and love meter based on timer
+            int gained = 50 - SharedData::GetInstance()->timeElapsed;
+            if (gained < 0) {
+                gained = 0;
+            }
+            SharedData::GetInstance()->player->changeGold(4 * gained);
+            SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + (gained / 2));
+
+            //reset mini-game
+            SharedData::GetInstance()->timeElapsed = 0;
             SharedData::GetInstance()->shitintoilet = false;
             SharedData::GetInstance()->interactbutton = 'E';
         }
@@ -241,13 +251,9 @@ VeePuzzleCheckerSwitchInteraction::~VeePuzzleCheckerSwitchInteraction()
 
 void VeePuzzleCheckerSwitchInteraction::DoInteraction()
 {
-    if (SharedData::GetInstance()->switchCount < 10)
-    {
-        std::cout << "test" << std::endl;
-        SharedData::GetInstance()->switchFlip = true;
-        SharedData::GetInstance()->switchCount += 1;
-    }
-    //Trigger fail.
+    std::cout << "test" << std::endl;
+    SharedData::GetInstance()->switchFlip = true;
+    SharedData::GetInstance()->switchCount += 1;
 }
 
 BedTime::BedTime() : Interaction(true)
@@ -262,7 +268,7 @@ void BedTime::DoInteraction()
 {
 	if(SharedData::GetInstance()->player->getHunger() < 100)
 	{
-		SharedData::GetInstance()->daynighttime += 10;
+        SharedData::GetInstance()->sleep = true;
 	}
 }
 
@@ -290,7 +296,8 @@ void WeedInteraction::DoInteraction()
 			SharedData::GetInstance()->weedcounter -= 1;
 			if (SharedData::GetInstance()->weedcounter == 0)    //completed game
 			{
-				SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
+                SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
+                SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_FINISHMINIGAME;
 				SharedData::GetInstance()->player->changeGold(10 * SharedData::GetInstance()->pointscounter);
                 SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + SharedData::GetInstance()->pointscounter / 2);
 				SharedData::GetInstance()->pointscounter = 0;

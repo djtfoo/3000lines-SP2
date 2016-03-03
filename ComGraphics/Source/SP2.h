@@ -390,7 +390,12 @@ public:
     bool gateopenBool[8];
     GateInteraction gatebounds[8];
 
+    //for shop OBJs
     float rotating;
+
+    //sleep
+    double sleepTime;
+    void Sleep();
     
     //Chon game variables
     bool ball[5];   

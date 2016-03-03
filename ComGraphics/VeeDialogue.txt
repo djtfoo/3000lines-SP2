@@ -12,3 +12,5 @@
 5;Thank you, my good sir!
 #; 6: CONVO_STARTMINIGAME
 6;I could use some help here.
+#; 7: CONVO_FINISHMINIGAME
+7;You're such a great help to have here.

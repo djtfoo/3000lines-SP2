@@ -130,7 +130,13 @@ void DialogueProcessor::CheckCursor(double dt)
                 elapsedTime = 0;
             }
             else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 31.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 26.5f))) {
-                convostate = CONVO_STARTMINIGAME;
+                if (npc->minigameComplete_) {
+                    convostate = CONVO_FINISHMINIGAME;
+                }
+                else {
+                    convostate = CONVO_STARTMINIGAME;
+                    npc->minigameComplete_ = true;
+                }
                 elapsedTime = 0;
             }
             else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 38.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 33.5f))) {
@@ -149,7 +155,13 @@ void DialogueProcessor::CheckCursor(double dt)
                 elapsedTime = 0;
             }
             else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 31.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 26.5f))) {
-                convostate = CONVO_STARTMINIGAME;
+                if (npc->minigameComplete_) {
+                    convostate = CONVO_FINISHMINIGAME;
+                }
+                else {
+                    convostate = CONVO_STARTMINIGAME;
+                    npc->minigameComplete_ = true;
+                }
                 elapsedTime = 0;
             }
             else if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 38.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 33.5f))) {
@@ -208,6 +220,12 @@ void DialogueProcessor::CheckCursor(double dt)
                 else {  //temp default
                     SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
                 }
+                elapsedTime = 0;
+            }
+            break;
+        case CONVO_FINISHMINIGAME:
+            if (SharedData::GetInstance()->cursor_newypos >= (SharedData::GetInstance()->height / 60 * (60 - 24.5f)) && SharedData::GetInstance()->cursor_newypos <= (SharedData::GetInstance()->height / 60 * (60 - 19.5f))) {
+                SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
                 elapsedTime = 0;
             }
             break;

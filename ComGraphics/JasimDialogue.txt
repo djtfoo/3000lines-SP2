@@ -12,3 +12,5 @@
 5;Aww, that was really humerus ;)
 #; 6: CONVO_STARTMINIGAME
 6;Could you help me flush the  shit down the toilet? I have no GUTS to do it ;)
+#; 7: CONVO_FINISHMINIGAME
+7;Thanks, a bone for ya ;)

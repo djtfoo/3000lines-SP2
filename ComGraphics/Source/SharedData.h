@@ -51,8 +51,6 @@ public:
     Interaction* interactptr;
     bool gatelookat;
     bool gateopen;
-    bool shitintoilet;
-    float floodlevel;
     char interactbutton;    //changes for toilet game only
     int firstball;
     bool ballpickup;    //chon ballgame
@@ -61,6 +59,14 @@ public:
     float one, two, three, four, switchCount;
     bool switch1, switch2, switch3, switch4;
     bool switchFlip;
+
+    //toilet interaction
+    bool shitintoilet;
+    float floodlevel;
+    double timeElapsed;
+
+    //bed interaction
+    bool sleep;
 
     DialogueProcessor dialogueProcessor;
 
@@ -126,6 +132,7 @@ private:
         //toilet
         shitintoilet = false;
         floodlevel = -2;
+        timeElapsed = 0;    //for Jasim and Chon mini-games
         interactbutton = 'E';
         
         //Chon mini-game (lab)
@@ -135,6 +142,9 @@ private:
 		pointscounter = 0;
 		weedcounter = 10;
 		
+        //bed interaction
+        sleep = false;
+
         firstball = 0;
     }
     ~SharedData() {

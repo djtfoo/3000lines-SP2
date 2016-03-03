@@ -12,3 +12,5 @@
 5;H-Hontou ni? ;-;
 #; 6: CONVO_STARTMINIGAME
 6;Watashi needs some help...
+#; 7: CONVO_FINISHMINIGAME
+7;Watashi very grateful to anata!

@@ -508,7 +508,7 @@ void Player::takeDamage()
 {
     health_ -= 5;
 }
-NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0), loveMeter_(0), numberCompliments_(0)
+NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Character(name, pos, 0), loveMeter_(0), numberCompliments_(0), minigameComplete_(false)
 {
     //initialise map with the text files
     std::string dialogue;

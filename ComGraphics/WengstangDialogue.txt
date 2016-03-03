@@ -7,8 +7,10 @@
 #; 3: CONVO_GIFTHAPPY
 3;Aww dear, thanks a million!  xoxo
 #; 4: CONVO_GIFTUNHAPPY
-4;I appreciate the thought, dear.
+4;Well, I appreciate the thought, dear.
 #; 5: CONVO_COMPLIMENT
 5;Y-You're saying I look good? Thanks dear!! xoxo
 #; 6: CONVO_STARTMINIGAME
 6;Thanks for offering your help to clear the weeds dear... xoxo
+#; 7: CONVO_FINISHMINIGAME
+7;Omg thank you for helping dear!

@@ -946,7 +946,8 @@ void SP2::Init()
     pickupCounter = 0;
 
 	soundtimer = 1;
-	daynumber = 0;
+	daynumber = 1;
+    sleepTime = 0;
 
     postercounter = 0;
 
@@ -1055,6 +1056,9 @@ void SP2::Update(double dt)
             pause.CheckCursor(dt);
         }
     }
+    else if (SharedData::GetInstance()->sleep) {
+        Sleep();    //clears off key press bools and cursor movement
+    }
     else if (SharedData::GetInstance()->gamestate == GAME_STATE_DIALOGUE) {
         if (SharedData::GetInstance()->dialogueProcessor.convostate == CONVO_GIFT) {
             SharedData::GetInstance()->dialogueProcessor.GiveGift(dt);
@@ -1130,6 +1134,11 @@ void SP2::Update(double dt)
             }
         }
 
+    }
+
+    //timer
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_JASIMGAME || SharedData::GetInstance()->gamestate == GAME_STATE_CHONGAME) {
+        SharedData::GetInstance()->timeElapsed += dt;
     }
 
     //options
@@ -1510,6 +1519,10 @@ void SP2::Render()
             RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
             RenderTextOnScreen(meshList[GEO_TEXT], "\"Let's go\"", Color(1, 1, 1), 2, 26, 10.5f);
             break;
+        case CONVO_FINISHMINIGAME:
+            RenderObjectOnScreen(meshList[GEO_DIALOGUEOPTION], 65, 22, 1, 1);
+            RenderTextOnScreen(meshList[GEO_TEXT], "\"No problem!\"", Color(1, 1, 1), 2, 26, 10.5f);
+            break;
         }
         RenderCursor();
         RenderLoveMeter();
@@ -1535,6 +1548,40 @@ void SP2::Render()
         RenderUI();
     }
 
+    //render game information
+    if (SharedData::GetInstance()->gamestate == GAME_STATE_WSGAME)
+    {
+        std::stringstream s;
+        s << "Points: " << SharedData::GetInstance()->pointscounter;
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
+        s.str("");
+        s << "Weeds left: " << SharedData::GetInstance()->weedcounter;
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0.1), 3, 0, 12);
+    }
+    else if (SharedData::GetInstance()->gamestate == GAME_STATE_CHONGAME)
+    {
+        std::stringstream s;
+        s << "Timer: " << (int)(SharedData::GetInstance()->timeElapsed);
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
+
+        s.str("");
+        s << "Counter: " << pickupCounter;
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 12);
+    }
+    else if (SharedData::GetInstance()->gamestate == GAME_STATE_VEEGAME)
+    {
+        std::stringstream s;
+        s << "No. of tries: " << SharedData::GetInstance()->switchCount;
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
+    }
+    else if (SharedData::GetInstance()->gamestate == GAME_STATE_JASIMGAME)
+    {
+        std::stringstream s;
+        s << "Timer: " << (int)(SharedData::GetInstance()->timeElapsed);
+        RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
+    }
+
+    //game is paused
     if (SharedData::GetInstance()->paused) {
         pauseGame();
         RenderCursor();
@@ -1566,9 +1613,6 @@ void SP2::loadFree()
 		modelStack.PopMatrix();
 	}
 
-
-    //RenderPuzzle();
-
     RenderNPC();
     stemmieShop();
     modelStack.PushMatrix();
@@ -1581,11 +1625,8 @@ void SP2::loadFree()
     jasimCanteen();
     loadHangar();
 	renderFarm();
-    //loadWSGame();
 
     RenderGates(); //gates b4 ui, aft others to hide contents of the room
-
-    //RenderUI();
 
 	RenderInventory();
 	//RenderTime();
@@ -1673,6 +1714,7 @@ void SP2::gateOpenInteractions()
     SharedData::GetInstance()->interactionItems.push_back(gateInterInit);
     gatebounds[7].bound1 = gateInterInit->bound1; gatebounds[7].bound2 = gateInterInit->bound2;
 }
+
 void SP2::gateUpdate(double dt)
 {
     if (SharedData::GetInstance()->gateopen)
@@ -1874,15 +1916,6 @@ void SP2::loadWSGame()
 	RenderObjectOnScreen(meshList[GEO_CROSSHAIRS], 40, 30, 1, 1);
 
 	//RenderMinimap();
-	if (SharedData::GetInstance()->gamestate == GAME_STATE_WSGAME)
-	{
-		std::stringstream s;
-		s << "Points: " << SharedData::GetInstance()->pointscounter;
-		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0.6, 1), 3, 0, 13);
-		s.str("");
-		s << "Weeds left: " << SharedData::GetInstance()->weedcounter;
-		RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 1, 0.1), 3, 0, 12);
-	}
 	
 }
 
@@ -1950,15 +1983,21 @@ void SP2::puzzleLogic()
     if (SharedData::GetInstance()->switch4 == true)
         meshList[GEO_CHECK_4] = MeshBuilder::GenerateHemisphere("check4", Color(1, 1, 1), 2);
 
+    //win the mini-game
     if (lightpuzz.checkPuzzleAns(SharedData::GetInstance()->one, SharedData::GetInstance()->two, SharedData::GetInstance()->three, SharedData::GetInstance()->four) == true)
     {
         SharedData::GetInstance()->one = SharedData::GetInstance()->two = SharedData::GetInstance()->three = SharedData::GetInstance()->four = 1;
         std::cout << "You win!" << std::endl;
         lightpuzz.generatePuzzle();
-        SharedData::GetInstance()->gamestate = GAME_STATE_FREE;
-        //increase love meter and gain gold based on a timer & number of tries
-        SharedData::GetInstance()->player->changeGold(200);
-        SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + 5);
+        SharedData::GetInstance()->gamestate = GAME_STATE_DIALOGUE;
+        SharedData::GetInstance()->dialogueProcessor.convostate = CONVO_FINISHMINIGAME;
+        //increase love meter and gain gold based on number of tries
+        int gained = 12 - SharedData::GetInstance()->switchCount;
+        if (gained < 0) {   //cannot gain negative
+            gained = 0;
+        }
+        SharedData::GetInstance()->player->changeGold(10 * gained);
+        SharedData::GetInstance()->dialogueProcessor.npc->setLoveMeter(SharedData::GetInstance()->dialogueProcessor.npc->getLoveMeter() + gained);
     }
 }
 
@@ -3588,11 +3627,6 @@ void SP2::RenderUI()
 	s << "DAY " << daynumber;
 	s.str();
 	RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0, 0, 1), 3, 20, 19);
-
-    s.str("");
-    s << "Chon: " << pickupCounter;
-    RenderTextOnScreen(meshList[GEO_TEXT], s.str(), Color(0.9f, 0.9f, 0), 3, 0, 12);
-    
 }
 
 void SP2::RenderMinimap()
@@ -3706,7 +3740,6 @@ void SP2::RenderGates()
         modelStack.Scale(1, 34, 34);
         RenderMesh(meshList[GEO_GATE2], false);     //room4 (same lane as rm3, across rm2)
         modelStack.PopMatrix();
-
 }
 
 void SP2::shoptemp()
@@ -4093,4 +4126,28 @@ void SP2::RenderLoveMeter()
     std::stringstream ss;
     ss << loveMeter << "%";
     RenderTextOnScreen(meshList[GEO_TEXT], ss.str(), Color(1, 0, 0), 2, 2.f, 18);
+}
+
+void SP2::Sleep()
+{
+    SharedData::GetInstance()->cursor_xpos = SharedData::GetInstance()->cursor_newxpos;
+    SharedData::GetInstance()->cursor_ypos = SharedData::GetInstance()->cursor_newypos;
+
+    Application::IsKeyPressed('W');
+    Application::IsKeyPressed('S');
+    Application::IsKeyPressed('A');
+    Application::IsKeyPressed('D');
+
+    if (SharedData::GetInstance()->sleep) {
+        SharedData::GetInstance()->daynighttime += 10;
+        sleepTime += 10;
+        if (sleepTime > 400) {      //sleep for 4 hours
+            SharedData::GetInstance()->sleep = false;
+            sleepTime = 0;
+            //reset the mini-games' bool
+            for (vector<NPC*>::iterator it = SharedData::GetInstance()->NPCs.begin(); it != SharedData::GetInstance()->NPCs.end(); ++it) {
+                (*it)->minigameComplete_ = false;
+            }
+        }
+    }
 }
