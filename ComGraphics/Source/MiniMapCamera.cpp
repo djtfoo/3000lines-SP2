@@ -34,7 +34,20 @@ Minimapcamera::~Minimapcamera()
 {
 
 }
+/******************************************************************************/
+/*!
+\brief	Minimapcamera minimap
 
+\param position
+    Position of Camera
+\param target
+    Target of the camera
+\param up
+    UP vector of the camera
+\return
+    None
+*/
+/******************************************************************************/
 void Minimapcamera::Init(const Vector3& position, const Vector3& target, const Vector3& up)
 {
     this->pos = defaultPos = position;
@@ -45,7 +58,14 @@ void Minimapcamera::Init(const Vector3& position, const Vector3& target, const V
     right.Normalize();
     this->UP = defaultUP = right.Cross(view).Normalized();
 }
+/******************************************************************************/
+/*!
+\brief	Mini map camera update
 
+\param dt
+    Elapsed Times
+*/
+/******************************************************************************/
 void Minimapcamera::Update(double dt)
 {
 

@@ -34,7 +34,14 @@ Character::Character(std::string name, Vector3 position, float
 Character::~Character()
 {
 }
+/******************************************************************************/
+/*!
+\brief	Getting Name of Character
 
+\return
+String of the Name of character.
+*/
+/******************************************************************************/
 std::string Character::getName()
 {
     return name_;
@@ -76,67 +83,16 @@ Player::~Player()
 }
 
 static float WALKSPEED = 40.f;
+/******************************************************************************/
+/*!
+\brief	Walk and Movement of Player.
 
-/*void Player::Walk(double dt)
-{
-    bool xMovement = true, zMovement = true;
-    float newX = position_.x;
-    float newZ = position_.z;
-
-    if (Application::IsKeyPressed(VK_SHIFT)) {   //sped up moving
-        WALKSPEED = 100.f;
-    }
-    else {
-        WALKSPEED = 40.f;
-    }
-
-    if (Application::IsKeyPressed('W')) {   //player moves forward
-        direction_ = 90 - SharedData::GetInstance()->camera->theta;
-
-        newX -= (float)(1.5f * WALKSPEED * sin(Math::DegreeToRadian(direction_)) * dt);
-        newZ -= (float)(1.5f * WALKSPEED * cos(Math::DegreeToRadian(direction_)) * dt);
-    }
-
-    if (Application::IsKeyPressed('S')) {   //player moves backward
-        direction_ = 90 - SharedData::GetInstance()->camera->theta;
-
-        newX += (float)(1.5f * WALKSPEED * sin(Math::DegreeToRadian(direction_)) * dt);
-        newZ += (float)(1.5f * WALKSPEED * cos(Math::DegreeToRadian(direction_)) * dt);
-    }
-
-    if (Application::IsKeyPressed('A')) {   //strafe left
-        direction_ = 90 - SharedData::GetInstance()->camera->theta;
-        Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
-        Vector3 right = view.Cross(Vector3(0, 1, 0));
-        right.y = 0;
-        right.Normalize();
-
-        newX -= (float)(WALKSPEED * right.x * dt);
-        newZ -= (float)(WALKSPEED * right.z * dt);
-    }
-
-    if (Application::IsKeyPressed('D')) {   //strafe right
-        direction_ = 90 - SharedData::GetInstance()->camera->theta;
-        Vector3 view = (SharedData::GetInstance()->camera->target - SharedData::GetInstance()->camera->position).Normalized();
-        Vector3 right = view.Cross(Vector3(0, 1, 0));
-        right.y = 0;
-        right.Normalize();
-
-        newX += (float)(WALKSPEED * right.x * dt);
-        newZ += (float)(WALKSPEED * right.z * dt);
-    }
-
-    CheckCollision(newX, newZ, xMovement, zMovement);
-
-    if (xMovement) {
-        position_.x = newX;
-    }
-    if (zMovement) {
-        position_.z = newZ;
-    }
-
-}*/
-
+\param dt
+    Value of elapsed time.
+\return
+    None
+*/
+/******************************************************************************/
 void Player::Walk(double dt)
 {
     bool xMovement = true, zMovement = true;
@@ -272,6 +228,22 @@ void Player::Walk(double dt)
 
 }
 
+/******************************************************************************/
+/*!
+\brief	Checking Player Collision with everything
+
+\param newX
+    Value containing the X value of the player.
+\param newZ
+    Value containing the Z value of the player.
+\param xMovement
+    Bool to check whether a player can move in the X direction.
+\param zMovement
+    Bool to check whether a player can move in the Z direction.
+\return
+    None
+*/
+/******************************************************************************/
 void Player::CheckCollision(float newX, float newZ, bool& xMovement, bool& zMovement)
 {
     map<LOCATION, vector<ItemCollision>>::iterator it = SharedData::GetInstance()->collisionMap.find(SharedData::GetInstance()->location);
@@ -291,7 +263,24 @@ void Player::CheckCollision(float newX, float newZ, bool& xMovement, bool& zMove
     }
 
 }
+/******************************************************************************/
+/*!
+\brief	Check if anything Intersects with the Player
 
+\param dist1
+    Value of the max view the player could have in a direction
+\param dist2
+    Value of the players max Position could have in a direction
+\param maxView
+    Value which determines the max view of the player
+\param playerPos
+    Players positon in 3D space
+\param intersect
+    Contains Vector that holds intersection vector of objects
+\return
+    True if Player doesn't have equal view and pos or if either one is 0.
+*/
+/******************************************************************************/
 bool inline GetIntersection(float dist1, float dist2, Vector3 maxView, Vector3 playerPos, Vector3& intersect)
 {
     if ((dist1 * dist2) >= 0.0f)
@@ -302,7 +291,22 @@ bool inline GetIntersection(float dist1, float dist2, Vector3 maxView, Vector3 p
     intersect = maxView + (playerPos - maxView) * (-dist1 / (dist2 - dist1));
     return true;
 }
+/******************************************************************************/
+/*!
+\brief	Checking Hitbox.
 
+\param intersect
+    Contains Vector to check if player intersects with hitbox.
+\param bound1
+    Vector that contains the first point of a Hit box.
+\param bound2
+    Vector that contains teh second point of a Hit box.
+\param axis
+    Value that contains which axis is going to be used on (x, y, z)
+\return TRUE
+    When any of the intersect Vectors cross the bounds, triggering inbox to be true.
+*/
+/******************************************************************************/
 bool inline InBox(Vector3 intersect, Vector3 bound1, Vector3 bound2, const int axis)
 {
     bool inbox = false;
@@ -330,7 +334,12 @@ bool inline InBox(Vector3 intersect, Vector3 bound1, Vector3 bound2, const int a
 
     return inbox;
 }
-
+/******************************************************************************/
+/*!
+\brief	Checking Player Interaction
+    Function to Check if player has interacted with any object.
+*/
+/******************************************************************************/
 void Player::CheckInteraction()
 {
     SharedData::GetInstance()->canInteract = false;
@@ -376,27 +385,62 @@ void Player::CheckInteraction()
     }
 
 }
+/******************************************************************************/
+/*!
+\brief  Gettng the hunger level of a player
 
+\return hunger_
+    Value that contains the hunger level of the player.
+*/
+/******************************************************************************/
 int Player::getHunger()
 {
     return hunger_;
 }
+/******************************************************************************/
+/*!
+\brief	Getting the Health of a player
 
+\return health_
+    Value which contains health of a player.
+*/
+/******************************************************************************/
 int Player::getHealth()
 {
     return health_;
 }
+/******************************************************************************/
+/*!
+\brief	Getting the Gold of a player
 
+\return gold_
+    Value which holds amount of gold player has.
+*/
+/******************************************************************************/
 unsigned int Player::getGold()
 {
     return gold_;
 }
+/******************************************************************************/
+/*!
+\brief	Setting the Gold of a player
 
+\param moneh
+    Value that holds the amount of gold player will get.
+*/
+/******************************************************************************/
 void Player::setGold(int moneh)
 {
 	gold_ = moneh;
 }
-
+/******************************************************************************/
+/*!
+\brief	Checking Player Gold after receiving Change
+    If player's gold and change added together is a negative value means player has no more money.
+\param change
+    Value which stores the change playe receive.
+*/
+/******************************************************************************/
 void Player::changeGold(int change)
 {
     if (gold_ + change <= 0) {
@@ -406,12 +450,26 @@ void Player::changeGold(int change)
         setGold(gold_ + change);
     }
 }
-
+/******************************************************************************/
+/*!
+\brief	Setting Hunger Level of Player
+    Hunger will determine the speed of player.
+\param hungee
+    Value that stores the Hunger Level of Player
+*/
+/******************************************************************************/
 void Player::setHunger(int hungee)
 {
 	hunger_ = hungee;
 }
-
+/******************************************************************************/
+/*!
+\brief	Check if Player is Dead
+    Player is dead if health is below 0.
+\return true
+    Player health value is equal or below zero.
+*/
+/******************************************************************************/
 bool Player::isDead()
 {
     if (health_ <= 0) 
@@ -424,7 +482,14 @@ bool Player::isDead()
         return false;
     }
 }
+/******************************************************************************/
+/*!
+\brief	Adding Item to Player Inventory.
 
+\param itemID.
+    Value that holds the Item ID of an item.
+*/
+/******************************************************************************/
 int Player::addItem(int itemID)
 {
 	for (int i = 0; i < 8; i++)
@@ -437,7 +502,20 @@ int Player::addItem(int itemID)
 	}
 	return -1;
 }
+/******************************************************************************/
+/*!
+\brief	Removing Item from Player Inventory
 
+\param itemPos
+    Values that holds the position the inventory marker is at.
+
+\exception Selected space has no item
+    It will not remove an empty space. (remove nothing)
+
+\return
+    Item ID of the item to be removed.
+*/
+/******************************************************************************/
 int Player::removeItem(int itemPos)
 {
 	bool removed = false;
@@ -470,7 +548,14 @@ int Player::removeItem(int itemPos)
 	}
 	return itemIDtoRemove;
 }
-
+/******************************************************************************/
+/*!
+\brief	Player uses an Item
+    Check what Item player is using and call out their functions
+\param itemID
+    value that stores item ID of an item to be used.
+*/
+/******************************************************************************/
 void Player::useItem(int itemID)
 {
 	switch (itemID)
@@ -506,7 +591,16 @@ void Player::useItem(int itemID)
 		break;
 	}
 }
-
+/******************************************************************************/
+/*!
+\brief	Converting Inventory Item
+    Changing the item in the player inventory to another item.
+\param itemID1
+    Value that stores the item ID that requires conversion.
+\param itemID2
+    Item ID Value to replace the item with.
+*/
+/******************************************************************************/
 void Player::convertItem(int itemID1, int itemID2)
 {
 	for (int i = 0; i < 8; i++)
@@ -518,7 +612,16 @@ void Player::convertItem(int itemID1, int itemID2)
 		}
 	}
 }
+/******************************************************************************/
+/*!
+\brief	Checking what item player has
 
+\param itemID
+    value to check if player has that item in inventory
+\return
+    the number of same items that fulfill check requirements.
+*/
+/******************************************************************************/
 int Player::itemHave(int itemID)
 {
 	int count = 0;
@@ -531,7 +634,13 @@ int Player::itemHave(int itemID)
 	}
 	return count;
 }
-
+/******************************************************************************/
+/*!
+\brief	Check Player Inventory Full
+\return
+    Returns a true if player's Inventory is full
+*/
+/******************************************************************************/
 bool Player::invfull()
 {
 	if (inventory[7] != 0)
@@ -540,6 +649,11 @@ bool Player::invfull()
 	}
 	return false;
 }
+/******************************************************************************/
+/*!
+\brief	Player takes damage
+*/
+/******************************************************************************/
 void Player::takeDamage()
 {
     health_ -= 3;
@@ -599,12 +713,26 @@ NPC::NPC(std::string name, const Vector3& pos, std::string textDirectory) : Char
 NPC::~NPC()
 {
 }
+/******************************************************************************/
+/*!
+\brief	Getting Love Meter of NPCs
 
+\return loveMeter_
+    The amount of Love for NPC.
+*/
+/******************************************************************************/
 int NPC::getLoveMeter()
 {
     return loveMeter_;
 }
+/******************************************************************************/
+/*!
+\brief	Setting Love Meter of NPCs
 
+\param newLoveMeter
+    A new value to re-set the love meter.
+*/
+/******************************************************************************/
 void NPC::setLoveMeter(const int newLoveMeter)
 {
     loveMeter_ = newLoveMeter;
@@ -615,7 +743,17 @@ void NPC::setLoveMeter(const int newLoveMeter)
         loveMeter_ = 0;
     }
 }
+/******************************************************************************/
+/*!
+\brief	
+Returns Speech of NPCs
 
+\exception None
+
+\return
+Speech of NPC from a text file
+*/
+/******************************************************************************/
 std::string NPC::Speech()
 {
     //go through map to find the dialogue
@@ -654,22 +792,52 @@ Enemy::~Enemy()
 {
 
 }
+/******************************************************************************/
+/*!
+\brief	Getting health of Enemy
+
+\return
+    Value which determines health of the enemy
+*/
+/******************************************************************************/
 unsigned int Enemy::getHealth()
 {
     return e_health_;
 }
+/******************************************************************************/
+/*!
+\brief	Setting health of Enemy
+
+\param health
+    Value that determines the health of the enemy
+*/
+/******************************************************************************/
 void Enemy::setHealth(int health)
 {
     e_health_ = health;
 }
-void Enemy::setDamage(int damage)
-{
-    e_damage_ = damage;
-}
+/******************************************************************************/
+/*!
+\brief	Enemy taking damage from source.
+
+\param receiveddamage
+    Value that determines damage dealt to Enemy.
+
+\return None
+*/
+/******************************************************************************/
 void Enemy::takeDamage(int receiveddamage)
 {
     e_health_ -= receiveddamage;
 }
+/******************************************************************************/
+/*!
+\brief	Checking if Enemy is dead
+
+\return TRUE if enemy health is below or equal 0.
+
+*/
+/******************************************************************************/
 bool Enemy::isDead()
 {
     if (e_health_ <= 0)

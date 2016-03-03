@@ -93,7 +93,14 @@ DialogueProcessor::DialogueProcessor() : convostate(CONVO_INTRO), npc(0), elapse
 DialogueProcessor::~DialogueProcessor()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	Giving Gifts to NPCs
+    Call other functions if Gift satisfy, dis-satisfy them.
+\param dt
+    Time elapsed
+*/
+/******************************************************************************/
 void DialogueProcessor::GiveGift(double dt)
 {
     elapsedTime += (float)(dt);
@@ -129,7 +136,12 @@ void DialogueProcessor::GiveGift(double dt)
         }
     }
 }
-
+/******************************************************************************/
+/*!
+\brief	NPC Compliment
+    Increases love meter when get complimented.
+*/
+/******************************************************************************/
 void DialogueProcessor::Compliment()
 {
     if (npc->numberCompliments_ < 10) {     //compliments can only increase love meter up to 10 times
@@ -137,7 +149,13 @@ void DialogueProcessor::Compliment()
         npc->numberCompliments_ += 1;
     }
 }
-
+/******************************************************************************/
+/*!
+\brief	Checking Cursor Locaton and Clicks.
+\param dt
+    elapsed time.
+*/
+/******************************************************************************/
 void DialogueProcessor::CheckCursor(double dt)
 {
     elapsedTime += dt;

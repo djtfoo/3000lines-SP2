@@ -18,7 +18,7 @@ Struct Button:
 /******************************************************************************/
 struct Button
 {
-    float minX, maxX, minY, maxY;
+    float minX, maxX, minY, maxY;       ///< Minimum and Maximum X and Y for hit-box
 
     void Set(float factorMinX, float factorMaxX, float factorMinY, float factorMaxY);
 };

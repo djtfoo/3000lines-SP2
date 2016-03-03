@@ -37,40 +37,40 @@ LightPuzzle::~LightPuzzle()
 {
     
 }
+/******************************************************************************/
+/*!
+\brief	Generate Light Puzzle
+    In an array and radomized puzzle
+\return
+    None
+*/
+/******************************************************************************/
 void LightPuzzle::generatePuzzle()
 {
     int puzzleSizeY = 4;
     for (int p = 0; p < puzzleSizeY; p++)
     {
         puzzleSize[p] = rand() % 6 + 1;  //1 to 6
-        if (puzzleSize[p] == 1)
-        {
-            cout << "red ";
-        }
-        if (puzzleSize[p] == 2)
-        {
-            cout << "blue ";
-        }
-        if (puzzleSize[p] == 3)
-        {
-            cout << "green ";
-        }
-        if (puzzleSize[p] == 4)
-        {
-            cout << "cyan ";
-        }
-        if (puzzleSize[p] == 5)
-        {
-            cout << "yellow ";
-        }
-        if (puzzleSize[p] == 6)
-        {
-            cout << "pink ";
-        }
     }
 
     SharedData::GetInstance()->firstball = puzzleSize[0];   //Chon ball game here XD stealing rand variable
 }
+/******************************************************************************/
+/*!
+\brief	Checking Puzzle Answer.
+    Input 4 answers and check them.
+\param first
+    First value of the answer.
+\param second
+    Second value of the answer.
+\param third
+    Third value of the answer.
+\param forth
+    Forth value of the answer.
+\return
+    True if all answers are correct.
+*/
+/******************************************************************************/
 bool LightPuzzle::checkPuzzleAns(int first, int second, int third, int forth)
 {
     puzzleAns[0] = first; //green

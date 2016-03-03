@@ -140,7 +140,6 @@ public:
     //Health Set and Get
     unsigned int getHealth();
     void setHealth(int health);
-    void setDamage(int damage);
 
     //State of Enemy
     bool isDead();

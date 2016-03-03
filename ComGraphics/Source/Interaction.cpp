@@ -49,7 +49,11 @@ GateInteraction::GateInteraction() : Interaction(false)
 GateInteraction::~GateInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	GateInteraction DoInteraction
+*/
+/******************************************************************************/
 void GateInteraction::DoInteraction()
 {
     if (SharedData::GetInstance()->canInteract)
@@ -80,7 +84,11 @@ Dialogue::Dialogue() : Interaction(true)
 Dialogue::~Dialogue()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	Dialogue DoInteraction
+*/
+/******************************************************************************/
 void Dialogue::DoInteraction()
 {
     if (SharedData::GetInstance()->gamestate == GAME_STATE_FREE) {
@@ -130,7 +138,11 @@ ShopInteraction::ShopInteraction() : Interaction(true)
 ShopInteraction::~ShopInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	ShopInteraction DoInteraction
+*/
+/******************************************************************************/
 void ShopInteraction::DoInteraction()
 {
     SharedData::GetInstance()->gamestate = GAME_STATE_SHOP;
@@ -160,7 +172,11 @@ ManureInteraction::ManureInteraction() : Interaction(true)
 ManureInteraction::~ManureInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	ManureInteraction DoInteraction
+*/
+/******************************************************************************/
 void ManureInteraction::DoInteraction()
 {
     if (SharedData::GetInstance()->gamestate == GAME_STATE_JASIMGAME) {
@@ -233,7 +249,11 @@ chonBallInteraction::chonBallInteraction() : Interaction(true)
 chonBallInteraction::~chonBallInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	chonBallInteraction DoInteraction
+*/
+/******************************************************************************/
 void chonBallInteraction::DoInteraction()
 {
     SharedData::GetInstance()->ballpickup = true;
@@ -257,7 +277,11 @@ SpaghettoInteraction::SpaghettoInteraction() : Interaction(true)
 SpaghettoInteraction::~SpaghettoInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	SpaghettoInteraction DoInteraction
+*/
+/******************************************************************************/
 void SpaghettoInteraction::DoInteraction()
 {
 	if (SharedData::GetInstance()->player->invfull() == true)
@@ -288,7 +312,11 @@ VeePuzzleSwitchOneInteraction::VeePuzzleSwitchOneInteraction() : Interaction(tru
 VeePuzzleSwitchOneInteraction::~VeePuzzleSwitchOneInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchOneInteraction DoInteraction
+*/
+/******************************************************************************/
 void VeePuzzleSwitchOneInteraction::DoInteraction()
 {
     SharedData::GetInstance()->one += 1;
@@ -313,7 +341,11 @@ VeePuzzleSwitchTwoInteraction::VeePuzzleSwitchTwoInteraction() : Interaction(tru
 VeePuzzleSwitchTwoInteraction::~VeePuzzleSwitchTwoInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchTwoInteraction DoInteraction
+*/
+/******************************************************************************/
 void VeePuzzleSwitchTwoInteraction::DoInteraction()
 {
     SharedData::GetInstance()->two += 1;
@@ -338,7 +370,11 @@ VeePuzzleSwitchThreeInteraction::VeePuzzleSwitchThreeInteraction() : Interaction
 VeePuzzleSwitchThreeInteraction::~VeePuzzleSwitchThreeInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchThreeInteraction DoInteraction
+*/
+/******************************************************************************/
 void VeePuzzleSwitchThreeInteraction::DoInteraction()
 {
     SharedData::GetInstance()->three += 1;
@@ -363,7 +399,11 @@ VeePuzzleSwitchFourInteraction::VeePuzzleSwitchFourInteraction() : Interaction(t
 VeePuzzleSwitchFourInteraction::~VeePuzzleSwitchFourInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	VeePuzzleSwitchFourInteraction DoInteraction
+*/
+/******************************************************************************/
 void VeePuzzleSwitchFourInteraction::DoInteraction()
 {
     SharedData::GetInstance()->four += 1;
@@ -388,10 +428,13 @@ VeePuzzleCheckerSwitchInteraction::VeePuzzleCheckerSwitchInteraction() : Interac
 VeePuzzleCheckerSwitchInteraction::~VeePuzzleCheckerSwitchInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	VeePuzzleCheckerSwitchInteraction DoInteraction
+*/
+/******************************************************************************/
 void VeePuzzleCheckerSwitchInteraction::DoInteraction()
 {
-    std::cout << "test" << std::endl;
     SharedData::GetInstance()->switchFlip = true;
     SharedData::GetInstance()->switchCount += 1;
 }
@@ -413,7 +456,11 @@ BedTime::BedTime() : Interaction(true)
 BedTime::~BedTime()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	BedTime DoInteraction
+*/
+/******************************************************************************/
 void BedTime::DoInteraction()
 {
 	if(SharedData::GetInstance()->player->getHunger() < 100)
@@ -439,7 +486,11 @@ WeedInteraction::WeedInteraction() : Interaction(true)
 WeedInteraction::~WeedInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	WeedInteraction DoInteraction
+*/
+/******************************************************************************/
 void WeedInteraction::DoInteraction()
 {
 	if (SharedData::GetInstance()->gamestate == GAME_STATE_WSGAME)
@@ -487,7 +538,11 @@ FarmPlantInteraction::FarmPlantInteraction() : Interaction(true)
 FarmPlantInteraction::~FarmPlantInteraction()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	FarmPlantInteraction DoInteraction
+*/
+/******************************************************************************/
 void FarmPlantInteraction::DoInteraction()
 {
 	if (SharedData::GetInstance()->gamestate == GAME_STATE_WSGAME)

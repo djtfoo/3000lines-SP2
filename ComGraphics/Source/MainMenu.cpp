@@ -116,7 +116,11 @@ MainMenu::~MainMenu()
 {
 
 }
-
+/******************************************************************************/
+/*!
+\brief	MainMenu Initializer
+*/
+/******************************************************************************/
 void MainMenu::Init()
 {
     b_Play.Set(0.397f, 0.571f, 0.435f, 0.667f);
@@ -129,7 +133,16 @@ void MainMenu::Init()
     b_SoundOn.Set(0.458f, 0.503f, 0.366f, 0.403f);
     b_SoundOff.Set(0.534f, 0.591f, 0.366f, 0.403f);
 }
-
+/******************************************************************************/
+/*!
+\brief	MainMenu Update
+    The frames seen on the screen.
+\param dt
+    Elapsed Time
+\return
+    None
+*/
+/******************************************************************************/
 void MainMenu::Update(double dt)
 {
     if (Application::IsKeyPressed(VK_LBUTTON)) {
@@ -384,6 +397,16 @@ void MainMenu::Update(double dt)
 
 }
 
+/******************************************************************************/
+/*!
+\brief	MainMenu Button Updates
+The Upate changes upon button click
+\param dt
+    Elapsed Time
+\return
+    None
+*/
+/******************************************************************************/
 void MainMenu::ButtonUpdater(double dt)
 {
     //check for which button has been click'ed'
@@ -446,7 +469,12 @@ void MainMenu::ButtonUpdater(double dt)
         }
     }
 }
-
+/******************************************************************************/
+/*!
+\brief	MainMenu Render
+    Render things on screen
+*/
+/******************************************************************************/
 void MainMenu::Render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -480,7 +508,16 @@ void MainMenu::Render()
     //custom mouse here! (o w o)b
     RenderButtonsOnScreen(meshList[GEO_MOUSECUSTOM], "", Color(0, 0, 0), 1, SharedData::GetInstance()->cursor_newxpos / (SharedData::GetInstance()->width / 80), 60 - SharedData::GetInstance()->cursor_newypos / (SharedData::GetInstance()->height / 60), 1, 1);
 }
-
+/******************************************************************************/
+/*!
+\brief	MainMenu Rendering Mesh
+    Renders Mesh loaded.
+\param mesh
+    The referece of mesh that can change lightngs
+\param enableLight
+    Enabling the Light.
+*/
+/******************************************************************************/
 void MainMenu::RenderMesh(Mesh* mesh, bool enableLight)
 {
     Mtx44 MVP, modelView, modelView_inverse_transpose;
@@ -526,7 +563,30 @@ void MainMenu::RenderMesh(Mesh* mesh, bool enableLight)
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 }
-
+/******************************************************************************/
+/*!
+\brief	Rendering Button on Main Menu Screen
+The frames seen on the screen.
+\param mesh
+    Meshlist of item
+\param text
+    Name of mesh
+\param color
+    Vector of Colors
+\param size
+    Scaling Value
+\param xbtn
+    Position of button on X-axis
+\param ybtn
+    Position of button on Y-axis
+\param xtxt
+    Position of button on screen x-axis
+\param ytxt
+    Position of button on screen y-axis
+\return
+    None
+*/
+/******************************************************************************/
 void MainMenu::RenderButtonsOnScreen(Mesh* mesh, std::string text, Color color, float size, float xbtn, float ybtn, float xtxt, float ytxt)
 {
     //if (!meshList[GEO_BUTTON] || !meshList[GEO_PLAYBUTTON]  || !meshList[GEO_BUTTONRED] )//|| meshList[GEO_BUTTON]->textureID <= 0)  //error check
@@ -555,7 +615,18 @@ void MainMenu::RenderButtonsOnScreen(Mesh* mesh, std::string text, Color color, 
     modelStack.PopMatrix();
     glEnable(GL_DEPTH_TEST);
 }
-
+/******************************************************************************/
+/*!
+\brief	MainMenu RenderText
+    Rendering text.
+\param mesh
+    Meshlist of item
+\param text
+    Text to be inputted
+\param color
+    Color to be shown.
+*/
+/******************************************************************************/
 void MainMenu::RenderText(Mesh* mesh, std::string text, Color color)
 {
     if (!mesh || mesh->textureID <= 0)  //error check
@@ -582,7 +653,24 @@ void MainMenu::RenderText(Mesh* mesh, std::string text, Color color)
     glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
     glEnable(GL_DEPTH_TEST);
 }
+/******************************************************************************/
+/*!
+\brief	MainMenu RenderTextOnScreen
 
+\param mesh
+    Meshlist of item
+\param text
+    Text to be inputted
+\param color
+    Color of the Text
+\param size
+    Size of the Text
+\param x
+    Position of Text in x-axis
+\param y
+    Position of Text in Y-axis
+*/
+/******************************************************************************/
 void MainMenu::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y)
 {
     if (!mesh || mesh->textureID <= 0)  //error check
@@ -624,7 +712,11 @@ void MainMenu::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, flo
     modelStack.PopMatrix();
     glEnable(GL_DEPTH_TEST);
 }
-
+/******************************************************************************/
+/*!
+\brief	MainMenu Page
+*/
+/******************************************************************************/
 void MainMenu::MainMenuPage()
 {
     /*Each individual buttons for menu here. Seperated by comment line*/
@@ -710,7 +802,11 @@ void MainMenu::MainMenuPage()
     RenderButtonsOnScreen(meshList[GEO_LOADTOP], " ", Color(1, 1, 1), 3, 40, loadDown, 2, 2);
     RenderButtonsOnScreen(meshList[GEO_LOADBTM], " ", Color(1, 1, 1), 3, 40, loadUp, 2, 2);
 }
-
+/******************************************************************************/
+/*!
+\brief	MainMenu Help Page
+*/
+/******************************************************************************/
 void MainMenu::HelpPage()
 {
     clicked = false;
@@ -747,7 +843,11 @@ void MainMenu::HelpPage()
         RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Back", Color(0, 0, 0), 2, 5, 12, 0.5, 5.4);
 
 }
-
+/******************************************************************************/
+/*!
+\brief	MainMenu Option Page
+*/
+/******************************************************************************/
 void MainMenu::OptionsPage()
 {
     clicked = false;
@@ -788,7 +888,11 @@ void MainMenu::OptionsPage()
     else
         RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Back", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
 }
-
+/******************************************************************************/
+/*!
+\brief	MainMenu Credit Page
+*/
+/******************************************************************************/
 void MainMenu::CreditsPage()
 {
     clicked = false;
@@ -815,7 +919,12 @@ void MainMenu::CreditsPage()
         RenderButtonsOnScreen(meshList[GEO_BUTTONRED], "Back", Color(0, 0, 0), 2, 5, 12, 2.2, 5.4);
 
 }
-
+/******************************************************************************/
+/*!
+\brief	MainMenu Exit
+Before Exiting MainMenu
+*/
+/******************************************************************************/
 void MainMenu::Exit()
 {
     glDeleteVertexArrays(1, &m_vertexArrayID);

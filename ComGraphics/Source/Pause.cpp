@@ -32,7 +32,12 @@ Pause::Pause() : elapsedTime(0), bufferTime(0.125), maxDisp1(38), maxDisp2(28), 
 Pause::~Pause()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	Pause Resetting
+Reset the Pause.
+*/
+/******************************************************************************/
 void Pause::PauseReset()
 {
     verticalDisp1 = 70;
@@ -40,7 +45,14 @@ void Pause::PauseReset()
     verticalDisp3 = 90;
     animation = true;
 }
-
+/******************************************************************************/
+/*!
+\brief	Pausing Animation
+    Plays a pausing Animation after pause button is hit.
+\param dt
+    Elapsed Time.
+*/
+/******************************************************************************/
 void Pause::PauseAnimation(double dt)
 {
     if (verticalDisp1 > maxDisp1) {
@@ -67,7 +79,14 @@ void Pause::PauseAnimation(double dt)
         animation = false;
     }
 }
-
+/******************************************************************************/
+/*!
+\brief	Checking Cursor Positionad Input
+    Call functions after cursor performed something.
+\param dt
+    Elapsed Time
+*/
+/******************************************************************************/
 void Pause::CheckCursor(double dt)
 {
     elapsedTime += dt;

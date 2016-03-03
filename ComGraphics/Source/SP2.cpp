@@ -761,7 +761,13 @@ SP2::SP2()
 SP2::~SP2()
 {
 }
+/******************************************************************************/
+/*!
+\brief	SP2 Loading Inventory
 
+\return None
+*/
+/******************************************************************************/
 void SP2::loadInv()
 {
 	invmap.insert(std::pair<int, Gift>(1, Gift("Hammer", 100)));
@@ -792,7 +798,13 @@ void SP2::loadInv()
     invmap.insert(std::pair<int, Gift>(13, Gift("Jokebook", 700)));
     modelmap.insert(std::pair<int, GEOMETRY_TYPE>(13, GEO_JOKEBOOK));
 }
-
+/******************************************************************************/
+/*!
+\brief	SP2 loading Collisions
+    Load Collision of Player, Objects, Enemies
+\return None
+*/
+/******************************************************************************/
 void SP2::loadCollisions()
 {
     vector<ItemCollision> outsideVec, ICvec;
@@ -1646,7 +1658,6 @@ void SP2::checkE_BulletCollide(EnemyBullet& bullet)
         if (invulnerable < 5)
             invulnerable += (float)(0.005);
     }
-    std::cout << player.getHealth() << std::endl;
 }
 void SP2::Render()
 {
@@ -3506,7 +3517,6 @@ void SP2::enemyShoot(double dt)
 
         e_bullet.e_pitch = 0.f;
         e_bullet.e_yaw = yaw;
-        std::cout << e_bullet.e_bulletPos << std::endl;
         enemybullet.push_back(e_bullet);
         e_elapsedTime = 0.f;  //reset
     }

@@ -76,7 +76,11 @@ Gift::Gift(std::string name, int value) : Item(name), value_(value)
 Gift::~Gift()
 {
 }
-	
+/******************************************************************************/
+/*!
+\brief	Getting value of gift item
+*/
+/******************************************************************************/
 float Gift::getValue()
 {
 	return value_;

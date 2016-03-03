@@ -23,25 +23,24 @@ Class Camera3:
 class Camera3
 {
 private:
-    Vector3 defaultPosition;
-    Vector3 defaultTarget;
-    Vector3 defaultUp;
+    Vector3 defaultPosition;        ///< Default Position of Camera
+    Vector3 defaultTarget;          ///< Default Target of Camera
+    Vector3 defaultUp;              ///< Default Up Vector of Camera
 
 public:
-    //float phi;      //angle of elevation
-    float active;       //To check if bullet active;
-    float dy, dx;       //Speed of Bullet
+    float active;                   ///< To check if bullet active;
+    float dy, dx;                   ///< Speed of Bullet
 
-    Vector3 position;
-    Vector3 target;
-    Vector3 up;
+    Vector3 position;               ///< Position of the camera
+    Vector3 target;                 ///< Target of the camera
+    Vector3 up;                     ///< Up Vector of Camera
 
-    Camera3();
-    ~Camera3();
-    void Init(const Vector3& pos, const Vector3& target, const Vector3& up);
-    void Reset();       //reset to look at specific part at back of player
-    void Update(double dt);
-    void MoveCamera(double dt);
+    Camera3();                      ///< Default Constructor
+    ~Camera3();                     ///< Default Destructor
+    void Init(const Vector3& pos, const Vector3& target, const Vector3& up);    ///< Initializer of Camera
+    void Reset();                   ///< Reset to look at specific part at back of player
+    void Update(double dt);         ///< Updating Camera3
+    void MoveCamera(double dt);     ///< Moving the Camera3
 };
 
 #endif

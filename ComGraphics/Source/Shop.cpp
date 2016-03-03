@@ -38,7 +38,16 @@ Shop::Shop() : elapsedTime(0), bufferTime(0.15)
 Shop::~Shop()
 {
 }
-
+/******************************************************************************/
+/*!
+\brief	Check Cursor
+    Performs a Function base on cursor position and clicks
+\param dt
+    Elapsed Time
+\param value
+    Gold Value of an Item from Shop.
+*/
+/******************************************************************************/
 void Shop::CheckCursor(double dt, int value)
 {
     elapsedTime += dt;

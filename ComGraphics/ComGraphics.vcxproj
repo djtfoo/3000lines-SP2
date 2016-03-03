@@ -93,7 +93,6 @@
     <ClCompile Include="Source\MainMenu.cpp" />
     <ClCompile Include="Source\MiniMapCamera.cpp" />
     <ClCompile Include="Source\Pause.cpp" />
-    <ClCompile Include="Source\RabbitFight.cpp" />
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\Shop.cpp" />
     <ClCompile Include="Source\SP2.cpp" />
@@ -105,7 +104,6 @@
     <ClCompile Include="Source\MeshBuilder.cpp" />
     <ClCompile Include="Source\shader.cpp" />
     <ClCompile Include="Source\Utility.cpp" />
-    <ClCompile Include="Source\randomNoGen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
