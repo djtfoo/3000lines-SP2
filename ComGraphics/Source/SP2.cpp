@@ -4031,6 +4031,20 @@ void SP2::RenderShop()
     modelStack.PopMatrix();
 
     modelStack.PushMatrix();
+    modelStack.Translate(935, 5, -10);
+    modelStack.Rotate(180, 0, 1, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_FRIDGE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
+    modelStack.Translate(935, 5, 20);
+    modelStack.Rotate(180, 0, 1, 0);
+    modelStack.Scale(10, 10, 10);
+    RenderMesh(meshList[GEO_FRIDGE], true);
+    modelStack.PopMatrix();
+
+    modelStack.PushMatrix();
     modelStack.Translate(900, 1, 30);
     modelStack.Scale(8, 8, 8);
     RenderMesh(meshList[GEO_SHOPSHELF], true);
@@ -4072,24 +4086,7 @@ void SP2::RenderCanteen()
         modelStack.PopMatrix();
     }
 
-    //Jasim is Hawt
     modelStack.PushMatrix();
-    modelStack.Translate(935, 5, -10);
-    modelStack.Rotate(180, 0, 1, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_FRIDGE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    modelStack.Translate(935, 5, 20);
-    modelStack.Rotate(180, 0, 1, 0);
-    modelStack.Scale(10, 10, 10);
-    RenderMesh(meshList[GEO_FRIDGE], true);
-    modelStack.PopMatrix();
-
-    modelStack.PushMatrix();
-    //modelStack.Translate(935, 5, 50);
-    //modelStack.Rotate(180, 0, 1, 0);
     modelStack.Translate(685, 0, -430);
     modelStack.Scale(10, 10, 10);
     modelStack.Rotate(180, 0, 1, 0);
